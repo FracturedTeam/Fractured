@@ -12,6 +12,8 @@ public class CameraControlTriggerEditor : Editor {
 
     private SerializedProperty cameraOnLeftProp;
     private SerializedProperty cameraOnRightProp;
+    private SerializedProperty cameraOnFrontProp;
+    private SerializedProperty cameraOnBackProp;
 
     private SerializedProperty panDirectionProp;
     private SerializedProperty panDistanceProp;
@@ -26,6 +28,8 @@ public class CameraControlTriggerEditor : Editor {
 
             cameraOnLeftProp = cameraControlTrigger.FindPropertyRelative("cameraOnLeft");
             cameraOnRightProp = cameraControlTrigger.FindPropertyRelative("cameraOnRight");
+            cameraOnFrontProp = cameraControlTrigger.FindPropertyRelative("cameraOnFront");
+            cameraOnBackProp = cameraControlTrigger.FindPropertyRelative("cameraOnBack");
 
             panDirectionProp = cameraControlTrigger.FindPropertyRelative("panDirection");
             panDistanceProp = cameraControlTrigger.FindPropertyRelative("panDistance");
@@ -57,6 +61,8 @@ public class CameraControlTriggerEditor : Editor {
             EditorGUILayout.LabelField("Camera Swap Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
             EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
+            EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
+            EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
             EditorGUILayout.EndVertical();
         }
 

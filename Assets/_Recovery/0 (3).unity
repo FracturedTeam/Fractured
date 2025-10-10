@@ -188,30 +188,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDolly
   m_SplineSettings:
     Spline: {fileID: 1371646786}
-    Position: 4.773454
-    Units: 0
+    Position: 0
+    Units: 1
   SplineOffset: {x: 0, y: 0, z: 0}
-  CameraRotation: 3
+  CameraRotation: 0
   Damping:
-    Enabled: 1
-    Position: {x: 1, y: 1, z: 1}
-    Angular: 1
+    Enabled: 0
+    Position: {x: 0, y: 0, z: 0}
+    Angular: 0
   AutomaticDolly:
-    Enabled: 1
+    Enabled: 0
     Method:
-      rid: 617300152524734534
+      rid: -2
   m_LegacyPosition: -1
   m_LegacyUnits: 0
   m_LegacySpline: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 617300152524734534
-      type: {class: SplineAutoDolly/NearestPointToTarget, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
-      data:
-        PositionOffset: 0
-        SearchResolution: 4
-        SearchIteration: 2
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &498911292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,8 +259,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 498911289}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.065151975, y: -0.78742975, z: 0.6070986, w: 0.08450457}
-  m_LocalPosition: {x: 0.53857946, y: 10.15, z: 2.4803946}
+  m_LocalRotation: {x: 0.2061793, y: 0.78645724, z: -0.46777472, w: 0.34664384}
+  m_LocalPosition: {x: -4.07, y: 10.15, z: 3.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -279,26 +275,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 498911289}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Script: {fileID: 11500000, guid: 28e2023ac4c6b204e9bad440d2cea142, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotationComposer
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.5, y: 0.5}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineSplineDollyLookAtTargets
+  Targets:
+    m_IndexUnit: 2
+    m_DefaultValue:
+      LookAt: {fileID: 0}
+      Offset: {x: 0, y: 0, z: 0}
+      Easing: 1
+    m_DataPoints: []
 --- !u!1 &609194963
 GameObject:
   m_ObjectHideFlags: 0
