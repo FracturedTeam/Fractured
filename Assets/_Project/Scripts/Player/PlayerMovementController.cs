@@ -79,6 +79,11 @@ public class PlayerMovementController : MonoBehaviour
     public void HandleUpdate() {
         CheckMethods();
         UpdateDrag();
+        
+        if(forwardDir != cam.transform.forward)
+            UpdateCameraDir();
+        else if(rightDir != cam.transform.right)
+            UpdateCameraDir();
     }
 
     private void CheckMethods() {
