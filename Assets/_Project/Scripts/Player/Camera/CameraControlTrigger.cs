@@ -59,6 +59,20 @@ public class CameraControlTrigger : MonoBehaviour
         if(customInspectorObjects.cameraOnBack)
             customInspectorObjects.cameraOnBack.Priority = 0;
     }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.limeGreen;
+        Gizmos.DrawLine(transform.position, transform.position + transform.right * 4);
+        
+        Gizmos.color = Color.deepPink;
+        Gizmos.DrawLine(transform.position, transform.position - transform.right * 4);
+        
+        Gizmos.color = Color.cadetBlue;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 4);
+        
+        Gizmos.color = Color.darkOrange;
+        Gizmos.DrawLine(transform.position, transform.position - transform.forward * 4);
+    }
 }
 
 
