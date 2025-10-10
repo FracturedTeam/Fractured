@@ -7,9 +7,6 @@ using Unity.Cinemachine;
 public class CameraControlTriggerEditor : Editor {
     SerializedProperty cameraControlTrigger;
 
-    SerializedProperty swapCameraProp;
-    private SerializedProperty panCameraOnContactProp;
-
     private SerializedProperty cameraOnLeftProp;
     private SerializedProperty cameraOnRightProp;
     private SerializedProperty cameraOnFrontProp;
@@ -23,8 +20,6 @@ public class CameraControlTriggerEditor : Editor {
         cameraControlTrigger = serializedObject.FindProperty("customInspectorObjects");
 
         if (cameraControlTrigger != null) {
-            swapCameraProp = cameraControlTrigger.FindPropertyRelative("swapCamera");
-            panCameraOnContactProp = cameraControlTrigger.FindPropertyRelative("panCameraOnContact");
 
             cameraOnLeftProp = cameraControlTrigger.FindPropertyRelative("cameraOnLeft");
             cameraOnRightProp = cameraControlTrigger.FindPropertyRelative("cameraOnRight");
@@ -51,29 +46,21 @@ public class CameraControlTriggerEditor : Editor {
             return;
         }
         
-        EditorGUILayout.PropertyField(swapCameraProp, new GUIContent("Swap Camera"));
-        EditorGUILayout.PropertyField(panCameraOnContactProp, new GUIContent("Pan Camera"));
-        
         EditorGUILayout.Space();
-
-        if (swapCameraProp.boolValue) {
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.LabelField("Camera Swap Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
-            EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
-            EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
-            EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
-            EditorGUILayout.EndVertical();
-        }
-
-        if (panCameraOnContactProp.boolValue) {
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.LabelField("Pan Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(panDirectionProp, new GUIContent("Pan Direction"));
-            EditorGUILayout.PropertyField(panDistanceProp, new GUIContent("Pan Distance"));
-            EditorGUILayout.PropertyField(panTimeProp, new GUIContent("Pan Time"));
-            EditorGUILayout.EndVertical();
-        }
+        
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Camera Swap Settings", EditorStyles.boldLabel);
+        GUI.color = Color.deepPink;
+        EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
+        GUI.color = Color.limeGreen;
+        EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
+        GUI.color = Color.cadetBlue;
+        EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
+        GUI.color = Color.darkOrange;
+        EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
+        GUI.color = Color.white;
+        EditorGUILayout.EndVertical();
+        
         
         serializedObject.ApplyModifiedProperties();
     }
