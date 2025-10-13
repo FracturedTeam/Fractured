@@ -18,12 +18,23 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Camera Settings")]
     public Camera cam;
 
+
     private float currentMaxSpeed;
+    private float currentSpeed;
+    
     private float currentFallSpeed;
+    private float currentTimeToFall;
+    
+    private float currentSlopeMult;
+    private float currentSlopeAngle;
+
+    private float accelTime;
+    private float decelTime;
     
     private Vector3 moveDir;//Inputs joueur de direction
+    private Vector3 previousMoveDir;//Keep last inputs joueur de direction
     
-    private Vector3 slopeNormal;//Si le joueur est sur une slope
+    private Vector3 slopeMoveDir;//Si le joueur est sur une slope
     private Vector3 forwardDir, rightDir;//Par rapport à la caméra
     
     private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
@@ -85,18 +96,70 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void CheckMethods() {
-        slopeNormal = Vector3.ProjectOnPlane(moveDir, slopeHit.normal);
+        slopeMoveDir = Vector3.ProjectOnPlane(previousMoveDir, slopeHit.normal);
         
-        //currentAcceleration = moveDir.magnitude > 0.01f ? playerConfig.accel : playerConfig.decel;
+        if(moveDir != Vector3.zero)
+            previousMoveDir = moveDir;
+        
+        HandleAcceleration();
+        HandlingSlope();
 
-        if (IsGrounded())
+        if (IsGrounded()) {
             currentFallSpeed = 0;
-        else 
-            currentFallSpeed = Mathf.SmoothStep(currentFallSpeed, playerConfig.maxFallSpeed, playerConfig.fallSpeedAccel * Time.deltaTime);
-        
-        rb.useGravity = !IsOnSlope();
+            currentTimeToFall = 0;
+        }
+        else {
+            currentTimeToFall += Time.deltaTime;
+            if(currentTimeToFall >= playerConfig.timeBeforeApplyingFallSpeed)
+                currentFallSpeed = Mathf.SmoothStep(currentFallSpeed, playerConfig.maxFallSpeed, playerConfig.fallSpeedAccel * Time.deltaTime);
+        }
     }
 
+    private void HandleAcceleration() {
+        if(decelTime < 0)
+            decelTime = 0;
+        else if(decelTime > playerConfig.decelTime)
+            decelTime = playerConfig.decelTime;
+        
+        if(accelTime < 0)
+            accelTime = 0;
+        else if(accelTime > playerConfig.accelTime)
+            accelTime = playerConfig.accelTime;
+        
+        if (moveDir.magnitude > 0) {
+            accelTime += Time.deltaTime;
+            decelTime -= Time.deltaTime;
+            
+            if(currentSpeed >= currentMaxSpeed - 0.1f)
+                decelTime = 0;
+            
+            currentSpeed = Mathf.Lerp(0, currentMaxSpeed, accelTime / playerConfig.accelTime);
+        }
+        else {
+            decelTime += Time.deltaTime;
+            accelTime -= Time.deltaTime;
+            
+            if(currentSpeed <= 0.1f)
+                accelTime = 0;
+            
+            currentSpeed = Mathf.Lerp(currentMaxSpeed, 0, decelTime / playerConfig.decelTime);
+        }
+    }
+
+    private void HandlingSlope() {
+        rb.useGravity = !IsOnSlope();
+
+        if (!IsOnSlope()) {
+            currentSlopeMult = 1;
+            return;
+        }
+
+        if (IsClimbingSlope())
+            currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, currentSlopeAngle / playerConfig.maxSlopeAngle);
+        else 
+            currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, currentSlopeAngle / playerConfig.maxSlopeAngle);
+    }
+    
     private void UpdateDrag() =>
         rb.linearDamping = IsGrounded() ? playerConfig.groundDrag : playerConfig.airDrag;
 
@@ -111,40 +174,11 @@ public class PlayerMovementController : MonoBehaviour
     
     private void PlayerMove() {
         if (!IsGrounded())
-            rb.AddForce(moveDir.normalized * (currentMaxSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
+            rb.AddForce(previousMoveDir.normalized * (currentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
         else if (!IsOnSlope())
-            rb.AddForce(moveDir.normalized * (currentMaxSpeed * playerConfig.moveMult), ForceMode.Acceleration);
+            rb.AddForce(previousMoveDir.normalized * (currentSpeed * playerConfig.moveMult), ForceMode.Acceleration);
         else if(IsGrounded() && IsOnSlope())
-            rb.AddForce(slopeNormal.normalized * (currentMaxSpeed * playerConfig.moveMult), ForceMode.Acceleration);
-        
-        /*if (!IsGrounded())
-            rb.linearVelocity = TargetVelocity(moveDir, playerConfig.moveSpeed * playerConfig.moveMult * playerConfig.airMoveMult, false);
-        else {
-            if (!IsOnSlope())
-                rb.linearVelocity = TargetVelocity(moveDir, playerConfig.moveSpeed * playerConfig.moveMult);
-            else if(IsOnSlope())
-                rb.linearVelocity = TargetVelocity(slopeNormal, playerConfig.moveSpeed * playerConfig.moveMult);
-        }*/
-        
-        /*if (!IsGrounded())
-            rb.linearVelocity = TargetVelocity(moveDir, currentMaxSpeed * playerConfig.airMoveMult, false);
-        else {
-            if (!IsOnSlope())
-                rb.linearVelocity = TargetVelocity(moveDir, currentMaxSpeed);
-            else if(IsOnSlope())
-                rb.linearVelocity = TargetVelocity(slopeNormal, currentMaxSpeed);
-        }*/
-    }
-
-    Vector3 TargetVelocity(Vector3 dir, float forces, bool grounded = true) {
-        Vector3 targetVel = dir * forces;
-        Vector3 currentVel = rb.linearVelocity;
-        
-        Vector3 newVel = Vector3.MoveTowards(currentVel, targetVel, 
-            (targetVel.magnitude > currentVel.magnitude ? playerConfig.accel : playerConfig.decel) * Time.deltaTime);
-       
-        return grounded ? 
-            newVel : new Vector3(newVel.x, rb.linearVelocity.y, newVel.z);
+            rb.AddForce(slopeMoveDir.normalized * (currentSpeed * currentSlopeMult * playerConfig.moveMult), ForceMode.Acceleration);
     }
     
     #endregion
@@ -161,7 +195,7 @@ public class PlayerMovementController : MonoBehaviour
     
     public bool IsGrounded() {
         float angle = 0;
-        if(slopeHit.normal != Vector3.up)
+        if (slopeHit.normal != Vector3.up)
             angle = Vector3.Angle(Vector3.up, slopeHit.normal);
         
         return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && angle <= playerConfig.maxSlopeAngle;
@@ -171,12 +205,24 @@ public class PlayerMovementController : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, groundLayer)) {
             if (slopeHit.normal != Vector3.up) {
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                
+                if(angle <= playerConfig.maxSlopeAngle) currentSlopeAngle = angle;
+                
                 return angle <= playerConfig.maxSlopeAngle && angle != 0;
             }
         }
+
+        currentSlopeAngle = 0;
         return false;
     }
 
+    private bool IsClimbingSlope() {
+        var rbDir = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).normalized;
+        var verticalComponent = Vector3.Dot(rbDir, slopeHit.normal);
+
+        return verticalComponent < -0.1f;
+    }
+    
     #endregion
     
     private void OnDrawGizmos() {
