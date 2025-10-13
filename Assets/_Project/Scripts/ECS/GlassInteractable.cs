@@ -1,0 +1,42 @@
+using UnityEngine;
+
+public class GlassInteractable : MonoBehaviour
+{
+    public float GetRadius => radius2D;
+    public ColorEnum color;
+    
+    [SerializeField] private Vector2 pos2D;
+    [SerializeField] private float radius2D;
+    [SerializeField] private bool showColliders;
+    
+    private Camera cam; 
+    private void Start()
+    {
+        cam = Camera.main;
+    }
+    
+    ///Draw The Gizmos of the collider, only in Editor
+    private void OnDrawGizmos()
+    {
+        if(!showColliders)
+            return;
+      
+        Gizmos.color = color == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
+        Gizmos.DrawSphere(pos2D, GetRadius);
+    }
+   
+    ///Auto Setup the collision, only called in Editor
+    [ContextMenu("SetUp")]
+    private void SetUp()
+    {
+        var meshRenderer = GetComponent<MeshRenderer>();
+        cam = Camera.main;
+        
+        Vector3 min = meshRenderer.bounds.min;
+        Vector3 max = meshRenderer.bounds.max;
+        Vector3 screenMin = Camera.main!.WorldToScreenPoint(min);
+        Vector3 screenMax = Camera.main!.WorldToScreenPoint(max);
+        pos2D = cam!.WorldToScreenPoint(transform.position);
+        radius2D = ((((screenMax-screenMin).magnitude *  -transform.position.z) + (screenMax-screenMin).magnitude)) /4;
+    }
+}
