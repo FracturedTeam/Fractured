@@ -6,7 +6,7 @@ public class PlayerFallState : PlayerBaseState
     }
 
     public override void OnEnter() {
-        
+        player.movement.SetSpeed(PlayerSpeedEnum.Normal);
     }
 
     public override void OnUpdate() {

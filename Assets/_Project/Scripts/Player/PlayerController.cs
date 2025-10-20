@@ -2,11 +2,12 @@ using System;
 using _Project.Scripts.Inputs;
 using UnityEngine;
 
-[RequireComponent(typeof(InputsBrain))]
+[RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
 public class PlayerController : MonoBehaviour
 {
     InputsBrain inputsBrain;
 
+    [HideInInspector]
     public PlayerMovementController movement;
     
     StateMachine stateMachine;
