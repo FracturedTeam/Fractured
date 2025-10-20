@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 498911292}
   - component: {fileID: 498911291}
   - component: {fileID: 498911294}
+  - component: {fileID: 498911295}
   m_Layer: 0
   m_Name: DollyCinemachineCamera
   m_TagString: Untagged
@@ -265,7 +266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 498911289}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.065151975, y: -0.78742975, z: 0.6070986, w: 0.08450457}
+  m_LocalRotation: {x: 0.34202015, y: 0, z: 0, w: 0.9396926}
   m_LocalPosition: {x: 0.53857946, y: 10.15, z: 2.4803946}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -301,6 +302,26 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &498911295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498911289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc54fcaf1a67d042841094ad8cbd241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraXClamp
+  lockY: 1
+  lockYRotation: 0
+  lockX: 0
+  lockXRotation: 0
+  clampX: 1
+  minX: 20
+  maxX: 40
+  currentRotation: 75.26359
 --- !u!1 &609194963
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,135 +785,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901702881}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &930455342
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 930455346}
-  - component: {fileID: 930455345}
-  - component: {fileID: 930455344}
-  - component: {fileID: 930455343}
-  - component: {fileID: 930455347}
-  m_Layer: 0
-  m_Name: CameraControlTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &930455343
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455342}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &930455344
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455342}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 1ec0c78a9fd054b4ea79049be9ecb622, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &930455345
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455342}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &930455346
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455342}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.26847064, z: -0, w: 0.9632879}
-  m_LocalPosition: {x: 8.29, y: 1, z: 0.75}
-  m_LocalScale: {x: 3, y: 3, z: 3}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -31.147, z: 0}
---- !u!114 &930455347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 930455342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17894f76f78f572458dce55bfb847b76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraControlTrigger
-  customInspectorObjects:
-    cameraOnLeft: {fileID: 1269353313}
-    cameraOnRight: {fileID: 1054178747}
-    cameraOnFront: {fileID: 498911292}
-    cameraOnBack: {fileID: 0}
 --- !u!1 &1054178746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,6 +1722,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+--- !u!1001 &6352554388231610906
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9632879
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.26847064
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -31.147
+      objectReference: {fileID: 0}
+    - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2218411200161124760, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_Name
+      value: CameraControlTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153198242041353679, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: customInspectorObjects.cameraOnLeft
+      value: 
+      objectReference: {fileID: 1269353313}
+    - target: {fileID: 3153198242041353679, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: customInspectorObjects.cameraOnFront
+      value: 
+      objectReference: {fileID: 498911292}
+    - target: {fileID: 3153198242041353679, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: customInspectorObjects.cameraOnRight
+      value: 
+      objectReference: {fileID: 1054178747}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1840,4 +1801,4 @@ SceneRoots:
   - {fileID: 1054178748}
   - {fileID: 498911293}
   - {fileID: 1371646787}
-  - {fileID: 930455346}
+  - {fileID: 6352554388231610906}
