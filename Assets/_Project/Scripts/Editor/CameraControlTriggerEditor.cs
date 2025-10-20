@@ -11,24 +11,17 @@ public class CameraControlTriggerEditor : Editor {
     private SerializedProperty cameraOnRightProp;
     private SerializedProperty cameraOnFrontProp;
     private SerializedProperty cameraOnBackProp;
-
-    private SerializedProperty panDirectionProp;
-    private SerializedProperty panDistanceProp;
-    private SerializedProperty panTimeProp;
+    
+    private bool showSwapSettings = false;
     
     private void OnEnable() {
         cameraControlTrigger = serializedObject.FindProperty("customInspectorObjects");
 
         if (cameraControlTrigger != null) {
-
             cameraOnLeftProp = cameraControlTrigger.FindPropertyRelative("cameraOnLeft");
             cameraOnRightProp = cameraControlTrigger.FindPropertyRelative("cameraOnRight");
             cameraOnFrontProp = cameraControlTrigger.FindPropertyRelative("cameraOnFront");
             cameraOnBackProp = cameraControlTrigger.FindPropertyRelative("cameraOnBack");
-
-            panDirectionProp = cameraControlTrigger.FindPropertyRelative("panDirection");
-            panDistanceProp = cameraControlTrigger.FindPropertyRelative("panDistance");
-            panTimeProp = cameraControlTrigger.FindPropertyRelative("panTime");
         }
     }
 
@@ -48,18 +41,22 @@ public class CameraControlTriggerEditor : Editor {
         
         EditorGUILayout.Space();
         
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField("Camera Swap Settings", EditorStyles.boldLabel);
-        GUI.color = Color.deepPink;
-        EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
-        GUI.color = Color.limeGreen;
-        EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
-        GUI.color = Color.cadetBlue;
-        EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
-        GUI.color = Color.darkOrange;
-        EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
-        GUI.color = Color.white;
-        EditorGUILayout.EndVertical();
+        showSwapSettings = EditorGUILayout.BeginFoldoutHeaderGroup(showSwapSettings, "Camera Swap Settings");
+        EditorGUILayout.Space();
+
+        if (showSwapSettings) {
+            GUI.color = Color.deepPink;
+            EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
+            GUI.color = Color.limeGreen;
+            EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
+            GUI.color = Color.cadetBlue;
+            EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
+            GUI.color = Color.darkOrange;
+            EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
+            GUI.color = Color.white;
+        }
+        
+        EditorGUILayout.EndFoldoutHeaderGroup();
         
         
         serializedObject.ApplyModifiedProperties();
