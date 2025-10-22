@@ -1,12 +1,13 @@
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
+using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : Singleton<PlayerController>
     {
         InputsBrain inputsBrain;
 
@@ -19,10 +20,10 @@ namespace _Project.Scripts.Player {
             stateMachine = new StateMachine();
             
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("No InputsBrain found");
+            else Debug.LogWarning("[PlayerController] No InputsBrain found");
             
             if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
-            else Debug.LogWarning("No PlayerMovementController found");
+            else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
             
             DefineState();
         }

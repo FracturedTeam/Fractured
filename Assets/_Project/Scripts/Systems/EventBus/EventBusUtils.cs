@@ -55,7 +55,7 @@ namespace _Project.Scripts.Systems.EventBus {
             foreach (var eventType in EventTypes) {
                 var busType = typedef.MakeGenericType(eventType);
                 eventBusTypes.Add(busType);
-                Debug.Log($"Initialized EventBus<{eventType.Name}>");
+                Debug.Log($"[Event Bus] Initialized EventBus<{eventType.Name}>");
             }
             
             return eventBusTypes;
@@ -65,10 +65,10 @@ namespace _Project.Scripts.Systems.EventBus {
         /// Clears (removes all listeners from) all event buses in the application.
         /// </summary>
         public static void ClearAllBuses() {
-            Debug.Log("Clearing all buses...");
+            Debug.Log("[Event Bus] Clearing all buses...");
             for (int i = 0; i < EventBusTypes.Count; i++) {
                 var busType = EventBusTypes[i];
-                var clearMethod = busType.GetMethod("Clear", BindingFlags.Static | BindingFlags.NonPublic);
+                var clearMethod = busType.GetMethod("[Event Bus] Clear", BindingFlags.Static | BindingFlags.NonPublic);
                 clearMethod?.Invoke(null, null);
             }
         }
