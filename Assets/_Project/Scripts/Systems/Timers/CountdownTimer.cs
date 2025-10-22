@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using UnityEngine;
 
 namespace _Project.Scripts.Systems.Timers {
@@ -16,10 +15,5 @@ namespace _Project.Scripts.Systems.Timers {
         }
 
         public override bool IsFinished => CurrentTime <= 0f;
-=======
-namespace _Project.Scripts.Systems.Timers {
-    public class CountdownTimer {
-        
->>>>>>> origin/feature/SystemUtility
     }
 }

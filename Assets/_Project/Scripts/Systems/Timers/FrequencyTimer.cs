@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using System;
 using UnityEngine;
 
@@ -39,10 +38,5 @@ namespace _Project.Scripts.Systems.Timers {
             TicksPerSecond = ticksPerSecond;
             timeThreshold = 1f / TicksPerSecond;
         }
-=======
-namespace _Project.Scripts.Systems.Timers {
-    public class FrequencyTimer {
-        
->>>>>>> origin/feature/SystemUtility
     }
 }

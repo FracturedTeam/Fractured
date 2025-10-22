@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using UnityEngine;
 
 namespace _Project.Scripts.Systems.Singletons {
@@ -30,10 +29,5 @@ namespace _Project.Scripts.Systems.Singletons {
             
             instance = this as T;
         }
-=======
-namespace _Project.Scripts.Systems.Singletons {
-    public class Singletin {
-        
->>>>>>> origin/feature/SystemUtility
     }
 }
