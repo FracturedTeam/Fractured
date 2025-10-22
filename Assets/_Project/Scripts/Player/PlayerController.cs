@@ -1,58 +1,63 @@
-using System;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Player.States;
+using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.Systems.StateMachine;
 using UnityEngine;
 
-[RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
-public class PlayerController : MonoBehaviour
-{
-    InputsBrain inputsBrain;
-
-    [HideInInspector]
-    public PlayerMovementController movement;
+namespace _Project.Scripts.Player {
     
-    StateMachine stateMachine;
+    [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
+    public class PlayerController : Singleton<PlayerController>
+    {
+        InputsBrain inputsBrain;
 
-    private void Start() {
-        stateMachine = new StateMachine();
+        [HideInInspector]
+        public PlayerMovementController movement;
         
-        if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-        else Debug.LogWarning("No InputsBrain found");
-        
-        if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
-        else Debug.LogWarning("No PlayerMovementController found");
-        
-        DefineState();
-    }
+        StateMachine stateMachine;
 
-    void DefineState() {
-        //Create All State
-        var locomotionState = new PlayerLocomotionState(this);
-        var fallState = new PlayerFallState(this);
-        
-        //Define all states transitions
-        At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
-        At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
-        
-        //Set the initial player State
-        stateMachine.SetState(locomotionState);
-    }
+        private void Start() {
+            stateMachine = new StateMachine();
+            
+            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
+            else Debug.LogWarning("[PlayerController] No InputsBrain found");
+            
+            if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
+            else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
+            
+            DefineState();
+        }
 
-    private void Update() {
-        stateMachine.Update();
-    }
+        void DefineState() {
+            //Create All State
+            var locomotionState = new PlayerLocomotionState(this);
+            var fallState = new PlayerFallState(this);
+            
+            //Define all states transitions
+            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
+            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
+            
+            //Set the initial player State
+            stateMachine.SetState(locomotionState);
+        }
 
-    void FixedUpdate() {
-        stateMachine.FixedUpdate();
-    }
-    
-    void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
-    void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
-    
-    public bool IsCurrentState<TState>() where TState : IState {
-        return stateMachine.IsCurrentState<TState>();
-    }
-    
-    public bool TryGetCurrentStateAs<TState>(out TState state) where TState : IState {
-        return stateMachine.TryGetCurrentStateAs(out state);
+        private void Update() {
+            stateMachine.Update();
+        }
+
+        void FixedUpdate() {
+            stateMachine.FixedUpdate();
+        }
+        
+        void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
+        void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
+        
+        public bool IsCurrentState<TState>() where TState : IState {
+            return stateMachine.IsCurrentState<TState>();
+        }
+        
+        public bool TryGetCurrentStateAs<TState>(out TState state) where TState : IState {
+            return stateMachine.TryGetCurrentStateAs(out state);
+        }
     }
 }

@@ -41,10 +41,10 @@ public class PlayerMovementController : MonoBehaviour
     
     private void Awake() {
         if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-        else Debug.LogWarning("No InputsBrain found");
+        else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
         if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
-        else Debug.LogWarning("No InputsBrain found");
+        else Debug.LogWarning("[PlayerController] No RigidBody found");
         
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;

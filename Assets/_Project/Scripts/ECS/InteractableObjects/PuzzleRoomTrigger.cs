@@ -1,0 +1,20 @@
+using System.Collections.Generic;
+using _Project.Scripts.GameServices;
+using UnityEngine;
+
+namespace _Project.Scripts.ECS.InteractableObjects {
+    public class PuzzleRoomTrigger : MonoBehaviour {
+        [Header("Puzzle Room Objects")]
+        [Tooltip("Interactable Objects in the room")]
+        public InteractableObject[] interactable;
+        [Tooltip("Shards to solve the room")]
+        public Glass[] shards;
+
+        void OnTriggerEnter(Collider other) {
+            if (other.gameObject.CompareTag("Player")) {
+                GameInitializer.Instance.UpdatePuzzleRoom(interactable, shards);
+            }
+        }
+        
+    }
+}

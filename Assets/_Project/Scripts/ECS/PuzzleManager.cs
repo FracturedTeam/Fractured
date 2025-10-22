@@ -34,6 +34,6 @@ public class PuzzleManager : MonoBehaviour
     private void SetState(InteractableObject block)
     {
         foreach (var glass in glassShards)
-            block.UnderTheGlass(glass.SetState(block.GetGlassInteract), glass.GetColor);
+            block.OnShardInteract(glass.CheckCollision(block.GetGlassInteract), glass.GetColor);
     }
 }
