@@ -28,7 +28,7 @@ public class Glass : MonoBehaviour
         transform.position = Mouse.current.position.ReadValue();
     }
     
-    public bool SetState(GlassInteractable block)
+    public bool CheckCollision(GlassInteractable block)
     {
         foreach (var internColliders in colliders)
         {
