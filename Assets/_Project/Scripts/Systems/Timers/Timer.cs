@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using UnityEngine;
 
@@ -65,5 +66,10 @@ namespace _Project.Scripts.Systems.Timers {
             
             disposed = true;
         }
+=======
+namespace _Project.Scripts.Systems.Timers {
+    public class Timer {
+        
+>>>>>>> origin/feature/SystemUtility
     }
 }

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace _Project.Scripts.Systems.EventBus {
+<<<<<<< HEAD
     public static class PredefinedAssemblyUtil {
+=======
+    public static class PredefinedAssemblyUtils {
+>>>>>>> origin/feature/SystemUtility
         enum AssemblyType {
             AssemblyCSharp,
             AssemblyCSharpEditor,

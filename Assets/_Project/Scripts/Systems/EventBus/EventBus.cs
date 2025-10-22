@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,3 +22,10 @@ namespace _Project.Scripts.Systems.EventBus {
     }
 }
 
+=======
+namespace _Project.Scripts.Systems.EventBus {
+    public class EventBus {
+        
+    }
+}
+>>>>>>> origin/feature/SystemUtility

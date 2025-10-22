@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Reflection;
 using System.Collections.Generic;
@@ -72,5 +73,10 @@ namespace _Project.Scripts.Systems.EventBus {
                 clearMethod?.Invoke(null, null);
             }
         }
+=======
+namespace _Project.Scripts.Systems.EventBus {
+    public class EventBusUtils {
+        
+>>>>>>> origin/feature/SystemUtility
     }
 }

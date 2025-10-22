@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System.Collections.Generic;
 
 namespace _Project.Scripts.Systems.Timers {
@@ -14,5 +15,10 @@ namespace _Project.Scripts.Systems.Timers {
         }
         
         public static void Clear() => timers.Clear();
+=======
+namespace _Project.Scripts.Systems.Timers {
+    public class TimerManager {
+        
+>>>>>>> origin/feature/SystemUtility
     }
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.LowLevel;
@@ -44,5 +45,10 @@ namespace _Project.Scripts.Systems.Timers {
             };
             return PlayerLoopUtils.InsertSystem<T>(ref loop, in _timerSystem, index);
         }
+=======
+namespace _Project.Scripts.Systems.Timers {
+    public class TimerEngine {
+        
+>>>>>>> origin/feature/SystemUtility
     }
 }

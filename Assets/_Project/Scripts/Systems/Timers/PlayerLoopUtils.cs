@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -68,5 +69,10 @@ namespace _Project.Scripts.Systems.Timers {
                 PrintSubsystem(subSystem, sb, level + 1);
             }
         }
+=======
+namespace _Project.Scripts.Systems.Timers {
+    public class PlayerLoopUtils {
+        
+>>>>>>> origin/feature/SystemUtility
     }
 }
