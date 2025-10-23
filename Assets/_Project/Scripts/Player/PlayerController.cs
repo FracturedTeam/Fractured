@@ -13,18 +13,25 @@ namespace _Project.Scripts.Player {
 
         [HideInInspector]
         public PlayerMovementController movement;
+        [HideInInspector]
+        public PlayerInteract interact;
         
         StateMachine stateMachine;
 
         private void Start() {
             stateMachine = new StateMachine();
             
+            //Get every component needed
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
             
             if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
             else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
             
+            if(TryGetComponent(out PlayerInteract _interact)) interact = _interact;
+            else Debug.LogWarning("[PlayerController] No PlayerInteract found");
+            
+            //Define state machine
             DefineState();
         }
 
@@ -44,7 +51,7 @@ namespace _Project.Scripts.Player {
         private void Update() {
             stateMachine.Update();
         }
-
+        
         void FixedUpdate() {
             stateMachine.FixedUpdate();
         }

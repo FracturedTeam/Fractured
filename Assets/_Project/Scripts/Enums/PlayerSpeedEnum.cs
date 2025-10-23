@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum PlayerSpeedEnum
 {
-    Normal = 0,
-    None = 5
+    None = 0,
+    Normal = 5,
+    Grab = 10
 }

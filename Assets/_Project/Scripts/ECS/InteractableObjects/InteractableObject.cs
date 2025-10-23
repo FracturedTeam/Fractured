@@ -1,3 +1,4 @@
+using _Project.Scripts.Enums;
 using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
@@ -5,17 +6,28 @@ public class InteractableObject : MonoBehaviour
     public bool GetGlass =>  GetGlassInteract != null;
     public GlassInteractable GetGlassInteract { get; private set; }
     private MeshRenderer meshRenderer;
+    internal Collider objectCollider;
     
     bool Initialized = false;
+    internal bool canBeGrabbed = false;
 
-    private void Start()
+    internal virtual void Start()
     {
         if(TryGetComponent(typeof(GlassInteractable), out var g))
             GetGlassInteract = g as GlassInteractable;
+        else 
+            Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain GlassInteractable component");
         
         if(TryGetComponent(typeof(MeshRenderer), out var m))
             meshRenderer = m as MeshRenderer;
-
+        else
+            Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain MeshRenderer component");
+        
+        if(TryGetComponent(typeof(Collider), out var c))
+            objectCollider = c as Collider;
+        else
+            Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain Collider component");
+        
         Initialized = true;
     }
 
@@ -24,12 +36,18 @@ public class InteractableObject : MonoBehaviour
         
         if(TryGetComponent(typeof(GlassInteractable), out var g))
             GetGlassInteract = g as GlassInteractable;
+        else 
+            Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain GlassInteractable component");
         
         if(TryGetComponent(typeof(MeshRenderer), out var m))
             meshRenderer = m as MeshRenderer;
+        else
+            Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain MeshRenderer component");
+        
+        Initialized = true;
     }
 
-    internal virtual void OnInteract()
+    internal virtual void OnInteract(ObjectInteraction interaction)
     {
         //Insert here interaction with the player
     }

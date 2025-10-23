@@ -7,6 +7,7 @@ namespace _Project.Scripts.Inputs {
         private InputSystem_Actions inputs;
 
         public event Action<Vector2> OnPlayerMove = delegate { };
+        public event Action OnInteract = delegate { };
     
         private void Awake() {
             inputs = new InputSystem_Actions();
@@ -15,6 +16,7 @@ namespace _Project.Scripts.Inputs {
         private void OnEnable() {
             inputs.Player.Move.performed += PlayerMove;
             inputs.Player.Move.canceled += PlayerMove;
+            inputs.Player.Interact.performed += Interact;
         
             inputs.Enable();
         }
@@ -22,10 +24,15 @@ namespace _Project.Scripts.Inputs {
         private void OnDisable() {
             inputs.Player.Move.performed -= PlayerMove;
             inputs.Player.Move.canceled -= PlayerMove;
+            inputs.Player.Interact.performed -= Interact;
         }
 
         private void PlayerMove(InputAction.CallbackContext context) {
             OnPlayerMove.Invoke(context.ReadValue<Vector2>());
+        }
+
+        private void Interact(InputAction.CallbackContext context) {
+            OnInteract.Invoke();
         }
     }
 }
