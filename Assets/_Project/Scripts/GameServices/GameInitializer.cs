@@ -9,7 +9,7 @@ namespace _Project.Scripts.GameServices {
 
         private ShardService  shardService;
 
-        private void Awake() {
+        private new void Awake() {
             Initialize();
             
             #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD

@@ -3,17 +3,29 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerConfiguration", menuName = "ScriptableObjects/PlayerConfiguration", order = 1)]
 public class PlayerConfiguration : ScriptableObject
 {
-    [Header("Movement Settings")]
+    [Header("Movement Speed Settings")]
     [Tooltip("Base movement speed of the player")]
     public float normalMoveSpeed = 8f;
+    [Tooltip("Movement speed of the player when he has an object in hands")]
+    public float grabMoveSpeed = 8f;
     [Tooltip("Base movement multiplier")]
     public float moveMult = 4f;
     [Tooltip("Air movement multiplier when the player is not on ground (this value is multiplied to the moveSpeed and the moveMult)")]
     public float airMoveMult = .2f;
+    
+    [Header("Start Moving Settings")]
     [Tooltip("Time to get to full speed")]
     public float accelTime = 1f;
+    [Tooltip("Curve to get to full speed")]
+    public AnimationCurve accelCurve;
     [Tooltip("Time to stop")]
     public float decelTime = 1f;
+    [Tooltip("Curve to get to stop")]
+    public AnimationCurve decelCurve;
+    [Tooltip("Time to wait before player start to move when starting to press a moving key")]
+    public float timeBeforeMoving = 0.1f;
+    [Tooltip("Time to wait before the variable timeBeforeMoving Reset")]
+    public float timeBeforeMovingReset = 1f;
     
     [Header("Slope Settings")] 
     [Tooltip("Max slope angle that the player can walk on")]
