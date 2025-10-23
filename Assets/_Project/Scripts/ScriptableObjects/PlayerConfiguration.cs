@@ -12,6 +12,8 @@ public class PlayerConfiguration : ScriptableObject
     public float moveMult = 4f;
     [Tooltip("Air movement multiplier when the player is not on ground (this value is multiplied to the moveSpeed and the moveMult)")]
     public float airMoveMult = .2f;
+    [Tooltip("Speed for the player mesh to rotate in the direction the he is moving")]
+    public float rotationSpeed = 10f;
     
     [Header("Start Moving Settings")]
     [Tooltip("Time to get to full speed")]
