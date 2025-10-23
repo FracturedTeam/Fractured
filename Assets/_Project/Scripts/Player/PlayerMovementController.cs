@@ -10,6 +10,9 @@ public class PlayerMovementController : MonoBehaviour
 
     [SerializeField] PlayerConfiguration playerConfig;
 
+    [Header("Mesh")] 
+    [SerializeField] Transform mesh;
+    
     [Header("Ground Settings")] 
     [SerializeField] LayerMask groundLayer;
     [SerializeField] Transform feetPosition;
@@ -20,7 +23,7 @@ public class PlayerMovementController : MonoBehaviour
 
 
     private float currentMaxSpeed;
-    public float currentSpeed;
+    private float currentSpeed;
     
     private float currentFallSpeed;
     private float currentTimeToFall;
@@ -31,8 +34,8 @@ public class PlayerMovementController : MonoBehaviour
     private float accelTime;
     private float decelTime;
 
-    public float timeBeforeMoving;
-    public float timeBeforeMovingReset;
+    private float timeBeforeMoving;
+    private float timeBeforeMovingReset;
     
     private Vector3 moveDir;//Inputs joueur de direction
     internal Vector3 previousMoveDir;//Keep last inputs joueur de direction
@@ -91,6 +94,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     public void HandleUpdate() {
+        MeshRotation();
         CheckMethods();
         UpdateDrag();
         
@@ -98,6 +102,12 @@ public class PlayerMovementController : MonoBehaviour
             UpdateCameraDir();
         else if(rightDir != cam.transform.right)
             UpdateCameraDir();
+    }
+
+    private void MeshRotation() {
+        var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
+        var targetRotation = Quaternion.Euler(0, angle, 0);
+        mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
     }
 
     private void CheckMethods() {
