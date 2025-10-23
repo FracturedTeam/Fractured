@@ -1,3 +1,5 @@
+using _Project.Scripts.Systems.StateMachine;
+
 public class Transition : ITransition
 {
     public IState To { get; }
