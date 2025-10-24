@@ -8,7 +8,7 @@ public class PlayerMovementController : MonoBehaviour
     private InputsBrain inputsBrain;
     private Rigidbody rb;
 
-    [SerializeField] PlayerConfiguration playerConfig;
+    [SerializeField] public PlayerConfiguration playerConfig;
 
     [Header("Mesh")] 
     [SerializeField] Transform mesh;
@@ -22,19 +22,19 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] Camera cam;
 
 
-    private float currentMaxSpeed;
-    private float currentSpeed;
+    internal float currentMaxSpeed;
+    internal float currentSpeed;
     
-    private float currentFallSpeed;
+    internal float currentFallSpeed;
     private float currentTimeToFall;
     
     private float currentSlopeMult;
-    private float currentSlopeAngle;
+    internal float currentSlopeAngle;
 
-    private float accelTime;
-    private float decelTime;
+    internal float accelTime;
+    internal float decelTime;
 
-    private float timeBeforeMoving;
+    internal float timeBeforeMoving;
     private float timeBeforeMovingReset;
     
     private Vector3 moveDir;//Inputs joueur de direction
@@ -138,14 +138,6 @@ public class PlayerMovementController : MonoBehaviour
             timeBeforeMovingReset <= 0 ?
                 timeBeforeMoving -= Time.deltaTime : 
                 timeBeforeMoving = timeBeforeMoving;
-        
-
-        if (timeBeforeMoving < 0)
-            timeBeforeMoving = 0;
-        if (timeBeforeMoving > playerConfig.timeBeforeMoving)
-            timeBeforeMoving = playerConfig.timeBeforeMoving;
-        if (timeBeforeMovingReset < 0)
-            timeBeforeMovingReset = 0;
 
         if (rb.linearVelocity == Vector3.zero && moveDir == Vector3.zero && timeBeforeMovingReset <= 0)
             timeBeforeMoving = 0;
@@ -155,21 +147,11 @@ public class PlayerMovementController : MonoBehaviour
 
         if (timeBeforeMoving >= playerConfig.timeBeforeMoving && moveDir != Vector3.zero)
             timeBeforeMovingReset = playerConfig.timeBeforeMovingReset;
+        
+        timeBeforeMoving = Mathf.Clamp(timeBeforeMoving, 0, playerConfig.timeBeforeMoving);
     }
 
     private void HandleAcceleration() {
-        //Todo adding animation curve to more accurately set how the player accelerate or decelerate
-        
-        if(decelTime < 0)
-            decelTime = 0;
-        else if(decelTime > playerConfig.decelTime)
-            decelTime = playerConfig.decelTime;
-        
-        if(accelTime < 0)
-            accelTime = 0;
-        else if(accelTime > playerConfig.accelTime)
-            accelTime = playerConfig.accelTime;
-        
         if (moveDir.magnitude > 0 && timeBeforeMoving >= playerConfig.timeBeforeMoving) {
             accelTime += Time.deltaTime;
             decelTime -= Time.deltaTime;
@@ -189,6 +171,9 @@ public class PlayerMovementController : MonoBehaviour
             
             currentSpeed = Mathf.Lerp(currentMaxSpeed, 0, playerConfig.decelCurve.Evaluate(decelTime / playerConfig.decelTime));
         }
+        
+        decelTime = Mathf.Clamp(decelTime, 0, playerConfig.decelTime);
+        accelTime = Mathf.Clamp(accelTime, 0, playerConfig.accelTime);
     }
 
     private void HandlingSlope() {
@@ -235,6 +220,10 @@ public class PlayerMovementController : MonoBehaviour
     public void UnfreezeController() {
         rb.isKinematic = false;
     }
+
+    internal bool IsPlayerFrozen() {
+        return rb.isKinematic;
+    }
     
     #region Boolean
     
@@ -246,7 +235,7 @@ public class PlayerMovementController : MonoBehaviour
         return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && angle <= playerConfig.maxSlopeAngle;
     }
 
-    private bool IsOnSlope() {
+    internal bool IsOnSlope() {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, groundLayer)) {
             if (slopeHit.normal != Vector3.up) {
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
