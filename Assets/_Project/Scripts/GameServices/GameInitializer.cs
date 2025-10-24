@@ -1,6 +1,8 @@
 using System;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
+using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.InteractableObjects;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
