@@ -22,23 +22,23 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] Camera cam;
 
 
-    internal float currentMaxSpeed;
-    internal float currentSpeed;
+    public float currentMaxSpeed { get; private set; }
+    public float currentSpeed { get; private set; }
     
-    internal float currentFallSpeed;
+    public float currentFallSpeed { get; private set; }
     private float currentTimeToFall;
     
     private float currentSlopeMult;
-    internal float currentSlopeAngle;
+    public float currentSlopeAngle { get; private set; }
 
-    internal float accelTime;
-    internal float decelTime;
+    public float accelTime { get; private set; }
+    public float decelTime { get; private set; }
 
-    internal float timeBeforeMoving;
+    public float timeBeforeMoving { get; private set; }
     private float timeBeforeMovingReset;
     
     private Vector3 moveDir;//Inputs joueur de direction
-    internal Vector3 previousMoveDir;//Keep last inputs joueur de direction
+    public Vector3 previousMoveDir { get; private set; }//Keep last inputs joueur de direction
     
     private Vector3 slopeMoveDir;//Si le joueur est sur une slope
     private Vector3 forwardDir, rightDir;//Par rapport à la caméra
@@ -235,7 +235,7 @@ public class PlayerMovementController : MonoBehaviour
         return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && angle <= playerConfig.maxSlopeAngle;
     }
 
-    internal bool IsOnSlope() {
+    public bool IsOnSlope() {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, groundLayer)) {
             if (slopeHit.normal != Vector3.up) {
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);

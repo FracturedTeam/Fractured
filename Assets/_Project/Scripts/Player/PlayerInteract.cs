@@ -24,11 +24,10 @@ namespace _Project.Scripts.Player {
         private InteractableObject currentObject;
         
         private bool canPlayerInteract = false;
-        internal bool hasObject = false;
+        public bool hasObject { get; private set; }
 
         private bool canInteract;
-        
-        internal bool CanInteract {
+        public bool CanInteract {
             get => canInteract;
             private set {
                 if(canInteract == value) return;

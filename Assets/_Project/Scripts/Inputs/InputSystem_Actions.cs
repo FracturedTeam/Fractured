@@ -1090,6 +1090,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleShard"",
+                    ""type"": ""Button"",
+                    ""id"": ""21803a82-c56c-4791-9ea8-b899a50a8db3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1101,6 +1110,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""TogglePlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""460420c5-05d8-46fd-b861-838dc7a16636"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleShard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1196,6 +1216,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_TogglePlayer = m_Debug.FindAction("TogglePlayer", throwIfNotFound: true);
+        m_Debug_ToggleShard = m_Debug.FindAction("ToggleShard", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1658,6 +1679,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Debug;
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_TogglePlayer;
+    private readonly InputAction m_Debug_ToggleShard;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1673,6 +1695,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/TogglePlayer".
         /// </summary>
         public InputAction @TogglePlayer => m_Wrapper.m_Debug_TogglePlayer;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/ToggleShard".
+        /// </summary>
+        public InputAction @ToggleShard => m_Wrapper.m_Debug_ToggleShard;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1702,6 +1728,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TogglePlayer.started += instance.OnTogglePlayer;
             @TogglePlayer.performed += instance.OnTogglePlayer;
             @TogglePlayer.canceled += instance.OnTogglePlayer;
+            @ToggleShard.started += instance.OnToggleShard;
+            @ToggleShard.performed += instance.OnToggleShard;
+            @ToggleShard.canceled += instance.OnToggleShard;
         }
 
         /// <summary>
@@ -1716,6 +1745,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TogglePlayer.started -= instance.OnTogglePlayer;
             @TogglePlayer.performed -= instance.OnTogglePlayer;
             @TogglePlayer.canceled -= instance.OnTogglePlayer;
+            @ToggleShard.started -= instance.OnToggleShard;
+            @ToggleShard.performed -= instance.OnToggleShard;
+            @ToggleShard.canceled -= instance.OnToggleShard;
         }
 
         /// <summary>
@@ -1977,5 +2009,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTogglePlayer(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleShard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleShard(InputAction.CallbackContext context);
     }
 }

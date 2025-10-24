@@ -55,5 +55,8 @@ namespace _Project.Scripts.GameServices.Services {
         public void Dispose() {
             shardsInteractable.Clear();
         }
+        
+        public int ShardCount => shards.Count;
+        public int InteractableCount => interactables.Count;
     }
 }

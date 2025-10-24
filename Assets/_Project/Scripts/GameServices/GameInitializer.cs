@@ -49,6 +49,9 @@ namespace _Project.Scripts.GameServices {
 
             var playerDebugService = new PlayerDebugService(debugUIState);
             debugSystem.Register(playerDebugService);
+            
+            var shardDebugService = new ShardDebugService(shardService,  debugUIState);
+            debugSystem.Register(shardDebugService);
 
             //Set the debug system
             debugSystemInitializer.debugSystem = debugSystem;

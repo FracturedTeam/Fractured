@@ -9,6 +9,7 @@ namespace _Project.Scripts.DebugSystems {
             
             inputs.Debug.Enable();
             inputs.Debug.TogglePlayer.performed += _ => debugUIState.Toggle("Player");
+            inputs.Debug.ToggleShard.performed += _ => debugUIState.Toggle("Shard");
         }
         
         public void Initialize() {

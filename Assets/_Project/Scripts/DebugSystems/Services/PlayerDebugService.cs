@@ -31,10 +31,11 @@ namespace _Project.Scripts.DebugSystems.Services {
                 fontStyle = FontStyle.Bold,
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft,
+                normal = {
+                    textColor = Color.crimson
+                }
             };
-            
-            sectionStyle.normal.textColor = Color.crimson;
-            
+
             var debugStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Normal,
                 fontSize = 10,
@@ -43,6 +44,7 @@ namespace _Project.Scripts.DebugSystems.Services {
 
             GUILayout.BeginVertical("box");
             GUILayout.Label("Player Debug Service", headerStyle);
+            
             GUILayout.Label("State Machine", sectionStyle);
             GUILayout.Label($"Current state is {player.GetCurrentState()}", debugStyle);
             
