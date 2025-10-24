@@ -66,5 +66,9 @@ namespace _Project.Scripts.Player {
         public bool TryGetCurrentStateAs<TState>(out TState state) where TState : IState {
             return stateMachine.TryGetCurrentStateAs(out state);
         }
+
+        public IState GetCurrentState() {
+            return stateMachine.CurrentState;
+        }
     }
 }

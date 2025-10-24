@@ -1,0 +1,35 @@
+#if UNITY_EDITOR || UNITY_DEVELOPMENT_BUILD
+using System.Collections.Generic;
+
+namespace _Project.Scripts.DebugSystems {
+    public class DebugSystem {
+        private List<IDebugSystem> debugSystems =  new List<IDebugSystem>();
+
+        public void Register(IDebugSystem debugSystem) {
+            debugSystems.Add(debugSystem);
+            debugSystem.Initialize();
+        }
+
+        public void Tick() {
+            foreach (var debugSystem in debugSystems) {
+                debugSystem.Tick();
+            }
+        }
+
+        public void DrawDebugGUI() {
+            foreach (var debugSystem in debugSystems) {
+                if (debugSystem is IDebugGUI debugGUI) {
+                    debugGUI.DrawDebugGUI();
+                }
+            }
+        }
+
+        public void Dispose() {
+            foreach (var debugSystem in debugSystems) {
+                debugSystem.Dispose();
+            }
+        }
+    }
+    
+}
+#endif

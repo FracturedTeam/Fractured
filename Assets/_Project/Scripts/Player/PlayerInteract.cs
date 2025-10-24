@@ -24,13 +24,12 @@ namespace _Project.Scripts.Player {
         private InteractableObject currentObject;
         
         private bool canPlayerInteract = false;
-        private bool hasObject = false;
+        public bool hasObject { get; private set; }
 
         private bool canInteract;
-        
-        private bool CanInteract {
+        public bool CanInteract {
             get => canInteract;
-            set {
+            private set {
                 if(canInteract == value) return;
 
                 //canInteract = canPlayerInteract && !hasObject && size > 0;
@@ -41,7 +40,7 @@ namespace _Project.Scripts.Player {
             }
         }
         
-        private int size = 0;
+        internal int size = 0;
 
         private void Awake() {
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;

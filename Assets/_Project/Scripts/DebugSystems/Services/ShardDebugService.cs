@@ -1,0 +1,60 @@
+using _Project.Scripts.GameServices.Services;
+using UnityEngine;
+
+namespace _Project.Scripts.DebugSystems.Services {
+    public class ShardDebugService : IDebugSystem, IDebugGUI{
+
+        private readonly ShardService shardService;
+        private readonly DebugUIState debugUIState;
+        
+        public ShardDebugService(ShardService shard, DebugUIState debugUI) {
+            shardService = shard;
+            debugUIState = debugUI;
+        }
+        
+        public void Initialize() {
+        }
+
+        public void Tick() {
+        }
+
+        public void DrawDebugGUI() {
+            if(!debugUIState.IsVisible("Shard")) return;
+            
+            var headerStyle = new GUIStyle(GUI.skin.label) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 12,
+                alignment = TextAnchor.UpperLeft
+            };
+            
+            var sectionStyle = new GUIStyle(GUI.skin.label) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleLeft,
+                normal = {
+                    textColor = Color.crimson
+                }
+            };
+
+            var debugStyle = new GUIStyle(GUI.skin.label) {
+                fontStyle = FontStyle.Normal,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleLeft
+            };
+            
+            GUILayout.BeginVertical("box");
+            GUILayout.Label("Shard Debug Service", headerStyle);
+            
+            GUILayout.Label("Shards", sectionStyle);
+            GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
+            
+            GUILayout.Label("Interactable", sectionStyle);
+            GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
+            
+            GUILayout.EndVertical();
+        }
+        
+        public void Dispose() {
+        }
+    }
+}
