@@ -4,11 +4,12 @@ using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.ECS.InteractableObjects.GlassInteractable;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.ECS
 {
-    public class Glass : MonoBehaviour
+    public class Glass : MonoBehaviour, IPointerDownHandler
     {
         public ColorEnum GetColor => color2D;
     
@@ -16,6 +17,8 @@ namespace _Project.Scripts.ECS
         [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
         private Camera cam;
         private float GetWindowHeight => cam.pixelHeight/1080f ;
+        
+        private bool isHeld;
 
         private void Start()
         {
@@ -24,7 +27,14 @@ namespace _Project.Scripts.ECS
 
         private void Update()
         {
-            transform.position = Mouse.current.position.ReadValue();
+            if(isHeld)
+                transform.position = Mouse.current.position.ReadValue();
+        }
+
+        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+        {
+            print("MouseDown");
+           isHeld = !isHeld;
         }
     
         public bool CheckCollision(GlassInteractable block)

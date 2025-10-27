@@ -1,5 +1,6 @@
 using _Project.Scripts.Enums;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _Project.Scripts.ECS.InteractableObjects
 {
@@ -64,12 +65,15 @@ namespace _Project.Scripts.ECS.InteractableObjects
 
         public void SetCollider(bool isOn)
         {
-            objectCollider.enabled = isOn;
+            if(objectCollider)
+                objectCollider.enabled = isOn;
         }
         
         public void SetRenderer(bool isOn)
         {
-            meshRenderer.enabled = isOn;
+            if(meshRenderer) 
+                meshRenderer.enabled = isOn;
         }
+
     }
 }
