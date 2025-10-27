@@ -12,7 +12,6 @@ using UnityEngine;
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
         private GameSystems gameSystems;
-
         private ShardService  shardService;
 
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -38,9 +37,6 @@ namespace _Project.Scripts.GameServices {
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
         }
-
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
-            shardService.PopulateService(_interactable,  _shards);
         
         #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
         void InitializeDebugSystems() {
@@ -79,5 +75,22 @@ namespace _Project.Scripts.GameServices {
         private void OnDestroy() {
             gameSystems.Dispose();
         }
+
+        #region ShardService
+
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
+            shardService.PopulateService(_interactable,  _shards);
+
+        public void SetEditableArea(bool inArea) {
+            shardService.SetEditableArea(inArea);
+        }
+        
+        public bool InEditableArea() {
+            return shardService.PlayerInEditableArea;
+        }
+
+        #endregion
+        
+       
     }
 }

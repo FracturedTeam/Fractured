@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
+using _Project.Scripts.GameServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -34,7 +35,7 @@ namespace _Project.Scripts.ECS
 
         private void Update()
         {
-            if(isHeld)
+            if(isHeld && GameInitializer.Instance.InEditableArea())
                 transform.position = Mouse.current.position.ReadValue();
 
             InputsProcessing();
