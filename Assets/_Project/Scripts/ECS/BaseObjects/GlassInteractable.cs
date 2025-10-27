@@ -19,6 +19,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(TryGetComponent(typeof(BaseObject), out var component))
                 baseObject = component as BaseObject;
+            else return;
+            
+            baseObject!.SetRenderer(false);
+            baseObject!.SetCollider(false);
         }
         
         internal void OnInteract(bool isOn, ColorEnum glassColor)
@@ -26,7 +30,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!baseObject)
                 return;
 
-            if (glassColor != color) 
+            if (glassColor == color) 
                 return;
             
             baseObject.SetRenderer(isOn);
