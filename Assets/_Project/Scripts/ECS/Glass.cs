@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
+using _Project.Scripts.Enums;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,6 +43,22 @@ namespace _Project.Scripts.ECS
 
         private void InputsProcessing()
         {
+            var isInZone = false;
+            foreach (var internCollider in colliders)
+            {
+                var ab = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y) 
+                         - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) 
+                             * GetWindowHeight);
+        
+                var radiusSum = internCollider.radius * GetWindowHeight + 1;
+        
+                if(ab.magnitude <= radiusSum)
+                    isInZone = true;
+            }
+                
+            if(!isInZone)
+                return;
+            
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 ChangeHoldingState(true);
             else if (Mouse.current.leftButton.wasReleasedThisFrame)
@@ -109,7 +126,12 @@ namespace _Project.Scripts.ECS
         public void OnSceneGUI()
         {
             var element = target as Glass;
-            var color = element!.GetColor == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
+            var color = element!.GetColor switch
+            {
+                ColorEnum.Blue => Color.dodgerBlue,
+                ColorEnum.Red => Color.crimson,
+                _ => Color.darkOrchid
+            };
             var size = Camera.main!.pixelHeight / 1080f;
             Handles.color = color;
         
