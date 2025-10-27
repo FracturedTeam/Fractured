@@ -7,7 +7,7 @@ namespace _Project.Scripts.ECS.BaseObjects
     {
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
-        private InteractableObject GetInteract  { get; set; }
+        public InteractableObject GetInteract  { get; set; }
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -62,6 +62,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract.OnInteract(isOn, glassColor);
         }
 
+        public void SetInteract(bool canInteract) {
+            CanBeInteractedWith = canInteract;
+        }
+        
         public void SetCollider(bool isOn)
         {
             if(objectCollider)

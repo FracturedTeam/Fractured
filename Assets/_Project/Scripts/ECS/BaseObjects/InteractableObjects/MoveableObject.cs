@@ -5,8 +5,12 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MoveableObject : InteractableObject
     {
-        private readonly bool isGrabbed;
-        
+        internal override void Start() {
+            base.Start();
+            
+            canBeGrab = true;
+        }
+
         internal override void OnInteract(ObjectInteraction interaction)
         {
             base.OnInteract(interaction);
@@ -34,13 +38,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
+        public override void ConsumeObject() {
+            DropObject();
+            
+        }
+
         private void GrabObject()
         {
-            if(BaseObject != null) 
-                return;
+            if(BaseObject == null) return;
             
             BaseObject.CanBeInteractedWith = false;
             BaseObject.SetCollider(false);
+            isGrabbed = true;
             transform.SetParent(PlayerController.Instance.transform);
             transform.localPosition = Vector3.zero + new Vector3(0, 2, 0);
             transform.localRotation = Quaternion.identity;
@@ -50,10 +59,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void DropObject()
         {
-            if(BaseObject != null) 
-                return;
+            if(BaseObject == null) return;
             
             BaseObject.CanBeInteractedWith = true;
+            isGrabbed = false;
             BaseObject.SetCollider(true);
             transform.localPosition = Vector3.zero - new Vector3(0, 0.5f, 0) +
                                       PlayerController.Instance.movement.previousMoveDir * 1.5f;

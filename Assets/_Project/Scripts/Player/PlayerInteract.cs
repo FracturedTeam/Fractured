@@ -22,7 +22,7 @@ namespace _Project.Scripts.Player {
         //Pre allocate space for collider (10 will be completely sufficient)
         private Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
-        private BaseObject currentObject;
+        private BaseObject currentGrabbedObject;
         
         private bool canPlayerInteract = false;
         public bool hasObject { get; private set; }
@@ -62,29 +62,36 @@ namespace _Project.Scripts.Player {
             else if(CanDrop())
                 DropObject();
             else if(CanContextualInteract())
-                potentialInteraction.OnInteract(ObjectInteraction.Contextual);
+                potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
         }
 
         private void GrabObject() {
-            SetInteract(false);
+            //SetInteract(false);
             hasObject = true;
-            currentObject = potentialInteraction;
-            potentialInteraction.OnInteract(ObjectInteraction.Grab);
+            currentGrabbedObject = potentialInteraction;
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Grab);
         }
 
         private void DropObject() {
-            SetInteract(true);
+            //SetInteract(true);
             hasObject = false;
-            currentObject = null;
-            potentialInteraction.OnInteract(ObjectInteraction.Drop);
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Drop);
+            currentGrabbedObject = null;
+        }
+
+        private void UseObject() {
+            //SetInteract(true);
+            hasObject = false;
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Use);
+            currentGrabbedObject = null;
         }
         
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
             
-            CanInteract = canPlayerInteract && !hasObject && size > 0;
+            CanInteract = canPlayerInteract && size > 0 && potentialInteraction.CanBeInteractedWith;
 
             HandleInteraction();
         }
@@ -108,16 +115,20 @@ namespace _Project.Scripts.Player {
             canPlayerInteract = interact;
         }
 
+        public InteractableObject GetInteractableObject() {
+            return currentGrabbedObject.GetInteract;
+        }
+        
         private bool CanGrab() {
-            return CanInteract && currentObject == null && potentialInteraction.CanBeInteractedWith;
+            return CanInteract && !hasObject && currentGrabbedObject == null && potentialInteraction.GetInteract.GetCanGrab();
         }
 
         private bool CanDrop() {
-            return hasObject && currentObject != null;
+            return hasObject && currentGrabbedObject != null;
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && !potentialInteraction.CanBeInteractedWith;
+            return CanInteract && !potentialInteraction.GetInteract.GetCanGrab();
         }
     }
 }
