@@ -30,6 +30,5 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
             Debug.Log("[PlayerInteract] Reset object");
         }
-        
     }
 }
