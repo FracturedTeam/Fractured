@@ -15,8 +15,8 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Ground Settings")] 
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] Transform feetPosition;
-    [SerializeField] Vector3 feetSize;
+    [SerializeField] public Transform feetPosition;
+    [SerializeField] public Vector3 feetSize;
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
@@ -258,12 +258,4 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     #endregion
-    
-    private void OnDrawGizmos() {
-        //Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        
-        //Draw la box de détection des pieds
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(feetPosition.position, feetSize);
-    }
 }

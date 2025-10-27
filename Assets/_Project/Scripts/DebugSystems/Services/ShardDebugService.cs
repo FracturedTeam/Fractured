@@ -2,7 +2,7 @@ using _Project.Scripts.GameServices.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
-    public class ShardDebugService : IDebugSystem, IDebugGUI{
+    public class ShardDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
 
         private readonly ShardService shardService;
         private readonly DebugUIState debugUIState;
@@ -53,8 +53,17 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.EndVertical();
         }
+        public void DrawDebugGizmos() {
+            if(!debugUIState.IsVisible("Shard")) return;
+            
+            Gizmos.color = Color.cornflowerBlue;
+            foreach (var interactable in shardService.interactables) {
+                Gizmos.DrawSphere(interactable.transform.position, 1f);
+            }
+        }
         
         public void Dispose() {
         }
+
     }
 }

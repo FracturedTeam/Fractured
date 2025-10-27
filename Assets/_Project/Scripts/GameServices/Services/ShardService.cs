@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
-        private List<InteractableObject> interactables = new List<InteractableObject>();
-        private List<Glass> shards = new List<Glass>();
+        public List<InteractableObject> interactables { get; private set; }
+        private List<Glass> shards;
         
         private readonly List<InteractableObject> shardsInteractable = new List<InteractableObject>();
         
         public void Initialize() { //Initialize the service
+            interactables = new List<InteractableObject>();
+            shards = new List<Glass>();
             UpdateInteractableObjects();
         }
 

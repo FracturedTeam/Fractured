@@ -13,9 +13,9 @@ namespace _Project.Scripts.Player {
     
     public class PlayerInteract : MonoBehaviour {
         private InputsBrain inputsBrain;
-        
-        [SerializeField] private Transform interactCenterZone;
-        [SerializeField] private Vector3 interactZoneSize;
+
+        [SerializeField] public Transform interactCenterZone;
+        [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
         
         //Pre allocate space for collider (10 will be completely sufficient)
@@ -118,13 +118,5 @@ namespace _Project.Scripts.Player {
         private bool CanContextualInteract() {
             return CanInteract && !potentialInteraction.canBeGrabbed;
         }
-        
-        private void OnDrawGizmos() {
-            Gizmos.color = Color.gold;
-            Gizmos.matrix = Matrix4x4.TRS(interactCenterZone.position, transform.rotation, interactZoneSize);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
-            //Gizmos.DrawWireCube(interactCenterZone.position, interactZoneSize);
-        }
-        
     }
 }

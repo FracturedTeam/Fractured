@@ -2,7 +2,7 @@ using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
-    public class PlayerDebugService : IDebugSystem, IDebugGUI {
+    public class PlayerDebugService : IDebugSystem, IDebugGUI, IDebugGizmos {
 
         private readonly PlayerController player;
         private readonly DebugUIState debugUIState;
@@ -66,7 +66,28 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.EndVertical();
         }
         
+        public void DrawDebugGizmos() {
+            if(!debugUIState.IsVisible("Player")) return;
+            
+            //Draw player collider
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(player.transform.position + Vector3.down / 2, player.transform.lossyScale.x / 2);
+            Gizmos.DrawSphere(player.transform.position + Vector3.up / 2, player.transform.lossyScale.x / 2);
+            Gizmos.DrawSphere(player.transform.position, player.transform.lossyScale.x / 2);
+            
+            //Draw ground collider
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(player.movement.feetPosition.position, player.movement.feetSize);
+            
+            //Draw interact zone
+            Gizmos.color = Color.gold;
+            Gizmos.matrix = Matrix4x4.TRS(player.interact.interactCenterZone.position, player.transform.rotation, player.interact.interactZoneSize);
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+        }
+        
         public void Dispose() {
         }
+
+        
     }
 }
