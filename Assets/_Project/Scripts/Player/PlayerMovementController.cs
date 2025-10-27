@@ -15,8 +15,8 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Ground Settings")] 
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] Transform feetPosition;
-    [SerializeField] Vector3 feetSize;
+    [SerializeField] public Transform feetPosition;
+    [SerializeField] public Vector3 feetSize;
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
@@ -105,6 +105,8 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void MeshRotation() {
+        if(moveDir == Vector3.zero) return;
+        
         var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
         var targetRotation = Quaternion.Euler(0, angle, 0);
         mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
@@ -258,12 +260,4 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     #endregion
-    
-    private void OnDrawGizmos() {
-        //Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        
-        //Draw la box de détection des pieds
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(feetPosition.position, feetSize);
-    }
 }

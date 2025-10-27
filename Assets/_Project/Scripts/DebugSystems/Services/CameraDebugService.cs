@@ -1,15 +1,17 @@
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
-    public class ShardDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
+    public class CameraDebugService : IDebugSystem, IDebugGUI, IDebugGizmos {
 
-        private readonly ShardService shardService;
+        private readonly CinemachineBrain camera;
         private readonly DebugUIState debugUIState;
         
-        public ShardDebugService(ShardService shard, DebugUIState debugUI) {
-            shardService = shard;
+        public CameraDebugService(DebugUIState debugUI) {
             debugUIState = debugUI;
+            camera = PlayerController.Instance.cinemachineBrain;
         }
         
         public void Initialize() {
@@ -19,7 +21,7 @@ namespace _Project.Scripts.DebugSystems.Services {
         }
 
         public void DrawDebugGUI() {
-            if(!debugUIState.IsVisible("Shard")) return;
+            if(!debugUIState.IsVisible("Camera")) return;
             
             var headerStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Bold,
@@ -41,30 +43,20 @@ namespace _Project.Scripts.DebugSystems.Services {
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft
             };
-            
+
             GUILayout.BeginVertical("box");
-            GUILayout.Label("Shard Debug Service", headerStyle);
-            
-            GUILayout.Label("Shards", sectionStyle);
-            GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
-            
-            GUILayout.Label("Interactable", sectionStyle);
-            GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
-            
+            GUILayout.Label("Camera Debug Service", headerStyle);
+            GUILayout.Label("Cinemachine Brain", sectionStyle);
+            GUILayout.Label($"Current active camera : {camera.ActiveVirtualCamera.Name}", debugStyle);
+            GUILayout.Label($"Is camera switching : {camera.IsBlending}", debugStyle);
+            GUILayout.Label($"Camera blending time : {camera.DefaultBlend.BlendTime}", debugStyle);
             GUILayout.EndVertical();
         }
+
         public void DrawDebugGizmos() {
-            if(!debugUIState.IsVisible("Shard")) return;
-            
-            Gizmos.color = Color.cornflowerBlue;
-            Gizmos.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, Vector3.one);
-            foreach (var interactable in shardService.interactables) {
-                Gizmos.DrawWireSphere(interactable.transform.position, 1f);
-            }
         }
         
         public void Dispose() {
         }
-
     }
 }

@@ -1,4 +1,5 @@
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+using System;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems {
@@ -11,6 +12,10 @@ namespace _Project.Scripts.DebugSystems {
 
         private void Update() {
             debugSystem?.Tick();
+        }
+
+        private void OnDrawGizmos() {
+            debugSystem?.DrawDebugGizmos();
         }
 
         private void OnDestroy() {

@@ -24,6 +24,14 @@ namespace _Project.Scripts.DebugSystems {
             }
         }
 
+        public void DrawDebugGizmos() {
+            foreach (var debugSystem in debugSystems) {
+                if (debugSystem is IDebugGizmos debugGizmos) {
+                    debugGizmos.DrawDebugGizmos();
+                }
+            }
+        }
+        
         public void Dispose() {
             foreach (var debugSystem in debugSystems) {
                 debugSystem.Dispose();

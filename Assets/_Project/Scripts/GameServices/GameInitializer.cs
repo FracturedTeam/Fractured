@@ -4,6 +4,7 @@ using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 
@@ -54,6 +55,9 @@ namespace _Project.Scripts.GameServices {
             
             var shardDebugService = new ShardDebugService(shardService,  debugUIState);
             debugSystem.Register(shardDebugService);
+            
+            var cameraDebugService = new CameraDebugService(debugUIState);
+            debugSystem.Register(cameraDebugService);
 
             //Set the debug system
             debugSystemInitializer.debugSystem = debugSystem;
