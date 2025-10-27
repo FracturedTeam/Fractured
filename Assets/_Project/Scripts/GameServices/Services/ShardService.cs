@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
-        public List<InteractableObject> interactables { get; private set; }
+        public List<BaseObject> interactables { get; private set; }
         private List<Glass> shards;
         
-        private readonly List<InteractableObject> shardsInteractable = new List<InteractableObject>();
+        private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
         
         public void Initialize() { //Initialize the service
-            interactables = new List<InteractableObject>();
+            interactables = new List<BaseObject>();
             shards = new List<Glass>();
             UpdateInteractableObjects();
         }
@@ -27,7 +28,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(InteractableObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
@@ -50,9 +51,9 @@ namespace _Project.Scripts.GameServices.Services {
                 SetState(glassInteractable);
         }
 
-        private void SetState(InteractableObject glassInteractable) {
+        private void SetState(BaseObject glassBase) {
             foreach (var shard in shards) {
-                glassInteractable.OnShardInteract(shard.CheckCollision(glassInteractable.GetGlassInteract), shard.GetColor);
+                glassBase.OnShardInteract(shard.CheckCollision(glassBase.GetGlassInteract), shard.GetColor);
             }
         }
         

@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
@@ -38,7 +39,7 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Initialize();
         }
 
-        public void UpdatePuzzleRoom(InteractableObject[] _interactable,  Glass[] _shards) =>
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
         
         #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
@@ -66,7 +67,7 @@ namespace _Project.Scripts.GameServices {
         
         private void Start() {
             //Populate the glassShardService
-            var _interactables = FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
+            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
             shardService.PopulateService(_interactables,  _shards);
         }

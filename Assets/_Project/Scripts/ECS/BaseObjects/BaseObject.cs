@@ -1,14 +1,13 @@
 using _Project.Scripts.Enums;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-namespace _Project.Scripts.ECS.InteractableObjects
+namespace _Project.Scripts.ECS.BaseObjects
 {
-    public class InteractableObject : MonoBehaviour
+    public class BaseObject : MonoBehaviour
     {
         public bool GetGlass =>  GetGlassInteract != null;
-        public GlassInteractable.GlassInteractable GetGlassInteract { get; private set; }
-        private PlayerInteractable.PlayerInteractable GetPlayerInteract  { get; set; }
+        public GlassInteractable GetGlassInteract { get; private set; }
+        private InteractableObject GetInteract  { get; set; }
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -18,21 +17,21 @@ namespace _Project.Scripts.ECS.InteractableObjects
 
         internal virtual void Start()
         {
-            if(TryGetComponent(typeof(GlassInteractable.GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable.GlassInteractable;
+            if(TryGetComponent(typeof(GlassInteractable), out var g))
+                GetGlassInteract = g as GlassInteractable;
 
-            if(TryGetComponent(typeof(PlayerInteractable.PlayerInteractable), out var p))
-                GetPlayerInteract = p as PlayerInteractable.PlayerInteractable;
+            if(TryGetComponent(typeof(InteractableObject), out var p))
+                GetInteract = p as InteractableObject;
         
             if(TryGetComponent(typeof(MeshRenderer), out var m))
                 meshRenderer = m as MeshRenderer;
             else
-                Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain MeshRenderer component");
+                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
             if(TryGetComponent(typeof(Collider), out var c))
                 objectCollider = c as Collider;
             else
-                Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain Collider component");
+                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
             initialized = true;
         }
@@ -40,22 +39,22 @@ namespace _Project.Scripts.ECS.InteractableObjects
         public void Initialize() {
             if(initialized) return;
         
-            if(TryGetComponent(typeof(GlassInteractable.GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable.GlassInteractable;
+            if(TryGetComponent(typeof(GlassInteractable), out var g))
+                GetGlassInteract = g as GlassInteractable;
             else 
-                Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain GlassInteractable component");
+                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain GlassInteractable component");
         
             if(TryGetComponent(typeof(MeshRenderer), out var m))
                 meshRenderer = m as MeshRenderer;
             else
-                Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain MeshRenderer component");
+                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
             initialized = true;
         }
 
         internal void OnInteract(ObjectInteraction interaction)
         {
-           GetPlayerInteract.OnInteract(interaction);
+           GetInteract.OnInteract(interaction);
         }
 
         internal void OnShardInteract(bool isOn, ColorEnum glassColor)
@@ -74,6 +73,5 @@ namespace _Project.Scripts.ECS.InteractableObjects
             if(meshRenderer) 
                 meshRenderer.enabled = isOn;
         }
-
     }
 }

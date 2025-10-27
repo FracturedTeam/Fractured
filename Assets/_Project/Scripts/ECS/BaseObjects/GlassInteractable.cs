@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace _Project.Scripts.ECS.InteractableObjects.GlassInteractable
+namespace _Project.Scripts.ECS.BaseObjects
 {
     public class GlassInteractable : MonoBehaviour
     {
         public float GetRadius => radius2D;
         public ColorEnum color;
-        private InteractableObject interactableObject;
+        private BaseObject baseObject;
     
         [SerializeField] private Vector2 pos2D;
         [SerializeField] private float radius2D;
@@ -17,20 +17,20 @@ namespace _Project.Scripts.ECS.InteractableObjects.GlassInteractable
         {
             cam = Camera.main;
             
-            if(TryGetComponent(typeof(InteractableObject), out var component))
-                interactableObject = component as InteractableObject;
+            if(TryGetComponent(typeof(BaseObject), out var component))
+                baseObject = component as BaseObject;
         }
         
         internal void OnInteract(bool isOn, ColorEnum glassColor)
         {
-            if(!interactableObject)
+            if(!baseObject)
                 return;
 
             if (glassColor != color) 
                 return;
             
-            interactableObject.SetRenderer(isOn);
-            interactableObject.SetCollider(isOn);
+            baseObject.SetRenderer(isOn);
+            baseObject.SetCollider(isOn);
         }
     
         ///Draw The Gizmos of the collider, only in Editor

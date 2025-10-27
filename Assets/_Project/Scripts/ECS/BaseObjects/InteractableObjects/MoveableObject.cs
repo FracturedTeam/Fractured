@@ -2,8 +2,8 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS.InteractableObjects.PlayerInteractable {
-    public class MoveableObject : PlayerInteractable
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
+    public class MoveableObject : InteractableObject
     {
         private readonly bool isGrabbed;
         
@@ -15,7 +15,7 @@ namespace _Project.Scripts.ECS.InteractableObjects.PlayerInteractable {
             {
                 //Grab case
                 case ObjectInteraction.Grab:
-                    if (InteractableObject.CanBeInteractedWith)
+                    if (BaseObject.CanBeInteractedWith)
                         GrabObject();
                     else
                         Debug.LogWarning("[MoveableObject] Can't grab object!");
@@ -36,11 +36,11 @@ namespace _Project.Scripts.ECS.InteractableObjects.PlayerInteractable {
 
         private void GrabObject()
         {
-            if(InteractableObject != null) 
+            if(BaseObject != null) 
                 return;
             
-            InteractableObject.CanBeInteractedWith = false;
-            InteractableObject.SetCollider(false);
+            BaseObject.CanBeInteractedWith = false;
+            BaseObject.SetCollider(false);
             transform.SetParent(PlayerController.Instance.transform);
             transform.localPosition = Vector3.zero + new Vector3(0, 2, 0);
             transform.localRotation = Quaternion.identity;
@@ -50,11 +50,11 @@ namespace _Project.Scripts.ECS.InteractableObjects.PlayerInteractable {
 
         private void DropObject()
         {
-            if(InteractableObject != null) 
+            if(BaseObject != null) 
                 return;
             
-            InteractableObject.CanBeInteractedWith = true;
-            InteractableObject.SetCollider(true);
+            BaseObject.CanBeInteractedWith = true;
+            BaseObject.SetCollider(true);
             transform.localPosition = Vector3.zero - new Vector3(0, 0.5f, 0) +
                                       PlayerController.Instance.movement.previousMoveDir * 1.5f;
             transform.localRotation = Quaternion.identity;

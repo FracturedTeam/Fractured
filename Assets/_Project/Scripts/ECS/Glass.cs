@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
-using _Project.Scripts.ECS.InteractableObjects.GlassInteractable;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.ECS
 {
-    public class Glass : MonoBehaviour, IPointerDownHandler
+    public class Glass : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public ColorEnum GetColor => color2D;
     
@@ -33,8 +33,12 @@ namespace _Project.Scripts.ECS
 
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
-            print("MouseDown");
-           isHeld = !isHeld;
+           isHeld = true;
+        }
+        
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            isHeld = false;
         }
     
         public bool CheckCollision(GlassInteractable block)
@@ -67,6 +71,7 @@ namespace _Project.Scripts.ECS
             public Vector2 pos;
             public float radius;
         }
+        
     }
 
     ///Show The colliders 2d/3d of the glass shard

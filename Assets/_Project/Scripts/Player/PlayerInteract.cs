@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
@@ -20,8 +21,8 @@ namespace _Project.Scripts.Player {
         
         //Pre allocate space for collider (10 will be completely sufficient)
         private Collider[] results = new Collider[10];
-        private InteractableObject potentialInteraction;
-        private InteractableObject currentObject;
+        private BaseObject potentialInteraction;
+        private BaseObject currentObject;
         
         private bool canPlayerInteract = false;
         public bool hasObject { get; private set; }
@@ -99,7 +100,7 @@ namespace _Project.Scripts.Player {
                 
             }
             else { // No need for logic, just get the only object we detect
-                potentialInteraction = results[0].GetComponent<InteractableObject>();
+                potentialInteraction = results[0].GetComponent<BaseObject>();
             }
         }
         
