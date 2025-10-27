@@ -108,7 +108,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanGrab() {
-            return CanInteract && currentObject == null && potentialInteraction.canBeGrabbed;
+            return CanInteract && currentObject == null && potentialInteraction.CanBeInteractedWith;
         }
 
         private bool CanDrop() {
@@ -116,7 +116,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && !potentialInteraction.canBeGrabbed;
+            return CanInteract && !potentialInteraction.CanBeInteractedWith;
         }
         
         private void OnDrawGizmos() {

@@ -6,19 +6,22 @@ namespace _Project.Scripts.ECS.InteractableObjects
     public class InteractableObject : MonoBehaviour
     {
         public bool GetGlass =>  GetGlassInteract != null;
-        public GlassInteractable GetGlassInteract { get; private set; }
+        public GlassInteractable.GlassInteractable GetGlassInteract { get; private set; }
+        private PlayerInteractable.PlayerInteractable GetPlayerInteract  { get; set; }
+        
         private MeshRenderer meshRenderer;
-        internal Collider objectCollider;
-    
-        bool Initialized = false;
-        internal bool canBeGrabbed = false;
+        private Collider objectCollider;
+
+        private bool initialized = false;
+        internal bool CanBeInteractedWith { get; set;}
 
         internal virtual void Start()
         {
-            if(TryGetComponent(typeof(GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable;
-            else 
-                Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain GlassInteractable component");
+            if(TryGetComponent(typeof(GlassInteractable.GlassInteractable), out var g))
+                GetGlassInteract = g as GlassInteractable.GlassInteractable;
+
+            if(TryGetComponent(typeof(PlayerInteractable.PlayerInteractable), out var p))
+                GetPlayerInteract = p as PlayerInteractable.PlayerInteractable;
         
             if(TryGetComponent(typeof(MeshRenderer), out var m))
                 meshRenderer = m as MeshRenderer;
@@ -30,14 +33,14 @@ namespace _Project.Scripts.ECS.InteractableObjects
             else
                 Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain Collider component");
         
-            Initialized = true;
+            initialized = true;
         }
 
         public void Initialize() {
-            if(Initialized) return;
+            if(initialized) return;
         
-            if(TryGetComponent(typeof(GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable;
+            if(TryGetComponent(typeof(GlassInteractable.GlassInteractable), out var g))
+                GetGlassInteract = g as GlassInteractable.GlassInteractable;
             else 
                 Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain GlassInteractable component");
         
@@ -46,18 +49,27 @@ namespace _Project.Scripts.ECS.InteractableObjects
             else
                 Debug.LogError($"[InteractableObject] {nameof(InteractableObject)} does not contain MeshRenderer component");
         
-            Initialized = true;
+            initialized = true;
         }
 
-        internal virtual void OnInteract(ObjectInteraction interaction)
+        internal void OnInteract(ObjectInteraction interaction)
         {
-            //Insert here interaction with the player
+           GetPlayerInteract.OnInteract(interaction);
         }
 
-        internal virtual void OnShardInteract(bool isOn, ColorEnum glassColor)
+        internal void OnShardInteract(bool isOn, ColorEnum glassColor)
+        {  
+            GetGlassInteract.OnInteract(isOn, glassColor);
+        }
+
+        public void SetCollider(bool isOn)
         {
-            //Insert here interaction with the glass
-            meshRenderer.enabled = isOn && glassColor == GetGlassInteract.color;
+            objectCollider.enabled = isOn;
+        }
+        
+        public void SetRenderer(bool isOn)
+        {
+            meshRenderer.enabled = isOn;
         }
     }
 }
