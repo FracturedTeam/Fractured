@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.InteractableObjects;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
@@ -55,5 +57,8 @@ namespace _Project.Scripts.GameServices.Services {
         public void Dispose() {
             shardsInteractable.Clear();
         }
+        
+        public int ShardCount => shards.Count;
+        public int InteractableCount => interactables.Count;
     }
 }

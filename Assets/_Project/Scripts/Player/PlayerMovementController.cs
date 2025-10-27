@@ -6,45 +6,53 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     private InputsBrain inputsBrain;
-    Rigidbody rb;
+    private Rigidbody rb;
 
-    [SerializeField] PlayerConfiguration playerConfig;
+    [SerializeField] public PlayerConfiguration playerConfig;
 
+    [Header("Mesh")] 
+    [SerializeField] Transform mesh;
+    
     [Header("Ground Settings")] 
-    public LayerMask groundLayer;
-    public Transform feetPosition;
-    public Vector3 feetSize;
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] Transform feetPosition;
+    [SerializeField] Vector3 feetSize;
     
     [Header("Camera Settings")]
-    public Camera cam;
+    [SerializeField] Camera cam;
 
 
-    private float currentMaxSpeed;
-    private float currentSpeed;
+    public float currentMaxSpeed { get; private set; }
+    public float currentSpeed { get; private set; }
     
-    private float currentFallSpeed;
+    public float currentFallSpeed { get; private set; }
     private float currentTimeToFall;
     
     private float currentSlopeMult;
-    private float currentSlopeAngle;
+    public float currentSlopeAngle { get; private set; }
 
-    private float accelTime;
-    private float decelTime;
+    public float accelTime { get; private set; }
+    public float decelTime { get; private set; }
+
+    public float timeBeforeMoving { get; private set; }
+    private float timeBeforeMovingReset;
     
     private Vector3 moveDir;//Inputs joueur de direction
-    private Vector3 previousMoveDir;//Keep last inputs joueur de direction
+    public Vector3 previousMoveDir { get; private set; }//Keep last inputs joueur de direction
     
     private Vector3 slopeMoveDir;//Si le joueur est sur une slope
     private Vector3 forwardDir, rightDir;//Par rapport à la caméra
     
     private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
-    
-    private void Awake() {
+
+    public void Awake() {
+        
+        //Get every component needed
         if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
         else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
         if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
-        else Debug.LogWarning("[PlayerController] No RigidBody found");
+        else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -86,6 +94,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     public void HandleUpdate() {
+        MeshRotation();
         CheckMethods();
         UpdateDrag();
         
@@ -95,12 +104,19 @@ public class PlayerMovementController : MonoBehaviour
             UpdateCameraDir();
     }
 
+    private void MeshRotation() {
+        var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
+        var targetRotation = Quaternion.Euler(0, angle, 0);
+        mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
+    }
+
     private void CheckMethods() {
         slopeMoveDir = Vector3.ProjectOnPlane(previousMoveDir, slopeHit.normal);
         
         if(moveDir != Vector3.zero)
             previousMoveDir = moveDir;
         
+        HandleTimeBeforeMoving();
         HandleAcceleration();
         HandlingSlope();
 
@@ -115,25 +131,36 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    private void HandleTimeBeforeMoving() {
+        //Handling player time before moving when he start to press a move key
+        timeBeforeMoving = moveDir.magnitude > 0 ? 
+            timeBeforeMoving += Time.deltaTime : 
+            timeBeforeMovingReset <= 0 ?
+                timeBeforeMoving -= Time.deltaTime : 
+                timeBeforeMoving = timeBeforeMoving;
+
+        if (rb.linearVelocity == Vector3.zero && moveDir == Vector3.zero && timeBeforeMovingReset <= 0)
+            timeBeforeMoving = 0;
+        
+        if(moveDir == Vector3.zero)
+            timeBeforeMovingReset -= Time.deltaTime;
+
+        if (timeBeforeMoving >= playerConfig.timeBeforeMoving && moveDir != Vector3.zero)
+            timeBeforeMovingReset = playerConfig.timeBeforeMovingReset;
+        
+        timeBeforeMoving = Mathf.Clamp(timeBeforeMoving, 0, playerConfig.timeBeforeMoving);
+    }
+
     private void HandleAcceleration() {
-        if(decelTime < 0)
-            decelTime = 0;
-        else if(decelTime > playerConfig.decelTime)
-            decelTime = playerConfig.decelTime;
-        
-        if(accelTime < 0)
-            accelTime = 0;
-        else if(accelTime > playerConfig.accelTime)
-            accelTime = playerConfig.accelTime;
-        
-        if (moveDir.magnitude > 0) {
+        if (moveDir.magnitude > 0 && timeBeforeMoving >= playerConfig.timeBeforeMoving) {
             accelTime += Time.deltaTime;
             decelTime -= Time.deltaTime;
             
             if(currentSpeed >= currentMaxSpeed - 0.1f)
                 decelTime = 0;
             
-            currentSpeed = Mathf.Lerp(0, currentMaxSpeed, accelTime / playerConfig.accelTime);
+            currentSpeed = Mathf.Lerp(0, currentMaxSpeed, playerConfig.accelCurve.Evaluate(accelTime / playerConfig.accelTime));
+            
         }
         else {
             decelTime += Time.deltaTime;
@@ -142,8 +169,11 @@ public class PlayerMovementController : MonoBehaviour
             if(currentSpeed <= 0.1f)
                 accelTime = 0;
             
-            currentSpeed = Mathf.Lerp(currentMaxSpeed, 0, decelTime / playerConfig.decelTime);
+            currentSpeed = Mathf.Lerp(currentMaxSpeed, 0, playerConfig.decelCurve.Evaluate(decelTime / playerConfig.decelTime));
         }
+        
+        decelTime = Mathf.Clamp(decelTime, 0, playerConfig.decelTime);
+        accelTime = Mathf.Clamp(accelTime, 0, playerConfig.accelTime);
     }
 
     private void HandlingSlope() {
@@ -190,6 +220,10 @@ public class PlayerMovementController : MonoBehaviour
     public void UnfreezeController() {
         rb.isKinematic = false;
     }
+
+    internal bool IsPlayerFrozen() {
+        return rb.isKinematic;
+    }
     
     #region Boolean
     
@@ -201,7 +235,7 @@ public class PlayerMovementController : MonoBehaviour
         return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && angle <= playerConfig.maxSlopeAngle;
     }
 
-    private bool IsOnSlope() {
+    public bool IsOnSlope() {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, Mathf.Infinity, groundLayer)) {
             if (slopeHit.normal != Vector3.up) {
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);

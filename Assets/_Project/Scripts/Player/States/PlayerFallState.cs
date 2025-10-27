@@ -8,6 +8,7 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
+            player.interact.SetInteract(false);
         }
 
         public override void OnUpdate() {
