@@ -6,39 +6,65 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
 {
-    public class Glass : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class Glass : MonoBehaviour
     {
         public ColorEnum GetColor => color2D;
     
         [SerializeField] private ColorEnum color2D;
         [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
         private Camera cam;
+        private Image image;
         private float GetWindowHeight => cam.pixelHeight/1080f ;
         
         private bool isHeld;
+        private bool isActivated;
+        
 
         private void Start()
         {
             cam = Camera.main;
+            
+            if (TryGetComponent(typeof(Image), out var img)) 
+                image = img as Image;
         }
 
         private void Update()
         {
             if(isHeld)
                 transform.position = Mouse.current.position.ReadValue();
+
+            InputsProcessing();
         }
 
-        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+        private void InputsProcessing()
         {
-           isHeld = true;
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+                ChangeHoldingState(true);
+            else if (Mouse.current.leftButton.wasReleasedThisFrame)
+                ChangeHoldingState(false);
+            else if (Mouse.current.rightButton.wasPressedThisFrame)
+                ChangeStateActivation(!isActivated);
         }
-        
-        public void OnPointerUp(PointerEventData eventData)
+
+        private void ChangeHoldingState(bool isOn)
         {
-            isHeld = false;
+            isHeld = isOn;
+            if (isOn)
+                ChangeStateActivation(false);
+        }
+        private void ChangeStateActivation(bool isOn)
+        {
+            isActivated = isOn;
+            
+            if(!image)
+                return;
+            
+            //Will be replaced by the shader
+            image.color = isOn ? new Color(1,1,1,0.5f) : Color.grey ;
         }
     
         public bool CheckCollision(GlassInteractable block)
@@ -56,6 +82,9 @@ namespace _Project.Scripts.ECS
         ///Get if the 3D object is colliding with any the colliders 2D
         private bool IsColliding(GlassInteractable block, InternColliders internCollider)
         {
+            if(!cam || !isActivated)
+                return false;
+            
             var screenPos = cam.WorldToScreenPoint(block.transform.position);
             var ab = screenPos - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
         
@@ -71,7 +100,6 @@ namespace _Project.Scripts.ECS
             public Vector2 pos;
             public float radius;
         }
-        
     }
 
     ///Show The colliders 2d/3d of the glass shard
