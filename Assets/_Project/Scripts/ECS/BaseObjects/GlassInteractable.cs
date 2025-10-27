@@ -23,7 +23,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(TryGetComponent(typeof(BaseObject), out var component))
                 baseObject = component as BaseObject;
-            else return;
+            else 
+                return;
             
             baseObject!.SetRenderer(false);
             baseObject!.SetCollider(false);
@@ -49,9 +50,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                 default:
                     throw new ArgumentOutOfRangeException(nameof(glassColor), glassColor, null);
             }
-
-            print("red" + underRed);
-            print("blue" + underBlue);
 
             if (color == ColorEnum.Both )
             {
