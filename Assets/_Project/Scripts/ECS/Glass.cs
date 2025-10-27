@@ -89,7 +89,7 @@ namespace _Project.Scripts.ECS
         {
             foreach (var internColliders in colliders)
             {
-                if (!IsColliding(block, internColliders)) 
+                if (!IsColliding(cam.WorldToScreenPoint(block.transform.position), internColliders, block.GetRadius))
                     continue;
 
                 return true;
@@ -97,16 +97,15 @@ namespace _Project.Scripts.ECS
             return false;
         }
 
-        ///Get if the 3D object is colliding with any the colliders 2D
-        private bool IsColliding(GlassInteractable block, InternColliders internCollider)
+        ///Get if an object is colliding with any the colliders 2D
+        private bool IsColliding(Vector3 position, InternColliders internCollider, float radius = 1)
         {
             if(!cam || !isActivated)
                 return false;
             
-            var screenPos = cam.WorldToScreenPoint(block.transform.position);
-            var ab = screenPos - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
+            var ab = position - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
         
-            var radiusSum = internCollider.radius * GetWindowHeight + block.GetRadius;
+            var radiusSum = internCollider.radius * GetWindowHeight + radius;
             var isColliding = ab.magnitude <= radiusSum; 
         
             return isColliding;
