@@ -47,6 +47,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Shards", sectionStyle);
             GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
+            GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
