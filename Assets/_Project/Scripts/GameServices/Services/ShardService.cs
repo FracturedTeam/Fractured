@@ -10,10 +10,13 @@ namespace _Project.Scripts.GameServices.Services {
         private List<Glass> shards;
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
+
+        public bool PlayerInEditableArea {get; private set;}
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
+            PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
 
@@ -55,6 +58,10 @@ namespace _Project.Scripts.GameServices.Services {
             foreach (var shard in shards) {
                 glassBase.OnShardInteract(shard.CheckCollision(glassBase.GetGlassInteract), shard.GetColor);
             }
+        }
+
+        public void SetEditableArea(bool inArea) {
+            PlayerInEditableArea = inArea;
         }
         
         public void Dispose() {

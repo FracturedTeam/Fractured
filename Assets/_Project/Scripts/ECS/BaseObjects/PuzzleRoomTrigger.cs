@@ -12,7 +12,7 @@ namespace _Project.Scripts.ECS.InteractableObjects {
         public Glass[] shards;
 
         void OnTriggerEnter(Collider other) {
-            if (other.gameObject.CompareTag("Player")) {
+            if (other.CompareTag("Player")) {
                 GameInitializer.Instance.UpdatePuzzleRoom(interactable, shards);
             }
         }
