@@ -10,6 +10,7 @@ namespace _Project.Scripts.DebugSystems {
             inputs.Debug.Enable();
             inputs.Debug.TogglePlayer.performed += _ => debugUIState.Toggle("Player");
             inputs.Debug.ToggleShard.performed += _ => debugUIState.Toggle("Shard");
+            inputs.Debug.ToggleCamera.performed += _ => debugUIState.Toggle("Camera");
         }
         
         public void Initialize() {

@@ -105,6 +105,8 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void MeshRotation() {
+        if(moveDir == Vector3.zero) return;
+        
         var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
         var targetRotation = Quaternion.Euler(0, angle, 0);
         mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
