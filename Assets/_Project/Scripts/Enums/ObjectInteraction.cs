@@ -3,8 +3,7 @@ namespace _Project.Scripts.Enums {
         None,
         Grab,
         Drop,
-        Use,
+        Reset,
         Contextual,
-        ShardObtention
     }
 }

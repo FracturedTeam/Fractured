@@ -1,51 +1,37 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.Interfaces;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects {
     [RequireComponent(typeof(BaseObject))]
-    public class InteractableObject : MonoBehaviour
-    {
-        internal Transform OriginalParent;
-        internal BaseObject BaseObject;
+    public class InteractableObject : MonoBehaviour, IInteractable {
+        
+        private BaseObject baseObject;
 
-        protected bool canBeGrab = false;
-        protected bool isGrabbed = false;
-
-        internal virtual void Start()
-        {
-            OriginalParent = transform.parent;
-            
+        protected virtual void Start() {
             if(TryGetComponent(typeof(BaseObject), out var component))
-                BaseObject = component as BaseObject;
+                baseObject = component as BaseObject;
             
-            BaseObject?.SetInteract(true);
+            baseObject?.SetInteract(true);
         }
 
-        internal virtual void OnInteract(ObjectInteraction interaction)
-        {
-            if(!BaseObject) 
+        public void Initialize() {
+        }
+
+        public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (!baseObject) {
+                Debug.LogError("[InteractableObject] No base object found");
                 return;
-        }
-
-        public virtual void Use() {
-            
+            }
         }
         
-        internal virtual void ResetObject()
-        {
+        public void ResetObject() {
             //Todo implémenter le reset correctement
-            BaseObject.CanBeInteractedWith = true;
-            BaseObject.SetCollider(true);
-
-            Debug.Log("[PlayerInteract] Reset object");
+            Debug.Log("[InteractableObject] Reset object");
         }
 
-        public virtual void ConsumeObject() {
+        public BaseObject GetBaseObject() {
+            throw new System.NotImplementedException();
         }
-
-        public bool GetCanGrab() {
-            return canBeGrab;
-        }
-        
     }
 }
