@@ -1,35 +1,37 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.Interfaces;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects {
-    public class InteractableObject : MonoBehaviour
-    {
-        internal Transform OriginalParent;
-        internal BaseObject BaseObject;
+    [RequireComponent(typeof(BaseObject))]
+    public class InteractableObject : MonoBehaviour, IInteractable {
+        
+        private BaseObject baseObject;
 
-        internal virtual void Start()
-        {
-            OriginalParent = transform.parent;
-            
+        protected virtual void Start() {
             if(TryGetComponent(typeof(BaseObject), out var component))
-                BaseObject = component as BaseObject;
-        }
-
-        internal virtual void OnInteract(ObjectInteraction interaction)
-        {
-            if(!BaseObject) 
-                return;
-        }
-
-        internal virtual void ResetObject()
-        {
-            //Todo implémenter le reset correctement
-            BaseObject.CanBeInteractedWith = true;
+                baseObject = component as BaseObject;
             
-            BaseObject.SetCollider(true);
+            baseObject?.SetInteract(true);
+        }
 
-            Debug.Log("[PlayerInteract] Reset object");
+        public void Initialize() {
+        }
+
+        public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (!baseObject) {
+                Debug.LogError("[InteractableObject] No base object found");
+                return;
+            }
         }
         
+        public void ResetObject() {
+            //Todo implémenter le reset correctement
+            Debug.Log("[InteractableObject] Reset object");
+        }
+
+        public BaseObject GetBaseObject() {
+            throw new System.NotImplementedException();
+        }
     }
 }

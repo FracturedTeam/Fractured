@@ -1,4 +1,5 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.Interfaces;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -7,33 +8,16 @@ namespace _Project.Scripts.ECS.BaseObjects
     {
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
-        private InteractableObject GetInteract  { get; set; }
+        public IInteractable GetInteract  { get; set; }
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
 
         private bool initialized = false;
-        internal bool CanBeInteractedWith { get; set;}
+        private bool canBeInteractedWith;
 
-        internal virtual void Start()
-        {
-            if(TryGetComponent(typeof(GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable;
-
-            if(TryGetComponent(typeof(InteractableObject), out var p))
-                GetInteract = p as InteractableObject;
-        
-            if(TryGetComponent(typeof(MeshRenderer), out var m))
-                meshRenderer = m as MeshRenderer;
-            else
-                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
-        
-            if(TryGetComponent(typeof(Collider), out var c))
-                objectCollider = c as Collider;
-            else
-                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
-        
-            initialized = true;
+        private void Awake() {
+            Initialize();
         }
 
         public void Initialize() {
@@ -41,37 +25,44 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             if(TryGetComponent(typeof(GlassInteractable), out var g))
                 GetGlassInteract = g as GlassInteractable;
-            else 
-                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain GlassInteractable component");
+            if(TryGetComponent(typeof(IInteractable), out var p))
+                GetInteract = p as IInteractable;
+            
+            if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
+            else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
-            if(TryGetComponent(typeof(MeshRenderer), out var m))
-                meshRenderer = m as MeshRenderer;
-            else
-                Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
+            if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
+            else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
+            gameObject.layer = LayerMask.NameToLayer("Interactable");
+            
             initialized = true;
         }
 
-        internal void OnInteract(ObjectInteraction interaction)
-        {
-           GetInteract.OnInteract(interaction);
+        public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {
+           GetInteract.OnInteract(interaction, interactable);
         }
 
-        internal void OnShardInteract(bool isOn, ColorEnum glassColor)
-        {  
+        public void OnShardInteract(bool isOn, ColorEnum glassColor) {  
             GetGlassInteract.OnInteract(isOn, glassColor);
         }
 
-        public void SetCollider(bool isOn)
-        {
-            if(objectCollider)
-                objectCollider.enabled = isOn;
+        public void SetInteract(bool canInteract) {
+            canBeInteractedWith = canInteract;
         }
         
-        public void SetRenderer(bool isOn)
-        {
-            if(meshRenderer) 
-                meshRenderer.enabled = isOn;
+        public void SetCollider(bool isOn) {
+            if (!objectCollider) return;
+            objectCollider.enabled = isOn;
+        }
+        
+        public void SetRenderer(bool isOn) {
+            if(!meshRenderer) return;
+            meshRenderer.enabled = isOn;
+        }
+
+        public bool CanBeInteractedWith() {
+            return canBeInteractedWith;
         }
     }
 }
