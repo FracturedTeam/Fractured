@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,6 +23,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
+        
+        private Tweener tweener;
         
         protected void Start() {
             Initialize();
@@ -116,8 +119,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isGrabbed = true;
             
             transform.SetParent(PlayerController.Instance.transform);
-            transform.localPosition = Vector3.zero + new Vector3(0, 2, 0);
-            transform.localRotation = Quaternion.identity;
+            TweenObjectOnPlayer();
             
             startLocation.GetBaseObject().SetInteract(true);
             startLocation.GetBaseObject().SetCollider(true);
@@ -136,10 +138,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 return;
             }
 
-            if (otherDrop == startLocation) { //Player can still intereact with the object
+            if (otherDrop == startLocation) {
                 transform.SetParent(originalParent);
-                transform.position = startLocation.transform.position;
-                transform.rotation = startLocation.transform.rotation;
+                TweenObjectDrop(startLocation.transform);
                 
                 baseObject.SetInteract(true);
                 baseObject.SetCollider(true);
@@ -148,10 +149,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 Debug.Log("[MoveableObject] Drop object StartLocation");
             }
-            else if (otherDrop == resolveLocation) { //Player can't interact anymore with the object
+            else if (otherDrop == resolveLocation) {
                 transform.SetParent(originalParent);
-                transform.position = resolveLocation.transform.position;
-                transform.rotation = resolveLocation.transform.rotation;
+                TweenObjectDrop(resolveLocation.transform);
                 
                 baseObject.SetInteract(false);
                 baseObject.SetCollider(false);
@@ -171,6 +171,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        void TweenObjectOnPlayer() {
+            tweener.Kill();
+            tweener = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
+            tweener = transform.DOLocalRotate(Vector3.zero, 0.5f);
+        }
+        
+        private void TweenObjectDrop(Transform t) {
+            tweener.Kill();
+            tweener = transform.DOMove(t.position, 0.5f);
+            tweener = transform.DORotate(t.eulerAngles, 0.5f);
+        }
+        
         private void SetPositionOnStart() {
             transform.position = startLocation.transform.position;
             transform.rotation = startLocation.transform.rotation;

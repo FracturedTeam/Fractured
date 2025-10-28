@@ -72,6 +72,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void SetInteract(bool canInteract) {
             baseObject.SetInteract(canInteract);
         }
+
+        public MoveableObject GetKeyObject() {
+            return keyObject;
+        }
     }
 
 }

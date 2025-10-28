@@ -86,7 +86,7 @@ namespace _Project.Scripts.Player {
         
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
-            CanInteract = canPlayerInteract && size > 0 && potentialInteraction.CanBeInteractedWith();
+            CanPlayerInteract();
 
             HandleInteraction();
         }
@@ -120,6 +120,19 @@ namespace _Project.Scripts.Player {
                     potentialInteraction = results[0].GetComponent<BaseObject>();
                     break;
             }
+        }
+
+        void CanPlayerInteract() {
+            if(potentialInteraction == null)
+                CanInteract = false;
+            else if (potentialInteraction.CanBeInteractedWith()) {
+                if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
+                    CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
+                else CanInteract = canPlayerInteract && size > 0;
+            }
+            else 
+                CanInteract = false;
+            
         }
         
         public void SetInteract(bool interact) {

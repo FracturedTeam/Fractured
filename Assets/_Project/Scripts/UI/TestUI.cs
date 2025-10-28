@@ -22,11 +22,8 @@ namespace _Project.Scripts.UI {
 
         void ShowInteraction(InteractEvent e) {
             tweener.Kill();
-            
-            if (e.showInteraction)
-                tweener = interactionUI.DOFade(1f, 0.25f);
-            else 
-                tweener = interactionUI.DOFade(0f, 0.25f);
+
+            tweener = interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
         }
     }
 }
