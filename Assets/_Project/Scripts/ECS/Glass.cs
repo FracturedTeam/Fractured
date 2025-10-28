@@ -18,6 +18,7 @@ namespace _Project.Scripts.ECS
     
         [SerializeField] private ColorEnum color2D;
         [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
+        [SerializeField] private bool canEditAnywhere = false;
         private Camera cam;
         private Image image;
         private float GetWindowHeight => cam.pixelHeight/1080f ;
@@ -36,7 +37,7 @@ namespace _Project.Scripts.ECS
 
         private void Update()
         {
-            if(isHeld && GameInitializer.Instance.InEditableArea())
+            if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
                 transform.position = Mouse.current.position.ReadValue();
 
             InputsProcessing();
