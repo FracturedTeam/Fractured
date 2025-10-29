@@ -1,3 +1,5 @@
+using System;
+using _Project.Scripts.Enums;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -6,23 +8,26 @@ namespace _Project.Scripts.ECS.BaseObjects
     {
         public float GetRadius => radius2D;
         public ColorEnum color;
-        private BaseObject baseObject;
     
         [SerializeField] private Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
     
         private Camera cam; 
+        private BaseObject baseObject;
+        private bool underRed;
+        private bool underBlue;
         private void Start()
         {
             cam = Camera.main;
             
             if(TryGetComponent(typeof(BaseObject), out var component))
                 baseObject = component as BaseObject;
-            else return;
+            else 
+                baseObject = gameObject.AddComponent<BaseObject>();
             
-            baseObject!.SetRenderer(false);
-            baseObject!.SetCollider(false);
+            baseObject!.SetRenderer(true);
+            baseObject!.SetCollider(true);
         }
         
         internal void OnInteract(bool isOn, ColorEnum glassColor)
@@ -30,11 +35,34 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!baseObject)
                 return;
 
-            if (glassColor == color) 
+            switch (glassColor)
+            {
+                case ColorEnum.Red:
+                    underRed = isOn;
+                    break;
+                case ColorEnum.Blue:
+                    underBlue = isOn;
+                    break;
+                case ColorEnum.Both: 
+                    underRed = isOn; 
+                    underBlue = isOn;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(glassColor), glassColor, null);
+            }
+
+            if (color == ColorEnum.Both )
+            {
+                baseObject.SetRenderer(underRed && underBlue);
+                baseObject.SetCollider(underRed && underBlue);
+                return;
+            }
+            
+            if (glassColor != color) 
                 return;
             
-            baseObject.SetRenderer(isOn);
-            baseObject.SetCollider(isOn);
+            baseObject.SetRenderer(!isOn);
+            baseObject.SetCollider(!isOn);
         }
     
         ///Draw The Gizmos of the collider, only in Editor
@@ -43,7 +71,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!showColliders)
                 return;
       
-            Gizmos.color = color == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
+            Gizmos.color = color switch
+            {
+                ColorEnum.Blue => Color.dodgerBlue,
+                ColorEnum.Red => Color.crimson,
+                _ => Color.darkOrchid
+            };
             Gizmos.DrawSphere(pos2D, GetRadius);
         }
    

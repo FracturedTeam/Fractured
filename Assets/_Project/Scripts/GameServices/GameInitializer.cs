@@ -16,6 +16,7 @@ namespace _Project.Scripts.GameServices {
 
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
+        [SerializeField] private bool InitializeDebugger = true;
         #endif
         
         private new void Awake() {
@@ -40,6 +41,8 @@ namespace _Project.Scripts.GameServices {
         
         #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
         void InitializeDebugSystems() {
+            if(!InitializeDebugger) return;
+            
             var debugUIState = new DebugUIState();
             var debugSystem = new DebugSystem();
             
