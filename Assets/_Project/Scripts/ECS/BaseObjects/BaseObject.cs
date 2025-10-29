@@ -36,6 +36,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             gameObject.layer = LayerMask.NameToLayer("Interactable");
             
+            GetInteract?.Initialize();
+            GetGlassInteract?.Initialize();
+            
             initialized = true;
         }
 

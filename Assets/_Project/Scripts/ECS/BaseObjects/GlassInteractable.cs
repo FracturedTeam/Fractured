@@ -8,17 +8,20 @@ namespace _Project.Scripts.ECS.BaseObjects
     {
         public float GetRadius => radius2D;
         public ColorEnum color;
-    
+        private BaseObject baseObject;
+
+        [Header("Behaviour")] 
+        [Tooltip("If true, when the object is under a shard, it will transit into a new object that can be interacted with")]
+        [SerializeField] private bool swapObject = false;
+        
+        [Header("Debug on UI")]
         [SerializeField] private Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
-    
+        
         private Camera cam; 
-        private BaseObject baseObject;
-        private bool underRed;
-        private bool underBlue;
-        private void Start()
-        {
+        
+        public  void Initialize() {
             cam = Camera.main;
             
             if(TryGetComponent(typeof(BaseObject), out var component))
