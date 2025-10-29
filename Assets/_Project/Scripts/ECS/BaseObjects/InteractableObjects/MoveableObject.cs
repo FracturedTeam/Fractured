@@ -25,10 +25,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isGrabbed = false;
         
         private Tweener tweener;
-        
-        protected void Start() {
-            Initialize();
-        }
 
         public void Initialize() {
             if(TryGetComponent(typeof(BaseObject), out var component))
