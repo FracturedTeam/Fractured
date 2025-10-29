@@ -26,17 +26,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Tweener tweener;
 
+        private bool initialized = false;
+        
         public void Initialize() {
-            if(TryGetComponent(typeof(BaseObject), out var component))
-                baseObject = component as BaseObject;
-            else 
-                Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
-            baseObject?.SetInteract(true);
-            
-            if(startLocation == null)
-                Debug.LogWarning("[MoveableObject] StartLocation is null");
-            if(resolveLocation == null)
-                Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+            if (!initialized) {
+                if(TryGetComponent(typeof(BaseObject), out var component))
+                    baseObject = component as BaseObject;
+                else 
+                    Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
+                baseObject?.SetInteract(true);
+                
+                if(startLocation == null)
+                    Debug.LogWarning("[MoveableObject] StartLocation is null");
+                if(resolveLocation == null)
+                    Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+            }
+
+            initialized = true;
             
             SetPositionOnStart();
             
