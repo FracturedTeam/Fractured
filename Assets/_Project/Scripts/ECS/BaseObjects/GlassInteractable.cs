@@ -24,10 +24,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(TryGetComponent(typeof(BaseObject), out var component))
                 baseObject = component as BaseObject;
             else 
-                return;
+                baseObject = gameObject.AddComponent<BaseObject>();
             
-            baseObject!.SetRenderer(false);
-            baseObject!.SetCollider(false);
+            baseObject!.SetRenderer(true);
+            baseObject!.SetCollider(true);
         }
         
         internal void OnInteract(bool isOn, ColorEnum glassColor)
@@ -58,11 +58,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                 return;
             }
             
-            if (glassColor == color) 
+            if (glassColor != color) 
                 return;
             
-            baseObject.SetRenderer(isOn);
-            baseObject.SetCollider(isOn);
+            baseObject.SetRenderer(!isOn);
+            baseObject.SetCollider(!isOn);
         }
     
         ///Draw The Gizmos of the collider, only in Editor
