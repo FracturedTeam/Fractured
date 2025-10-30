@@ -3,11 +3,13 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
         private List<Glass> shards;
+        private Glass currentGlass;
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
@@ -46,6 +48,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void Tick() {
+            HandleShardMovement();
             UpdateGlassInteraction();
         }
 
@@ -53,13 +56,52 @@ namespace _Project.Scripts.GameServices.Services {
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
         }
-
+        
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards)
             {
-                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard.GetColor);
+                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard.GetColor, shard);
             }
         }
+        
+        ///Handles player input on the shards & grab priority
+        private void HandleShardMovement()
+        {
+            foreach (var shard in shards)
+            {
+                if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass)
+                {
+                    if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
+                        continue;
+                    
+                    currentGlass = shard;
+                    currentGlass.ChangeHoldingState(true);
+
+                    if (!shards.Contains(currentGlass)) 
+                        return;
+                    
+                    shards.Remove(currentGlass);
+                    shards.Insert(0, currentGlass);
+
+                    return;
+                }
+                if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass)
+                {
+                    currentGlass.ChangeHoldingState(false);
+                    currentGlass = null;
+                    return;
+                }
+                if (Mouse.current.rightButton.wasPressedThisFrame && !currentGlass)
+                {
+                    if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
+                        continue;
+                    
+                    shard.ChangeStateActivation(!shard.IsActivated);
+                    return;
+                }
+            }
+        }
+
 
         public void SetEditableArea(bool inArea) {
             PlayerInEditableArea = inArea;

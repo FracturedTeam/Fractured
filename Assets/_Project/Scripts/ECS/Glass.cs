@@ -19,12 +19,11 @@ namespace _Project.Scripts.ECS {
         private Camera mainCamera;
         private Image shardSprite;
         private PolygonCollider2D polygonCollider2D;
-        private float GetWindowHeight => mainCamera.pixelHeight/1080f ;
         private Vector2 mousePosition;
         
         
         private bool isHeld;
-        private bool isActivated;
+        internal bool IsActivated;
 
         private void Start() {
             mainCamera = Camera.main;
@@ -44,34 +43,18 @@ namespace _Project.Scripts.ECS {
             {
                 transform.position = Mouse.current.position.ReadValue();
             }
-            
-            InputsProcessing();
         }
-
-        private void InputsProcessing()
-        {
-            if(!polygonCollider2D.bounds.Contains(Mouse.current.position.ReadValue()))
-                return;
-            
-            mousePosition =  Mouse.current.position.ReadValue();
-                
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-                ChangeHoldingState(true);
-            else if (Mouse.current.leftButton.wasReleasedThisFrame)
-                ChangeHoldingState(false);
-            else if (Mouse.current.rightButton.wasPressedThisFrame)
-                ChangeStateActivation(!isActivated);
-        }
-
-        private void ChangeHoldingState(bool isOn)
+        
+        internal void ChangeHoldingState(bool isOn)
         {
             isHeld = isOn;
             if (isOn)
                 ChangeStateActivation(false);
         }
-        private void ChangeStateActivation(bool isOn)
+
+        internal void ChangeStateActivation(bool isOn)
         {
-            isActivated = isOn;
+            IsActivated = isOn;
             
             if(!shardSprite)
                 return;
@@ -81,9 +64,9 @@ namespace _Project.Scripts.ECS {
         }
 
         ///Get if an object is colliding with any the colliders 2D
-        internal bool IsColliding(Vector3 position)
+        internal bool IsColliding(Vector3 position, bool mouse = false)
         {
-            if(!mainCamera || !isActivated)
+            if(!mainCamera || (!IsActivated && !mouse))
                 return false;
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
