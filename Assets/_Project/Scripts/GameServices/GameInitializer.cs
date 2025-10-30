@@ -7,6 +7,7 @@ using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
@@ -56,7 +57,8 @@ namespace _Project.Scripts.GameServices {
             var shardDebugService = new ShardDebugService(shardService,  debugUIState);
             debugSystem.Register(shardDebugService);
             
-            var cameraDebugService = new CameraDebugService(debugUIState);
+            var cameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+            var cameraDebugService = new CameraDebugService(debugUIState, cameras);
             debugSystem.Register(cameraDebugService);
 
             //Set the debug system

@@ -6,12 +6,14 @@ using UnityEngine;
 namespace _Project.Scripts.DebugSystems.Services {
     public class CameraDebugService : IDebugSystem, IDebugGUI, IDebugGizmos {
 
-        private readonly CinemachineBrain camera;
+        private readonly CinemachineBrain currentCamera;
         private readonly DebugUIState debugUIState;
+        private readonly CinemachineCamera[] cameras;
         
-        public CameraDebugService(DebugUIState debugUI) {
+        public CameraDebugService(DebugUIState debugUI, CinemachineCamera[] cameras) {
             debugUIState = debugUI;
-            camera = PlayerController.Instance.cinemachineBrain;
+            currentCamera = PlayerController.Instance.cinemachineBrain;
+            this.cameras = cameras;
         }
         
         public void Initialize() {
@@ -35,7 +37,10 @@ namespace _Project.Scripts.DebugSystems.Services {
                 alignment = TextAnchor.MiddleLeft,
                 normal = {
                     textColor = Color.crimson
-                }
+                },
+                hover = {
+                    textColor = Color.crimson
+                },
             };
 
             var debugStyle = new GUIStyle(GUI.skin.label) {
@@ -44,12 +49,29 @@ namespace _Project.Scripts.DebugSystems.Services {
                 alignment = TextAnchor.MiddleLeft
             };
 
+            var buttonStyle = new GUIStyle(GUI.skin.label) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleLeft,
+                normal = {
+                textColor = Color.cornflowerBlue
+                }
+            };
+            
             GUILayout.BeginVertical("box");
             GUILayout.Label("Camera Debug Service", headerStyle);
             GUILayout.Label("Cinemachine Brain", sectionStyle);
-            GUILayout.Label($"Current active camera : {camera.ActiveVirtualCamera.Name}", debugStyle);
-            GUILayout.Label($"Is camera switching : {camera.IsBlending}", debugStyle);
-            GUILayout.Label($"Camera blending time : {camera.DefaultBlend.BlendTime}", debugStyle);
+            GUILayout.Label($"Current active camera : {currentCamera.ActiveVirtualCamera.Name}", debugStyle);
+            GUILayout.Label($"Is camera switching : {currentCamera.IsBlending}", debugStyle);
+            GUILayout.Label($"Camera blending time : {currentCamera.DefaultBlend.BlendTime}", debugStyle);
+            GUILayout.Label("All Cameras", sectionStyle);
+            foreach (var cam in cameras) {
+                if (!GUILayout.Button($"Camera : {cam.Name}", buttonStyle)) continue;
+                foreach (var c in cameras)
+                    c.Priority = 0;
+                
+                cam.Priority = 1;
+            }
             GUILayout.EndVertical();
         }
 
