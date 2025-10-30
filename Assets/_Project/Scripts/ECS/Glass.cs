@@ -22,6 +22,7 @@ namespace _Project.Scripts.ECS
         private Camera cam;
         private Image image;
         private float GetWindowHeight => cam.pixelHeight/1080f ;
+        private Vector2 mousePosition;
         
         private bool isHeld;
         private bool isActivated;
@@ -38,8 +39,10 @@ namespace _Project.Scripts.ECS
         private void Update()
         {
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
+            {
                 transform.position = Mouse.current.position.ReadValue();
-
+            }
+            
             InputsProcessing();
         }
 
@@ -61,6 +64,8 @@ namespace _Project.Scripts.ECS
             if(!isInZone)
                 return;
             
+            mousePosition =  Mouse.current.position.ReadValue();
+                
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 ChangeHoldingState(true);
             else if (Mouse.current.leftButton.wasReleasedThisFrame)
