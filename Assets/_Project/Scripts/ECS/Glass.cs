@@ -1,49 +1,48 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace _Project.Scripts.ECS {
-    public class Glass : MonoBehaviour {
+namespace _Project.Scripts.ECS
+{
+    public class Glass : MonoBehaviour
+    {
         public ColorEnum GetColor => color2D;
     
-        [Header("Settings")]
         [SerializeField] private ColorEnum color2D;
         [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
         [SerializeField] private bool canEditAnywhere = false;
-        
-        [Header("Sprites")]
-        [SerializeField] private Sprite blueActiveSprite;
-        [SerializeField] private Sprite redActiveSprite;
-        [SerializeField] private Sprite blueInactiveSprite;
-        [SerializeField] private Sprite redInactiveSprite;
-        
-        private Camera mainCamera;
-        private Image shardSprite;
-        private float GetWindowHeight => mainCamera.pixelHeight/1080f ;
+        private Camera cam;
+        private Image image;
+        private float GetWindowHeight => cam.pixelHeight/1080f ;
+        private Vector2 mousePosition;
         
         private bool isHeld;
         private bool isActivated;
+        
 
-        private void Start() {
-            mainCamera = Camera.main;
-            
-            if(mainCamera == null)
-                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+        private void Start()
+        {
+            cam = Camera.main;
             
             if (TryGetComponent(typeof(Image), out var img)) 
-                shardSprite = img as Image;
+                image = img as Image;
         }
 
-        private void Update() {
+        private void Update()
+        {
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
+            {
                 transform.position = Mouse.current.position.ReadValue();
-
+            }
+            
             InputsProcessing();
         }
 
@@ -65,6 +64,8 @@ namespace _Project.Scripts.ECS {
             if(!isInZone)
                 return;
             
+            mousePosition =  Mouse.current.position.ReadValue();
+                
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 ChangeHoldingState(true);
             else if (Mouse.current.leftButton.wasReleasedThisFrame)
@@ -83,22 +84,18 @@ namespace _Project.Scripts.ECS {
         {
             isActivated = isOn;
             
-            if(!shardSprite)
+            if(!image)
                 return;
             
             //Will be replaced by the shader
-            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
-            shardSprite.sprite = GetColor switch {
-                ColorEnum.Blue => isOn ? blueActiveSprite : blueInactiveSprite,
-                ColorEnum.Red => isOn ? redActiveSprite : redInactiveSprite,
-                _ => shardSprite.sprite
-            };
+            image.color = isOn ? new Color(1,1,1,0.5f) : Color.grey ;
         }
     
         public bool CheckCollision(GlassInteractable block)
         {
-            foreach (var internColliders in colliders) {
-                if (!IsColliding(mainCamera.WorldToScreenPoint(block.transform.position), internColliders, block.GetRadius))
+            foreach (var internColliders in colliders)
+            {
+                if (!IsColliding(cam.WorldToScreenPoint(block.transform.position), internColliders, block.GetRadius))
                     continue;
 
                 return true;
@@ -109,7 +106,7 @@ namespace _Project.Scripts.ECS {
         ///Get if an object is colliding with any the colliders 2D
         private bool IsColliding(Vector3 position, InternColliders internCollider, float radius = 1)
         {
-            if(!mainCamera || !isActivated)
+            if(!cam || !isActivated)
                 return false;
             
             var ab = position - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
@@ -141,7 +138,6 @@ namespace _Project.Scripts.ECS {
                 ColorEnum.Red => Color.crimson,
                 _ => Color.darkOrchid
             };
-            
             var size = Camera.main!.pixelHeight / 1080f;
             Handles.color = color;
         
