@@ -21,20 +21,23 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void Initialize() {
-            if(initialized) return;
-        
-            if(TryGetComponent(typeof(GlassInteractable), out var g))
-                GetGlassInteract = g as GlassInteractable;
-            if(TryGetComponent(typeof(IInteractable), out var p))
-                GetInteract = p as IInteractable;
+            if(!initialized) {
+                if(TryGetComponent(typeof(GlassInteractable), out var g))
+                    GetGlassInteract = g as GlassInteractable;
+                if(TryGetComponent(typeof(IInteractable), out var p))
+                    GetInteract = p as IInteractable;
             
-            if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
-            else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
+                if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
+                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
-            if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
-            else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
+                if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
+                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
-            gameObject.layer = LayerMask.NameToLayer("Interactable");
+                gameObject.layer = LayerMask.NameToLayer("Interactable");
+            }
+        
+            GetInteract?.Initialize();
+            GetGlassInteract?.Initialize();
             
             initialized = true;
         }
