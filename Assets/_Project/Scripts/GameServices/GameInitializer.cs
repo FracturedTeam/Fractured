@@ -66,9 +66,7 @@ namespace _Project.Scripts.GameServices {
         
         private void Start() {
             //Populate the glassShardService
-            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
-            shardService.PopulateService(_interactables,  _shards);
+            PopulateShardOnStart();
         }
         
         private void Update() {
@@ -81,6 +79,12 @@ namespace _Project.Scripts.GameServices {
 
         #region ShardService
 
+        private void PopulateShardOnStart() {
+            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
+            var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
+            shardService.PopulateService(_interactables,  _shards);
+        }
+        
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
 
@@ -93,7 +97,6 @@ namespace _Project.Scripts.GameServices {
         }
 
         #endregion
-        
        
     }
 }

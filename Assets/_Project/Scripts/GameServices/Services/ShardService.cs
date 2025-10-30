@@ -22,7 +22,7 @@ namespace _Project.Scripts.GameServices.Services {
 
         void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
             if(interactables.Count == 0) return;
-
+            
             foreach (var interactable in interactables) {
                 interactable.Initialize();
                 if (interactable.GetGlass) {
@@ -51,10 +51,10 @@ namespace _Project.Scripts.GameServices.Services {
 
         private void UpdateGlassInteraction() {
             foreach (var glassInteractable in shardsInteractable)
-                SetState(glassInteractable);
+                SetShardState(glassInteractable);
         }
 
-        private void SetState(BaseObject glassBase) {
+        private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
                 glassBase.OnShardInteract(shard.CheckCollision(glassBase.GetGlassInteract), shard.GetColor);
             }

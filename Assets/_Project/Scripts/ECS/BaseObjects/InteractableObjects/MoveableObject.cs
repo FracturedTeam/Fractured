@@ -26,17 +26,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Tweener tweener;
 
+        private bool initialized = false;
+        
         public void Initialize() {
-            if(TryGetComponent(typeof(BaseObject), out var component))
-                baseObject = component as BaseObject;
-            else 
-                Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
-            baseObject?.SetInteract(true);
-            
-            if(startLocation == null)
-                Debug.LogWarning("[MoveableObject] StartLocation is null");
-            if(resolveLocation == null)
-                Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+            if (!initialized) {
+                if(TryGetComponent(typeof(BaseObject), out var component))
+                    baseObject = component as BaseObject;
+                else 
+                    Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
+                baseObject?.SetInteract(true);
+                
+                if(startLocation == null)
+                    Debug.LogWarning("[MoveableObject] StartLocation is null");
+                if(resolveLocation == null)
+                    Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+            }
+
+            initialized = true;
             
             SetPositionOnStart();
             
@@ -101,11 +107,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             startLocation?.GetBaseObject().SetInteract(false);
             startLocation?.GetBaseObject().SetCollider(false);
             
+            PlayerController.Instance.interact.SetDropObject();
+            
+            baseObject.GetGlassInteract.ResetObject();
+            
             Debug.Log("[MoveableObject] Reset object");
-        }
-
-        public BaseObject GetBaseObject() {
-            return baseObject;
         }
 
         public void OnGrab(IInteractable other = null) {
@@ -167,6 +173,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        private void Update() {
+            if (baseObject.GetGlass) {
+                if (isGrabbed && !baseObject.GetGlassInteract.UnderGlass()) {
+                    ResetObject();
+                }
+            }
+        }
+
         void TweenObjectOnPlayer() {
             tweener.Kill();
             tweener = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
@@ -190,6 +204,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public bool IsGrabbed() {
             return isGrabbed;
+        }
+        
+        public BaseObject GetBaseObject() {
+            return baseObject;
         }
     }
 }
