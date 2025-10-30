@@ -107,11 +107,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             startLocation?.GetBaseObject().SetInteract(false);
             startLocation?.GetBaseObject().SetCollider(false);
             
+            PlayerController.Instance.interact.SetDropObject();
+            
+            baseObject.GetGlassInteract.ResetObject();
+            
             Debug.Log("[MoveableObject] Reset object");
-        }
-
-        public BaseObject GetBaseObject() {
-            return baseObject;
         }
 
         public void OnGrab(IInteractable other = null) {
@@ -173,6 +173,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        private void Update() {
+            if (baseObject.GetGlass) {
+                if (isGrabbed && !baseObject.GetGlassInteract.UnderGlass()) {
+                    ResetObject();
+                }
+            }
+        }
+
         void TweenObjectOnPlayer() {
             tweener.Kill();
             tweener = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
@@ -196,6 +204,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public bool IsGrabbed() {
             return isGrabbed;
+        }
+        
+        public BaseObject GetBaseObject() {
+            return baseObject;
         }
     }
 }

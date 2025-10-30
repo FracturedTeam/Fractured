@@ -6,7 +6,6 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class DropInteractableObject : MonoBehaviour, IInteractable {
-        
         private BaseObject baseObject;
         private bool isResolveLocation;
 
@@ -55,6 +54,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
+            //Voir le reset qu'il y a besoin de faire ici - Si il y a besoin
         }
 
         public BaseObject GetBaseObject() {

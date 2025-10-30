@@ -107,8 +107,34 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
 
+        public void ResetObject() {
+            underRed = false;
+            underBlue = false;
+            
+            baseObject!.SetRenderer(true);
+            baseObject!.SetCollider(true);
+
+            if (swapObject) {
+                if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
+                alternateObjectMesh?.SetActive(false);
+            }
+        }
+
         private void Update() {
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
+        }
+
+        public bool UnderGlass() {
+            switch (color) {
+                case ColorEnum.Red:
+                    return underRed;
+                case ColorEnum.Blue:
+                    return underBlue;
+                case ColorEnum.Both:
+                    return underRed && underBlue;
+            }
+            
+            return false;
         }
 
         ///Draw The Gizmos of the collider, only in Editor
