@@ -35,8 +35,8 @@ namespace _Project.Scripts.ECS
 
         private void SetState(BaseObject block)
         {
-            foreach (var glass in glassShards)
-                block.OnShardInteract(glass.CheckCollision(block.GetGlassInteract), glass.GetColor);
+            //foreach (var glass in glassShards)
+                //block.OnShardInteract(glass.CheckCollision(block.GetGlassInteract), glass.GetColor);
         }
     }
 }

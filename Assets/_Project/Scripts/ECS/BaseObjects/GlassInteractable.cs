@@ -16,7 +16,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private GameObject alternateObjectMesh;
         
         [Header("Debug on UI")]
-        [SerializeField] private Vector2 pos2D;
+        [SerializeField] internal Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
         
