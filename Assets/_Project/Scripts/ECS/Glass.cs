@@ -87,10 +87,7 @@ namespace _Project.Scripts.ECS {
                 return false;
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
-            // Because closest=point if inside - not clear from docs I feel
             return closest == position;
-        
-            return  polygonCollider2D.bounds.Contains(position);;
         }
     }
 }
