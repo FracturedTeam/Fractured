@@ -14,10 +14,11 @@ namespace _Project.Scripts.ECS {
     
         [Header("Settings")]
         [SerializeField] private ColorEnum color2D;
-        [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
         [SerializeField] private bool canEditAnywhere = false;
+        
         private Camera mainCamera;
         private Image shardSprite;
+        private PolygonCollider2D polygonCollider2D;
         private float GetWindowHeight => mainCamera.pixelHeight/1080f ;
         private Vector2 mousePosition;
         
@@ -33,6 +34,9 @@ namespace _Project.Scripts.ECS {
             
             if (TryGetComponent(typeof(Image), out var img)) 
                 shardSprite = img as Image;
+            
+            if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
+                polygonCollider2D = col as PolygonCollider2D;
         }
 
         private void Update() {
@@ -46,20 +50,7 @@ namespace _Project.Scripts.ECS {
 
         private void InputsProcessing()
         {
-            var isInZone = false;
-            foreach (var internCollider in colliders)
-            {
-                var ab = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y) 
-                         - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) 
-                             * GetWindowHeight);
-        
-                var radiusSum = internCollider.radius * GetWindowHeight + 1;
-        
-                if(ab.magnitude <= radiusSum)
-                    isInZone = true;
-            }
-                
-            if(!isInZone)
+            if(!polygonCollider2D.bounds.Contains(Mouse.current.position.ReadValue()))
                 return;
             
             mousePosition =  Mouse.current.position.ReadValue();
@@ -88,64 +79,18 @@ namespace _Project.Scripts.ECS {
             //Will be replaced by the shader
             shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
         }
-    
-        public bool CheckCollision(GlassInteractable block)
-        {
-            foreach (var internColliders in colliders) {
-                if (!IsColliding(mainCamera.WorldToScreenPoint(block.transform.position), internColliders, block.GetRadius))
-                    continue;
-
-                return true;
-            }
-            return false;
-        }
 
         ///Get if an object is colliding with any the colliders 2D
-        private bool IsColliding(Vector3 position, InternColliders internCollider, float radius = 1)
+        internal bool IsColliding(Vector3 position)
         {
             if(!mainCamera || !isActivated)
                 return false;
             
-            var ab = position - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
+            Vector3 closest = polygonCollider2D.ClosestPoint(position);
+            // Because closest=point if inside - not clear from docs I feel
+            return closest == position;
         
-            var radiusSum = internCollider.radius * GetWindowHeight + radius;
-            var isColliding = ab.magnitude <= radiusSum; 
-        
-            return isColliding;
-        }
-    
-        [Serializable]
-        internal struct InternColliders
-        {
-            public Vector2 pos;
-            public float radius;
-        }
-    }
-
-    ///Show The colliders 2d/3d of the glass shard
-    [CustomEditor(typeof(Glass))]
-    public class ShowColliders : Editor
-    {
-        public void OnSceneGUI()
-        {
-            var element = target as Glass;
-            var color = element!.GetColor switch
-            {
-                ColorEnum.Blue => Color.dodgerBlue,
-                ColorEnum.Red => Color.crimson,
-                _ => Color.darkOrchid
-            };
-            
-            var size = Camera.main!.pixelHeight / 1080f;
-            Handles.color = color;
-        
-            foreach (var collider in element!.colliders)
-            {
-                var pos = element.transform.position + new Vector3(collider.pos.x, collider.pos.y) * size;
-                Handles.DrawWireDisc(pos, Vector3.forward, collider.radius * size);
-                GUI.color = color;
-                Handles.Label(pos, collider.pos.ToString());
-            }
+            return  polygonCollider2D.bounds.Contains(position);;
         }
     }
 }
