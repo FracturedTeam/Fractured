@@ -2,7 +2,7 @@ using _Project.Scripts.GameServices.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
-    public class ShardDebugService : IDebugSystem, IDebugGUI{
+    public class ShardDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
 
         private readonly ShardService shardService;
         private readonly DebugUIState debugUIState;
@@ -47,14 +47,25 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Shards", sectionStyle);
             GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
+            GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
             
             GUILayout.EndVertical();
         }
+        public void DrawDebugGizmos() {
+            if(!debugUIState.IsVisible("Shard")) return;
+            
+            Gizmos.color = Color.cornflowerBlue;
+            Gizmos.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, Vector3.one);
+            foreach (var interactable in shardService.interactables) {
+                Gizmos.DrawWireSphere(interactable.transform.position, 1f);
+            }
+        }
         
         public void Dispose() {
         }
+
     }
 }

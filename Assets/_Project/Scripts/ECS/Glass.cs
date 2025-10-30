@@ -1,36 +1,104 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.ECS.InteractableObjects;
+using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-namespace _Project.Scripts.ECS
-{
-    public class Glass : MonoBehaviour
-    {
+namespace _Project.Scripts.ECS {
+    public class Glass : MonoBehaviour {
         public ColorEnum GetColor => color2D;
     
+        [Header("Settings")]
         [SerializeField] private ColorEnum color2D;
         [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
-        private Camera cam;
-        private float GetWindowHeight => cam.pixelHeight/1080f ;
+        [SerializeField] private bool canEditAnywhere = false;
+        
+        [Header("Sprites")]
+        [SerializeField] private Sprite blueActiveSprite;
+        [SerializeField] private Sprite redActiveSprite;
+        [SerializeField] private Sprite blueInactiveSprite;
+        [SerializeField] private Sprite redInactiveSprite;
+        
+        private Camera mainCamera;
+        private Image shardSprite;
+        private float GetWindowHeight => mainCamera.pixelHeight/1080f ;
+        
+        private bool isHeld;
+        private bool isActivated;
 
-        private void Start()
-        {
-            cam = Camera.main;
+        private void Start() {
+            mainCamera = Camera.main;
+            
+            if(mainCamera == null)
+                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+            
+            if (TryGetComponent(typeof(Image), out var img)) 
+                shardSprite = img as Image;
         }
 
-        private void Update()
+        private void Update() {
+            if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
+                transform.position = Mouse.current.position.ReadValue();
+
+            InputsProcessing();
+        }
+
+        private void InputsProcessing()
         {
-            transform.position = Mouse.current.position.ReadValue();
+            var isInZone = false;
+            foreach (var internCollider in colliders)
+            {
+                var ab = new Vector3(Mouse.current.position.ReadValue().x, Mouse.current.position.ReadValue().y) 
+                         - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) 
+                             * GetWindowHeight);
+        
+                var radiusSum = internCollider.radius * GetWindowHeight + 1;
+        
+                if(ab.magnitude <= radiusSum)
+                    isInZone = true;
+            }
+                
+            if(!isInZone)
+                return;
+            
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+                ChangeHoldingState(true);
+            else if (Mouse.current.leftButton.wasReleasedThisFrame)
+                ChangeHoldingState(false);
+            else if (Mouse.current.rightButton.wasPressedThisFrame)
+                ChangeStateActivation(!isActivated);
+        }
+
+        private void ChangeHoldingState(bool isOn)
+        {
+            isHeld = isOn;
+            if (isOn)
+                ChangeStateActivation(false);
+        }
+        private void ChangeStateActivation(bool isOn)
+        {
+            isActivated = isOn;
+            
+            if(!shardSprite)
+                return;
+            
+            //Will be replaced by the shader
+            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
+            shardSprite.sprite = GetColor switch {
+                ColorEnum.Blue => isOn ? blueActiveSprite : blueInactiveSprite,
+                ColorEnum.Red => isOn ? redActiveSprite : redInactiveSprite,
+                _ => shardSprite.sprite
+            };
         }
     
         public bool CheckCollision(GlassInteractable block)
         {
-            foreach (var internColliders in colliders)
-            {
-                if (!IsColliding(block, internColliders)) 
+            foreach (var internColliders in colliders) {
+                if (!IsColliding(mainCamera.WorldToScreenPoint(block.transform.position), internColliders, block.GetRadius))
                     continue;
 
                 return true;
@@ -38,13 +106,15 @@ namespace _Project.Scripts.ECS
             return false;
         }
 
-        ///Get if the 3D object is colliding with any the colliders 2D
-        private bool IsColliding(GlassInteractable block, InternColliders internCollider)
+        ///Get if an object is colliding with any the colliders 2D
+        private bool IsColliding(Vector3 position, InternColliders internCollider, float radius = 1)
         {
-            var screenPos = cam.WorldToScreenPoint(block.transform.position);
-            var ab = screenPos - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
+            if(!mainCamera || !isActivated)
+                return false;
+            
+            var ab = position - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
         
-            var radiusSum = internCollider.radius * GetWindowHeight + block.GetRadius;
+            var radiusSum = internCollider.radius * GetWindowHeight + radius;
             var isColliding = ab.magnitude <= radiusSum; 
         
             return isColliding;
@@ -65,7 +135,13 @@ namespace _Project.Scripts.ECS
         public void OnSceneGUI()
         {
             var element = target as Glass;
-            var color = element!.GetColor == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
+            var color = element!.GetColor switch
+            {
+                ColorEnum.Blue => Color.dodgerBlue,
+                ColorEnum.Red => Color.crimson,
+                _ => Color.darkOrchid
+            };
+            
             var size = Camera.main!.pixelHeight / 1080f;
             Handles.color = color;
         

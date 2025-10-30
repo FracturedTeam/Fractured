@@ -9,4 +9,8 @@ namespace _Project.Scripts.DebugSystems {
     public interface IDebugGUI {
         void DrawDebugGUI();
     }
+
+    public interface IDebugGizmos {
+        void DrawDebugGizmos();
+    }
 }

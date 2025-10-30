@@ -1,22 +1,28 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
-        private List<InteractableObject> interactables = new List<InteractableObject>();
-        private List<Glass> shards = new List<Glass>();
+        public List<BaseObject> interactables { get; private set; }
+        private List<Glass> shards;
         
-        private readonly List<InteractableObject> shardsInteractable = new List<InteractableObject>();
+        private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
+
+        public bool PlayerInEditableArea {get; private set;}
         
         public void Initialize() { //Initialize the service
+            interactables = new List<BaseObject>();
+            shards = new List<Glass>();
+            PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
 
         void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
             if(interactables.Count == 0) return;
-
+            
             foreach (var interactable in interactables) {
                 interactable.Initialize();
                 if (interactable.GetGlass) {
@@ -25,7 +31,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(InteractableObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
@@ -45,13 +51,17 @@ namespace _Project.Scripts.GameServices.Services {
 
         private void UpdateGlassInteraction() {
             foreach (var glassInteractable in shardsInteractable)
-                SetState(glassInteractable);
+                SetShardState(glassInteractable);
         }
 
-        private void SetState(InteractableObject glassInteractable) {
+        private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
-                glassInteractable.OnShardInteract(shard.CheckCollision(glassInteractable.GetGlassInteract), shard.GetColor);
+                glassBase.OnShardInteract(shard.CheckCollision(glassBase.GetGlassInteract), shard.GetColor);
             }
+        }
+
+        public void SetEditableArea(bool inArea) {
+            PlayerInEditableArea = inArea;
         }
         
         public void Dispose() {

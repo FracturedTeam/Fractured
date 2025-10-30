@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 8176287884244408161}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bd1b2922c819d44b8cd04675d9092e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  cinemachineBrain: {fileID: 551608302285027002}
   movement: {fileID: 0}
   interact: {fileID: 0}
 --- !u!114 &4559356953594915415
@@ -244,9 +245,6 @@ MonoBehaviour:
   feetPosition: {fileID: 9027354612639990028}
   feetSize: {x: 0.5, y: 0.02, z: 0.5}
   cam: {fileID: 6275382852799146018}
-  currentSpeed: 0
-  timeBeforeMoving: 0
-  timeBeforeMovingReset: 0
 --- !u!114 &4324979311647542952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,7 +568,7 @@ GameObject:
   - component: {fileID: 551608302285027002}
   m_Layer: 0
   m_Name: PlayerCam
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

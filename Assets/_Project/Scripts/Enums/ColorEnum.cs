@@ -1,7 +1,9 @@
-using UnityEngine;
-
-public enum ColorEnum
+namespace _Project.Scripts.Enums
 {
-    Blue,
-    Red
+    public enum ColorEnum
+    {
+        Blue,
+        Red,
+        Both
+    }
 }

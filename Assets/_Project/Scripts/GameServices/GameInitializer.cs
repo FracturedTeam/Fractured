@@ -2,19 +2,22 @@ using System;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
         private GameSystems gameSystems;
-
         private ShardService  shardService;
 
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
+        [SerializeField] private bool InitializeDebugger = true;
         #endif
         
         private new void Awake() {
@@ -36,12 +39,11 @@ namespace _Project.Scripts.GameServices {
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
         }
-
-        public void UpdatePuzzleRoom(InteractableObject[] _interactable,  Glass[] _shards) =>
-            shardService.PopulateService(_interactable,  _shards);
         
         #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
         void InitializeDebugSystems() {
+            if(!InitializeDebugger) return;
+            
             var debugUIState = new DebugUIState();
             var debugSystem = new DebugSystem();
             
@@ -54,6 +56,10 @@ namespace _Project.Scripts.GameServices {
             
             var shardDebugService = new ShardDebugService(shardService,  debugUIState);
             debugSystem.Register(shardDebugService);
+            
+            var cameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+            var cameraDebugService = new CameraDebugService(debugUIState, cameras);
+            debugSystem.Register(cameraDebugService);
 
             //Set the debug system
             debugSystemInitializer.debugSystem = debugSystem;
@@ -62,9 +68,7 @@ namespace _Project.Scripts.GameServices {
         
         private void Start() {
             //Populate the glassShardService
-            var _interactables = FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
-            var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
-            shardService.PopulateService(_interactables,  _shards);
+            PopulateShardOnStart();
         }
         
         private void Update() {
@@ -74,5 +78,27 @@ namespace _Project.Scripts.GameServices {
         private void OnDestroy() {
             gameSystems.Dispose();
         }
+
+        #region ShardService
+
+        private void PopulateShardOnStart() {
+            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
+            var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
+            shardService.PopulateService(_interactables,  _shards);
+        }
+        
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
+            shardService.PopulateService(_interactable,  _shards);
+
+        public void SetEditableArea(bool inArea) {
+            shardService.SetEditableArea(inArea);
+        }
+        
+        public bool InEditableArea() {
+            return shardService.PlayerInEditableArea;
+        }
+
+        #endregion
+       
     }
 }
