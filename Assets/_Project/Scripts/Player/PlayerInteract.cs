@@ -12,6 +12,7 @@ namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
         public bool showInteraction;
+        public bool needKey;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -26,10 +27,12 @@ namespace _Project.Scripts.Player {
         private BaseObject potentialInteraction;
         private BaseObject currentGrabbedObject;
         
-        private bool canPlayerInteract = false;
         public bool hasObject { get; private set; }
-
+        
+        private bool canPlayerInteract = false;
+        private bool playerNeedKey = false;
         private bool canInteract;
+        
         public bool CanInteract {
             get => canInteract;
             private set {
@@ -37,7 +40,8 @@ namespace _Project.Scripts.Player {
 
                 canInteract = value;
                 EventBus<InteractEvent>.Raise(new InteractEvent {
-                    showInteraction = value
+                    showInteraction = value,
+                    needKey = playerNeedKey
                 });
             }
         }
@@ -123,15 +127,29 @@ namespace _Project.Scripts.Player {
         }
 
         void CanPlayerInteract() {
-            if(potentialInteraction == null)
+            if (potentialInteraction == null) {
+                playerNeedKey = false;
                 CanInteract = false;
+            }
             else if (potentialInteraction.CanBeInteractedWith()) {
                 if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
-                    CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
-                else CanInteract = canPlayerInteract && size > 0;
+                    if (drop && !hasObject) {
+                        playerNeedKey = true;
+                        CanInteract = true;
+                    }
+                    else {
+                        playerNeedKey = false;
+                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
+                    }
+                else {
+                    playerNeedKey = false;
+                    CanInteract = canPlayerInteract && size > 0;
+                }
             }
-            else 
+            else {
+                playerNeedKey = false;
                 CanInteract = false;
+            }
             
         }
         
