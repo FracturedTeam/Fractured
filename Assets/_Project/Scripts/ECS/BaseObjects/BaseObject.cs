@@ -47,7 +47,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnShardInteract(bool isOn, ColorEnum glassColor, Glass shard) {  
-            GetGlassInteract.OnInteract(isOn, glassColor, shard);
+            GetGlassInteract.OnInteract(isOn, glassColor);
         }
 
         public void SetInteract(bool canInteract) {

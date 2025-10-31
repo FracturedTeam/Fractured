@@ -54,48 +54,37 @@ namespace _Project.Scripts.ECS.BaseObjects
             SetUp();
         }
         
-        internal void OnInteract(bool isUnder, Glass shard) {
+        internal void OnInteract(bool isUnder, ColorEnum colorEnum) {
             if(!baseObject)
                 return;
             
             if(isUnder)
-                shards.Add(shard);
-            else if(shards.Contains(shard))
-                shards.Remove(shard);
-        }
-
-        private void UpdateState()
-        {
-            foreach (var shard in shards)
             {
-                var glassColor = shard.GetColor;
-                switch (glassColor) {
+                switch (colorEnum)
+                {
                     case ColorEnum.Red:
-                        underRed += isUnder ? 1 : -1;
+                        underRed++;
                         break;
                     case ColorEnum.Blue:
-                        underBlue += isUnder ? 1 : -1;
+                        underBlue++;
                         break;
-                    case ColorEnum.Both: 
-                        underRed += isUnder ? 1 : -1;
-                        underBlue += isUnder ? 1 : -1;
+                    case ColorEnum.Both:
+                        underBlue++;
+                        underRed++;
                         break;
-                    default:
-                        Debug.LogError($"[GlassInteractable] {gameObject.name} Have an unsupported color !");
-                        throw new ArgumentOutOfRangeException(nameof(glassColor), glassColor, null);
                 }
-            
-                if (glassColor != color) 
-                    return;
-            
-                if(swapObject)
-                    SwapObject(isUnder);
-                else
-                    SetVisibility(isUnder);
             }
+            if (colorEnum != color) 
+                return;
+            
+            if(swapObject)
+                SwapObject();
+            else
+                SetVisibility();
         }
+        
 
-        private void SetVisibility(bool isUnder) {
+        private void SetVisibility() {
             if (color == ColorEnum.Both) {
                 baseObject.SetRenderer(underRed>0 && underBlue>0);
                 baseObject.SetCollider(underRed>0 && underBlue>0);
@@ -113,7 +102,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
 
-        private void SwapObject(bool isUnder) {
+        private void SwapObject() {
             if (color == ColorEnum.Both) {
                 baseObject.SetRenderer(!(underRed>0 && underBlue>0));
                 alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
@@ -141,6 +130,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         private void Update() {
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
+            underBlue = 0;
+            underRed = 0;
         }
 
         public bool UnderGlass()
