@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;

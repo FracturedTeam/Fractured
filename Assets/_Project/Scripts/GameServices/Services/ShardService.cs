@@ -58,9 +58,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void SetShardState(BaseObject glassBase) {
-            foreach (var shard in shards)
-            {
-                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard.GetColor, shard);
+            foreach (var shard in shards) {
+                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard);
             }
         }
         
