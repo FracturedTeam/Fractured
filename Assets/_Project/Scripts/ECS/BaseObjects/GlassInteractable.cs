@@ -22,7 +22,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private bool showColliders;
         
         private Camera mainCamera; 
-        private List<Glass> shards =  new List<Glass>();
         private int underRed;
         private int underBlue;
         
@@ -43,13 +42,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             underRed = 0;
             underBlue = 0;
             
-            baseObject!.SetRenderer(true);
-            baseObject!.SetCollider(true);
+            baseObject!.SetRenderer(color != ColorEnum.Both);
+            baseObject!.SetCollider(color != ColorEnum.Both);
 
             if (swapObject) {
                 if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
                 alternateObjectMesh?.SetActive(false);
             }
+            
             
             SetUp();
         }
@@ -74,6 +74,16 @@ namespace _Project.Scripts.ECS.BaseObjects
                         break;
                 }
             }
+
+            if (color == ColorEnum.Both)
+            {
+                if(swapObject)
+                    SwapObject();
+                else
+                    SetVisibility();
+                return;
+            }
+            
             if (colorEnum != color) 
                 return;
             
