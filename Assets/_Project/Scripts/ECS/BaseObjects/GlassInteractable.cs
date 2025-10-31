@@ -138,10 +138,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (swapObject) {
-                if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-                alternateObjectMesh?.SetActive(false);
-            }
+            if (!swapObject) return;
+            
+            if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
+            alternateObjectMesh?.SetActive(false);
         }
 
         private void Update() {
