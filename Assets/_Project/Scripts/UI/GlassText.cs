@@ -2,12 +2,18 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
 {
     private TMP_Text text;
     private string show;
+    private string ar;
     [SerializeField] private List<PossibleText>  possibleTexts = new List<PossibleText>();
+    private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    private int underRed = 0;
+    private int underBlue = 0;
 
     private void Start()
     {
@@ -15,27 +21,55 @@ public class GlassText : MonoBehaviour
             text = (TMP_Text)t;
         else
             text = gameObject.AddComponent<TMP_Text>();
-        
-        show = text.text;
+        ar =  text.text;
+    }
+
+    private void Update()
+    {
+         
+        show = ar;
         
         foreach (PossibleText possibleText in possibleTexts)
         {
-            if(possibleText.basic == null)
-                return;
+            if(possibleText.variableName == null)
+                continue;
 
-            
-            for (int i = 0; i < possibleText.basic.Split(' ').Length - 1; i++)
+            var random = "";
+            for (int i = 0; i < possibleText.letters ; i++)
             {
-                
+                random += Glyphs[Random.Range(0, Glyphs.Length)];
             }
+            
+            var replace = "";
 
-            var replace = show.Replace("{" +$"{possibleText.variableName}"+"}", possibleText.basic == "" ? "": $"{possibleText.basic}");
+            switch (underRed)
+            {
+                case > 0 when underBlue > 0:
+                    replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
+                        possibleText.both == "" ? random : $"{possibleText.both}");
+                    break;
+                case > 0:
+                    replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
+                        possibleText.red == "" ? random : $"{possibleText.red}");
+                    break;
+                default:
+                {
+                    if (underBlue > 0)
+                        replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
+                            possibleText.blue == "" ? random : $"{possibleText.blue}");
+                    else
+                        replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
+                            possibleText.basic == "" ? random : $"{possibleText.basic}");
+                    break;
+                }
+            }
             show = replace;
         }
         text.text = show;
-        
     }
-
+    
+    
+    
     [Serializable]
     private struct PossibleText
     {
@@ -44,6 +78,8 @@ public class GlassText : MonoBehaviour
         public string red;
         public string blue;
         public string both;
+        
+        
+        public int letters;
     }
-    
 }
