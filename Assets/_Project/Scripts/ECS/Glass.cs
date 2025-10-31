@@ -41,8 +41,8 @@ namespace _Project.Scripts.ECS {
         private void Update() {
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
             {
-                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.minWidth,  Screen.width - shardSprite.minWidth),
-                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.sprite.textureRect.height/4 ,  Screen.height  - shardSprite.sprite.textureRect.height/4));
+                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /4,  Screen.width - shardSprite.rectTransform.sizeDelta.x /4),
+                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /4 ,  Screen.height  -  shardSprite.rectTransform.sizeDelta.y /4));
             }
         }
         
