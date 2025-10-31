@@ -173,7 +173,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             };
             Gizmos.DrawSphere(pos2D, GetRadius);
         }
-   
+
+    #if UNITY_EDITOR
         ///Auto Setup the collision, only called in Editor
         /// Now is also called on Initialisation
         [ContextMenu("SetUp")]
@@ -192,5 +193,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
             radius2D = Mathf.Abs((screenMax-screenMin).magnitude *  -transform.position.z + (screenMax-screenMin).magnitude) / mag * 4;
         }
+    #endif
     }
 }

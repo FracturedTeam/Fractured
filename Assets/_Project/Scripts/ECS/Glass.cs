@@ -40,8 +40,8 @@ namespace _Project.Scripts.ECS
         {
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
             {
-                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /4,  Screen.width - shardSprite.rectTransform.sizeDelta.x /4),
-                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /4 ,  Screen.height  -  shardSprite.rectTransform.sizeDelta.y /4));
+                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
+                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
             }
             
             InputsProcessing();
