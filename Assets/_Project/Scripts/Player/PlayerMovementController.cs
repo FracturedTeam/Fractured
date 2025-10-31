@@ -42,6 +42,7 @@ public class PlayerMovementController : MonoBehaviour
     
     private Vector3 slopeMoveDir;//Si le joueur est sur une slope
     private Vector3 forwardDir, rightDir;//Par rapport à la caméra
+    private Vector3 previousForwardDir;
     
     private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
 
@@ -69,11 +70,13 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void UpdateCameraDir() {
-        forwardDir = cam.transform.forward;
-        rightDir = cam.transform.right;
-        
-        forwardDir.y = 0;
-        rightDir.y = 0;
+        forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up);
+        rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up);
+
+        if (forwardDir.sqrMagnitude < 0.0001f)
+            forwardDir = previousForwardDir;
+        else
+            previousForwardDir = forwardDir;
         
         forwardDir.Normalize();
         rightDir.Normalize();
