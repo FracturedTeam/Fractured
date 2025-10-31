@@ -96,8 +96,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
-            tweener.Kill();
-            tweener = null;
+            tweener?.Pause();
+            tweener?.Kill();
+            DOTween.Kill(transform);
             
             baseObject.SetInteract(true);
             baseObject.SetCollider(true);
