@@ -1,11 +1,8 @@
-using System;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -23,7 +20,7 @@ namespace _Project.Scripts.GameServices {
         private new void Awake() {
             InitializeGameSystems();
             
-            #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
             #endif
         }
@@ -40,7 +37,7 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Initialize();
         }
         
-        #if UNITY_EDITOR ||UNITY_DEVELOPMENT_BUILD
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD
         void InitializeDebugSystems() {
             if(!InitializeDebugger) return;
             
@@ -62,7 +59,7 @@ namespace _Project.Scripts.GameServices {
             debugSystem.Register(cameraDebugService);
 
             //Set the debug system
-            debugSystemInitializer.debugSystem = debugSystem;
+            debugSystemInitializer.SetDebugSystem(debugSystem);
         }
         #endif
         
