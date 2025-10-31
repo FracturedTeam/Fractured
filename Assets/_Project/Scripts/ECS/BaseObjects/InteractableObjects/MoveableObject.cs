@@ -44,13 +44,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             initialized = true;
             
-            SetPositionOnStart();
-            
-            originalParent = transform.parent;
-            originalPosition = transform.position;
-            originalRotation = transform.rotation;
-            canBeGrab = true;
-            
             startLocation?.Initialize();
             resolveLocation?.Initialize();
             
@@ -65,6 +58,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             resolveLocation?.GetBaseObject().SetCollider(true);
             resolveLocation?.SetResolveLocation(true);
             resolveLocation?.SetKeyObject(this);
+            
+            //Set initial position
+            SetPositionOnStart();
+            
+            originalParent = transform.parent;
+            originalPosition = transform.position;
+            originalRotation = transform.rotation;
+            canBeGrab = true;
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -95,6 +96,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
+            tweener?.Pause();
+            tweener?.Kill();
+            DOTween.Kill(transform);
+            
             baseObject.SetInteract(true);
             baseObject.SetCollider(true);
             
@@ -176,6 +181,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void Update() {
             if (baseObject.GetGlass) {
                 if (isGrabbed && !baseObject.GetGlassInteract.UnderGlass()) {
+                    Debug.Log("[MoveableObject] UnderGlass Reset");
                     ResetObject();
                 }
             }

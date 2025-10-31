@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -72,6 +69,10 @@ namespace _Project.Scripts.ECS {
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
+        }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
         }
     }
 }
