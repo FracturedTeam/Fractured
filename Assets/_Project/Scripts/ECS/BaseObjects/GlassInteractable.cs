@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using UnityEngine;
 
@@ -16,13 +17,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private GameObject alternateObjectMesh;
         
         [Header("Debug on UI")]
-        [SerializeField] private Vector2 pos2D;
+        [SerializeField] internal Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
         
         private Camera mainCamera; 
-        private bool underRed;
-        private bool underBlue;
+        private int underRed;
+        private int underBlue;
         
         private bool initialized = false;
         
@@ -38,78 +39,99 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             initialized = true;
             
-            underRed = false;
-            underBlue = false;
+            underRed = 0;
+            underBlue = 0;
             
-            baseObject!.SetRenderer(true);
-            baseObject!.SetCollider(true);
+            baseObject!.SetRenderer(color != ColorEnum.Both);
+            baseObject!.SetCollider(color != ColorEnum.Both);
 
             if (swapObject) {
                 if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
                 alternateObjectMesh?.SetActive(false);
             }
             
+            
             SetUp();
         }
         
-        internal void OnInteract(bool isUnder, ColorEnum glassColor) {
+        internal void OnInteract(bool isUnder, ColorEnum colorEnum) {
             if(!baseObject)
                 return;
             
-            switch (glassColor) {
-                case ColorEnum.Red:
-                    underRed = isUnder;
-                    break;
-                case ColorEnum.Blue:
-                    underBlue = isUnder;
-                    break;
-                case ColorEnum.Both: 
-                    underRed = isUnder; 
-                    underBlue = isUnder;
-                    break;
-                default:
-                    Debug.LogError($"[GlassInteractable] {gameObject.name} Have an unsupported color !");
-                    throw new ArgumentOutOfRangeException(nameof(glassColor), glassColor, null);
+            if(isUnder)
+            {
+                switch (colorEnum)
+                {
+                    case ColorEnum.Red:
+                        underRed++;
+                        break;
+                    case ColorEnum.Blue:
+                        underBlue++;
+                        break;
+                    case ColorEnum.Both:
+                        underBlue++;
+                        underRed++;
+                        break;
+                }
+            }
+
+            if (color == ColorEnum.Both)
+            {
+                if(swapObject)
+                    SwapObject();
+                else
+                    SetVisibility();
+                return;
             }
             
-            if (glassColor != color) 
+            if (colorEnum != color) 
                 return;
             
             if(swapObject)
-                SwapObject(isUnder);
+                SwapObject();
             else
-                SetVisibility(isUnder);
+                SetVisibility();
+        }
+        
+
+        private void SetVisibility()
+        {
+            switch (color)
+            {
+                case ColorEnum.Both:
+                    baseObject.SetRenderer(underRed>0 && underBlue>0);
+                    baseObject.SetCollider(underRed>0 && underBlue>0);
+                    baseObject.SetInteract(underRed>0 && underBlue>0);
+                    break;
+                case ColorEnum.Red:
+                    baseObject.SetRenderer(underRed < 1);
+                    baseObject.SetCollider(underRed < 1);
+                    baseObject.SetInteract(underRed < 1);
+                    break;
+                case ColorEnum.Blue:
+                    baseObject.SetRenderer(underBlue < 1);
+                    baseObject.SetCollider(underBlue < 1);
+                    baseObject.SetInteract(underBlue < 1);
+                    break;
+            }
         }
 
-        private void SetVisibility(bool isUnder) {
+        private void SwapObject() {
             if (color == ColorEnum.Both) {
-                baseObject.SetRenderer(underRed && underBlue);
-                baseObject.SetCollider(underRed && underBlue);
-                baseObject.SetInteract(underRed && underBlue);
+                baseObject.SetRenderer(!(underRed>0 && underBlue>0));
+                alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
+                baseObject.SetInteract(underRed>0 && underBlue>0);
             }
             else {
-                baseObject.SetRenderer(!isUnder);
-                baseObject.SetCollider(!isUnder);
-                baseObject.SetInteract(false);
-            }
-        }
-
-        private void SwapObject(bool isUnder) {
-            if (color == ColorEnum.Both) {
-                baseObject.SetRenderer(!underRed && !underBlue);
-                alternateObjectMesh?.SetActive(underRed && underBlue);
-                baseObject.SetInteract(underRed && underBlue);
-            }
-            else {
-                baseObject.SetRenderer(!isUnder);
-                alternateObjectMesh?.SetActive(isUnder);
-                baseObject.SetInteract(isUnder);
+                baseObject.SetRenderer(!(underRed>0 && underBlue>0));
+                alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
+                baseObject.SetInteract(underRed>0 && underBlue>0);
             }
         }
 
         public void ResetObject() {
-            underRed = false;
-            underBlue = false;
+            underRed = 0;
+            underBlue = 0;
             
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
@@ -122,19 +144,19 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         private void Update() {
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
+            underBlue = 0;
+            underRed = 0;
         }
 
-        public bool UnderGlass() {
-            switch (color) {
-                case ColorEnum.Red:
-                    return underRed;
-                case ColorEnum.Blue:
-                    return underBlue;
-                case ColorEnum.Both:
-                    return underRed && underBlue;
-            }
-            
-            return false;
+        public bool UnderGlass()
+        {
+            return color switch
+            {
+                ColorEnum.Red => underRed > 0,
+                ColorEnum.Blue => underBlue > 0,
+                ColorEnum.Both => underRed > 0 && underBlue > 0,
+                _ => false
+            };
         }
 
         ///Draw The Gizmos of the collider, only in Editor
@@ -151,7 +173,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             };
             Gizmos.DrawSphere(pos2D, GetRadius);
         }
-   
+
+    #if UNITY_EDITOR
         ///Auto Setup the collision, only called in Editor
         /// Now is also called on Initialisation
         [ContextMenu("SetUp")]
@@ -170,5 +193,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
             radius2D = Mathf.Abs((screenMax-screenMin).magnitude *  -transform.position.z + (screenMax-screenMin).magnitude) / mag * 4;
         }
+    #endif
     }
 }
