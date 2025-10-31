@@ -74,17 +74,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                         break;
                 }
             }
-
-            if (color == ColorEnum.Both)
-            {
-                if(swapObject)
-                    SwapObject();
-                else
-                    SetVisibility();
-                return;
-            }
             
-            if (colorEnum != color) 
+            if (colorEnum != color && colorEnum != ColorEnum.Both) 
                 return;
             
             if(swapObject)
@@ -117,16 +108,27 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void SwapObject() {
-            if (color == ColorEnum.Both) {
-                baseObject.SetRenderer(!(underRed>0 && underBlue>0));
-                alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
-                baseObject.SetInteract(underRed>0 && underBlue>0);
+            switch (color)
+            {
+                case ColorEnum.Both:
+                    baseObject.SetRenderer(!(underRed>0 && underBlue>0));
+                    alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
+                    baseObject.SetInteract(underRed>0 && underBlue>0);
+                    break;
+                case ColorEnum.Blue:
+                    baseObject.SetRenderer(underBlue<1);
+                    alternateObjectMesh?.SetActive(underBlue>0);
+                    baseObject.SetInteract(underBlue>0);
+                    break;
+                case ColorEnum.Red:
+                    baseObject.SetRenderer(underRed<1);
+                    alternateObjectMesh?.SetActive(underRed>0);
+                    baseObject.SetInteract(underRed>0);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else {
-                baseObject.SetRenderer(!(underRed>0 && underBlue>0));
-                alternateObjectMesh?.SetActive(underRed>0 && underBlue>0);
-                baseObject.SetInteract(underRed>0 && underBlue>0);
-            }
+            
         }
 
         public void ResetObject() {
