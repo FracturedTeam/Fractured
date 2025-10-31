@@ -1,10 +1,9 @@
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-using System;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems {
     public class DebugSystemInitializer : MonoBehaviour {
-        internal DebugSystem debugSystem;
+        private DebugSystem debugSystem;
 
         private void OnGUI() {
             debugSystem?.DrawDebugGUI();
@@ -20,6 +19,10 @@ namespace _Project.Scripts.DebugSystems {
 
         private void OnDestroy() {
             debugSystem?.Dispose();
+        }
+
+        public void SetDebugSystem(DebugSystem debugSystem) {
+            this.debugSystem = debugSystem;
         }
     }
 }
