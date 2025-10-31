@@ -27,9 +27,9 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: ba21fd15aae8e81418924828d1b13aaa, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _DISABLE_SSR_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -233,6 +233,8 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
+    - _QueueControl: 1
+    - _QueueOffset: 0
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
@@ -281,12 +283,14 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _AOColor: {r: 0, g: 0, b: 1, a: 1}
+    - _AOColor: {r: 0, g: 0, b: 0, a: 1}
     - _AOLevels: {r: 0.12, g: 1.22, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 0}
     - _Color1: {r: 1, g: 0, b: 0, a: 1}
+    - _Color1_2Levels: {r: 0.02, g: 0.06, b: 0, a: 0}
     - _Color2: {r: 0, g: 1, b: 0, a: 1}
+    - _Color2_3Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Color3: {r: 0, g: 0, b: 1, a: 1}
     - _Colors_1_2_Levels: {r: 0.02, g: 0.08, b: 0, a: 0}
     - _Colors_2_3_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
@@ -307,3 +311,16 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &6024201449024024153
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
