@@ -73,5 +73,9 @@ namespace _Project.Scripts.ECS {
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
         }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
+        }
     }
 }

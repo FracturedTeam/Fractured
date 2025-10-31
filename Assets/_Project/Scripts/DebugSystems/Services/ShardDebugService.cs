@@ -6,7 +6,7 @@ namespace _Project.Scripts.DebugSystems.Services {
 
         private readonly ShardService shardService;
         private readonly DebugUIState debugUIState;
-        
+        private bool editShardAnywhere;
         public ShardDebugService(ShardService shard, DebugUIState debugUI) {
             shardService = shard;
             debugUIState = debugUI;
@@ -33,13 +33,25 @@ namespace _Project.Scripts.DebugSystems.Services {
                 alignment = TextAnchor.MiddleLeft,
                 normal = {
                     textColor = Color.crimson
-                }
+                },
+                hover = {
+                    textColor = Color.crimson
+                },
             };
 
             var debugStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Normal,
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft
+            };
+
+            var buttonStyle = new GUIStyle(GUI.skin.label) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleLeft,
+                normal = {
+                    textColor = Color.cornflowerBlue
+                }
             };
             
             GUILayout.BeginVertical("box");
@@ -48,6 +60,12 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label("Shards", sectionStyle);
             GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
             GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
+            if (GUILayout.Button($"Edit shard anywhere : {editShardAnywhere}", buttonStyle)) {
+                editShardAnywhere = !editShardAnywhere;
+                foreach (var shard in shardService.shards) {
+                    shard.SetEditAnywhere(editShardAnywhere);
+                }
+            }
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
