@@ -94,21 +94,25 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
 
-        private void SetVisibility() {
-            if (color == ColorEnum.Both) {
-                baseObject.SetRenderer(underRed>0 && underBlue>0);
-                baseObject.SetCollider(underRed>0 && underBlue>0);
-                baseObject.SetInteract(underRed>0 && underBlue>0);
-            }
-            else if (color == ColorEnum.Red) {
-                baseObject.SetRenderer(underRed < 1);
-                baseObject.SetCollider(underRed < 1);
-                baseObject.SetInteract(underRed < 1);
-            }
-            else if (color == ColorEnum.Blue) {
-                baseObject.SetRenderer(underBlue < 1);
-                baseObject.SetCollider(underBlue < 1);
-                baseObject.SetInteract(underBlue < 1);
+        private void SetVisibility()
+        {
+            switch (color)
+            {
+                case ColorEnum.Both:
+                    baseObject.SetRenderer(underRed>0 && underBlue>0);
+                    baseObject.SetCollider(underRed>0 && underBlue>0);
+                    baseObject.SetInteract(underRed>0 && underBlue>0);
+                    break;
+                case ColorEnum.Red:
+                    baseObject.SetRenderer(underRed < 1);
+                    baseObject.SetCollider(underRed < 1);
+                    baseObject.SetInteract(underRed < 1);
+                    break;
+                case ColorEnum.Blue:
+                    baseObject.SetRenderer(underBlue < 1);
+                    baseObject.SetCollider(underBlue < 1);
+                    baseObject.SetInteract(underBlue < 1);
+                    break;
             }
         }
 
