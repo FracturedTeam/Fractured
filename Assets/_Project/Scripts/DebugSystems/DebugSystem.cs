@@ -1,4 +1,4 @@
-#if UNITY_EDITOR || UNITY_DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 using System.Collections.Generic;
 
 namespace _Project.Scripts.DebugSystems {
