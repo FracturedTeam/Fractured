@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        private List<Glass> shards;
+        public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();

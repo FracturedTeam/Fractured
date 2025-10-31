@@ -150,5 +150,9 @@ namespace _Project.Scripts.ECS
                 Handles.Label(pos, collider.pos.ToString());
             }
         }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
+        }
     }
 }
