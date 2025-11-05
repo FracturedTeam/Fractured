@@ -3,6 +3,7 @@ namespace _Project.Scripts.Enums {
         None,
         Grab,
         Drop,
-        Contextual
+        Reset,
+        Contextual,
     }
 }

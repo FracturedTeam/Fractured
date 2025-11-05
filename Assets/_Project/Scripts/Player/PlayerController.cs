@@ -2,6 +2,7 @@ using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -10,13 +11,15 @@ namespace _Project.Scripts.Player {
     public class PlayerController : Singleton<PlayerController>
     {
         InputsBrain inputsBrain;
+        StateMachine stateMachine;
 
+        public CinemachineBrain cinemachineBrain;
+        
         [HideInInspector]
         public PlayerMovementController movement;
         [HideInInspector]
         public PlayerInteract interact;
         
-        StateMachine stateMachine;
 
         private void Start() {
             stateMachine = new StateMachine();

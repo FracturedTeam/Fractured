@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems {
     public class DebugSystemInitializer : MonoBehaviour {
-        internal DebugSystem debugSystem;
+        private DebugSystem debugSystem;
 
         private void OnGUI() {
             debugSystem?.DrawDebugGUI();
@@ -13,8 +13,16 @@ namespace _Project.Scripts.DebugSystems {
             debugSystem?.Tick();
         }
 
+        private void OnDrawGizmos() {
+            debugSystem?.DrawDebugGizmos();
+        }
+
         private void OnDestroy() {
             debugSystem?.Dispose();
+        }
+
+        public void SetDebugSystem(DebugSystem debugSystem) {
+            this.debugSystem = debugSystem;
         }
     }
 }

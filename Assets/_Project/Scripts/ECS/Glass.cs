@@ -1,81 +1,78 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.InteractableObjects;
-using UnityEditor;
+using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-namespace _Project.Scripts.ECS
-{
-    public class Glass : MonoBehaviour
-    {
+namespace _Project.Scripts.ECS {
+    public class Glass : MonoBehaviour {
         public ColorEnum GetColor => color2D;
     
+        [Header("Settings")]
         [SerializeField] private ColorEnum color2D;
-        [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
-        private Camera cam;
-        private float GetWindowHeight => cam.pixelHeight/1080f ;
+        [SerializeField] private bool canEditAnywhere = false;
+        
+        private Camera mainCamera;
+        private Image shardSprite;
+        private PolygonCollider2D polygonCollider2D;
+        private Vector2 mousePosition;
+        
+        
+        private bool isHeld;
+        internal bool IsActivated;
 
-        private void Start()
-        {
-            cam = Camera.main;
+        private void Start() {
+            mainCamera = Camera.main;
+            
+            if(mainCamera == null)
+                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+            
+            if (TryGetComponent(typeof(Image), out var img)) 
+                shardSprite = img as Image;
+            
+            if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
+                polygonCollider2D = col as PolygonCollider2D;
         }
 
-        private void Update()
-        {
-            transform.position = Mouse.current.position.ReadValue();
-        }
-    
-        public bool CheckCollision(GlassInteractable block)
-        {
-            foreach (var internColliders in colliders)
+        private void Update() {
+            if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
             {
-                if (!IsColliding(block, internColliders)) 
-                    continue;
-
-                return true;
+                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
+                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
             }
-            return false;
+        }
+        
+        internal void ChangeHoldingState(bool isOn)
+        {
+            isHeld = isOn;
+            if (isOn)
+                ChangeStateActivation(false);
         }
 
-        ///Get if the 3D object is colliding with any the colliders 2D
-        private bool IsColliding(GlassInteractable block, InternColliders internCollider)
+        internal void ChangeStateActivation(bool isOn)
         {
-            var screenPos = cam.WorldToScreenPoint(block.transform.position);
-            var ab = screenPos - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
-        
-            var radiusSum = internCollider.radius * GetWindowHeight + block.GetRadius;
-            var isColliding = ab.magnitude <= radiusSum; 
-        
-            return isColliding;
+            IsActivated = isOn;
+            
+            if(!shardSprite)
+                return;
+            
+            //Will be replaced by the shader
+            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
         }
-    
-        [Serializable]
-        internal struct InternColliders
-        {
-            public Vector2 pos;
-            public float radius;
-        }
-    }
 
-    ///Show The colliders 2d/3d of the glass shard
-    [CustomEditor(typeof(Glass))]
-    public class ShowColliders : Editor
-    {
-        public void OnSceneGUI()
+        ///Get if an object is colliding with any the colliders 2D
+        internal bool IsColliding(Vector3 position, bool mouse = false)
         {
-            var element = target as Glass;
-            var color = element!.GetColor == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
-            var size = Camera.main!.pixelHeight / 1080f;
-            Handles.color = color;
-        
-            foreach (var collider in element!.colliders)
-            {
-                var pos = element.transform.position + new Vector3(collider.pos.x, collider.pos.y) * size;
-                Handles.DrawWireDisc(pos, Vector3.forward, collider.radius * size);
-                GUI.color = color;
-                Handles.Label(pos, collider.pos.ToString());
-            }
+            if(!mainCamera || (!IsActivated && !mouse))
+                return false;
+            
+            Vector3 closest = polygonCollider2D.ClosestPoint(position);
+            return closest == position;
+        }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
         }
     }
 }

@@ -1,7 +1,10 @@
 using System;
+using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using UnityEngine;
 
@@ -9,42 +12,47 @@ namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
         public bool showInteraction;
+        public bool needKey;
     }
     
     public class PlayerInteract : MonoBehaviour {
         private InputsBrain inputsBrain;
-        
-        [SerializeField] private Transform interactCenterZone;
-        [SerializeField] private Vector3 interactZoneSize;
+
+        [SerializeField] public Transform interactCenterZone;
+        [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
         
         //Pre allocate space for collider (10 will be completely sufficient)
-        private Collider[] results = new Collider[10];
-        private InteractableObject potentialInteraction;
-        private InteractableObject currentObject;
+        private readonly Collider[] results = new Collider[10];
+        private BaseObject potentialInteraction;
+        private BaseObject currentGrabbedObject;
+        
+        public bool hasObject { get; private set; }
         
         private bool canPlayerInteract = false;
-        public bool hasObject { get; private set; }
-
+        private bool playerNeedKey = false;
         private bool canInteract;
+        
         public bool CanInteract {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
 
-                //canInteract = canPlayerInteract && !hasObject && size > 0;
                 canInteract = value;
                 EventBus<InteractEvent>.Raise(new InteractEvent {
-                    showInteraction = value
+                    showInteraction = value,
+                    needKey = playerNeedKey
                 });
             }
         }
         
-        internal int size = 0;
+        public int size { get; private set; }
 
         private void Awake() {
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
+
+            size = 0;
         }
 
         private void OnEnable() {
@@ -61,70 +69,123 @@ namespace _Project.Scripts.Player {
             else if(CanDrop())
                 DropObject();
             else if(CanContextualInteract())
-                potentialInteraction.OnInteract(ObjectInteraction.Contextual);
+                potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
         }
 
         private void GrabObject() {
-            SetInteract(false);
             hasObject = true;
-            currentObject = potentialInteraction;
-            potentialInteraction.OnInteract(ObjectInteraction.Grab);
+            currentGrabbedObject = potentialInteraction;
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Grab);
+            
+            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
 
-        private void DropObject() {
-            SetInteract(true);
-            hasObject = false;
-            currentObject = null;
-            potentialInteraction.OnInteract(ObjectInteraction.Drop);
+        private void DropObject() { //Ici que j'envoie l'info de résoudre le puzzle si je porte un objet
+            Debug.Log($"[PlayerInteract] Dropping {currentGrabbedObject.name} on {potentialInteraction.name}");
+            
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
-            
-            CanInteract = canPlayerInteract && !hasObject && size > 0;
+            CanPlayerInteract();
 
             HandleInteraction();
         }
 
         void HandleInteraction() {
-            if(!canPlayerInteract || hasObject) return;
+            if(!canPlayerInteract) return;
             size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
-            
-            if(size == 0) return;
-            Debug.Log($"[PlayerInteract] Detecting {size} interactable");
-            
-            if (size > 1) { // Sort the closer object from the player or the object the player is looking at
-                
+
+            switch (size) {
+                case 0:
+                    potentialInteraction = null;
+                    return;
+                case > 1: // Sort the closer object from the player or the object the player is looking at
+                    var index = 0;
+                    var closestDist = 0f;
+                    var closestAngle = 0f;
+                    for (int i = 0; i < size; i++) {
+                        var dist = Vector3.Distance(transform.position, results[i].transform.position);
+                        var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
+
+                        if (!(facing > closestAngle)) continue;
+                        closestAngle = facing;
+                        if (!(dist < closestDist)) continue;
+                        closestDist = dist;
+                        index = i;
+                    }
+                    
+                    potentialInteraction = results[index].GetComponent<BaseObject>();
+                    break;
+                default: // No need for logic, just get the only object we detect
+                    potentialInteraction = results[0].GetComponent<BaseObject>();
+                    break;
             }
-            else { // No need for logic, just get the only object we detect
-                potentialInteraction = results[0].GetComponent<InteractableObject>();
+        }
+
+        void CanPlayerInteract() {
+            if (potentialInteraction == null) {
+                playerNeedKey = false;
+                CanInteract = false;
             }
+            else if (potentialInteraction.CanBeInteractedWith()) {
+                if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
+                    if (drop && !hasObject) {
+                        playerNeedKey = true;
+                        CanInteract = true;
+                    }
+                    else {
+                        playerNeedKey = false;
+                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
+                    }
+                else {
+                    playerNeedKey = false;
+                    CanInteract = canPlayerInteract && size > 0;
+                }
+            }
+            else {
+                playerNeedKey = false;
+                CanInteract = false;
+            }
+            
         }
         
         public void SetInteract(bool interact) {
             canPlayerInteract = interact;
         }
 
+        public IInteractable GetCurrentInteractable() {
+            return currentGrabbedObject.GetInteract;
+        }
+
+        public void SetDropObject() {
+            hasObject = false;
+            currentGrabbedObject = null;
+        }
+        
         private bool CanGrab() {
-            return CanInteract && currentObject == null && potentialInteraction.canBeGrabbed;
+            if(potentialInteraction ==  null) return false;
+            
+            if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
+                return CanInteract && !hasObject && currentGrabbedObject == null && moveable.CanBeGrab();
+            
+            return false;
         }
 
         private bool CanDrop() {
-            return hasObject && currentObject != null;
+            if(potentialInteraction ==  null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
+                return hasObject && currentGrabbedObject != null && drop != null;
+            
+            return false;
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && !potentialInteraction.canBeGrabbed;
+            return CanInteract /*&& !potentialInteraction.GetInteract.CanGrab()*/;
         }
-        
-        private void OnDrawGizmos() {
-            Gizmos.color = Color.gold;
-            Gizmos.matrix = Matrix4x4.TRS(interactCenterZone.position, transform.rotation, interactZoneSize);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
-            //Gizmos.DrawWireCube(interactCenterZone.position, interactZoneSize);
-        }
-        
     }
 }
