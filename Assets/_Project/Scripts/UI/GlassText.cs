@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
@@ -26,7 +27,7 @@ public class GlassText : MonoBehaviour
 
     private void Update()
     {
-         
+        
         show = ar;
         
         foreach (PossibleText possibleText in possibleTexts)
@@ -66,10 +67,24 @@ public class GlassText : MonoBehaviour
             show = replace;
         }
         text.text = show;
+        print(TMP_TextUtilities.FindNearestWord(text, Mouse.current.position.ReadValue(), Camera.main));
+
+        int linkIndex = TMP_TextUtilities.FindIntersectingLink(text, Mouse.current.position.ReadValue(), Camera.main);
+        print(TMP_TextUtilities.FindIntersectingLink(text, Mouse.current.position.ReadValue(), Camera.main));
+        if (linkIndex != -1)
+        {
+            TMP_LinkInfo linkInfo = text.textInfo.linkInfo[linkIndex]; // Get the information about the link
+            // Do something based on what link ID or Link Text is encountered...
+            print(linkInfo.hashCode);
+        }
+        
     }
     
-    
-    
+    public void SetLinkHovering(bool on )
+    {
+        text.color = on ? Color.darkRed : Color.wheat;
+    }
+
     [Serializable]
     private struct PossibleText
     {
