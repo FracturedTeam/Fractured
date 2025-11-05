@@ -82,10 +82,13 @@ namespace _Project.Scripts.Player {
             Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
 
-        private void DropObject() { //Ici que j'envoie l'info de résoudre le puzzle si je porte un objet
-            Debug.Log($"[PlayerInteract] Dropping {currentGrabbedObject.name} on {potentialInteraction.name}");
+        private void DropObject() {
+            Debug.Log($"[PlayerInteract] Dropping {currentGrabbedObject.name} on {potentialInteraction?.name}");
             
-            currentGrabbedObject?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+            if(potentialInteraction != null)
+                currentGrabbedObject?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+            else
+                currentGrabbedObject?.OnInteract(ObjectInteraction.Drop);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
@@ -108,6 +111,8 @@ namespace _Project.Scripts.Player {
                     var closestDist = 0f;
                     var closestAngle = 0f;
                     for (int i = 0; i < size; i++) {
+                        if (!results[index].GetComponent<BaseObject>().CanBeInteractedWith()) continue;
+                        
                         var dist = Vector3.Distance(transform.position, results[i].transform.position);
                         var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
 
@@ -132,7 +137,7 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
             }
             else if (potentialInteraction.CanBeInteractedWith()) {
-                if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
+                if (potentialInteraction.TryGetComponent(out DropInteractableObject drop)) {
                     if (drop && !hasObject) {
                         playerNeedKey = true;
                         CanInteract = true;
@@ -141,6 +146,7 @@ namespace _Project.Scripts.Player {
                         playerNeedKey = false;
                         CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
                     }
+                }
                 else {
                     playerNeedKey = false;
                     CanInteract = canPlayerInteract && size > 0;
@@ -176,7 +182,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanDrop() {
-            if(potentialInteraction ==  null) return false;
+            if (potentialInteraction == null) return hasObject && currentGrabbedObject != null;
             
             if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
                 return hasObject && currentGrabbedObject != null && drop != null;
@@ -185,7 +191,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanContextualInteract() {
-            return CanInteract /*&& !potentialInteraction.GetInteract.CanGrab()*/;
+            return CanInteract;
         }
     }
 }

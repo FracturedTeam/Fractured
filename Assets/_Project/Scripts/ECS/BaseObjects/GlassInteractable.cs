@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.HashSetUtil;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,9 +21,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ColorEnum objectColor;
 
         [Header("Behaviour")] 
-        [Tooltip("If true, when the object is under a shard, it will transit into a new object that can be interacted with")]
-        [SerializeField] private bool swapObject = false;
-        [SerializeField] private GameObject alternateObjectMesh;
+        [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
+        [SerializeField] private bool objectInside = false;
+        [SerializeField] private MoveableObject interactableInBox;
         
         [Header("Debug on UI")]
         [SerializeField] internal Vector2 pos2D;
@@ -32,6 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private int underBlue;
         
         private bool initialized = false;
+        private bool objectOut = false;
         
         public  void Initialize() {
             mainCamera = Camera.main;
@@ -54,11 +57,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(objectColor != ColorEnum.Both);
             baseObject!.SetCollider(objectColor != ColorEnum.Both);
 
-            if (swapObject) {
-                if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-                alternateObjectMesh?.SetActive(false);
+            if (objectInside) {
+                if (interactableInBox != null) {
+                    interactableInBox.gameObject.SetActive(false);
+                    interactableInBox.transform.position = transform.position;
+                }
+                else
+                    Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
             }
-            
             
             SetUp();
         }
@@ -77,13 +83,16 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
-        private void Update() { //Le problème vient d'ici -> Le reset de underRed et underBlue a 0 cause le reset constant l'interactable
+        private void Update() { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
+
+            if (objectInside) {
+                if (objectOut) return;
+                if (interactableInBox.IsGrabbed()) objectOut = true;
+            }
         }
 
         private void UpdateShards() {
-            Debug.Log("[GlassInteractable] Updating shards");
-            
             underBlue = 0;
             underRed = 0;
 
@@ -104,14 +113,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                         break;
                 }
             
-            if(swapObject) 
-                SwapObject();
-            else
-                SetVisibility();
+            SetVisibility();
         }
         
-        private void SetVisibility()
-        {
+        private void SetVisibility() {
             switch (objectColor) {
                 case ColorEnum.Both:
                     baseObject.SetRenderer(underRed > 0 && underBlue > 0);
@@ -129,32 +134,31 @@ namespace _Project.Scripts.ECS.BaseObjects
                     baseObject.SetInteract(underBlue < 1);
                     break;
             }
+
+            if (objectInside && !objectOut) {
+                SwapObject();
+            }
         }
 
-        private void SwapObject() {
+        private void SwapObject() { 
             switch (objectColor) {
                 case ColorEnum.Both:
-                    baseObject.SetRenderer(!(underRed > 0 && underBlue > 0));
-                    alternateObjectMesh?.SetActive(underRed > 0 && underBlue > 0);
-                    baseObject.SetInteract(underRed > 0 && underBlue > 0);
+                    interactableInBox?.gameObject.SetActive(underRed > 0 && underBlue > 0);
                     break;
                 case ColorEnum.Blue:
-                    baseObject.SetRenderer(underBlue < 1);
-                    alternateObjectMesh?.SetActive(underBlue > 0);
-                    baseObject.SetInteract(underBlue > 0);
+                    interactableInBox?.gameObject.SetActive(underBlue > 0);
                     break;
                 case ColorEnum.Red:
-                    baseObject.SetRenderer(underRed < 1);
-                    alternateObjectMesh?.SetActive(underRed > 0);
-                    baseObject.SetInteract(underRed > 0);
+                    interactableInBox?.gameObject.SetActive(underRed > 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
         }
 
-        public void ResetObject() {
+        public void ResetObject() { 
+            //Todo A modifier pour l'état en boite
+            
             underRed = 0;
             underBlue = 0;
             shardsOnTop.Clear();
@@ -162,10 +166,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!swapObject) return;
+            if (!objectInside) return;
             
-            if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-            alternateObjectMesh?.SetActive(false);
+            if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
+            interactableInBox?.gameObject.SetActive(false);
         }
 
         public bool UnderGlass() {

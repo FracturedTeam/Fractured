@@ -26,6 +26,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
+                else SetInteract(false);
             
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
@@ -51,13 +52,16 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void SetInteract(bool canInteract) {
-            canBeInteractedWith = canInteract;
+            if(GetInteract != null)
+                canBeInteractedWith = canInteract;
         }
         
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
         }
+        
+        public Collider GetCollider() => objectCollider;
         
         public void SetRenderer(bool isOn) {
             if(!meshRenderer) return;
