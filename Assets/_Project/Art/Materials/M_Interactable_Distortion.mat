@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Write_Interactible
+  m_Name: M_Interactable_Distortion
   m_Shader: {fileID: -6465566751694194690, guid: 6b0533ab9a3eb9643bb55d2979833726, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -46,12 +46,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CameraRenderTexture:
+        m_Texture: {fileID: 8400000, guid: 8fd804c1ab810d3459f1e05e63d0d7ad, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Deformation_Texture:
-        m_Texture: {fileID: 2800000, guid: 2a48f58a2babd4844b2ae2a1e1122658, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8bd1867c6b0d0ba47962b3124851b493, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMap:
@@ -158,7 +162,9 @@ Material:
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
-    - _Deformation_Strength: 0.09
+    - _DebugDisplayMask: 0
+    - _DebugDisplayTexture: 0
+    - _Deformation_Strength: 0.03
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
     - _DetailNormalScale: 1
@@ -235,9 +241,10 @@ Material:
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Texture_Balance: 0.3
-    - _Texture_Balance_Correction: 0.07
+    - _Texture_Balance_Correction: 0.6
     - _Texture_Multiply: 2.17
-    - _Texture_Speed: 0.1
+    - _Texture_Pause_Interval: 0.3
+    - _Texture_Speed: 0.05
     - _Thickness: 1
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
@@ -270,8 +277,8 @@ Material:
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _Mask_Smoothstep: {r: 0, g: 0.45, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Texture_Smoothstep: {r: 0.05, g: 0.61, b: 0, a: 0}
-    - _Texture_Tiling: {r: 1, g: 3, b: 0, a: 0}
+    - _Texture_Smoothstep: {r: 0, g: 1, b: 0, a: 0}
+    - _Texture_Tiling: {r: 0.75, g: 1.5, b: 0, a: 0}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
