@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
+        public List<GlassText> GlassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         
@@ -55,11 +56,19 @@ namespace _Project.Scripts.GameServices.Services {
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
+            foreach (var glassText in GlassTexts)
+                SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
                 glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard);
+            }
+        }
+        
+        private void SetGlassTextState(GlassText text) {
+            foreach (var shard in shards) {
+                text.OnInteract(shard.IsColliding(text.transform.position), shard);
             }
         }
         

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
+using _Project.Scripts.Systems.HashSetUtil;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +15,8 @@ public class GlassText : MonoBehaviour
     private string ar;
     [SerializeField] private List<PossibleText>  possibleTexts = new List<PossibleText>();
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private ObservableHashSet<Glass> shardsOnTop;
+
 
     private int underRed = 0;
     private int underBlue = 0;
@@ -24,26 +28,53 @@ public class GlassText : MonoBehaviour
         else
             text = gameObject.AddComponent<TMP_Text>();
         ar =  text.text;
+        
+        underRed = 0;
+        underBlue = 0;
+        
+        shardsOnTop = new ObservableHashSet<Glass>();
+        shardsOnTop.onUpdate += UpdateShards;
     }
-
+    
+    internal void OnInteract(bool isUnder, Glass shard) {
+        if (isUnder) 
+            shardsOnTop.Add(shard);
+        else if(shardsOnTop.Contains(shard))
+            shardsOnTop.Remove(shard);
+    }
+    
     private void Update()
     {
+        UpdateShards();
         SetText();
     }
+    
+    private void UpdateShards() {
+        underBlue = 0;
+        underRed = 0;
 
-    private void UpdateGlass(ColorEnum colorEnum)
-    {
-        switch (colorEnum)
-        {
-            case ColorEnum.Red:
-                break;
-            case ColorEnum.Blue:
-                break;
-            case ColorEnum.Both:
-                break;
-        }
+        foreach (var shard in shardsOnTop.Items)
+            switch (shard.GetColor) {
+                case ColorEnum.Blue:
+                    underBlue++;
+                    break;
+                case ColorEnum.Red:
+                    underRed++;
+                    break;
+                case ColorEnum.Both:
+                    underBlue++;
+                    underRed++;
+                    break;
+                default:
+                    Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
+                    break;
+            }
     }
-
+    
+    void OnDisable() {
+        shardsOnTop.onUpdate -= UpdateShards;
+    }
+    
     private void SetText()
     {
         show = ar;
