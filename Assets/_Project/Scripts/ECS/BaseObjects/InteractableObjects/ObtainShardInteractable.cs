@@ -8,7 +8,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         
         [Header("Settings")]
-        [SerializeField] private Glass shard;
+        [SerializeField] private Glass[] shard;
         
         private bool initialized = false;
         private bool shardObtained = false;
@@ -23,8 +23,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             initialized = true;
+
+            if(shard.Length == 0)
+                Debug.LogError($"[ObtainShardInteractable] {gameObject.name} No shards referenced !");
             
-            shard.gameObject.SetActive(false);
+            foreach (var s in shard) {
+                s.gameObject.SetActive(false);
+            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -36,11 +41,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         void ObtainShard() {
-            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
             shardObtained = true;
-            shard.gameObject.SetActive(true);
-            shard.Initialize();
+            
+            foreach (var s in shard) {
+                s.gameObject.SetActive(false);
+                s.Initialize();
+            }
+            
             baseObject.SetInteract(false);
+            
+            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
         }
 
         public void ResetObject() {
