@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
-using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -29,6 +26,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
+
+        private MoveableObject selfMoveable;
         
         private int underRed;
         private int underBlue;
@@ -44,6 +43,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                     baseObject = component as BaseObject;
                 else
                     Debug.LogError($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
+
+                if (TryGetComponent(out MoveableObject m))
+                    selfMoveable = m;
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
@@ -88,6 +90,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectInside) {
                 if (objectOut) return;
+                interactableInBox.transform.position = transform.position;
                 if (interactableInBox.IsGrabbed()) objectOut = true;
             }
         }
@@ -112,53 +115,44 @@ namespace _Project.Scripts.ECS.BaseObjects
                         Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
                         break;
                 }
-            
-            SetVisibility();
-        }
-        
-        private void SetVisibility() {
+
             switch (objectColor) {
                 case ColorEnum.Both:
-                    baseObject.SetRenderer(underRed > 0 && underBlue > 0);
-                    baseObject.SetCollider(underRed > 0 && underBlue > 0);
-                    baseObject.SetInteract(underRed > 0 && underBlue > 0);
+                    SetVisibility(underRed > 0 && underBlue > 0);
                     break;
                 case ColorEnum.Red:
-                    baseObject.SetRenderer(underRed < 1);
-                    baseObject.SetCollider(underRed < 1);
-                    baseObject.SetInteract(underRed < 1);
+                    SetVisibility(underRed < 1);
                     break;
                 case ColorEnum.Blue:
-                    baseObject.SetRenderer(underBlue < 1);
-                    baseObject.SetCollider(underBlue < 1);
-                    baseObject.SetInteract(underBlue < 1);
-                    break;
-            }
-
-            if (objectInside && !objectOut) {
-                SwapObject();
-            }
-        }
-
-        private void SwapObject() { 
-            switch (objectColor) {
-                case ColorEnum.Both:
-                    interactableInBox?.gameObject.SetActive(underRed > 0 && underBlue > 0);
-                    break;
-                case ColorEnum.Blue:
-                    interactableInBox?.gameObject.SetActive(underBlue > 0);
-                    break;
-                case ColorEnum.Red:
-                    interactableInBox?.gameObject.SetActive(underRed > 0);
+                    SetVisibility(underBlue < 1);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
+                    break;
             }
         }
+        
+        private void SetVisibility(bool isUnder) {
+            baseObject.SetRenderer(isUnder);
+            baseObject.SetCollider(isUnder);
+            baseObject.SetInteract(isUnder);
 
-        public void ResetObject() { 
-            //Todo A modifier pour l'état en boite
+            if (objectInside && !objectOut) {
+                ActivateObjectInside(!isUnder);
+            }
+        }
+        
+        private void ActivateObjectInside(bool isUnder) { 
+            interactableInBox?.gameObject.SetActive(isUnder);
+
+            if (!selfMoveable.IsGrabbed()) return;
             
+            selfMoveable.OnInteract(ObjectInteraction.Drop);
+            PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
+            objectOut = true;
+        }
+
+        public void ResetObject() {
             underRed = 0;
             underBlue = 0;
             shardsOnTop.Clear();
@@ -166,7 +160,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!objectInside) return;
+            if (!objectInside || objectOut) return;
             
             if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
             interactableInBox?.gameObject.SetActive(false);

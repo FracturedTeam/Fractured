@@ -167,6 +167,12 @@ namespace _Project.Scripts.Player {
             return currentGrabbedObject.GetInteract;
         }
 
+        public void SetGrabObject(BaseObject grab) {
+            hasObject = true;
+            currentGrabbedObject = grab;
+            currentGrabbedObject?.OnInteract(ObjectInteraction.Grab);
+        }
+        
         public void SetDropObject() {
             hasObject = false;
             currentGrabbedObject = null;
