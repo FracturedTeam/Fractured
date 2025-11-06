@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,9 +28,25 @@ public class GlassText : MonoBehaviour
 
     private void Update()
     {
-        
+        SetText();
+    }
+
+    private void UpdateGlass(ColorEnum colorEnum)
+    {
+        switch (colorEnum)
+        {
+            case ColorEnum.Red:
+                break;
+            case ColorEnum.Blue:
+                break;
+            case ColorEnum.Both:
+                break;
+        }
+    }
+
+    private void SetText()
+    {
         show = ar;
-        
         foreach (PossibleText possibleText in possibleTexts)
         {
             if(possibleText.variableName == null)
@@ -67,19 +84,8 @@ public class GlassText : MonoBehaviour
             show = replace;
         }
         text.text = show;
-        print(TMP_TextUtilities.FindNearestWord(text, Mouse.current.position.ReadValue(), Camera.main));
-
-        int linkIndex = TMP_TextUtilities.FindIntersectingLink(text, Mouse.current.position.ReadValue(), Camera.main);
-        print(TMP_TextUtilities.FindIntersectingLink(text, Mouse.current.position.ReadValue(), Camera.main));
-        if (linkIndex != -1)
-        {
-            TMP_LinkInfo linkInfo = text.textInfo.linkInfo[linkIndex]; // Get the information about the link
-            // Do something based on what link ID or Link Text is encountered...
-            print(linkInfo.hashCode);
-        }
-        
     }
-    
+
     public void SetLinkHovering(bool on )
     {
         text.color = on ? Color.darkRed : Color.wheat;
