@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,10 +15,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 originalPosition;
         private Quaternion originalRotation;
+        private Vector3 boundExtent;
         
         [Header("Object Location Droppable")]
-        [Tooltip("The object location where he is initially at the start")]
-        [SerializeField] DropInteractableObject startLocation;
         [Tooltip("The object location where he must be put to resolve the puzzle")]
         [SerializeField] DropInteractableObject resolveLocation;
         
@@ -25,7 +25,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isGrabbed = false;
         
         private Tweener tweener;
-
+        private CountdownTimer colTimer = null;
+        
         private bool initialized = false;
         
         public void Initialize() {
@@ -34,37 +35,33 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject = component as BaseObject;
                 else 
                     Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
+                
                 baseObject?.SetInteract(true);
                 
-                if(startLocation == null)
-                    Debug.LogWarning("[MoveableObject] StartLocation is null");
                 if(resolveLocation == null)
                     Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+
+                colTimer = new CountdownTimer(0.5f);
+                colTimer.OnTimerStop += ActiveCollision;
             }
 
             initialized = true;
             
-            SetPositionOnStart();
-            
-            originalParent = transform.parent;
-            originalPosition = transform.position;
-            originalRotation = transform.rotation;
-            canBeGrab = true;
-            
-            startLocation?.Initialize();
             resolveLocation?.Initialize();
-            
-            //Set base location object
-            startLocation?.GetBaseObject().SetInteract(false);
-            startLocation?.GetBaseObject().SetCollider(false);
-            startLocation?.SetResolveLocation(false);
-            startLocation?.SetKeyObject(this);
             
             //Set resolve location object
             resolveLocation?.GetBaseObject().SetInteract(true);
             resolveLocation?.GetBaseObject().SetCollider(true);
             resolveLocation?.SetResolveLocation(true);
             resolveLocation?.SetKeyObject(this);
+            
+            originalParent = transform.parent;
+            originalPosition = transform.position;
+            originalRotation = transform.rotation;
+            
+            boundExtent = baseObject.GetCollider().bounds.extents;
+            
+            canBeGrab = true;
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -95,20 +92,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
+            tweener?.Pause();
+            tweener?.Kill();
+            DOTween.Kill(transform);
+            
+            colTimer.Pause();
+            
             baseObject.SetInteract(true);
             baseObject.SetCollider(true);
             
             isGrabbed = false;
             
             transform.SetParent(originalParent);
-            transform.position = startLocation.transform.position;
-            transform.rotation = startLocation.transform.rotation;
-            
-            startLocation?.GetBaseObject().SetInteract(false);
-            startLocation?.GetBaseObject().SetCollider(false);
+            var pos = GetGroundPos();
+            transform.position = pos;
+            /*transform.rotation = originalRotation;*/
             
             PlayerController.Instance.interact.SetDropObject();
-            
             baseObject.GetGlassInteract.ResetObject();
             
             Debug.Log("[MoveableObject] Reset object");
@@ -123,50 +123,41 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
             
-            startLocation.GetBaseObject().SetInteract(true);
-            startLocation.GetBaseObject().SetCollider(true);
-            
             Debug.Log("[MoveableObject] Grab object");
         }
 
         public void OnDrop(IInteractable other) {
             if (other == null) {
-                Debug.LogError($"[MoveableObject] Other is null !");
-                return;
-            }
+                
+                if(ObstructedSpace()) return;
 
-            if (!other.GetBaseObject().TryGetComponent(out DropInteractableObject otherDrop)) {
-                Debug.LogError("[MoveableObject] Not a drop location !");
-                return;
-            }
-
-            if (otherDrop == startLocation) {
+                var pos = GetGroundPos();
+                
                 transform.SetParent(originalParent);
-                TweenObjectDrop(startLocation.transform);
+                TweenObjectDrop(pos, transform.eulerAngles);
                 
                 baseObject.SetInteract(true);
-                baseObject.SetCollider(true);
+                colTimer.Start();
                 
-                otherDrop.OnInteract(ObjectInteraction.Drop, this);
-                
-                Debug.Log("[MoveableObject] Drop object StartLocation");
-            }
-            else if (otherDrop == resolveLocation) {
-                transform.SetParent(originalParent);
-                TweenObjectDrop(resolveLocation.transform);
-                
-                baseObject.SetInteract(false);
-                baseObject.SetCollider(false);
-                
-                otherDrop.OnInteract(ObjectInteraction.Drop, this);
-                
-                startLocation.SetInteract(false);
-                
-                Debug.Log("[MoveableObject] Drop object ResolveLocation");
+                Debug.Log("[MoveableObject] Drop on ground");
             }
             else {
-                Debug.LogWarning("[MoveableObject] Drop object Location is not the intended one");
-                return;
+                if (!other.GetBaseObject().TryGetComponent(out DropInteractableObject otherDrop)) {
+                    Debug.LogError("[MoveableObject] Not a drop location !");
+                    return;
+                }
+
+                if (otherDrop == resolveLocation) {
+                    transform.SetParent(originalParent);
+                    TweenObjectDrop(resolveLocation.transform);
+                    
+                    baseObject.SetInteract(false);
+                    baseObject.SetCollider(false);
+                    
+                    otherDrop.OnInteract(ObjectInteraction.Drop, this);
+                    
+                    Debug.Log("[MoveableObject] Drop object ResolveLocation");
+                }
             }
             
             isGrabbed = false;
@@ -174,14 +165,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void Update() {
-            if (baseObject.GetGlass) {
-                if (isGrabbed && !baseObject.GetGlassInteract.UnderGlass()) {
-                    ResetObject();
-                }
+            if (!baseObject.GetGlass) return;
+            
+            if (isGrabbed && baseObject.GetGlassInteract.UnderGlass()) {
+                Debug.Log("[MoveableObject] UnderGlass Reset");
+                ResetObject();
             }
         }
 
-        void TweenObjectOnPlayer() {
+        private void TweenObjectOnPlayer() {
             tweener.Kill();
             tweener = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
             tweener = transform.DOLocalRotate(Vector3.zero, 0.5f);
@@ -189,13 +181,41 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void TweenObjectDrop(Transform t) {
             tweener.Kill();
-            tweener = transform.DOMove(t.position, 0.5f);
-            tweener = transform.DORotate(t.eulerAngles, 0.5f);
+            TweenObjectDrop(t.position, t.eulerAngles);
         }
         
-        private void SetPositionOnStart() {
-            transform.position = startLocation.transform.position;
-            transform.rotation = startLocation.transform.rotation;
+        private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
+            tweener.Kill();
+            tweener = transform.DOMove(pos, 0.5f);
+            tweener = transform.DORotate(rot, 0.5f);
+        }
+
+        public void ActiveCollision() {
+            baseObject.SetCollider(true);
+        }
+
+        private bool ObstructedSpace() {
+            var playerPos = PlayerController.Instance.transform.position;
+            var dir = PlayerController.Instance.movement.previousMoveDir;
+            
+            Physics.Raycast(playerPos, dir,  out var hit, 2f);
+            if (hit.collider) {
+                Debug.Log("[MoveableObject] Something in the way");
+                return true;
+            }
+            return false;
+        }
+        
+        private Vector3 GetGroundPos() {
+            var playerPos = PlayerController.Instance.transform.position;
+            var dir = PlayerController.Instance.movement.previousMoveDir;
+
+            Physics.Raycast(playerPos, Vector3.down, out var groundLevel);
+                
+            var pos = playerPos + dir.normalized * (boundExtent.x * 3);
+            pos.y = groundLevel.point.y + boundExtent.y;
+            
+            return pos;
         }
         
         public bool CanBeGrab() {

@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -21,11 +18,18 @@ namespace _Project.Scripts.ECS {
         private PolygonCollider2D polygonCollider2D;
         private Vector2 mousePosition;
         
-        
         private bool isHeld;
         internal bool IsActivated;
 
+        private bool initialized = false;
+        
         private void Start() {
+            if (!initialized) {
+                Initialize();
+            }
+        }
+
+        public void Initialize() {
             mainCamera = Camera.main;
             
             if(mainCamera == null)
@@ -36,6 +40,8 @@ namespace _Project.Scripts.ECS {
             
             if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
                 polygonCollider2D = col as PolygonCollider2D;
+            
+            initialized = true;
         }
 
         private void Update() {
@@ -72,6 +78,10 @@ namespace _Project.Scripts.ECS {
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
+        }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
         }
     }
 }
