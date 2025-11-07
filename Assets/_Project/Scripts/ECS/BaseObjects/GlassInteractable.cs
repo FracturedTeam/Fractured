@@ -145,6 +145,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private void ActivateObjectInside(bool isUnder) { 
             interactableInBox?.gameObject.SetActive(isUnder);
 
+            if(!selfMoveable) return;
             if (!selfMoveable.IsGrabbed()) return;
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);

@@ -97,13 +97,13 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     public void HandleUpdate() {
+        if(rb.isKinematic) return;
+        
         MeshRotation();
         CheckMethods();
         UpdateDrag();
         
-        if(forwardDir != cam.transform.forward)
-            UpdateCameraDir();
-        else if(rightDir != cam.transform.right)
+        if(forwardDir != cam.transform.forward || rightDir != cam.transform.right)
             UpdateCameraDir();
     }
 
