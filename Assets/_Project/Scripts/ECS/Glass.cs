@@ -18,11 +18,21 @@ namespace _Project.Scripts.ECS {
         private PolygonCollider2D polygonCollider2D;
         private Vector2 mousePosition;
         
+        private Sprite originalSprite;
         
         private bool isHeld;
         internal bool IsActivated;
 
+        private bool initialized = false;
+        private bool canInteract = true;
+        
         private void Start() {
+            if (!initialized) {
+                Initialize();
+            }
+        }
+
+        public void Initialize() {
             mainCamera = Camera.main;
             
             if(mainCamera == null)
@@ -33,9 +43,15 @@ namespace _Project.Scripts.ECS {
             
             if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
                 polygonCollider2D = col as PolygonCollider2D;
+            
+            originalSprite = shardSprite?.sprite;
+            
+            initialized = true;
         }
 
         private void Update() {
+            if(!canInteract) return;
+            
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
             {
                 transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
@@ -43,15 +59,15 @@ namespace _Project.Scripts.ECS {
             }
         }
         
-        internal void ChangeHoldingState(bool isOn)
-        {
+        internal void ChangeHoldingState(bool isOn) {
+            if(!canInteract) return;
+            
             isHeld = isOn;
             if (isOn)
                 ChangeStateActivation(false);
         }
 
-        internal void ChangeStateActivation(bool isOn)
-        {
+        internal void ChangeStateActivation(bool isOn) {
             IsActivated = isOn;
             
             if(!shardSprite)
@@ -62,13 +78,29 @@ namespace _Project.Scripts.ECS {
         }
 
         ///Get if an object is colliding with any the colliders 2D
-        internal bool IsColliding(Vector3 position, bool mouse = false)
-        {
+        internal bool IsColliding(Vector3 position, bool mouse = false) {
             if(!mainCamera || (!IsActivated && !mouse))
                 return false;
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
+        }
+
+        public void DisplayMemory(Sprite sprite) {
+            SetInteract(false);
+            shardSprite.sprite = sprite;
+            shardSprite.color = Color.white;
+        }
+
+        public void LeaveMemory() {
+            SetInteract(true);
+            shardSprite.sprite = originalSprite;
+            shardSprite.color = new Color(1, 1, 1, 0.4f);
+        }
+        
+
+        private void SetInteract(bool canInteract) {
+            this.canInteract = canInteract;
         }
 
         public void SetEditAnywhere(bool editAnywhere) {

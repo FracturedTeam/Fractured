@@ -23,6 +23,9 @@ namespace _Project.Scripts.GameServices {
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
             #endif
+            
+            //Populate the glassShardService
+            PopulateShardOnStart();
         }
 
         private void InitializeGameSystems() {
@@ -62,11 +65,6 @@ namespace _Project.Scripts.GameServices {
             debugSystemInitializer.SetDebugSystem(debugSystem);
         }
         #endif
-        
-        private void Start() {
-            //Populate the glassShardService
-            PopulateShardOnStart();
-        }
         
         private void Update() {
             gameSystems.Tick();

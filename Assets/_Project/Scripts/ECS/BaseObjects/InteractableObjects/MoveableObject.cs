@@ -138,7 +138,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
-                //baseObject.SetCollider(true);
                 
                 Debug.Log("[MoveableObject] Drop on ground");
             }
