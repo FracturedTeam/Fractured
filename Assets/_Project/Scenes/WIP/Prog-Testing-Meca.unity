@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 128590847}
   - component: {fileID: 128590846}
-  - component: {fileID: 128590848}
   - component: {fileID: 128590849}
   m_Layer: 0
   m_Name: Directional Light
@@ -218,18 +217,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &128590848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128590845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.HDAdditionalLightData
 --- !u!114 &128590849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,9 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassInteractable
-  color: 0
-  swapObject: 0
-  alternateObjectMesh: {fileID: 0}
+  objectColor: 1
+  objectInside: 0
+  interactableInBox: {fileID: 0}
   pos2D: {x: 722.339, y: 277.8859}
   radius2D: 13.390971
   showColliders: 1
@@ -462,7 +449,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 19c7e30e8ff60e140a215711b5e8ae6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -612,9 +599,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassInteractable
-  color: 2
-  swapObject: 0
-  alternateObjectMesh: {fileID: 0}
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
   pos2D: {x: 490, y: 227.782}
   radius2D: 17.78068
   showColliders: 1
@@ -806,9 +793,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassInteractable
-  color: 1
-  swapObject: 0
-  alternateObjectMesh: {fileID: 0}
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
   pos2D: {x: 590.58954, y: 376.9962}
   radius2D: 13.334142
   showColliders: 1
@@ -849,7 +836,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c6d8784ea833c0042b191a48f13062f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -890,56 +877,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.108, y: 3.127, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &683397878
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 683397880}
-  - component: {fileID: 683397879}
-  m_Layer: 0
-  m_Name: PuzzleManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &683397879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683397878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880a52dcc3c1d9946afd24125440250b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  cameraTransform: {fileID: 1892599664}
-  gamePlayElements:
-  - {fileID: 241144061}
-  glassShards:
-  - {fileID: 1269384143}
-  - {fileID: 2093458450}
---- !u!4 &683397880
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683397878}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1026,7 +963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &761917978
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1043,7 +980,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 79.51062, y: 19}
+  m_AnchoredPosition: {x: -379, y: -37}
   m_SizeDelta: {x: 200, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &761917979
@@ -1091,7 +1028,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <link = "glass">Good luck</link>, {0}, jkkkjjjjjjjjjjjjjjjopjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+  m_text: <link = "glass">Good luck</link> FEUR? <link = "glass">jvais me tuer</link>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1185,13 +1122,13 @@ MonoBehaviour:
   ShowCharacters: 0
   ShowWords: 0
   ShowLinks: 1
-  ShowLines: 1
+  ShowLines: 0
   ShowMeshBounds: 0
   ShowTextBounds: 0
-  ObjectStats: 'Characters: 65   Words: 4   Spaces: 3   Sprites: 0   Links: 1
+  ObjectStats: 'Characters: 29   Words: 6   Spaces: 5   Sprites: 0   Links: 2
 
     Lines:
-    5   Pages: 1'
+    4   Pages: 1'
   m_TextComponent: {fileID: 761917980}
 --- !u!114 &761917983
 MonoBehaviour:
@@ -1564,7 +1501,6 @@ GameObject:
   - component: {fileID: 1892599664}
   - component: {fileID: 1892599663}
   - component: {fileID: 1892599662}
-  - component: {fileID: 1892599665}
   - component: {fileID: 1892599666}
   m_Layer: 0
   m_Name: Main Camera
@@ -1647,18 +1583,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1892599665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1892599661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.HDAdditionalCameraData
 --- !u!114 &1892599666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1708,17 +1632,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4116017247447547898, guid: 4a5011cd4c02dfb48a5dab3ae5c85110, type: 3}
   m_PrefabInstance: {fileID: 5731689266298511263}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2093458450 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4253787332961916524, guid: 4a5011cd4c02dfb48a5dab3ae5c85110, type: 3}
-  m_PrefabInstance: {fileID: 5731689266298511263}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 723a75646ece6a34aafaba6fc0290195, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Glass
 --- !u!1001 &5731689266298511263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1836,5 +1749,4 @@ SceneRoots:
   - {fileID: 241144058}
   - {fileID: 459486700}
   - {fileID: 199771370}
-  - {fileID: 683397880}
   - {fileID: 713555472}

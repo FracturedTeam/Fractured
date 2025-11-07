@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        public List<GlassText> GlassTexts {get; private set;}
+        public List<GlassText> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         
@@ -19,6 +19,7 @@ namespace _Project.Scripts.GameServices.Services {
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
+            glassTexts = new List<GlassText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
@@ -34,19 +35,23 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
+            glassTexts.Clear();
             
             interactables.AddRange(_interactable);
             shards.AddRange(_shards);
+            glassTexts.AddRange(_texts);
             
             Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable");
             Debug.Log($"[GlassShardService] Populating {shards.Count} shards");
+            Debug.Log($"[GlassShardService] Populating {glassTexts.Count} texts");
             
             UpdateInteractableObjects();
         }
+        
         
         public void Tick() {
             HandleShardMovement();
@@ -56,8 +61,8 @@ namespace _Project.Scripts.GameServices.Services {
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            foreach (var glassText in GlassTexts)
-                SetGlassTextState(glassText);
+            foreach (var glassText in glassTexts)
+              SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
@@ -68,7 +73,11 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.transform.position), shard);
+                foreach (var pos in text.TagPositions)
+                {
+                    text.OnInteract(shard.IsColliding(pos), shard);
+                }
+
             }
         }
         

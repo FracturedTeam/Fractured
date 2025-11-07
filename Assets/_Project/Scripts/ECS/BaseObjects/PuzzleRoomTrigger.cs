@@ -10,10 +10,12 @@ namespace _Project.Scripts.ECS.InteractableObjects {
         public BaseObject[] interactable;
         [Tooltip("Shards to solve the room")]
         public Glass[] shards;
+        [Tooltip("Texts")]
+        public GlassText[] texts;
 
         void OnTriggerEnter(Collider other) {
             if (other.CompareTag("Player")) {
-                GameInitializer.Instance.UpdatePuzzleRoom(interactable, shards);
+                GameInitializer.Instance.UpdatePuzzleRoom(interactable, shards, texts);
             }
         }
         

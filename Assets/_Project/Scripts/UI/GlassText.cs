@@ -13,6 +13,7 @@ public class GlassText : MonoBehaviour
     private TMP_Text text;
     private string show;
     private string ar;
+    internal List<Vector2> TagPositions = new List<Vector2>();
     [SerializeField] private List<PossibleText>  possibleTexts = new List<PossibleText>();
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
     private ObservableHashSet<Glass> shardsOnTop;
@@ -47,6 +48,12 @@ public class GlassText : MonoBehaviour
     {
         UpdateShards();
         SetText();
+        
+        foreach (var t in text.textInfo.linkInfo)
+        {
+            print(underBlue);
+            print(underRed);
+        }
     }
     
     private void UpdateShards() {
@@ -119,7 +126,35 @@ public class GlassText : MonoBehaviour
 
     public void SetLinkHovering(bool on )
     {
-        text.color = on ? Color.darkRed : Color.wheat;
+       text.color = on ? Color.darkRed : Color.wheat;
+    }
+    
+    Vector2 CalcLinkCenterPosition(TMP_LinkInfo linkInfo)
+    {
+        Vector3 bottomLeft = Vector3.zero;
+        Vector3 topRight = Vector3.zero;
+
+        float maxAscender = -Mathf.Infinity;
+        float minDescender = Mathf.Infinity;
+        
+        TMP_CharacterInfo currentCharInfo = linkInfo.textComponent.textInfo.characterInfo[linkInfo.linkTextfirstCharacterIndex];
+
+        maxAscender = Mathf.Max(maxAscender, currentCharInfo.ascender);
+        minDescender = Mathf.Min(minDescender, currentCharInfo.descender);
+
+        bottomLeft = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.descender, 0);
+
+        bottomLeft = transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
+        topRight = transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
+
+        float width = topRight.x - bottomLeft.x;
+        float height = topRight.y - bottomLeft.y;
+
+        Vector2 centerPosition = bottomLeft;
+        centerPosition.x += width / 2;
+        centerPosition.y += height / 2;
+
+        return centerPosition;
     }
 
     [Serializable]
