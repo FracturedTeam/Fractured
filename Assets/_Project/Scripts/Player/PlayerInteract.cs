@@ -150,7 +150,7 @@ namespace _Project.Scripts.Player {
                     var index = 0;
                     var closestDist = 0f;
                     var closestAngle = 0f;
-                    for (int i = 0; i < size; i++) {
+                    for (var i = 0; i < size; i++) {
                         if (!results[index].GetComponent<BaseObject>().CanBeInteractedWith()) continue;
                         
                         var dist = Vector3.Distance(transform.position, results[i].transform.position);
@@ -177,14 +177,14 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
             }
             else if (potentialInteraction.CanBeInteractedWith()) {
-                if (potentialInteraction.TryGetComponent(out DropInteractableObject drop)) {
+                if (potentialInteraction.TryGetComponent(out KeyInteractable drop) && !drop.Completed()) {
                     if (drop && !hasObject) {
                         playerNeedKey = true;
                         CanInteract = true;
                     }
                     else {
                         playerNeedKey = false;
-                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentInteraction;
+                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject(currentInteraction);
                     }
                 }
                 else {
@@ -230,8 +230,8 @@ namespace _Project.Scripts.Player {
         private bool CanDrop() {
             if (potentialInteraction == null) return hasObject && currentInteraction != null;
             
-            if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
-                return hasObject && currentInteraction != null && drop != null;
+            if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
+                return hasObject && currentInteraction != null && drop != null && !drop.Completed();
             
             return false;
         }
@@ -240,7 +240,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null;
+                return memory != null && memory.MemoryUnlocked();
             
             return false;
         }

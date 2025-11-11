@@ -17,4 +17,5 @@ namespace _Project.Scripts.Interfaces {
         public void OnGrab(IInteractable other = null);
         public void OnDrop(IInteractable other);
     }
+    
 }
