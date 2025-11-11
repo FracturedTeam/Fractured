@@ -13,7 +13,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 boundExtent;
         
-        [Header("Object Location Droppable")]
+        [Header("Key Settings")]
         [Tooltip("The object location where he must be put to resolve the puzzle")]
         [SerializeField] private KeyInteractable keyObjectNeeded;
         [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]

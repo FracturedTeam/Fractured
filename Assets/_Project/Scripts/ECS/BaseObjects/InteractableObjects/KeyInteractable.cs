@@ -11,8 +11,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyUsed;
 
         private bool initialized = false;
+        protected bool completed = false;
         
-        public void Initialize() {
+        public virtual void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component))
                     baseObject = component as BaseObject;
@@ -26,7 +27,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             initialized = true;
         }
 
-        public void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
+        public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
+            if(completed) return;
+            
             if (interaction is not ObjectInteraction.Drop) {
                 Debug.LogError($"[KeyInteractable] Interaction is not Drop");
                 return;
@@ -57,7 +60,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         protected virtual void ResolvePuzzle() {
             Debug.Log("[KeyInteractable] Resolve Puzzle");
-            
+
+            completed = true;
             baseObject.SetInteract(false);
         }
 
@@ -65,7 +69,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             //Voir le reset qu'il y a besoin de faire ici - Si il y a besoin
         }
 
-        public BaseObject GetBaseObject() {
+        public virtual BaseObject GetBaseObject() {
             return baseObject;
         }
 
@@ -80,6 +84,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             keyObject.Add(key);
             
             Debug.Log($"[KeyInteractable] Added Key Object {keyObject.Count}");
+        }
+
+        public bool Completed() {
+            return completed;
         }
     }
 

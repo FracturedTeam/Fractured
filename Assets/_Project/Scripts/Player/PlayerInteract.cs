@@ -177,7 +177,7 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
             }
             else if (potentialInteraction.CanBeInteractedWith()) {
-                if (potentialInteraction.TryGetComponent(out KeyInteractable drop)) {
+                if (potentialInteraction.TryGetComponent(out KeyInteractable drop) && !drop.Completed()) {
                     if (drop && !hasObject) {
                         playerNeedKey = true;
                         CanInteract = true;
@@ -231,7 +231,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return hasObject && currentInteraction != null;
             
             if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
-                return hasObject && currentInteraction != null && drop != null;
+                return hasObject && currentInteraction != null && drop != null && !drop.Completed();
             
             return false;
         }
@@ -240,7 +240,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null;
+                return memory != null && memory.MemoryUnlocked();
             
             return false;
         }
