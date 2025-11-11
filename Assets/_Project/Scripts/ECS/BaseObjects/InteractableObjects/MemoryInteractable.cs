@@ -1,5 +1,6 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -12,7 +13,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private Glass memoryShard;
         
-        private bool isViewing = false;
+        private bool isUnlocked = true;
         
         public void Initialize() {
             if (!initialized) {
@@ -28,6 +29,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if(!isUnlocked) return;
+            
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
                     DisplayMemory();
@@ -44,13 +47,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         void DisplayMemory() {
             Debug.Log($"[MemoryInteractable] Displaying memory");
             
-            isViewing = true;
             baseObject.SetInteract(false);
             memoryShard.DisplayMemory(memorySprite);
         }
 
         private void StopMemoryInteraction() {
-            isViewing = false;
             baseObject.SetInteract(true);
             memoryShard.LeaveMemory();
             
@@ -63,6 +64,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public BaseObject GetBaseObject() {
             return baseObject;
+        }
+
+        public void SetUnlocked(bool value) {
+            isUnlocked = value;
+        }
+        
+        public bool MemoryUnlocked() {
+            return isUnlocked;
         }
     }
 }

@@ -1,11 +1,9 @@
-using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -13,18 +11,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         private Transform originalParent;
         
-        private Vector3 originalPosition;
-        private Quaternion originalRotation;
         private Vector3 boundExtent;
         
-        [Header("Object Location Droppable")]
+        [Header("Key Settings")]
         [Tooltip("The object location where he must be put to resolve the puzzle")]
-        [SerializeField] DropInteractableObject resolveLocation;
+        [SerializeField] private KeyInteractable keyObjectNeeded;
+        [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
+        [SerializeField] private ObjectType objectType;
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
         
-        private Tweener tweener;
+        private Tweener tween;
         private CountdownTimer colTimer = null;
         
         private bool initialized = false;
@@ -38,27 +36,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 baseObject?.SetInteract(true);
                 
-                if(resolveLocation == null)
+                if(keyObjectNeeded == null)
                     Debug.LogWarning("[MoveableObject] ResolveLocation is null");
 
                 colTimer = new CountdownTimer(0.5f);
                 colTimer.OnTimerStop += ActiveCollision;
+                
+                keyObjectNeeded?.Initialize();
+            
+                //Set resolve location object
+                keyObjectNeeded?.GetBaseObject().SetInteract(true);
+                keyObjectNeeded?.GetBaseObject().SetCollider(true);
+                keyObjectNeeded?.SetKeyObject(GetBaseObject());
             }
 
             initialized = true;
             
-            resolveLocation?.Initialize();
-            
-            //Set resolve location object
-            resolveLocation?.GetBaseObject().SetInteract(true);
-            resolveLocation?.GetBaseObject().SetCollider(true);
-            resolveLocation?.SetResolveLocation(true);
-            resolveLocation?.SetKeyObject(this);
-            
             originalParent = transform.parent;
-            originalPosition = transform.position;
-            originalRotation = transform.rotation;
-            
             boundExtent = baseObject.GetCollider().bounds.extents;
             
             canBeGrab = true;
@@ -92,8 +86,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
-            tweener?.Pause();
-            tweener?.Kill();
+            tween?.Pause();
+            tween?.Kill();
             DOTween.Kill(transform);
             
             colTimer.Pause();
@@ -106,7 +100,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             var pos = GetGroundPos();
             transform.position = pos;
-            /*transform.rotation = originalRotation;*/
             
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract.ResetObject();
@@ -142,21 +135,26 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 Debug.Log("[MoveableObject] Drop on ground");
             }
             else {
-                if (!other.GetBaseObject().TryGetComponent(out DropInteractableObject otherDrop)) {
-                    Debug.LogError("[MoveableObject] Not a drop location !");
+                if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
+                    Debug.LogError("[MoveableObject] Not a key location !");
                     return;
                 }
 
-                if (otherDrop == resolveLocation) {
+                if (keyObject == keyObjectNeeded) {
                     transform.SetParent(originalParent);
-                    TweenObjectDrop(resolveLocation.transform);
+                    TweenObjectDrop(keyObjectNeeded.transform);
                     
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
                     
-                    otherDrop.OnInteract(ObjectInteraction.Drop, this);
+                    keyObject.OnInteract(ObjectInteraction.Drop, this);
                     
-                    Debug.Log("[MoveableObject] Drop object ResolveLocation");
+                    Debug.Log("[MoveableObject] key location");
+                }
+                else {
+                    Debug.Log("[MoveableObject] key is not for this object");
+                    
+                    return;
                 }
             }
             
@@ -174,23 +172,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void TweenObjectOnPlayer() {
-            tweener.Kill();
-            tweener = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
-            tweener = transform.DOLocalRotate(Vector3.zero, 0.5f);
+            tween.Kill();
+            tween = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
+            tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
         }
         
         private void TweenObjectDrop(Transform t) {
-            tweener.Kill();
+            tween.Kill();
             TweenObjectDrop(t.position, t.eulerAngles);
         }
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
-            tweener.Kill();
-            tweener = transform.DOMove(pos, 0.5f);
-            tweener = transform.DORotate(rot, 0.5f);
+            tween.Kill();
+            tween = transform.DOMove(pos, 0.5f);
+            tween = transform.DORotate(rot, 0.5f);
         }
 
-        public void ActiveCollision() {
+        private void ActiveCollision() {
             baseObject.SetCollider(true);
         }
 
