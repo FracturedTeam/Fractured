@@ -27,10 +27,12 @@ namespace _Project.Scripts.UI {
 
             if (e.needKey)
                 interactionText.text = "Find a key";
+            else if (e.memory)
+                interactionText.text = "E to leave memory";
             else
                 interactionText.text = "E to Interact";
             
-            tweener = interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
+            tweener = e.memory ? interactionUI.DOFade(1f, 0.25f) : interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
         }
     }
 }
