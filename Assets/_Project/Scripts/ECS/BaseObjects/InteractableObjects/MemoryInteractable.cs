@@ -1,6 +1,5 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -12,8 +11,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private Glass memoryShard;
-        
-        private bool isUnlocked = true;
+
+        private KeyInteractable key;
         
         public void Initialize() {
             if (!initialized) {
@@ -21,6 +20,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject = b;
                 else
                     Debug.LogError($"[MemoryInteractable] Cannot find {nameof(BaseObject)} in {nameof(MemoryInteractable)}");
+                
+                if(TryGetComponent(out KeyInteractable k))
+                    key = k;
             }
             
             initialized = true;
@@ -29,7 +31,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(!isUnlocked) return;
+            if (key) {
+                if(!key.Completed()) return;
+            }
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
@@ -65,13 +69,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public BaseObject GetBaseObject() {
             return baseObject;
         }
-
-        public void SetUnlocked(bool value) {
-            isUnlocked = value;
-        }
         
-        public bool MemoryUnlocked() {
-            return isUnlocked;
+        public KeyInteractable GetKeyInteractable() {
+            return key;
+        }
+
+        public bool Unlock() {
+            return !key || key.Completed();
         }
     }
 }

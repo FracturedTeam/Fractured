@@ -35,6 +35,9 @@ namespace _Project.Scripts.UI {
                 Interaction.UseDoor  => "use door",
                 Interaction.UseKey =>  "use key",
                 Interaction.UseFragment => "use fragment",
+                Interaction.needFragment => "need fragment",
+                Interaction.needKey  => "need key",
+                Interaction.needSomethingElse => "need something else",
                 _ => "Not supported"
             };
             

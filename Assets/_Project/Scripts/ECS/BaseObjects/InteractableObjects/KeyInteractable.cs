@@ -11,7 +11,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyUsed;
 
         private bool initialized = false;
-        protected bool completed = false;
+        private bool completed = false;
         
         public virtual void Initialize() {
             if (!initialized) {

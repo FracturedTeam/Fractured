@@ -6,6 +6,9 @@ namespace _Project.Scripts.Enums {
         UseDoor,
         ObtainShard,
         EnterMemory,
-        LeaveMemory
+        LeaveMemory,
+        needKey,
+        needFragment,
+        needSomethingElse
     }
 }

@@ -132,8 +132,8 @@ namespace _Project.Scripts.Player {
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
 
-            CanPlayerInteract();
             HandleInteraction();
+            CanPlayerInteract();
         }
 
         void HandleInteraction() {
@@ -182,9 +182,12 @@ namespace _Project.Scripts.Player {
                 if (potentialInteraction.TryGetComponent(out KeyInteractable drop) && !drop.Completed()) {
                     if (drop && !HasObject) { //Show something is needed
                         CanInteract = true;
+                        Debug.Log($"[PlayerInteract] Drop no object ");
                     }
-                    else { //Anticipate possibly showing not good object
-                        CanInteract = canPlayerInteract && size > 0 && HasObject && drop.GetKeyObject(currentInteraction);
+                    else if(drop && HasObject){ //Anticipate possibly showing not good object
+                        CanInteract = true;
+                        //CanInteract = canPlayerInteract && size > 0 && HasObject && drop.GetKeyObject(currentInteraction);
+                        Debug.Log($"[PlayerInteract] Drop has object ");
                     }
                 }
                 else {
@@ -212,8 +215,13 @@ namespace _Project.Scripts.Player {
             }
             
             if (potentialInteraction.TryGetComponent(out DoorInteractable door) && door) {
-                if (potentialInteraction.GetComponent<UnlockedDoor>()) {
-                    interactionType = door.DoorUnlocked() ? Interaction.UseDoor : Interaction.UseKey;
+                if (potentialInteraction.GetComponent<KeyInteractable>()) {
+                    if (door.Unlock())
+                        interactionType = Interaction.UseDoor;
+                    else if (HasObject)
+                        interactionType = door.GetKeyInteractable().GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.needSomethingElse;
+                    else
+                        interactionType = Interaction.needKey;
                     RaiseInteraction();
                     return;
                 }
@@ -224,12 +232,13 @@ namespace _Project.Scripts.Player {
             }
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable m) && m) {
-                if (potentialInteraction.GetComponent<PedestalInteractable>()) {
-                    if (m.MemoryUnlocked())
+                if (potentialInteraction.GetComponent<KeyInteractable>()) {
+                    if (m.Unlock())
                         interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
+                    else if(HasObject)
+                        interactionType = m.GetKeyInteractable().GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
                     else
-                        interactionType = Interaction.UseFragment;
-                    
+                        interactionType = Interaction.needFragment;
                     RaiseInteraction();
                     return;
                 }
@@ -293,7 +302,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null && memory.MemoryUnlocked();
+                return memory != null && memory.Unlock();
             
             return false;
         }
