@@ -123,12 +123,9 @@ public class GlassText : MonoBehaviour
         }
         text.text = show;
     }
-
-    public void SetLinkHovering(bool on )
-    {
-       text.color = on ? Color.darkRed : Color.wheat;
-    }
     
+    
+    /*
     Vector2 CalcLinkCenterPosition(TMP_LinkInfo linkInfo)
     {
         Vector3 bottomLeft = Vector3.zero;
@@ -156,6 +153,7 @@ public class GlassText : MonoBehaviour
 
         return centerPosition;
     }
+    */
 
     [Serializable]
     private struct PossibleText

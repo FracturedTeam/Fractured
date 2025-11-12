@@ -73,11 +73,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
-                foreach (var pos in text.TagPositions)
-                {
-                    text.OnInteract(shard.IsColliding(pos), shard);
-                }
-
+                text.OnInteract(shard.IsColliding(text.transform.position), shard);
             }
         }
         
