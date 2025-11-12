@@ -49,10 +49,10 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void Tick() {
             HandleShardMovement();
-            UpdateGlassInteraction();
+            UpdateGlassInteraction(); //Expensive methods
         }
 
-        private void UpdateGlassInteraction() {
+        private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
         }
@@ -64,12 +64,9 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         ///Handles player input on the shards & grab priority
-        private void HandleShardMovement()
-        {
-            foreach (var shard in shards)
-            {
-                if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass)
-                {
+        private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
+            foreach (var shard in shards) {
+                if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
                     if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
                         continue;
                     
@@ -84,14 +81,14 @@ namespace _Project.Scripts.GameServices.Services {
 
                     return;
                 }
-                if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass)
-                {
+                
+                if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
                     currentGlass.ChangeHoldingState(false);
                     currentGlass = null;
                     return;
                 }
-                if (Mouse.current.rightButton.wasPressedThisFrame && !currentGlass)
-                {
+               
+                if (Mouse.current.rightButton.wasPressedThisFrame && !currentGlass) {
                     if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
                         continue;
                     
@@ -100,8 +97,7 @@ namespace _Project.Scripts.GameServices.Services {
                 }
             }
         }
-
-
+        
         public void SetEditableArea(bool inArea) {
             PlayerInEditableArea = inArea;
         }
