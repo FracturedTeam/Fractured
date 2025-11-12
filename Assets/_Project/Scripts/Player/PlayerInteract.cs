@@ -13,6 +13,7 @@ namespace _Project.Scripts.Player {
     public struct InteractEvent : IEvent {
         public bool showInteraction;
         public bool needKey;
+        public bool memory;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -25,23 +26,27 @@ namespace _Project.Scripts.Player {
         //Pre allocate space for collider (10 will be completely sufficient)
         private readonly Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
-        private BaseObject currentGrabbedObject;
+        private BaseObject currentInteraction;
         
         public bool hasObject { get; private set; }
         
         private bool canPlayerInteract = false;
         private bool playerNeedKey = false;
         private bool canInteract;
+        private bool inMemory = false;
+
+        private PlayerController player;
         
         public bool CanInteract {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-
+                
                 canInteract = value;
                 EventBus<InteractEvent>.Raise(new InteractEvent {
                     showInteraction = value,
-                    needKey = playerNeedKey
+                    needKey = playerNeedKey,
+                    memory = inMemory
                 });
             }
         }
@@ -52,6 +57,9 @@ namespace _Project.Scripts.Player {
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
 
+            if(TryGetComponent(out PlayerController _player)) player = _player;
+            else Debug.LogWarning("[PlayerController] No PlayerController found");
+            
             size = 0;
         }
 
@@ -64,10 +72,19 @@ namespace _Project.Scripts.Player {
         }
         
         private void Interact() {
+            if (inMemory) {
+                if(currentInteraction != null) LeaveMemory();
+                else Debug.LogError("[PlayerInteract] Current memory interaction is null");
+                
+                return;
+            }
+            
             if(CanGrab())
                 GrabObject();
             else if(CanDrop())
                 DropObject();
+            else if(IsMemory())
+                MemoryInteraction();
             else if(CanContextualInteract())
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
             else
@@ -76,19 +93,42 @@ namespace _Project.Scripts.Player {
 
         private void GrabObject() {
             hasObject = true;
-            currentGrabbedObject = potentialInteraction;
-            currentGrabbedObject?.OnInteract(ObjectInteraction.Grab);
+            currentInteraction = potentialInteraction;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
             
             Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
 
         private void DropObject() {
-            Debug.Log($"[PlayerInteract] Dropping {currentGrabbedObject.name} on {potentialInteraction?.name}");
+            Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
             
             if(potentialInteraction != null)
-                currentGrabbedObject?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+                currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
             else
-                currentGrabbedObject?.OnInteract(ObjectInteraction.Drop);
+                currentInteraction?.OnInteract(ObjectInteraction.Drop);
+        }
+
+        private void MemoryInteraction() {
+            currentInteraction = potentialInteraction;
+            currentInteraction?.OnInteract(ObjectInteraction.EnterMemory);
+            inMemory = true;
+            SetInteract(false);
+            
+            player.movement.FreezeController();
+            
+            Debug.Log($"[PlayerInteract] Interact with memory");
+        }
+
+        private void LeaveMemory() {
+            currentInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
+            currentInteraction = null;
+            
+            inMemory = false;
+            SetInteract(true);
+            
+            player.movement.UnfreezeController();
+            
+            Debug.Log($"[PlayerInteract] Leave memory");
         }
         
         public void HandleUpdate(Vector3 playerDir) {
@@ -144,7 +184,7 @@ namespace _Project.Scripts.Player {
                     }
                     else {
                         playerNeedKey = false;
-                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentGrabbedObject;
+                        CanInteract = canPlayerInteract && size > 0 && hasObject && drop.GetKeyObject().GetBaseObject() == currentInteraction;
                     }
                 }
                 else {
@@ -164,34 +204,43 @@ namespace _Project.Scripts.Player {
         }
 
         public IInteractable GetCurrentInteractable() {
-            return currentGrabbedObject.GetInteract;
+            return currentInteraction.GetInteract;
         }
 
         public void SetGrabObject(BaseObject grab) {
             hasObject = true;
-            currentGrabbedObject = grab;
-            currentGrabbedObject?.OnInteract(ObjectInteraction.Grab);
+            currentInteraction = grab;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
         }
         
         public void SetDropObject() {
             hasObject = false;
-            currentGrabbedObject = null;
+            currentInteraction = null;
         }
         
         private bool CanGrab() {
             if(potentialInteraction ==  null) return false;
             
             if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
-                return CanInteract && !hasObject && currentGrabbedObject == null && moveable.CanBeGrab();
+                return CanInteract && !hasObject && currentInteraction == null && moveable.CanBeGrab();
             
             return false;
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null) return hasObject && currentGrabbedObject != null;
+            if (potentialInteraction == null) return hasObject && currentInteraction != null;
             
             if (potentialInteraction.TryGetComponent(out DropInteractableObject drop))
-                return hasObject && currentGrabbedObject != null && drop != null;
+                return hasObject && currentInteraction != null && drop != null;
+            
+            return false;
+        }
+
+        private bool IsMemory() {
+            if (potentialInteraction == null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
+                return memory != null;
             
             return false;
         }
