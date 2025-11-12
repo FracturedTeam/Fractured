@@ -36,6 +36,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
             
             if (interaction is not ObjectInteraction.Contextual) return;
+            PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.transform.position = linkedDoor.GetExitPoint().position;
             
             if (doorType is not DoorType.Big) return;
@@ -58,7 +59,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return exitPoint;
         }
         
-        private bool DoorUnlocked() {
+        public bool DoorUnlocked() {
             return isUnlocked;
         }
     }

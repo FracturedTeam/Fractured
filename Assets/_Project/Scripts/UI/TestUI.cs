@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
@@ -25,14 +27,18 @@ namespace _Project.Scripts.UI {
         void ShowInteraction(InteractEvent e) {
             tweener.Kill();
 
-            if (e.needKey)
-                interactionText.text = "Find a key";
-            else if (e.memory)
-                interactionText.text = "E to leave memory";
-            else
-                interactionText.text = "E to Interact";
+            interactionText.text = e.interaction switch {
+                Interaction.Grab => "grab",
+                Interaction.ObtainShard => "obtain shard",
+                Interaction.EnterMemory => "enter memory",
+                Interaction.LeaveMemory => "leave memory",
+                Interaction.UseDoor  => "use door",
+                Interaction.UseKey =>  "use key",
+                Interaction.UseFragment => "use fragment",
+                _ => "Not supported"
+            };
             
-            tweener = e.memory ? interactionUI.DOFade(1f, 0.25f) : interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
+            tweener = interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
         }
     }
 }
