@@ -18,8 +18,6 @@ namespace _Project.Scripts.ECS {
         private PolygonCollider2D polygonCollider2D;
         private Vector2 mousePosition;
         
-        private Sprite originalSprite;
-        
         private bool isHeld;
         internal bool IsActivated;
 
@@ -43,8 +41,6 @@ namespace _Project.Scripts.ECS {
             
             if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
                 polygonCollider2D = col as PolygonCollider2D;
-            
-            originalSprite = shardSprite?.sprite;
             
             initialized = true;
         }
@@ -85,19 +81,6 @@ namespace _Project.Scripts.ECS {
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
         }
-
-        public void DisplayMemory(Sprite sprite) {
-            SetInteract(false);
-            shardSprite.sprite = sprite;
-            shardSprite.color = Color.white;
-        }
-
-        public void LeaveMemory() {
-            SetInteract(true);
-            shardSprite.sprite = originalSprite;
-            shardSprite.color = new Color(1, 1, 1, 0.4f);
-        }
-        
 
         private void SetInteract(bool canInteract) {
             this.canInteract = canInteract;

@@ -59,7 +59,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label("Interaction", sectionStyle);
             GUILayout.Label($"Can player interact : {player.interact.CanInteract}", debugStyle);
             GUILayout.Label($"{player.interact.size} Object in the interact area", debugStyle);
-            GUILayout.Label($"Is player holding an object : {player.interact.hasObject}", debugStyle);
+            GUILayout.Label($"Is player holding an object : {player.interact.HasObject}", debugStyle);
             
             // -> Est-ce que le joueur est en train d'interagir avec un souvenir ou autre ?
             
