@@ -11,7 +11,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyUsed;
 
         private bool initialized = false;
-        private bool completed = false;
+        //private bool completed = false;
         
         public virtual void Initialize() {
             if (!initialized) {
@@ -22,13 +22,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 keyObject = new List<BaseObject>();
                 keyUsed = new List<BaseObject>();
+                baseObject.Completion = InteractionCompletion.NotCompleted;
             }
             
             initialized = true;
         }
 
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
-            if(completed) return;
+            if(baseObject.Completion is InteractionCompletion.Completed) return;
             
             if (interaction is not ObjectInteraction.Drop) {
                 Debug.LogError($"[KeyInteractable] Interaction is not Drop");
@@ -61,7 +62,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         protected virtual void ResolvePuzzle() {
             Debug.Log("[KeyInteractable] Resolve Puzzle");
 
-            completed = true;
+            baseObject.Completion = InteractionCompletion.Completed;
             baseObject.SetInteract(false);
         }
 
@@ -82,13 +83,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void SetKeyObject(BaseObject key) {
             keyObject.Add(key);
-            
-            Debug.Log($"[KeyInteractable] Added Key Object {keyObject.Count}");
         }
 
-        public bool Completed() {
+        /*public bool Completed() {
             return completed;
-        }
+        }*/
     }
 
 }

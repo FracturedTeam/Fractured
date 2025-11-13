@@ -19,6 +19,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else 
                     Debug.LogError($"[ObtainShardInteractable] {gameObject.name} does not have a BaseObject !");
                 
+                baseObject.GetType = ObjectType.Shard;
+                baseObject.Completion = InteractionCompletion.None;
                 baseObject?.SetInteract(true);
             }
 

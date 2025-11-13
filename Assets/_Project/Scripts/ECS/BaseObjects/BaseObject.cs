@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
-    public class BaseObject : MonoBehaviour
-    {
+    public class BaseObject : MonoBehaviour {
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
+        public ObjectType GetType { get; set; }
+        public InteractionCompletion Completion { get; set; }
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;

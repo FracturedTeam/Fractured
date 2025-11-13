@@ -26,6 +26,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else
                     Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
                 
+                //baseObject.Completion = InteractionCompletion.None;
+                baseObject.GetType = ObjectType.Door;
+                
                 if(TryGetComponent(out KeyInteractable k))
                     key = k;
             }
@@ -36,11 +39,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(!key.Completed()) return;
+                if(key.GetBaseObject().Completion is not InteractionCompletion.Completed) return;
             }
 
             if (linkedDoor.key) {
-                if(!linkedDoor.key.Completed()) return;
+                if(linkedDoor.key.GetBaseObject().Completion is not InteractionCompletion.Completed) return;
             }
 
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
@@ -67,10 +70,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public KeyInteractable GetKeyInteractable() {
             return key;
-        }
-        
-        public bool Unlock() {
-            return !key || key.Completed();
         }
     }
 }

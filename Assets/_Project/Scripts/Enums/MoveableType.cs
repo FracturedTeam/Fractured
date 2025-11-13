@@ -1,5 +1,5 @@
 namespace _Project.Scripts.Enums {
-    public enum ObjectType {
+    public enum MoveableType {
         None,
         Key,
         Box,

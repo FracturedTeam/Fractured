@@ -17,7 +17,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Tooltip("The object location where he must be put to resolve the puzzle")]
         [SerializeField] private KeyInteractable keyObjectNeeded;
         [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
-        [SerializeField] private ObjectType objectType;
+        [SerializeField] private MoveableType moveableType;
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
@@ -34,6 +34,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else 
                     Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
                 
+                baseObject.GetType = ObjectType.Moveable;
+                baseObject.Completion = InteractionCompletion.None;
                 baseObject?.SetInteract(true);
                 
                 if(keyObjectNeeded == null)
@@ -216,8 +218,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return pos;
         }
         
-		public ObjectType GetObjectType(){
-            return objectType;
+		public MoveableType GetObjectType(){
+            return moveableType;
         }
 
         public bool CanBeGrab() {

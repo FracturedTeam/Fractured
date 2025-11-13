@@ -28,6 +28,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(TryGetComponent(out KeyInteractable k))
                     key = k;
+
+                //baseObject.Completion = InteractionCompletion.None;
+                baseObject.GetType = ObjectType.Memory;
             }
             
             initialized = true;
@@ -36,7 +39,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(!key.Completed()) return;
+                if(key.GetBaseObject().Completion is not InteractionCompletion.Completed) return;
             }
             
             switch (interaction) {
@@ -80,10 +83,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public KeyInteractable GetKeyInteractable() {
             return key;
-        }
-
-        public bool Unlock() {
-            return !key || key.Completed();
         }
     }
 }

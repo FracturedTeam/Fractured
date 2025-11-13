@@ -54,6 +54,8 @@ namespace _Project.Scripts.Player {
         
         public int size { get; private set; }
 
+        #region Initialization
+
         private void Awake() {
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
@@ -73,6 +75,8 @@ namespace _Project.Scripts.Player {
         private void OnDisable() {
             inputsBrain.OnInteract -= Interact;
         }
+
+        #endregion
         
         private void Interact() {
             if (inMemory) {
@@ -93,6 +97,8 @@ namespace _Project.Scripts.Player {
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
         }
+
+        #region InteractionMethods
 
         private void GrabObject() {
             HasObject = true;
@@ -128,6 +134,8 @@ namespace _Project.Scripts.Player {
             
             Debug.Log($"[PlayerInteract] Leave memory");
         }
+
+        #endregion
         
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
@@ -135,6 +143,8 @@ namespace _Project.Scripts.Player {
             HandleInteraction();
             CanPlayerInteract();
         }
+
+        #region UpdateInteraction
 
         void HandleInteraction() {
             if(!canPlayerInteract) return;
@@ -178,27 +188,10 @@ namespace _Project.Scripts.Player {
             
             UpdatePossibleInteraction();
             
-            if (potentialInteraction.CanBeInteractedWith()) {
-                if (potentialInteraction.TryGetComponent(out KeyInteractable drop) && !drop.Completed()) {
-                    if (drop && !HasObject) { //Show something is needed
-                        CanInteract = true;
-                        Debug.Log($"[PlayerInteract] Drop no object ");
-                    }
-                    else if(drop && HasObject){ //Anticipate possibly showing not good object
-                        CanInteract = true;
-                        //CanInteract = canPlayerInteract && size > 0 && HasObject && drop.GetKeyObject(currentInteraction);
-                        Debug.Log($"[PlayerInteract] Drop has object ");
-                    }
-                }
-                else {
-                    CanInteract = canPlayerInteract && size > 0;
-                }
-            }
-            else {
+            if (potentialInteraction.CanBeInteractedWith())
+                CanInteract = canPlayerInteract && size > 0;
+            else
                 CanInteract = false;
-            }
-            
-            
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
@@ -208,18 +201,20 @@ namespace _Project.Scripts.Player {
                 return;
             }
             
-            if (potentialInteraction.GetComponent<MoveableObject>()) {
+            if (potentialInteraction.GetType is ObjectType.Moveable) {
                 interactionType = Interaction.Grab;
                 RaiseInteraction();
                 return;
             }
             
-            if (potentialInteraction.TryGetComponent(out DoorInteractable door) && door) {
-                if (potentialInteraction.GetComponent<KeyInteractable>()) {
-                    if (door.Unlock())
+            if (potentialInteraction.GetType is ObjectType.Door) {
+                if (potentialInteraction.Completion is not InteractionCompletion.None) {
+                    if (potentialInteraction.Completion is InteractionCompletion.Completed)
                         interactionType = Interaction.UseDoor;
-                    else if (HasObject)
-                        interactionType = door.GetKeyInteractable().GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.needSomethingElse;
+                    else if (HasObject) {
+                        var key = potentialInteraction.GetComponent<KeyInteractable>();
+                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.needSomethingElse;
+                    }
                     else
                         interactionType = Interaction.needKey;
                     RaiseInteraction();
@@ -231,12 +226,14 @@ namespace _Project.Scripts.Player {
                 return;
             }
             
-            if (potentialInteraction.TryGetComponent(out MemoryInteractable m) && m) {
-                if (potentialInteraction.GetComponent<KeyInteractable>()) {
-                    if (m.Unlock())
+            if (potentialInteraction.GetType is ObjectType.Memory) {
+                if (potentialInteraction.Completion is not InteractionCompletion.None) {
+                    if (potentialInteraction.Completion is InteractionCompletion.Completed)
                         interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
-                    else if(HasObject)
-                        interactionType = m.GetKeyInteractable().GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
+                    else if (HasObject) {
+                        var key = potentialInteraction.GetComponent<KeyInteractable>();
+                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
+                    }
                     else
                         interactionType = Interaction.needFragment;
                     RaiseInteraction();
@@ -248,12 +245,14 @@ namespace _Project.Scripts.Player {
                 return;
             }
             
-            if (potentialInteraction.GetComponent<ObtainShardInteractable>()) {
+            if (potentialInteraction.GetType is ObjectType.Shard) {
                 interactionType = Interaction.ObtainShard;
                 RaiseInteraction();
             }
         }
 
+        #endregion
+        
         private void RaiseInteraction() {
             EventBus<InteractEvent>.Raise(new InteractEvent {
                 showInteraction = canInteract,
@@ -293,7 +292,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return HasObject && currentInteraction != null;
             
             if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
-                return HasObject && currentInteraction != null && drop != null && !drop.Completed();
+                return HasObject && currentInteraction != null && drop != null && potentialInteraction.Completion is InteractionCompletion.NotCompleted;
             
             return false;
         }
@@ -302,7 +301,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null && memory.Unlock();
+                return memory != null && potentialInteraction.Completion is not InteractionCompletion.NotCompleted;
             
             return false;
         }
