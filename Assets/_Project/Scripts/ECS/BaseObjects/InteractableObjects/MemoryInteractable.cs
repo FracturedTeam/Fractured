@@ -1,18 +1,23 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Systems.EventBus;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
+    
+    public struct MemoryEvent : IEvent {
+        public bool showMemory;
+        public Sprite memory;
+    }
+    
     [RequireComponent(typeof(BaseObject))]
     public class MemoryInteractable : MonoBehaviour,  IInteractable {
         private BaseObject baseObject;
         
-        private bool initialized = false;
-
         [SerializeField] private Sprite memorySprite;
-        [SerializeField] private Glass memoryShard;
-
         private KeyInteractable key;
+        
+        private bool initialized = false;
         
         public void Initialize() {
             if (!initialized) {
@@ -26,7 +31,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             initialized = true;
-            
             baseObject?.SetInteract(true);
         }
 
@@ -43,22 +47,26 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     StopMemoryInteraction();
                     break;
                 default:
-                    Debug.LogWarning($"[MemoryInteractable] Unhandled interaction {interaction}");
+                    Debug.LogWarning($"[MemoryInteractable] Unhandled interaction {interaction} on {nameof(MemoryInteractable)}");
                     break;
             }
         }
 
         void DisplayMemory() {
-            Debug.Log($"[MemoryInteractable] Displaying memory");
-            
             baseObject.SetInteract(false);
-            memoryShard.DisplayMemory(memorySprite);
+            EventBus<MemoryEvent>.Raise(new MemoryEvent {
+                showMemory = true,
+                memory = memorySprite
+            });
+            Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
-            memoryShard.LeaveMemory();
-            
+            EventBus<MemoryEvent>.Raise(new MemoryEvent {
+                showMemory = false,
+                memory = null
+            });
             Debug.Log($"[MemoryInteractable] Leaving memory");
         }
         
