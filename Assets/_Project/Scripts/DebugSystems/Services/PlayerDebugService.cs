@@ -41,6 +41,15 @@ namespace _Project.Scripts.DebugSystems.Services {
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft
             };
+            
+            var buttonStyle = new GUIStyle(GUI.skin.button) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleCenter,
+                normal = {
+                    textColor = Color.ghostWhite
+                }
+            };
 
             GUILayout.BeginVertical("box");
             GUILayout.Label("Player Debug Service", headerStyle);
