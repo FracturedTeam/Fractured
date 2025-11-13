@@ -46,8 +46,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void Update() {
-            GetInteract.Tick(Time.deltaTime);
-            GetGlassInteract.Tick(Time.deltaTime);
+            GetInteract?.Tick(Time.deltaTime);
+            GetGlassInteract?.Tick(Time.deltaTime);
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {
