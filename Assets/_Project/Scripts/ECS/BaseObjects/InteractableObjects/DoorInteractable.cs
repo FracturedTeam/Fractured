@@ -21,13 +21,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(out BaseObject b))
-                    baseObject = b;
-                else
-                    Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
+                if(TryGetComponent(out BaseObject b)) baseObject = b;
+                else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
                 
-                if(TryGetComponent(out KeyInteractable k))
-                    key = k;
+                if(TryGetComponent(out KeyInteractable k)) key = k;
+                
+                baseObject.GetInteractionType = ObjectType.Door;
             }
             
             initialized = true;
@@ -36,11 +35,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(!key.Completed()) return;
+                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
 
             if (linkedDoor.key) {
-                if(!linkedDoor.key.Completed()) return;
+                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
 
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
@@ -54,6 +53,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             linkedDoor.cameraToSwitch.Priority = 1;
         }
 
+        public void Tick(float deltaTime) {
+        }
+
         public void ResetObject() {
         }
 
@@ -63,14 +65,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Transform GetExitPoint() {
             return exitPoint;
-        }
-
-        public KeyInteractable GetKeyInteractable() {
-            return key;
-        }
-        
-        public bool Unlock() {
-            return !key || key.Completed();
         }
     }
 }

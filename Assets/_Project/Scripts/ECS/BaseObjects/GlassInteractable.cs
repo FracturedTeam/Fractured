@@ -8,7 +8,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 {
     public class GlassInteractable : MonoBehaviour
     {
-        public float GetRadius => radius2D;
+        private float GetRadius => radius2D;
         
         private BaseObject baseObject;
         private Camera mainCamera;
@@ -65,7 +65,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                     interactableInBox.transform.position = transform.position;
                 }
                 else
-                    Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
+                    Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
             }
             
             SetUp();
@@ -85,14 +85,13 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
-        private void Update() { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
+        public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             pos2D = mainCamera!.WorldToScreenPoint(transform.position);
 
-            if (objectInside) {
-                if (objectOut) return;
-                interactableInBox.transform.position = transform.position;
-                if (interactableInBox.IsGrabbed()) objectOut = true;
-            }
+            if (!objectInside) return;
+            if (objectOut) return;
+            interactableInBox.transform.position = transform.position;
+            if (interactableInBox.IsGrabbed()) objectOut = true;
         }
 
         private void UpdateShards() {
