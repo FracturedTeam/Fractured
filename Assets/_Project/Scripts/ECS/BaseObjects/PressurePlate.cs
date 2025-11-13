@@ -34,6 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 gameObject.layer = LayerMask.NameToLayer("Walkable");
             }
             
+            baseObject?.SetInteract(false);
             initialized = true;
             objectMoved.position = initialPos.position;
         }
