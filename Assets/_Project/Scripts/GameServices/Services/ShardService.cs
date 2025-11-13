@@ -101,14 +101,7 @@ namespace _Project.Scripts.GameServices.Services {
                     currentGlass = null;
                     return;
                 }
-               
-                if (Mouse.current.rightButton.wasPressedThisFrame && !currentGlass) {
-                    if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
-                        continue;
-                    
-                    shard.ChangeStateActivation(!shard.IsActivated);
-                    return;
-                }
+                
             }
         }
         

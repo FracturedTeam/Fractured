@@ -2,11 +2,12 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS {
-    public class Glass : MonoBehaviour {
+    public class Glass : MonoBehaviour,  IDragHandler {
         public ColorEnum GetColor => color2D;
     
         [Header("Settings")]
@@ -19,7 +20,6 @@ namespace _Project.Scripts.ECS {
         private Vector2 mousePosition;
         
         private bool isHeld;
-        internal bool IsActivated;
 
         private bool initialized = false;
         private bool canInteract = true;
@@ -45,13 +45,15 @@ namespace _Project.Scripts.ECS {
             initialized = true;
         }
 
-        private void Update() {
+        public void OnDrag(PointerEventData eventData)
+        {
             if(!canInteract) return;
             
             if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
             {
-                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
-                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
+                transform.position += (Vector3)eventData.delta ;
+                transform.position=   new Vector2(Math.Clamp(transform.position.x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
+                    Mathf.Clamp(transform.position.y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
             }
         }
         
@@ -64,7 +66,6 @@ namespace _Project.Scripts.ECS {
         }
 
         internal void ChangeStateActivation(bool isOn) {
-            IsActivated = isOn;
             
             if(!shardSprite)
                 return;
@@ -75,7 +76,7 @@ namespace _Project.Scripts.ECS {
 
         ///Get if an object is colliding with any the colliders 2D
         internal bool IsColliding(Vector3 position, bool mouse = false) {
-            if(!mainCamera || (!IsActivated && !mouse))
+            if(!mainCamera )
                 return false;
             
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
