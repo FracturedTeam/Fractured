@@ -541,7 +541,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a5028f0c57be2f043aa825af8465ef82, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -581,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 241144053}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.86, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassInteractable
-  objectColor: 0
+  objectColor: 2
   objectInside: 0
   interactableInBox: {fileID: 0}
   pos2D: {x: 490, y: 227.782}
@@ -956,6 +956,7 @@ GameObject:
   - component: {fileID: 761917980}
   - component: {fileID: 761917979}
   - component: {fileID: 761917982}
+  - component: {fileID: 761917983}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -995,12 +996,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   possibleTexts:
-  - variableName: variable1
-    basic: basic
-    red: red
-    blue: blue
-    both: both
-    letters: 5
+  - variableName: 0
+    basic: ffff
+    red: 
+    blue: 
+    both: 
+    letters: 0
   - variableName: feur
     basic: ff
     red: 
@@ -1027,7 +1028,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{variable1} fhridifoghofirgbh'
+  m_text: <link = "glass">Good luck</link> FEUR? <link = "glass">jvais me tuer</link>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1124,15 +1125,56 @@ MonoBehaviour:
   ShowLines: 0
   ShowMeshBounds: 0
   ShowTextBounds: 0
-  ObjectStats: 'Characters: 29   Words: 2   Spaces: 1   Sprites: 0   Links: 0
+  ObjectStats: 'Characters: 29   Words: 6   Spaces: 5   Sprites: 0   Links: 2
 
     Lines:
-    3   Pages: 1'
+    4   Pages: 1'
   m_TextComponent: {fileID: 761917980}
-  m_Transform: {fileID: 761917978}
-  m_TextInfo: {textComponent: {fileID: 761917980}, characterCount: 29, spriteCount: 0, spaceCount: 1, wordCount: 2, linkCount: 0, lineCount: 3, pageCount: 1, materialCount: 1}
-  m_ScaleMultiplier: 0.1
-  m_HandleSize: 7.657417
+--- !u!114 &761917983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761917977}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 761917979}
+          m_TargetAssemblyTypeName: GlassText, Assembly-CSharp
+          m_MethodName: SetLinkHovering
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 761917979}
+          m_TargetAssemblyTypeName: GlassText, Assembly-CSharp
+          m_MethodName: SetLinkHovering
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1147155746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,8 +1742,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1892599664}
-  - {fileID: 188085864}
   - {fileID: 128590847}
+  - {fileID: 188085864}
   - {fileID: 1680159207}
   - {fileID: 1147155747}
   - {fileID: 241144058}
