@@ -60,6 +60,9 @@ namespace _Project.Scripts.GameServices {
             var cameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
             var cameraDebugService = new CameraDebugService(debugUIState, cameras);
             debugSystem.Register(cameraDebugService);
+            
+            var generalDebug =  new GeneralDebugService(debugUIState);
+            debugSystem.Register(generalDebug);
 
             //Set the debug system
             debugSystemInitializer.SetDebugSystem(debugSystem);
