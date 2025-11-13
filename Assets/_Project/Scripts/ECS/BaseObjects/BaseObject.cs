@@ -36,10 +36,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else SetInteract(false);
             
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
-                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
+                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
-                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
+                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
