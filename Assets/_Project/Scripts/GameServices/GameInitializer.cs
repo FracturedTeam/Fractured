@@ -79,11 +79,12 @@ namespace _Project.Scripts.GameServices {
         private void PopulateShardOnStart() {
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
-            shardService.PopulateService(_interactables,  _shards);
+            var _text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);
+            shardService.PopulateService(_interactables, _shards, _text);
         }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
-            shardService.PopulateService(_interactable,  _shards);
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
+            shardService.PopulateService(_interactable,  _shards, _text);
 
         public void SetEditableArea(bool inArea) {
             shardService.SetEditableArea(inArea);

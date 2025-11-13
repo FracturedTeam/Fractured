@@ -15,8 +15,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private DoorInteractable linkedDoor;
         [SerializeField] private CinemachineCamera cameraToSwitch;
 
+        private KeyInteractable key;
+        
         private bool initialized = false;
-        private bool isUnlocked = true;
         
         public void Initialize() {
             if (!initialized) {
@@ -24,6 +25,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject = b;
                 else
                     Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
+                
+                if(TryGetComponent(out KeyInteractable k))
+                    key = k;
             }
             
             initialized = true;
@@ -31,11 +35,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(!isUnlocked || !linkedDoor.DoorUnlocked()) return;
+            if (key) {
+                if(!key.Completed()) return;
+            }
+
+            if (linkedDoor.key) {
+                if(!linkedDoor.key.Completed()) return;
+            }
 
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
             
             if (interaction is not ObjectInteraction.Contextual) return;
+            PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.transform.position = linkedDoor.GetExitPoint().position;
             
             if (doorType is not DoorType.Big) return;
@@ -50,16 +61,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return baseObject;
         }
         
-        public void SetUnlocked(bool value) {
-            isUnlocked = value;
-        }
-
         private Transform GetExitPoint() {
             return exitPoint;
         }
+
+        public KeyInteractable GetKeyInteractable() {
+            return key;
+        }
         
-        private bool DoorUnlocked() {
-            return isUnlocked;
+        public bool Unlock() {
+            return !key || key.Completed();
         }
     }
 }
