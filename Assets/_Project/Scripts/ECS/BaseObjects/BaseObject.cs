@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using UnityEngine;
@@ -8,8 +9,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
-        public ObjectType GetType { get; set; }
-        public InteractionCompletion Completion { get; set; }
+        public ObjectType GetInteractionType { get; set; }
+        public InteractionCompletion GetCompletion { get; set; }
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -42,6 +43,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Initialize();
             
             initialized = true;
+        }
+
+        private void Update() {
+            GetInteract.Tick(Time.deltaTime);
+            GetGlassInteract.Tick(Time.deltaTime);
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {

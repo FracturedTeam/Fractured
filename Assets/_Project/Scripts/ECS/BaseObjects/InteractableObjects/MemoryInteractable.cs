@@ -21,16 +21,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(out BaseObject b))
-                    baseObject = b;
-                else
-                    Debug.LogError($"[MemoryInteractable] Cannot find {nameof(BaseObject)} in {nameof(MemoryInteractable)}");
+                if(TryGetComponent(out BaseObject b)) baseObject = b;
+                else Debug.LogError($"[MemoryInteractable] Cannot find {nameof(BaseObject)} in {nameof(MemoryInteractable)}");
                 
-                if(TryGetComponent(out KeyInteractable k))
-                    key = k;
+                if(TryGetComponent(out KeyInteractable k)) key = k;
 
-                //baseObject.Completion = InteractionCompletion.None;
-                baseObject.GetType = ObjectType.Memory;
+                baseObject.GetInteractionType = ObjectType.Memory;
             }
             
             initialized = true;
@@ -39,7 +35,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(key.GetBaseObject().Completion is not InteractionCompletion.Completed) return;
+                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
             
             switch (interaction) {
@@ -53,6 +49,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     Debug.LogWarning($"[MemoryInteractable] Unhandled interaction {interaction} on {nameof(MemoryInteractable)}");
                     break;
             }
+        }
+
+        public void Tick(float deltaTime) {
         }
 
         void DisplayMemory() {
@@ -79,10 +78,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public BaseObject GetBaseObject() {
             return baseObject;
-        }
-        
-        public KeyInteractable GetKeyInteractable() {
-            return key;
         }
     }
 }

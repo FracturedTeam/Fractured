@@ -29,13 +29,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component))
-                    baseObject = component as BaseObject;
-                else 
-                    Debug.LogError($"[MoveableObject] {gameObject.name} does not have a BaseObject !");
+                if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
+                else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
                 
-                baseObject.GetType = ObjectType.Moveable;
-                baseObject.Completion = InteractionCompletion.None;
+                baseObject.GetInteractionType = ObjectType.Moveable;
+                baseObject.GetCompletion = InteractionCompletion.None;
                 baseObject?.SetInteract(true);
                 
                 if(keyObjectNeeded == null)
@@ -85,6 +83,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     Debug.LogWarning($"[MoveableObject] {interaction} Interaction is not supported");
                     break;
             }
+        }
+
+        public void Tick(float deltaTime) {
+            if (!baseObject.GetGlass) return;
+
+            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
+            ResetObject();
         }
 
         public void ResetObject() {
@@ -162,15 +167,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isGrabbed = false;
             PlayerController.Instance.interact.SetDropObject();
-        }
-
-        private void Update() {
-            if (!baseObject.GetGlass) return;
-            
-            if (isGrabbed && baseObject.GetGlassInteract.UnderGlass()) {
-                Debug.Log("[MoveableObject] UnderGlass Reset");
-                ResetObject();
-            }
         }
 
         private void TweenObjectOnPlayer() {

@@ -11,16 +11,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private Glass[] shard;
         
         private bool initialized = false;
-        private bool shardObtained = false;
+        
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component))
-                    baseObject = component as BaseObject;
-                else 
-                    Debug.LogError($"[ObtainShardInteractable] {gameObject.name} does not have a BaseObject !");
+                if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
+                else Debug.LogError($"[ObtainShardInteractable] Cannot find {nameof(BaseObject)} in {nameof(ObtainShardInteractable)}");
                 
-                baseObject.GetType = ObjectType.Shard;
-                baseObject.Completion = InteractionCompletion.None;
+                baseObject.GetInteractionType = ObjectType.Shard;
+                baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                 baseObject?.SetInteract(true);
             }
 
@@ -35,18 +33,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(shardObtained) return;
+            if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
             }
         }
 
+        public void Tick(float deltaTime) {
+        }
+
         void ObtainShard() {
-            shardObtained = true;
+            baseObject.GetCompletion = InteractionCompletion.Completed;
             
             foreach (var s in shard) {
-                s.gameObject.SetActive(false);
+                s.gameObject.SetActive(true);
                 s.Initialize();
             }
             

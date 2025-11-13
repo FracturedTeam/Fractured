@@ -141,7 +141,7 @@ namespace _Project.Scripts.Player {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
 
             HandleInteraction();
-            CanPlayerInteract();
+            SetPlayerInteraction();
         }
 
         #region UpdateInteraction
@@ -180,8 +180,8 @@ namespace _Project.Scripts.Player {
             }
         }
 
-        void CanPlayerInteract() {
-            if (potentialInteraction == null) {
+        void SetPlayerInteraction() {
+            if (potentialInteraction is null) {
                 CanInteract = false;
                 return;
             }
@@ -201,15 +201,13 @@ namespace _Project.Scripts.Player {
                 return;
             }
             
-            if (potentialInteraction.GetType is ObjectType.Moveable) {
-                interactionType = Interaction.Grab;
-                RaiseInteraction();
-                return;
-            }
-            
-            if (potentialInteraction.GetType is ObjectType.Door) {
-                if (potentialInteraction.Completion is not InteractionCompletion.None) {
-                    if (potentialInteraction.Completion is InteractionCompletion.Completed)
+            switch (potentialInteraction.GetInteractionType) {
+                case ObjectType.Moveable:
+                    interactionType = Interaction.Grab;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Door when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
+                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
                         interactionType = Interaction.UseDoor;
                     else if (HasObject) {
                         var key = potentialInteraction.GetComponent<KeyInteractable>();
@@ -220,15 +218,12 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 }
-
-                interactionType = Interaction.UseDoor;
-                RaiseInteraction();
-                return;
-            }
-            
-            if (potentialInteraction.GetType is ObjectType.Memory) {
-                if (potentialInteraction.Completion is not InteractionCompletion.None) {
-                    if (potentialInteraction.Completion is InteractionCompletion.Completed)
+                case ObjectType.Door:
+                    interactionType = Interaction.UseDoor;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Memory when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
+                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
                         interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
                     else if (HasObject) {
                         var key = potentialInteraction.GetComponent<KeyInteractable>();
@@ -239,15 +234,19 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 }
-                
-                interactionType = Interaction.EnterMemory;
-                RaiseInteraction();
-                return;
-            }
-            
-            if (potentialInteraction.GetType is ObjectType.Shard) {
-                interactionType = Interaction.ObtainShard;
-                RaiseInteraction();
+                case ObjectType.Memory:
+                    interactionType = Interaction.EnterMemory;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Shard:
+                    interactionType = Interaction.ObtainShard;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.None:
+                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {nameof(potentialInteraction)}");
+                    return;
+                default:
+                    return;
             }
         }
 
@@ -292,7 +291,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return HasObject && currentInteraction != null;
             
             if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
-                return HasObject && currentInteraction != null && drop != null && potentialInteraction.Completion is InteractionCompletion.NotCompleted;
+                return HasObject && currentInteraction != null && drop != null && potentialInteraction.GetCompletion is InteractionCompletion.NotCompleted;
             
             return false;
         }
@@ -301,7 +300,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null && potentialInteraction.Completion is not InteractionCompletion.NotCompleted;
+                return memory != null && potentialInteraction.GetCompletion is not InteractionCompletion.NotCompleted;
             
             return false;
         }
