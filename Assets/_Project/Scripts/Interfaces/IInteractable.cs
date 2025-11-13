@@ -7,6 +7,8 @@ namespace _Project.Scripts.Interfaces {
         public void Initialize();
         
         public void  OnInteract(ObjectInteraction interaction, IInteractable other = null);
+
+        public void Tick(float deltaTime);
         
         public void ResetObject();
         
