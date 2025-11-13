@@ -45,16 +45,16 @@ namespace _Project.Scripts.ECS {
             initialized = true;
         }
 
-        public void OnDrag(PointerEventData eventData)
-        {
-            if(!canInteract) return;
+        public void OnDrag(PointerEventData eventData) {
+            if(!canInteract) 
+                return;
+
+            if (!isHeld || (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere)) 
+                return;
             
-            if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
-            {
-                transform.position += (Vector3)eventData.delta ;
-                transform.position=   new Vector2(Math.Clamp(transform.position.x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
-                    Mathf.Clamp(transform.position.y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
-            }
+            transform.position += (Vector3)eventData.delta;
+            transform.position=   new Vector2(Math.Clamp(transform.position.x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
+                Mathf.Clamp(transform.position.y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
         }
         
         internal void ChangeHoldingState(bool isOn) {

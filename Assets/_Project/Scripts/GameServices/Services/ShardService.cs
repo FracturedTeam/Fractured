@@ -22,6 +22,8 @@ namespace _Project.Scripts.GameServices.Services {
             glassTexts = new List<GlassText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
+            
+            Cursor.lockState = CursorLockMode.Confined; 
         }
 
         void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
