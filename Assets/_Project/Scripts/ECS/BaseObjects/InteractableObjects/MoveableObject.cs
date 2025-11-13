@@ -216,6 +216,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return pos;
         }
         
+		public ObjectType GetObjectType(){
+            return objectType;
+        }
+
         public bool CanBeGrab() {
             return canBeGrab;
         }

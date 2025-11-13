@@ -42,10 +42,27 @@ namespace _Project.Scripts.Player {
             //Create All State
             var locomotionState = new PlayerLocomotionState(this);
             var fallState = new PlayerFallState(this);
+            var carryState = new PlayerCarryState(this);
+            var memoryState = new PlayerMemoryState(this);
+            var doorState = new PlayerUsingDoorState(this);
             
             //Define all states transitions
+            //Locomotion State
             At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
             At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
+            
+            //Carrying State
+            At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));
+            At(carryState, locomotionState, new FuncPredicate(() => !interact.IsCarrying()));
+            At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
+            
+            //Memory State
+            At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            At(memoryState, locomotionState, new FuncPredicate(() => !interact.IsInMemory()));
+            
+            //Using door state
+            At(locomotionState, doorState, new FuncPredicate(() => interact.UsingDoor()));
+            At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor()));
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);
