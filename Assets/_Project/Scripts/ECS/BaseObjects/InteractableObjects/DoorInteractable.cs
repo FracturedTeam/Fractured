@@ -51,7 +51,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (interaction is not ObjectInteraction.Contextual) return;
             PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position);
-            var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(linkedDoor.sceneIndex, sceneIndex);
+            //var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(linkedDoor.sceneIndex, sceneIndex);
             
             if (doorType is not DoorType.Big) return;
             cameraToSwitch.Priority = 0;
