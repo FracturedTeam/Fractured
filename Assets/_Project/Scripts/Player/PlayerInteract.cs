@@ -321,6 +321,7 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingDoor() {
             usingDoor.Start();
+            usingDoor.Reset(1);
         }
         
         public bool UsingDoor() {

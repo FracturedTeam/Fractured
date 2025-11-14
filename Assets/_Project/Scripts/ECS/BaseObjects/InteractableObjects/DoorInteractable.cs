@@ -1,4 +1,5 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
@@ -14,6 +15,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private Transform exitPoint;
         [SerializeField] private DoorInteractable linkedDoor;
         [SerializeField] private CinemachineCamera cameraToSwitch;
+        [SerializeField] private SceneData sceneData;
 
         private KeyInteractable key;
         
