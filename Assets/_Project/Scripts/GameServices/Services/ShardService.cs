@@ -22,6 +22,8 @@ namespace _Project.Scripts.GameServices.Services {
             glassTexts = new List<GlassText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
+            
+            Cursor.lockState = CursorLockMode.Confined; 
         }
 
         void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
@@ -73,7 +75,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.transform.position), shard);
+                text.OnInteract(shard.IsColliding(text.TagPositions), shard);
             }
         }
         
@@ -101,14 +103,7 @@ namespace _Project.Scripts.GameServices.Services {
                     currentGlass = null;
                     return;
                 }
-               
-                if (Mouse.current.rightButton.wasPressedThisFrame && !currentGlass) {
-                    if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
-                        continue;
-                    
-                    shard.ChangeStateActivation(!shard.IsActivated);
-                    return;
-                }
+                
             }
         }
         

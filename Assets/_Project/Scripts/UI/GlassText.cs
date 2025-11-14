@@ -12,8 +12,8 @@ public class GlassText : MonoBehaviour
 {
     private TMP_Text text;
     private string show;
-    private string ar;
-    internal List<Vector2> TagPositions = new List<Vector2>();
+    private string BaseText;
+    internal Vector2 TagPositions;
     [SerializeField] private List<PossibleText>  possibleTexts = new List<PossibleText>();
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
     private ObservableHashSet<Glass> shardsOnTop;
@@ -28,13 +28,18 @@ public class GlassText : MonoBehaviour
             text = (TMP_Text)t;
         else
             text = gameObject.AddComponent<TMP_Text>();
-        ar =  text.text;
+        BaseText =  text.text;
         
         underRed = 0;
         underBlue = 0;
         
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
+
+        var firstCharInfo = text.textInfo.characterInfo[text.text.IndexOf("{", StringComparison.Ordinal)];
+        var lastCharInfo = text.textInfo.characterInfo[3];
+        TagPositions = text.transform.TransformPoint((firstCharInfo.topLeft + lastCharInfo.bottomRight) / 2f);
+        print(TagPositions);
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
@@ -84,7 +89,7 @@ public class GlassText : MonoBehaviour
     
     private void SetText()
     {
-        show = ar;
+        show = BaseText;
         foreach (PossibleText possibleText in possibleTexts)
         {
             if(possibleText.variableName == null)
@@ -123,37 +128,6 @@ public class GlassText : MonoBehaviour
         }
         text.text = show;
     }
-    
-    
-    /*
-    Vector2 CalcLinkCenterPosition(TMP_LinkInfo linkInfo)
-    {
-        Vector3 bottomLeft = Vector3.zero;
-        Vector3 topRight = Vector3.zero;
-
-        float maxAscender = -Mathf.Infinity;
-        float minDescender = Mathf.Infinity;
-        
-        TMP_CharacterInfo currentCharInfo = linkInfo.textComponent.textInfo.characterInfo[linkInfo.linkTextfirstCharacterIndex];
-
-        maxAscender = Mathf.Max(maxAscender, currentCharInfo.ascender);
-        minDescender = Mathf.Min(minDescender, currentCharInfo.descender);
-
-        bottomLeft = new Vector3(currentCharInfo.bottomLeft.x, currentCharInfo.descender, 0);
-
-        bottomLeft = transform.TransformPoint(new Vector3(bottomLeft.x, minDescender, 0));
-        topRight = transform.TransformPoint(new Vector3(currentCharInfo.topRight.x, maxAscender, 0));
-
-        float width = topRight.x - bottomLeft.x;
-        float height = topRight.y - bottomLeft.y;
-
-        Vector2 centerPosition = bottomLeft;
-        centerPosition.x += width / 2;
-        centerPosition.y += height / 2;
-
-        return centerPosition;
-    }
-    */
 
     [Serializable]
     private struct PossibleText

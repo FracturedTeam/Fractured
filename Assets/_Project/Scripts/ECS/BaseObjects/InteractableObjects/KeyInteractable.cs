@@ -11,14 +11,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyUsed;
 
         private bool initialized = false;
-        private bool completed = false;
         
         public virtual void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component))
-                    baseObject = component as BaseObject;
-                else 
-                    Debug.LogError($"[KeyInteractable] {gameObject.name} does not have a BaseObject !");
+                if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
+                else Debug.LogError($"[KeyInteractable] Cannot find {nameof(BaseObject)} in {nameof(KeyInteractable)}");
+                
+                baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                 
                 keyObject = new List<BaseObject>();
                 keyUsed = new List<BaseObject>();
@@ -28,7 +27,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
-            if(completed) return;
+            if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             if (interaction is not ObjectInteraction.Drop) {
                 Debug.LogError($"[KeyInteractable] Interaction is not Drop");
@@ -48,6 +47,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 CheckForResolve(other.GetBaseObject());
         }
 
+        public void Tick(float deltaTime) {
+        }
+
         private void CheckForResolve(BaseObject key) { //Des chances que cette fonction casse
             if(keyUsed.Contains(key))
                 return;
@@ -61,7 +63,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         protected virtual void ResolvePuzzle() {
             Debug.Log("[KeyInteractable] Resolve Puzzle");
 
-            completed = true;
+            baseObject.GetCompletion = InteractionCompletion.Completed;
             baseObject.SetInteract(false);
         }
 
@@ -82,12 +84,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void SetKeyObject(BaseObject key) {
             keyObject.Add(key);
-            
-            Debug.Log($"[KeyInteractable] Added Key Object {keyObject.Count}");
-        }
-
-        public bool Completed() {
-            return completed;
         }
     }
 
