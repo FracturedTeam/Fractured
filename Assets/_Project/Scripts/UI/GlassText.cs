@@ -41,10 +41,11 @@ public class GlassText : MonoBehaviour
         
         underRed = 0;
         underBlue = 0;
-
-        var firstCharInfo = text.textInfo.characterInfo[text.text.IndexOf("{", StringComparison.Ordinal)];
-        var lastCharInfo = text.textInfo.characterInfo[3];
-        TagPositions = text.transform.TransformPoint((firstCharInfo.topLeft + lastCharInfo.bottomRight) / 2f);
+        
+        var firstCharInfo = text.textInfo.characterInfo[0];
+        
+        
+        TagPositions = text.transform.TransformPoint(firstCharInfo.topRight);
 
         SetText();
     }
@@ -71,9 +72,6 @@ public class GlassText : MonoBehaviour
     private void UpdateShards() {
         underBlue = 0;
         underRed = 0;
-
-        if(shardsOnTop.Count < 1)
-            return;
         
         foreach (var shard in shardsOnTop.Items)
             switch (shard.GetColor) {
