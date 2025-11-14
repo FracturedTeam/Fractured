@@ -6,6 +6,8 @@ using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -80,6 +82,11 @@ namespace _Project.Scripts.GameServices {
         #region ShardService
 
         private void PopulateShardOnStart() {
+            if (!FindAnyObjectByType<EventSystem>()) { //Add event system component if there is none
+                gameObject.AddComponent<EventSystem>();
+                gameObject.AddComponent<InputSystemUIInputModule>();
+            }
+            
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
             var _text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);
