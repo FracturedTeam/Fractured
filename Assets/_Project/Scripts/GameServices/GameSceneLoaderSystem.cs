@@ -11,11 +11,16 @@ namespace _Project.Scripts.GameServices {
 
         public List<Scene> loadedScenes { get; private set; }
 
-        private float targetProcess;
-        
-        public async Task LoadSceneAsync(SceneData toLoad, SceneData toUnload) {
-            var scene = SceneManager.GetSceneByName(toLoad.sceneName);
-            var operation = SceneManager.LoadSceneAsync(scene.buildIndex);
+        public int loadOnStart;
+
+        private void Start() {
+            if (loadOnStart != 0) {
+                var load = LoadSceneAsync(loadOnStart);
+            }
+        }
+
+        public async Task LoadSceneAsync(int toLoad, int toUnload = 0) {
+            var operation = SceneManager.LoadSceneAsync(toLoad, LoadSceneMode.Additive);
 
             while (!operation.isDone) {
                 await Task.Yield();
@@ -23,18 +28,23 @@ namespace _Project.Scripts.GameServices {
             
             //Une fois que c'est fait -> Envoyé les infos de switch de caméra etc.
             
-            await UnloadSceneAsync();
+            Debug.Log($"[GameSceneLoaderSystem] Loading scene {toLoad}");
+            
+            if(toUnload != 0)
+                await UnloadSceneAsync(toUnload);
 
         }
 
-        public async Task UnloadSceneAsync() {
+        public async Task UnloadSceneAsync(int toUnload) {
+            var operation = SceneManager.UnloadSceneAsync(toUnload);
+
+            while (!operation.isDone) {
+                await Task.Yield();
+            }
             
+            Debug.Log($"[GameSceneLoaderSystem] Unloading scene {toUnload}");
+            //euh je sais pas quoi faire mdr
         }
         
-    }
-
-    [Serializable]
-    public class SceneData {
-        public string sceneName;
     }
 }

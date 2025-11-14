@@ -9,14 +9,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class DoorInteractable : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
+
+        public int sceneIndex;
         
         [Header("Settings")]
         [SerializeField] private DoorType doorType;
         [SerializeField] private Transform exitPoint;
         [SerializeField] private DoorInteractable linkedDoor;
         [SerializeField] private CinemachineCamera cameraToSwitch;
-        [SerializeField] private SceneData sceneData;
-
+        
+        
         private KeyInteractable key;
         
         private bool initialized = false;
@@ -49,6 +51,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (interaction is not ObjectInteraction.Contextual) return;
             PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position);
+            var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(linkedDoor.sceneIndex, sceneIndex);
             
             if (doorType is not DoorType.Big) return;
             cameraToSwitch.Priority = 0;
