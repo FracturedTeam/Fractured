@@ -49,13 +49,20 @@ public class GlassText : MonoBehaviour
         
         underRed = 0;
         underBlue = 0;
-        
-        var firstCharInfo = text.textInfo.characterInfo[0];
-        
-        
-        TagPositions = text.transform.TransformPoint(firstCharInfo.topRight);
 
         SetText();
+        
+        var firstCharInfo = 0;
+        if (text.text.Contains('{'))
+        {
+            firstCharInfo = text.text.IndexOf('{', StringComparison.Ordinal);
+        }
+        
+        print(firstCharInfo);
+        print(text.textInfo.characterInfo[firstCharInfo]);
+        
+        TagPositions = text.transform.TransformPoint(text.textInfo.characterInfo[firstCharInfo].bottomRight);
+
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
