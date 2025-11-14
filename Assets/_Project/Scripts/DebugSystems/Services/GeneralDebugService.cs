@@ -18,7 +18,7 @@ namespace _Project.Scripts.DebugSystems.Services {
         }
 
         public void DrawDebugGUI() {
-            if(!debugUIState.IsVisible("Camera")) return;
+            if(!debugUIState.IsVisible("General")) return;
             
             var headerStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Bold,
@@ -54,7 +54,9 @@ namespace _Project.Scripts.DebugSystems.Services {
             };
             
             GUILayout.BeginVertical("box");
-            
+            GUILayout.Label("General Debug", headerStyle);
+            if(GUILayout.Button("Quit Game", buttonStyle))
+                Application.Quit();
             GUILayout.EndVertical();
         }
 
