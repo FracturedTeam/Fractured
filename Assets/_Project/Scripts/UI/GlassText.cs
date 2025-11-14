@@ -27,6 +27,8 @@ public class GlassText : MonoBehaviour
             text = (TMP_Text)t;
         else
             text = gameObject.AddComponent<TMP_Text>();
+        
+        text.text = "";
     }
 
 
@@ -70,6 +72,9 @@ public class GlassText : MonoBehaviour
         underBlue = 0;
         underRed = 0;
 
+        if(shardsOnTop.Count < 1)
+            return;
+        
         foreach (var shard in shardsOnTop.Items)
             switch (shard.GetColor) {
                 case ColorEnum.Blue:
