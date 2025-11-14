@@ -136,10 +136,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                     SetVisibility(underRed > 0 && underBlue > 0);
                     break;
                 case ColorEnum.Red:
-                    SetVisibility(underRed < 1);
+                    SetVisibility(underRed < 1 || underBlue > 0);
                     break;
                 case ColorEnum.Blue:
-                    SetVisibility(underBlue < 1);
+                    SetVisibility(underBlue < 1 || underRed > 0);
                     break;
                 default:
                     Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
