@@ -46,7 +46,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (interaction is not ObjectInteraction.Contextual) return;
             PlayerController.Instance.interact.StartUsingDoor();
-            PlayerController.Instance.transform.position = linkedDoor.GetExitPoint().position;
+            PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position);
             
             if (doorType is not DoorType.Big) return;
             cameraToSwitch.Priority = 0;
