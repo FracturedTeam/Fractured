@@ -36,6 +36,14 @@ public class GlassText : MonoBehaviour
 
 
     public void Setup(DialogueScriptableObject scriptableObject) {
+        
+        if (scriptableObject == null)
+        {
+            text.text = "";
+            dialogue = null;
+            return;
+        }
+        
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
         

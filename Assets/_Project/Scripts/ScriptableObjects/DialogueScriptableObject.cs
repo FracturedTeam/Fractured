@@ -14,5 +14,6 @@ namespace _Project.Scripts.ScriptableObjects
         public string both;
         
         public int letters;
+        public float time;
     }
 }
