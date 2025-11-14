@@ -993,7 +993,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724ed8968c4d80e468875af144c2204d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  dialogue: {fileID: 11400000, guid: 70191dde6e660844ead045c55f3370b1, type: 2}
+  possibleTexts:
+  - variableName: variable1
+    basic: f
+    red: fff
+    blue: ffff
+    both: fffffff
+    letters: 0
 --- !u!114 &761917980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,13 +1014,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <u>{variable1}</u> fhridifoghofirgbh
+  m_text: '{variable1} fhridifoghofirgbh'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
