@@ -29,6 +29,9 @@ public class GlassText : MonoBehaviour
             text = gameObject.AddComponent<TMP_Text>();
         
         text.text = "";
+        
+        shardsOnTop = new ObservableHashSet<Glass>();
+        shardsOnTop.onUpdate += UpdateShards;
     }
 
 
@@ -38,9 +41,6 @@ public class GlassText : MonoBehaviour
         
         underRed = 0;
         underBlue = 0;
-        
-        shardsOnTop = new ObservableHashSet<Glass>();
-        shardsOnTop.onUpdate += UpdateShards;
 
         var firstCharInfo = text.textInfo.characterInfo[text.text.IndexOf("{", StringComparison.Ordinal)];
         var lastCharInfo = text.textInfo.characterInfo[3];
@@ -92,13 +92,17 @@ public class GlassText : MonoBehaviour
                     break;
             }
     }
-    
-    void OnDisable() {
-        shardsOnTop.onUpdate -= UpdateShards;
+
+    private void OnDisable() {
+        if(shardsOnTop != null)
+            shardsOnTop.onUpdate -= UpdateShards;
     }
     
     private void SetText()
     {
+        if(!dialogue)
+            return;
+        
         show = BaseText;
         if(dialogue.variableName == null)
             return;
