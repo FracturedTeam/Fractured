@@ -48,12 +48,12 @@ namespace _Project.Scripts.DebugSystems.Services {
                 alignment = TextAnchor.MiddleLeft
             };
 
-            var buttonStyle = new GUIStyle(GUI.skin.label) {
+            var buttonStyle = new GUIStyle(GUI.skin.button) {
                 fontStyle = FontStyle.Bold,
                 fontSize = 10,
-                alignment = TextAnchor.MiddleLeft,
+                alignment = TextAnchor.MiddleCenter,
                 normal = {
-                textColor = Color.cornflowerBlue
+                textColor = Color.ghostWhite
                 }
             };
             
