@@ -13,10 +13,14 @@ namespace _Project.Scripts.Editor {
 
         SerializedProperty sceneToLoad;
         SerializedProperty sceneField;
+        SerializedProperty positionField;
+        SerializedProperty directionField;
 
         void OnEnable() {
             sceneToLoad = serializedObject.FindProperty("sceneToLoad");
             sceneField = sceneToLoad.FindPropertyRelative("sceneField");
+            positionField = sceneToLoad.FindPropertyRelative("playerPosition");
+            directionField = sceneToLoad.FindPropertyRelative("direction");
         }
         
         public override void OnInspectorGUI() {
@@ -40,11 +44,9 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
                 serializedObject.Update();
-                //EditorGUILayout.PropertyField(sceneToLoad, true);
                 EditorGUILayout.PropertyField(sceneField, true);
-                door.sceneToLoad.playerPosition = EditorGUILayout.Vector3Field("Player Position", door.sceneToLoad.playerPosition);
-                door.sceneToLoad.direction = (Direction)EditorGUILayout.EnumPopup("Direction", door.sceneToLoad.direction);
-                
+                EditorGUILayout.PropertyField(positionField, true);
+                EditorGUILayout.PropertyField(directionField, true);
                 serializedObject.ApplyModifiedProperties();
                 
                 EditorGUILayout.EndVertical();
