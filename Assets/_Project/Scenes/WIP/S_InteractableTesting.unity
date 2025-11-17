@@ -879,7 +879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 1
+    m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -3093,7 +3093,7 @@ Transform:
   - {fileID: 712033493}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1186095573
+--- !u!1 &1139367437
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3101,73 +3101,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1186095575}
-  - component: {fileID: 1186095574}
+  - component: {fileID: 1139367439}
+  - component: {fileID: 1139367438}
   m_Layer: 0
-  m_Name: LockCamera (1)
+  m_Name: SceneSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1186095574
+--- !u!114 &1139367438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186095573}
+  m_GameObject: {fileID: 1139367437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Script: {fileID: 11500000, guid: 580d636ace9c4d42ad6f55d8ccc11cfb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
-  Priority:
-    Enabled: 1
-    m_Value: 0
-  OutputChannel: 1
-  StandbyUpdate: 2
-  m_StreamingVersion: 20241001
-  m_LegacyPriority: 0
-  Target:
-    TrackingTarget: {fileID: 0}
-    LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
-  Lens:
-    FieldOfView: 60.000004
-    OrthographicSize: 5
-    NearClipPlane: 0.3
-    FarClipPlane: 1000
-    Dutch: 0
-    ModeOverride: 0
-    PhysicalProperties:
-      GateFit: 2
-      SensorSize: {x: 21.946, y: 16.002}
-      LensShift: {x: 0, y: 0}
-      FocusDistance: 10
-      Iso: 200
-      ShutterSpeed: 0.005
-      Aperture: 16
-      BladeCount: 5
-      Curvature: {x: 2, y: 11}
-      BarrelClipping: 0.25
-      Anamorphism: 0
-  BlendHint: 0
---- !u!4 &1186095575
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSceneSettings
+  roomCamera: {fileID: 349722170}
+--- !u!4 &1139367439
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186095573}
+  m_GameObject: {fileID: 1139367437}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
-  m_LocalPosition: {x: 10, y: 25, z: -8}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 100, y: 1, z: 1.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1214180976 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6300798553575960177, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
@@ -4351,13 +4321,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4480383252183305693}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5, y: 1, z: 1.13}
   m_LocalScale: {x: 2, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2241200957202908605}
-  m_Father: {fileID: 8715489485055246959}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2498508401410426933
 PrefabInstance:
@@ -4545,7 +4515,7 @@ GameObject:
   - component: {fileID: 7596016279667858167}
   - component: {fileID: 6292569059309350416}
   m_Layer: 0
-  m_Name: Door 1
+  m_Name: P_BigDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4759,22 +4729,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a29438a0dcc958499c8f9a78f388ced, type: 3}
---- !u!1 &6222564677548771584
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8715489485055246959}
-  m_Layer: 0
-  m_Name: P_SmallDoors_Template
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!114 &6292569059309350416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4789,9 +4743,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.DoorInteractable
   exitPoint: {fileID: 2241200957202908605}
   linkedDoor: {fileID: 0}
+  exitDir: 0
   sceneToLoad:
-    m_SceneAsset: {fileID: 102900000, guid: 617654a87e9bcc34dbdab1727cdd87b0, type: 3}
-    m_SceneName: S_FeatureDev
+    sceneField:
+      m_SceneAsset: {fileID: 102900000, guid: 617654a87e9bcc34dbdab1727cdd87b0, type: 3}
+      m_SceneName: S_FeatureDev
+    playerPosition: {x: 100, y: 0, z: 0}
+    direction: 0
+    sceneCamera: {fileID: 0}
 --- !u!4 &7012945963964747368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3004975573248879229, guid: e99f5cf5c66f8614a9ce4577f340e760, type: 3}
@@ -4876,22 +4835,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
---- !u!4 &8715489485055246959
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6222564677548771584}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2391512134673340331}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8919150862635632384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4963,5 +4906,5 @@ SceneRoots:
   - {fileID: 457155939}
   - {fileID: 1080877570}
   - {fileID: 349722171}
-  - {fileID: 1186095575}
-  - {fileID: 8715489485055246959}
+  - {fileID: 2391512134673340331}
+  - {fileID: 1139367439}

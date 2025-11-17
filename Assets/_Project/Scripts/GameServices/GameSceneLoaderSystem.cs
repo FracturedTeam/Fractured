@@ -1,10 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _Project.Scripts.Enums;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneLoaderSystem : Singleton<GameSceneLoaderSystem> {
@@ -12,22 +17,50 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private SceneField[] persistentScenes;
         
         public bool LoadingLevel { get; private set; }
-        
-        public async Task LoadSceneAsync(SceneField sceneField) { //Handle ce qu'il faut pour déplacer le joueur etc.
+
+        private void Start() {
+            var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
+            var sceneCount = SceneManager.sceneCount;
+
+            for (var i = sceneCount - 1; i > 0; i--) {
+                var sceneAt = SceneManager.GetSceneAt(i);
+                if(sceneAt.isLoaded) continue;
+                
+                if(!toLoad.Contains(sceneAt.name)) continue;
+                
+                var loading = SceneManager.LoadSceneAsync(sceneAt.name, LoadSceneMode.Additive);
+                Debug.Log($"Loading scene {sceneAt.name}");
+            }
+        }
+
+        public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             LoadingLevel = true;
             
             scenesToLoad.Clear();
             scenesToLoad.AddRange(persistentScenes);
-            scenesToLoad.Add(sceneField);
+            scenesToLoad.Add(sceneSettings.sceneField);
             
-            var loading = SceneManager.LoadSceneAsync(sceneField, LoadSceneMode.Additive);
+            var loading = SceneManager.LoadSceneAsync(sceneSettings.sceneField, LoadSceneMode.Additive);
+
+            if (loading == null) {
+                Debug.LogError($"Failed to load scene {sceneSettings.sceneField.SceneName}, Verify Build Settings");
+                return;
+            }
             
             while (!loading.isDone) {
                 await Task.Delay(100);
             }
             
-            Debug.Log($"Load scene {sceneField.SceneName}");
+            //Une fois la scène chargé, attend de switch de caméra avant de décharger les autres scènes
+            PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+            GameInitializer.Instance.ResetCameras();
             
+            while(PlayerController.Instance.cinemachineBrain.IsBlending)
+                await Task.Delay(100);
+
+            await Task.Delay(500);
+            
+            Debug.Log($"Load scene {sceneSettings.sceneField.SceneName}");
             await UnloadSceneAsync();
         }
 
@@ -57,10 +90,20 @@ namespace _Project.Scripts.GameServices {
             }
 
             //await Ressources.UnloadUnusedAssets();
+            //Une fois toutes les scènes décharger
+            //Set up les objets etc.
         }
     }
+
+    [Serializable]
+    public class SceneSettings {
+        public SceneField sceneField;
+        public Vector3 playerPosition;
+        public Direction direction;
+        public CinemachineCamera sceneCamera;
+    }
     
-    [System.Serializable]
+    [Serializable]
     public class SceneField
     {
         [SerializeField]
