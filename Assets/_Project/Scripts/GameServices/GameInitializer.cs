@@ -103,6 +103,15 @@ namespace _Project.Scripts.GameServices {
             var _text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);
             shardService.PopulateService(_interactables, _shards, _text);
         }
+
+        public void EmptyInteractable() {
+            shardService.interactables.Clear();
+        }
+
+        public void RepopulateInteractable() {
+            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
+            shardService.RepopulateBaseObjet(_interactables);
+        }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);

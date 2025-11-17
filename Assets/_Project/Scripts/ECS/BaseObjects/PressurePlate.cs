@@ -15,9 +15,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         [SerializeField] private float timeToMoveObject;
         
         [Header("Moved Object Settings")]
-        [SerializeField] private Transform objectMoved;
-        [SerializeField] private Transform initialPos;
-        [SerializeField] private Transform movedPos;
+        [SerializeField] private ObjectMoved[] movedObjects;
         
         private float lerpValue;
         private float timer;
@@ -34,27 +32,33 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 gameObject.layer = LayerMask.NameToLayer("Walkable");
             }
             
-            baseObject?.SetInteract(false);
+            baseObject?.SetInteract(true);
             initialized = true;
-            objectMoved.position = initialPos.position;
+            foreach (var obj in movedObjects) {
+                obj.objectMoved.position = obj.initialPos.position;
+            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
         }
 
         public void Tick(float deltaTime) {
-            var size = Physics.OverlapBoxNonAlloc(pressurePlateTriggerPos.position, pressurePlateSize, results, transform.rotation, interactLayerMask );
-            
-            if(size >  0) {
-                timer += deltaTime;
+            if (!baseObject.CanBeInteractedWith()) {
+                timer -= deltaTime;
             }
             else {
-                timer -= deltaTime;
+                var size = Physics.OverlapBoxNonAlloc(pressurePlateTriggerPos.position, pressurePlateSize, results, transform.rotation, interactLayerMask );
+                
+                if(size >  0) timer += deltaTime;
+                else timer -= deltaTime;
             }
             
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
+
+            foreach (var obj in movedObjects) {
+                obj.objectMoved.position = Vector3.Lerp(obj.initialPos.position, obj.movedPos.position, lerpValue);
+            }
             
-            objectMoved.position = Vector3.Lerp(initialPos.position, movedPos.position, lerpValue);
             lerpValue = timer / timeToMoveObject;
         }
 
@@ -70,10 +74,21 @@ namespace _Project.Scripts.ECS.BaseObjects {
             Gizmos.DrawWireCube(pressurePlateTriggerPos.position, pressurePlateSize);
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(initialPos.position, 0.5f);
+            foreach (var obj in movedObjects) {
+                Gizmos.DrawWireSphere(obj.initialPos.position, 0.5f);
+            }
             
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(movedPos.position, 0.5f);
+            foreach (var obj in movedObjects) {
+                Gizmos.DrawWireSphere(obj.movedPos.position, 0.5f);
+            }
         }
+    }
+
+    [Serializable]
+    public struct ObjectMoved {
+        public Transform objectMoved;
+        public Transform initialPos;
+        public Transform movedPos;
     }
 }
