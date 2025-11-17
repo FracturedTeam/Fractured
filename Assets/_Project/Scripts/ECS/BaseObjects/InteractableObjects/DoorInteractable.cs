@@ -13,7 +13,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Header("Settings")]
         [SerializeField] private Transform exitPoint;
         [SerializeField] private DoorInteractable linkedDoor;
-      
+
+        [Header("Load Scene")]
+        [SerializeField] private SceneField sceneToLoad;
+        
         private KeyInteractable key;
         private bool initialized = false;
         
@@ -32,6 +35,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (sceneToLoad != null) { //A modifier - Pour l'instant c'est du test
+                var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
+                return;
+            }
+            
             if (key) {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
@@ -43,6 +51,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
             
             if (interaction is not ObjectInteraction.Contextual) return;
+            
             PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position);
         }
