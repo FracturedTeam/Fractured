@@ -1,4 +1,4 @@
-Shader "Custom/SHD_Stencil_Fragment_02"
+Shader "Custom/SHD_Fragment_Stencil"
 {
     Properties
     {
@@ -22,12 +22,10 @@ Shader "Custom/SHD_Stencil_Fragment_02"
             Stencil
             {
                 Ref [_StencilID]
-                Comp NotEqual
+                Comp Always
                 Pass Replace
                 Fail Keep
             }
-
-            
         }
     }
 }
