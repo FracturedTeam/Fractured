@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -49,6 +50,21 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
+
+                /*switch (objectColor) { //Faudra set up ça pour le mesh en enfant OU le mettre a la main
+                    case ColorEnum.Blue:
+                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 01");
+                        break;
+                    case ColorEnum.Red:
+                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 02");
+                        break;
+                    case ColorEnum.Both:
+                        gameObject.layer = LayerMask.NameToLayer("NoLUT");
+                        break;
+                    default:
+                        Debug.LogWarning($"[GlassInteractable] Unknown color set : {gameObject.name}");
+                        break;
+                }*/
             }
             
             initialized = true;
@@ -120,10 +136,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                     SetVisibility(underRed > 0 && underBlue > 0);
                     break;
                 case ColorEnum.Red:
-                    SetVisibility(underRed < 1);
+                    SetVisibility(underRed < 1 || underBlue > 0);
                     break;
                 case ColorEnum.Blue:
-                    SetVisibility(underBlue < 1);
+                    SetVisibility(underBlue < 1 || underRed > 0);
                     break;
                 default:
                     Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");

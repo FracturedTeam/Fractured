@@ -6,6 +6,8 @@ using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -56,8 +58,8 @@ namespace _Project.Scripts.GameServices {
             
             var shardDebugService = new ShardDebugService(shardService,  debugUIState);
             debugSystem.Register(shardDebugService);
-            
-            var cameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+
+            var cameras = GetCameras();
             var cameraDebugService = new CameraDebugService(debugUIState, cameras);
             debugSystem.Register(cameraDebugService);
             
@@ -77,9 +79,25 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Dispose();
         }
 
+        public CinemachineCamera[] GetCameras() {
+            return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+        }
+
+        public void ResetCameras() {
+            var cam = GetCameras();
+            foreach (var c in cam) {
+                c.Priority = 0;
+            }
+        }
+
         #region ShardService
 
         private void PopulateShardOnStart() {
+            if (!FindAnyObjectByType<EventSystem>()) { //Add event system component if there is none
+                gameObject.AddComponent<EventSystem>();
+                gameObject.AddComponent<InputSystemUIInputModule>();
+            }
+            
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
             var _text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);

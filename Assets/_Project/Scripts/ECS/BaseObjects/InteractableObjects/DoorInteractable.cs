@@ -1,4 +1,5 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
@@ -9,14 +10,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class DoorInteractable : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
         
-        [Header("Settings")]
-        [SerializeField] private DoorType doorType;
-        [SerializeField] private Transform exitPoint;
-        [SerializeField] private DoorInteractable linkedDoor;
-        [SerializeField] private CinemachineCamera cameraToSwitch;
-
-        private KeyInteractable key;
+        [Header("Door Type")]
+        [SerializeField] public DoorType doorType;
         
+        [Header("Settings")]
+        [SerializeField] public Transform exitPoint;
+        [SerializeField] public DoorInteractable linkedDoor;
+        [SerializeField] public Direction exitDir;
+
+        [Header("Load Scene")]
+        [SerializeField] public SceneSettings sceneToLoad;
+        
+        private KeyInteractable key;
         private bool initialized = false;
         
         public void Initialize() {
@@ -38,6 +43,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
 
+            if (doorType is DoorType.BigDoor) {
+                if (sceneToLoad == null) return;
+                    var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
+                return;
+            }
+            
             if (linkedDoor.key) {
                 if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
@@ -45,12 +56,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
             
             if (interaction is not ObjectInteraction.Contextual) return;
-            PlayerController.Instance.interact.StartUsingDoor();
-            PlayerController.Instance.transform.position = linkedDoor.GetExitPoint().position;
             
-            if (doorType is not DoorType.Big) return;
-            cameraToSwitch.Priority = 0;
-            linkedDoor.cameraToSwitch.Priority = 1;
+            PlayerController.Instance.interact.StartUsingDoor();
+            PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
         }
 
         public void Tick(float deltaTime) {

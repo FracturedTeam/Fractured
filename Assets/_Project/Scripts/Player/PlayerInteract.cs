@@ -92,8 +92,10 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if(IsMemory())
                 MemoryInteraction();
-            else if(CanContextualInteract())
+            else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
+                potentialInteraction = null;
+            }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
         }
@@ -319,6 +321,7 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingDoor() {
             usingDoor.Start();
+            usingDoor.Reset(1);
         }
         
         public bool UsingDoor() {
