@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
 using UnityEngine;
 
@@ -218,8 +219,18 @@ public class PlayerMovementController : MonoBehaviour
     
     #endregion
 
-    public void SetPosition(Vector3 position) {
-        transform.position = position;
+    public void SetPosition(Vector3 position, Direction dir) {
+        FreezeController();
+        rb.position = position;
+        Physics.SyncTransforms();
+        mesh.eulerAngles = dir switch {
+            Direction.Right => new Vector3(0, 90, 0),
+            Direction.Left => new Vector3(0, -90, 0),
+            Direction.Up => new Vector3(0, 0, 0),
+            Direction.Down => new Vector3(0, 180, 0),
+            _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+        };
+        UnfreezeController();
     }
 
     public void FreezeController() {
