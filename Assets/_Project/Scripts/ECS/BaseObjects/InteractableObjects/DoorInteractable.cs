@@ -10,13 +10,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class DoorInteractable : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
         
+        [Header("Door Type")]
+        [SerializeField] public DoorType doorType;
+        
         [Header("Settings")]
-        [SerializeField] private Transform exitPoint;
-        [SerializeField] private DoorInteractable linkedDoor;
-        [SerializeField] private Direction exitDir;
+        [SerializeField] public Transform exitPoint;
+        [SerializeField] public DoorInteractable linkedDoor;
+        [SerializeField] public Direction exitDir;
 
         [Header("Load Scene")]
-        [SerializeField] private SceneSettings sceneToLoad;
+        [SerializeField] public SceneSettings sceneToLoad;
         
         private KeyInteractable key;
         private bool initialized = false;
@@ -40,8 +43,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
             }
 
-            if (sceneToLoad != null) { //A voir si il y a besoin de modifier
-                var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
+            if (doorType is DoorType.BigDoor) {
+                if (sceneToLoad == null) return;
+                    var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
                 return;
             }
             

@@ -100,7 +100,6 @@ namespace _Project.Scripts.GameServices {
         public SceneField sceneField;
         public Vector3 playerPosition;
         public Direction direction;
-        public CinemachineCamera sceneCamera;
     }
     
     [Serializable]
