@@ -31,6 +31,9 @@ namespace _Project.Scripts.GameServices {
                 var loading = SceneManager.LoadSceneAsync(sceneAt.name, LoadSceneMode.Additive);
                 Debug.Log($"Loading scene {sceneAt.name}");
             }
+            
+            GameInitializer.Instance.EmptyInteractable();
+            GameInitializer.Instance.RepopulateInteractable();
         }
 
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
@@ -39,6 +42,8 @@ namespace _Project.Scripts.GameServices {
             scenesToLoad.Clear();
             scenesToLoad.AddRange(persistentScenes);
             scenesToLoad.Add(sceneSettings.sceneField);
+
+            GameInitializer.Instance.EmptyInteractable();
             
             var loading = SceneManager.LoadSceneAsync(sceneSettings.sceneField, LoadSceneMode.Additive);
 
@@ -89,6 +94,8 @@ namespace _Project.Scripts.GameServices {
                 }
             }
 
+            GameInitializer.Instance.RepopulateInteractable();
+            
             //await Ressources.UnloadUnusedAssets();
             //Une fois toutes les scènes décharger
             //Set up les objets etc.

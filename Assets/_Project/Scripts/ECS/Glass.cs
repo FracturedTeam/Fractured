@@ -61,18 +61,18 @@ namespace _Project.Scripts.ECS {
             if(!canInteract) return;
             
             isHeld = isOn;
-            if (isOn)
-                ChangeStateActivation(false);
+            /*if (isOn)
+                ChangeStateActivation(false);*/
         }
 
-        internal void ChangeStateActivation(bool isOn) {
+        /*internal void ChangeStateActivation(bool isOn) {
             
-            if(!shardSprite)
+            /*if(!shardSprite)
                 return;
             
             //Will be replaced by the shader
-            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
-        }
+            //shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
+        }*/
 
         ///Get if an object is colliding with any the colliders 2D
         internal bool IsColliding(Vector3 position, bool mouse = false) {

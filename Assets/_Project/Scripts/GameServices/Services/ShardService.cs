@@ -106,6 +106,12 @@ namespace _Project.Scripts.GameServices.Services {
                 
             }
         }
+
+        public void RepopulateBaseObjet(BaseObject[] obj) {
+            interactables.Clear();
+            interactables.AddRange(obj);
+            UpdateInteractableObjects();
+        }
         
         public void SetEditableArea(bool inArea) {
             PlayerInEditableArea = inArea;
