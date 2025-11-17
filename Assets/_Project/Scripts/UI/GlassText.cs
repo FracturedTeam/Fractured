@@ -46,22 +46,30 @@ public class GlassText : MonoBehaviour
         
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
+        text.text = BaseText;
         
+       /*
+        var firstCharInfo = 0;
+
+        for (var i = 0; i < text.textInfo.characterInfo.Length -1 ; i++)
+        {
+            print(i);
+            if (text.textInfo.characterInfo != null)
+                    return;
+            
+            if (text.textInfo.characterInfo[i].textElement.unicode == '{')
+                firstCharInfo = i;
+            
+        }
+        */
+
         underRed = 0;
         underBlue = 0;
-
+        
         SetText();
         
-        var firstCharInfo = 0;
-        if (text.text.Contains('{'))
-        {
-            firstCharInfo = text.text.IndexOf('{', StringComparison.Ordinal);
-        }
         
-        print(firstCharInfo);
-        print(text.textInfo.characterInfo[firstCharInfo]);
-        
-        TagPositions = text.transform.TransformPoint(text.textInfo.characterInfo[firstCharInfo].bottomRight);
+        TagPositions = text.mesh.bounds.center;
 
     }
     
