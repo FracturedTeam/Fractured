@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -27,10 +28,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
+            if (HasOneKey() && interaction is ObjectInteraction.Remove) {
+                RemoveObject();
+                return;
+            }
+            
             if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             if (interaction is not ObjectInteraction.Drop) {
-                Debug.LogError($"[KeyInteractable] Interaction is not Drop");
+                Debug.LogError($"[KeyInteractable] Interaction is not Drop {nameof(KeyInteractable)} | Interaction is {interaction}");
                 return;
             }
             if (other == null) {
@@ -60,6 +66,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 ResolvePuzzle();
         }
 
+        private void RemoveObject() {
+            var index = keyUsed.Count - 1;
+            var objectRemoved = keyUsed[index];
+            
+            keyUsed.RemoveAt(index);
+            
+            baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+            baseObject.SetInteract(true);
+            PlayerController.Instance.interact.SetGrabbedObject(objectRemoved);
+        }
+
         protected virtual void ResolvePuzzle() {
             Debug.Log("[KeyInteractable] Resolve Puzzle");
 
@@ -82,6 +99,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return false;
         }
 
+        public bool HasOneKey() {
+            return keyObject.Count > 0;
+        }
+        
         public void SetKeyObject(BaseObject key) {
             keyObject.Add(key);
         }
