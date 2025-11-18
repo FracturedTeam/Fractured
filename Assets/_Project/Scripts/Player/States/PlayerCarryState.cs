@@ -2,8 +2,9 @@ using _Project.Scripts.Systems.StateMachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
-    public class PlayerCarryState : PlayerBaseState
-    {
+    public class PlayerCarryState : PlayerBaseState {
+        static readonly int BlendingHash = Animator.StringToHash("Blend");
+        
         public PlayerCarryState(PlayerController player, Animator animator) : base(player, animator) {
         }
 
@@ -20,6 +21,8 @@ namespace _Project.Scripts.Player.States {
         public override void OnUpdate() {
             player.movement.HandleUpdate();
             player.interact.HandleUpdate(player.movement.previousMoveDir);
+            
+            animator.SetFloat(BlendingHash, player.movement.GetSpeedRatio());
         }
 
         public override void OnFixedUpdate() {
