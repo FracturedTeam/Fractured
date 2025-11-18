@@ -28,6 +28,7 @@ namespace _Project.Scripts.Player {
         private readonly Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
         private BaseObject currentInteraction;
+        private BaseObject memoryInteraction;
         
         public bool HasObject { get; private set; }
         
@@ -156,8 +157,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void MemoryInteraction() {
-            currentInteraction = potentialInteraction;
-            currentInteraction?.OnInteract(ObjectInteraction.EnterMemory);
+            memoryInteraction = potentialInteraction;
+            memoryInteraction?.OnInteract(ObjectInteraction.EnterMemory);
             inMemory = true;
             
             UpdatePossibleInteraction();
@@ -165,8 +166,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void LeaveMemory() {
-            currentInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
-            currentInteraction = null;
+            memoryInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
+            memoryInteraction = null;
             
             inMemory = false;
             
