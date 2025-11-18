@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerLocomotionState : PlayerBaseState {
-        
         static readonly int BlendingHash = Animator.StringToHash("Blend");
+        
         public PlayerLocomotionState(PlayerController player, Animator animator) : base(player, animator) {
         }
 

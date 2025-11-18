@@ -11,7 +11,6 @@ namespace _Project.Scripts.Player.States {
             animator.SetLayerWeight(FullBodyLayer, 1);
             animator.CrossFade(EnterMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
             
-            player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(false);
             player.movement.FreezeController();
         }
