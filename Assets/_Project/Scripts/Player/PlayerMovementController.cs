@@ -21,8 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
-
-
+    
     public float currentMaxSpeed { get; private set; }
     public float currentSpeed { get; private set; }
     
@@ -241,6 +240,10 @@ public class PlayerMovementController : MonoBehaviour
         rb.isKinematic = false;
     }
 
+    public float GetSpeedRatio() {
+        return currentSpeed / currentMaxSpeed;
+    }
+    
     internal bool IsPlayerFrozen() {
         return rb.isKinematic;
     }
