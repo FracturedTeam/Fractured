@@ -79,7 +79,7 @@ namespace _Project.Scripts.ECS
                 return;
 
             //Will be replaced by the shader
-            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
+            //shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
         }
         
         
