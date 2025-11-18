@@ -1,11 +1,16 @@
 using _Project.Scripts.Systems.StateMachine;
+using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerUsingDoorState : PlayerBaseState {
-        public PlayerUsingDoorState(PlayerController player) : base(player) {
+        public PlayerUsingDoorState(PlayerController player, Animator animator) : base(player, animator) {
         }
 
         public override void OnEnter() {
+            //Animator
+            animator.SetLayerWeight(FullBodyLayer, 1);
+            animator.CrossFade(OpenDoorHash,  defaultCrossFadeDuration, FullBodyLayer);
+            
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(false);
         }
@@ -21,7 +26,9 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            
+            //Animator
+            animator.SetLayerWeight(FullBodyLayer, 0);
+            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
         }
     }
 }

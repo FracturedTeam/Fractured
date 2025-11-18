@@ -19,6 +19,8 @@ namespace _Project.Scripts.Player {
         public PlayerMovementController movement;
         [HideInInspector]
         public PlayerInteract interact;
+
+        [SerializeField] private Animator animator;
         
 
         private void Start() {
@@ -40,11 +42,11 @@ namespace _Project.Scripts.Player {
 
         void DefineState() {
             //Create All State
-            var locomotionState = new PlayerLocomotionState(this);
-            var fallState = new PlayerFallState(this);
-            var carryState = new PlayerCarryState(this);
-            var memoryState = new PlayerMemoryState(this);
-            var doorState = new PlayerUsingDoorState(this);
+            var locomotionState = new PlayerLocomotionState(this, animator);
+            var fallState = new PlayerFallState(this, animator);
+            var carryState = new PlayerCarryState(this, animator);
+            var memoryState = new PlayerMemoryState(this, animator);
+            var doorState = new PlayerUsingDoorState(this, animator);
             
             //Define all states transitions
             //Locomotion State
