@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
@@ -69,7 +70,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
-                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.pos2D), shard);
+                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
         
@@ -83,7 +84,7 @@ namespace _Project.Scripts.GameServices.Services {
         private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
             foreach (var shard in shards) {
                 if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
-                    if (!shard.IsColliding(Mouse.current.position.ReadValue(), true))
+                    if (!shard.IsColliding(Mouse.current.position.ReadValue()))
                         continue;
                     
                     currentGlass = shard;
