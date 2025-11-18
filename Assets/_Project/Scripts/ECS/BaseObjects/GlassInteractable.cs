@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -24,10 +26,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private MoveableObject interactableInBox;
         
         [Header("Debug on UI")]
-        [SerializeField] internal Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
-
+        
+        internal Vector3[] BoundingBox;
         private MoveableObject selfMoveable;
         
         private int underRed;
@@ -84,6 +86,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                     Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
             }
             
+            BoundingBox = new Vector3[4];
+            for (int i = 0; i < BoundingBox.Length; i++)
+            {
+                BoundingBox[i] = new Vector3(0, 0, 0);
+            }
             SetUp();
         }
 
@@ -102,7 +109,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
-            pos2D = mainCamera!.WorldToScreenPoint(transform.position);
 
             if (!objectInside) return;
             if (objectOut) return;
@@ -193,31 +199,49 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         ///Draw The Gizmos of the collider, only in Editor
         private void OnDrawGizmos() {
-            if(!showColliders)
-                return;
-      
             Gizmos.color = objectColor switch {
                 ColorEnum.Blue => Color.dodgerBlue,
                 ColorEnum.Red => Color.crimson,
                 _ => Color.darkOrchid
             };
-            Gizmos.DrawSphere(pos2D, GetRadius);
+            
+            if(!mainCamera)
+                return;
+            
+            foreach (var pos in BoundingBox)
+            {
+                Gizmos.DrawSphere(pos, 10);
+            }
+            
         }
 
         ///Auto Setup the collision
-        [ContextMenu("SetUp")]
         private void SetUp() {
-            var meshRenderer = GetComponent<MeshRenderer>();
-            if(mainCamera == null) mainCamera = Camera.main;
-        
-            var min = meshRenderer.bounds.min;
-            var max = meshRenderer.bounds.max;
-            var screenMin = Camera.main!.WorldToScreenPoint(min);
-            var screenMax = Camera.main!.WorldToScreenPoint(max);
-            var mag = (transform.position + mainCamera!.transform.position).magnitude;
+            var points = GetComponent<MeshCollider>().sharedMesh.vertices;
+            HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
-            pos2D = mainCamera!.WorldToScreenPoint(transform.position);
-            radius2D = Mathf.Abs((screenMax-screenMin).magnitude *  -transform.position.z + (screenMax-screenMin).magnitude) / mag * 4;
+
+            Vector3 pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);
+
+            foreach (var point in pointsHashSet)
+            {
+                var current =  transform.TransformPoint(point);
+                current = mainCamera.WorldToScreenPoint(current);
+                
+                if (pMin.x > current.x)
+                    pMin.x = current.x;
+                if (pMin.y > current.y)
+                    pMin.y = current.y;
+                if (pMax.x < current.x)
+                    pMax.x = current.x;
+                if (pMax.y < current.y)
+                    pMax.y = current.y;
+            } 
+            BoundingBox[0] =  new Vector3(pMin.x, pMin.y);
+            BoundingBox[1] =  new Vector3(pMin.x, pMax.y);
+            BoundingBox[2] =  new Vector3(pMax.x, pMax.y);
+            BoundingBox[3] =  new Vector3(pMax.x, pMin.y);
         }
     }
 }
