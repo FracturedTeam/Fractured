@@ -58,8 +58,8 @@ namespace _Project.Scripts.GameServices {
             
             var shardDebugService = new ShardDebugService(shardService,  debugUIState);
             debugSystem.Register(shardDebugService);
-            
-            var cameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+
+            var cameras = GetCameras();
             var cameraDebugService = new CameraDebugService(debugUIState, cameras);
             debugSystem.Register(cameraDebugService);
             
@@ -77,6 +77,17 @@ namespace _Project.Scripts.GameServices {
 
         private void OnDestroy() {
             gameSystems.Dispose();
+        }
+
+        public CinemachineCamera[] GetCameras() {
+            return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+        }
+
+        public void ResetCameras() {
+            var cam = GetCameras();
+            foreach (var c in cam) {
+                c.Priority = 0;
+            }
         }
 
         #region ShardService
