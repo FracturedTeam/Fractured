@@ -217,7 +217,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         ///Auto Setup the collision
         private void SetUp() {
-            var points = GetComponent<MeshCollider>().sharedMesh.vertices;
+            var points = GetComponent<MeshFilter>().sharedMesh.vertices;
             HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
 

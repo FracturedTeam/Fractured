@@ -9,7 +9,7 @@ namespace _Project.Scripts.Player.States {
         public override void OnEnter() {
             //Animator
             animator.SetLayerWeight(FullBodyLayer, 1);
-            animator.CrossFade(OpenDoorHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(OpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);
         }
@@ -27,7 +27,7 @@ namespace _Project.Scripts.Player.States {
         public override void OnExit() {
             //Animator
             animator.SetLayerWeight(FullBodyLayer, 0);
-            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
         }
     }
 }
