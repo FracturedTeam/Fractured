@@ -6,6 +6,7 @@ namespace _Project.Scripts.Enums {
         Reset,
         Contextual,
         EnterMemory,
-        LeaveMemory
+        LeaveMemory,
+        Remove
     }
 }

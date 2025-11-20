@@ -8,6 +8,7 @@ using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Player {
 
@@ -27,6 +28,7 @@ namespace _Project.Scripts.Player {
         private readonly Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
         private BaseObject currentInteraction;
+        private BaseObject memoryInteraction;
         
         public bool HasObject { get; private set; }
         
@@ -38,6 +40,10 @@ namespace _Project.Scripts.Player {
         private CountdownTimer usingDoor;
         
         private Interaction interactionType;
+
+        private float interactDuration = 0;
+        private float holdInteractionNeeded = 2;
+        private bool interactionHold = false;
         
         public bool CanInteract {
             get => canInteract;
@@ -78,7 +84,26 @@ namespace _Project.Scripts.Player {
 
         #endregion
         
-        private void Interact() {
+        private void Interact(InputAction.CallbackContext ctx) {
+            if (ctx.performed) {
+                interactionHold = true;
+                return;
+            }
+
+            if (ctx.canceled) 
+                interactionHold = false;
+
+            if (interactDuration >= holdInteractionNeeded && !HasObject) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                }
+                
+                interactDuration = 0;
+                return;
+            }
+            
+            interactDuration = 0;
+            
             if (inMemory) {
                 if(currentInteraction != null) LeaveMemory();
                 else Debug.LogError("[PlayerInteract] Current memory interaction is null");
@@ -93,7 +118,10 @@ namespace _Project.Scripts.Player {
             else if(IsMemory())
                 MemoryInteraction();
             else if (CanContextualInteract()) {
-                potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
+                if (potentialInteraction.GetInteractionType is ObjectType.Door) {
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) return;
+                    potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
+                }
                 potentialInteraction = null;
             }
             else
@@ -110,6 +138,15 @@ namespace _Project.Scripts.Player {
             Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
 
+        public void SetGrabbedObject(BaseObject interaction) {
+            interaction.SetInteract(true);
+            HasObject = true;
+            currentInteraction = interaction;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
+            
+            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
+        }
+
         private void DropObject() {
             Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
             
@@ -120,8 +157,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void MemoryInteraction() {
-            currentInteraction = potentialInteraction;
-            currentInteraction?.OnInteract(ObjectInteraction.EnterMemory);
+            memoryInteraction = potentialInteraction;
+            memoryInteraction?.OnInteract(ObjectInteraction.EnterMemory);
             inMemory = true;
             
             UpdatePossibleInteraction();
@@ -129,8 +166,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void LeaveMemory() {
-            currentInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
-            currentInteraction = null;
+            memoryInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
+            memoryInteraction = null;
             
             inMemory = false;
             
@@ -142,6 +179,9 @@ namespace _Project.Scripts.Player {
         public void HandleUpdate(Vector3 playerDir) {
             interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
 
+            if(interactionHold)
+                interactDuration += Time.deltaTime;
+            
             HandleInteraction();
             SetPlayerInteraction();
         }
@@ -245,7 +285,7 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {nameof(potentialInteraction)}");
+                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
                     return;
                 default:
                     return;
