@@ -105,7 +105,7 @@ namespace _Project.Scripts.Player {
             interactDuration = 0;
             
             if (inMemory) {
-                if(currentInteraction != null) LeaveMemory();
+                if(memoryInteraction != null) LeaveMemory();
                 else Debug.LogError("[PlayerInteract] Current memory interaction is null");
                 
                 return;
@@ -120,8 +120,8 @@ namespace _Project.Scripts.Player {
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
                     if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) return;
-                    potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 }
+                potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
             }
             else

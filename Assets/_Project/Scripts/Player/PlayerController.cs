@@ -69,6 +69,7 @@ namespace _Project.Scripts.Player {
             At(locomotionState, doorState, new FuncPredicate(() => interact.UsingDoor()));
             At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor() && !interact.IsCarrying()));
             At(carryState, doorState, new FuncPredicate(() => interact.UsingDoor()));
+            At(doorState, carryState, new FuncPredicate(() => !interact.UsingDoor() && interact.IsCarrying()));
             
             //Obtenir un éclat de verre
             //Faut que je regarde comment trigger le state
