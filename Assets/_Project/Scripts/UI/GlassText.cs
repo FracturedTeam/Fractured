@@ -46,16 +46,31 @@ public class GlassText : MonoBehaviour
         
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
+        text.text = BaseText;
         
+       /*
+        var firstCharInfo = 0;
+
+        for (var i = 0; i < text.textInfo.characterInfo.Length -1 ; i++)
+        {
+            print(i);
+            if (text.textInfo.characterInfo != null)
+                    return;
+            
+            if (text.textInfo.characterInfo[i].textElement.unicode == '{')
+                firstCharInfo = i;
+            
+        }
+        */
+
         underRed = 0;
         underBlue = 0;
         
-        var firstCharInfo = text.textInfo.characterInfo[0];
-        
-        
-        TagPositions = text.transform.TransformPoint(firstCharInfo.topRight);
-
         SetText();
+        
+        
+        TagPositions = text.mesh.bounds.center;
+
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
