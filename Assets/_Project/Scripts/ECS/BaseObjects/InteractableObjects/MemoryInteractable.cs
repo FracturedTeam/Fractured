@@ -35,7 +35,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
+                if(baseObject.GetCompletion is not InteractionCompletion.Completed) return;
             }
             
             switch (interaction) {
@@ -44,6 +44,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();
+                    break;
+                case ObjectInteraction.Remove:
+                        key?.OnInteract(ObjectInteraction.Remove);
                     break;
                 default:
                     Debug.LogWarning($"[MemoryInteractable] Unhandled interaction {interaction} on {nameof(MemoryInteractable)}");

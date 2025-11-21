@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
 using UnityEngine;
 
@@ -20,8 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
-
-
+    
     public float currentMaxSpeed { get; private set; }
     public float currentSpeed { get; private set; }
     
@@ -218,6 +218,20 @@ public class PlayerMovementController : MonoBehaviour
     
     #endregion
 
+    public void SetPosition(Vector3 position, Direction dir) {
+        FreezeController();
+        rb.position = position;
+        Physics.SyncTransforms();
+        mesh.eulerAngles = dir switch {
+            Direction.Right => new Vector3(0, 90, 0),
+            Direction.Left => new Vector3(0, -90, 0),
+            Direction.Up => new Vector3(0, 0, 0),
+            Direction.Down => new Vector3(0, 180, 0),
+            _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+        };
+        UnfreezeController();
+    }
+
     public void FreezeController() {
         rb.isKinematic = true;
     }
@@ -226,6 +240,10 @@ public class PlayerMovementController : MonoBehaviour
         rb.isKinematic = false;
     }
 
+    public float GetSpeedRatio() {
+        return currentSpeed / currentMaxSpeed;
+    }
+    
     internal bool IsPlayerFrozen() {
         return rb.isKinematic;
     }

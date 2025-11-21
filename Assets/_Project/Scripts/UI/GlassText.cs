@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.HashSetUtil;
 using TMPro;
 using UnityEngine;
@@ -10,36 +11,66 @@ using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
 {
+    internal Vector2 TagPositions;
+    private DialogueScriptableObject dialogue;
+    private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private ObservableHashSet<Glass> shardsOnTop;
     private TMP_Text text;
     private string show;
     private string BaseText;
-    internal Vector2 TagPositions;
-    [SerializeField] private List<PossibleText>  possibleTexts = new List<PossibleText>();
-    private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
-    private ObservableHashSet<Glass> shardsOnTop;
-
 
     private int underRed = 0;
     private int underBlue = 0;
 
-    private void Start()
-    {
+    private void Start() {
         if (TryGetComponent(typeof(TMP_Text), out var t))
             text = (TMP_Text)t;
         else
             text = gameObject.AddComponent<TMP_Text>();
-        BaseText =  text.text;
         
-        underRed = 0;
-        underBlue = 0;
+        text.text = "";
         
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
+    }
 
-        var firstCharInfo = text.textInfo.characterInfo[text.text.IndexOf("{", StringComparison.Ordinal)];
-        var lastCharInfo = text.textInfo.characterInfo[3];
-        TagPositions = text.transform.TransformPoint((firstCharInfo.topLeft + lastCharInfo.bottomRight) / 2f);
-        print(TagPositions);
+
+    public void Setup(DialogueScriptableObject scriptableObject) {
+        
+        if (scriptableObject == null)
+        {
+            text.text = "";
+            dialogue = null;
+            return;
+        }
+        
+        dialogue = scriptableObject;
+        BaseText =  scriptableObject.dialogue;
+        text.text = BaseText;
+        
+       /*
+        var firstCharInfo = 0;
+
+        for (var i = 0; i < text.textInfo.characterInfo.Length -1 ; i++)
+        {
+            print(i);
+            if (text.textInfo.characterInfo != null)
+                    return;
+            
+            if (text.textInfo.characterInfo[i].textElement.unicode == '{')
+                firstCharInfo = i;
+            
+        }
+        */
+
+        underRed = 0;
+        underBlue = 0;
+        
+        SetText();
+        
+        
+        TagPositions = text.mesh.bounds.center;
+
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
@@ -64,7 +95,7 @@ public class GlassText : MonoBehaviour
     private void UpdateShards() {
         underBlue = 0;
         underRed = 0;
-
+        
         foreach (var shard in shardsOnTop.Items)
             switch (shard.GetColor) {
                 case ColorEnum.Blue:
@@ -82,63 +113,51 @@ public class GlassText : MonoBehaviour
                     break;
             }
     }
-    
-    void OnDisable() {
-        shardsOnTop.onUpdate -= UpdateShards;
+
+    private void OnDisable() {
+        if(shardsOnTop != null)
+            shardsOnTop.onUpdate -= UpdateShards;
     }
     
     private void SetText()
     {
+        if(!dialogue)
+            return;
+        
         show = BaseText;
-        foreach (PossibleText possibleText in possibleTexts)
+        if(dialogue.variableName == null)
+            return;
+
+        var random = "";
+        for (int i = 0; i < dialogue.letters ; i++)
         {
-            if(possibleText.variableName == null)
-                continue;
-
-            var random = "";
-            for (int i = 0; i < possibleText.letters ; i++)
-            {
-                random += Glyphs[Random.Range(0, Glyphs.Length)];
-            }
-            
-            var replace = "";
-
-            switch (underRed)
-            {
-                case > 0 when underBlue > 0:
-                    replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
-                        possibleText.both == "" ? random : $"{possibleText.both}");
-                    break;
-                case > 0:
-                    replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
-                        possibleText.red == "" ? random : $"{possibleText.red}");
-                    break;
-                default:
-                {
-                    if (underBlue > 0)
-                        replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
-                            possibleText.blue == "" ? random : $"{possibleText.blue}");
-                    else
-                        replace = show.Replace("{" + $"{possibleText.variableName}" + "}",
-                            possibleText.basic == "" ? random : $"{possibleText.basic}");
-                    break;
-                }
-            }
-            show = replace;
+            random += Glyphs[Random.Range(0, Glyphs.Length)];
         }
-        text.text = show;
-    }
+            
+        var replace = "";
 
-    [Serializable]
-    private struct PossibleText
-    {
-        public string variableName;
-        public string basic;
-        public string red;
-        public string blue;
-        public string both;
-        
-        
-        public int letters;
+        switch (underRed)
+        {
+            case > 0 when underBlue > 0:
+                replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
+                    dialogue.both == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.both}</u>") + "</u>";
+                break;
+            case > 0:
+                replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
+                    dialogue.red == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.red}</u>")+ "</u>";
+                break;
+            default:
+            {
+                if (underBlue > 0)
+                    replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
+                        dialogue.blue == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.blue}</u>" + "</u>");
+                else
+                    replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
+                        dialogue.basic == "" ? random : $" <u>{dialogue.basic}</u>" );
+                break;
+            }
+        }
+        show = replace;
+        text.text = show;
     }
 }
