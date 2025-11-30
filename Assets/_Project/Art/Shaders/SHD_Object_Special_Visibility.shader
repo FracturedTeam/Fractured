@@ -870,6 +870,7 @@ Shader "Custom/SHD_Object_Special_Visibility"
 			AlphaToMask Off
 			ColorMask 0
 
+
 			HLSLPROGRAM
 
 			#define ASE_GEOMETRY
@@ -1180,6 +1181,7 @@ Shader "Custom/SHD_Object_Special_Visibility"
 			ZWrite On
 			ColorMask R
 			AlphaToMask Off
+
 
 			HLSLPROGRAM
 

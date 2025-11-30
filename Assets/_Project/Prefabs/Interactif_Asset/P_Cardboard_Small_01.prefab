@@ -48,12 +48,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 4984976990f0d0047946e305eb000f80, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 320d0a9ed7fc20b4b8586ee8f869beba, type: 2}
     - target: {fileID: 919132149155446097, guid: 4984976990f0d0047946e305eb000f80, type: 3}
       propertyPath: m_Name
-      value: SM_Cardboard_Small_01
+      value: P_Cardboard_Small_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4984976990f0d0047946e305eb000f80, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5735360127815759735}
   m_SourcePrefab: {fileID: 100100000, guid: 4984976990f0d0047946e305eb000f80, type: 3}
+--- !u!1 &8415381156403098679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4984976990f0d0047946e305eb000f80, type: 3}
+  m_PrefabInstance: {fileID: 8649190859262200166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &-5735360127815759735
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8415381156403098679}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4058874, y: 0.7654275, z: 1.0621563}
+  m_Center: {x: 0.000001758337, y: 0.38271374, z: -0.0038696527}
