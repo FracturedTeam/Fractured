@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8768981322660824135}
   - component: {fileID: 216978422781066849}
   - component: {fileID: 9006967089802969567}
+  - component: {fileID: 3775920201684527171}
   m_Layer: 0
   m_Name: P_GameServices
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameInitializer
   AutoUnparentOnAwake: 0
   debugSystemInitializer: {fileID: 9006967089802969567}
+  InitializeDebugger: 1
 --- !u!114 &9006967089802969567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,3 +61,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6f3a7d3bf4c4337bc9ee7539d823b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DebugSystems.DebugSystemInitializer
+--- !u!114 &3775920201684527171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950453177977461828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bdbeb2dedb4ecfb0b1fa41fd9a5fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSceneLoaderSystem
+  persistentScenes:
+  - m_SceneAsset: {fileID: 102900000, guid: 041257b0111baf14191be6550b757915, type: 3}
+    m_SceneName: PersistentGameplay

@@ -1,12 +1,14 @@
 using _Project.Scripts.Systems.StateMachine;
+using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerFallState : PlayerBaseState
     {
-        public PlayerFallState(PlayerController player) : base(player) {
+        public PlayerFallState(PlayerController player, Animator animator) : base(player, animator) {
         }
 
         public override void OnEnter() {
+            animator.CrossFade(FallHash,  defaultCrossFadeDuration);
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(false);
         }
@@ -20,7 +22,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            
+            //Possible fall on ground animation
         }
     }
 }

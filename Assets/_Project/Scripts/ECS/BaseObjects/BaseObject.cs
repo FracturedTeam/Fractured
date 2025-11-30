@@ -1,6 +1,8 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.ScriptableObjects;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -11,6 +13,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         public IInteractable GetInteract  { get; set; }
         public ObjectType GetInteractionType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
+        
+        [SerializeField] private bool isLocked;
+        [SerializeField] private DialogueScriptableObject dialogue;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -31,10 +36,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else SetInteract(false);
             
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
-                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
+                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
-                else Debug.LogError($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
+                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
@@ -50,8 +55,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Tick(Time.deltaTime);
         }
 
-        public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {
-           GetInteract.OnInteract(interaction, interactable);
+        public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
+            if(isLocked)
+                return;
+            
+            GetInteract.OnInteract(interaction, interactable);
+            
+            if(dialogue)
+                HudManager.hud?.SetText(dialogue);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  

@@ -19,6 +19,8 @@ namespace _Project.Scripts.Player {
         public PlayerMovementController movement;
         [HideInInspector]
         public PlayerInteract interact;
+
+        [SerializeField] private Animator animator;
         
 
         private void Start() {
@@ -40,11 +42,12 @@ namespace _Project.Scripts.Player {
 
         void DefineState() {
             //Create All State
-            var locomotionState = new PlayerLocomotionState(this);
-            var fallState = new PlayerFallState(this);
-            var carryState = new PlayerCarryState(this);
-            var memoryState = new PlayerMemoryState(this);
-            var doorState = new PlayerUsingDoorState(this);
+            var locomotionState = new PlayerLocomotionState(this, animator);
+            var fallState = new PlayerFallState(this, animator);
+            var carryState = new PlayerCarryState(this, animator);
+            var memoryState = new PlayerMemoryState(this, animator);
+            var doorState = new PlayerUsingDoorState(this, animator);
+            var obtainShardState = new PlayerObtainShardState(this, animator);
             
             //Define all states transitions
             //Locomotion State
@@ -55,14 +58,22 @@ namespace _Project.Scripts.Player {
             At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));
             At(carryState, locomotionState, new FuncPredicate(() => !interact.IsCarrying()));
             At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
+            At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));
             
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(memoryState, locomotionState, new FuncPredicate(() => !interact.IsInMemory()));
+            At(memoryState, locomotionState, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
+            At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
             
             //Using door state
             At(locomotionState, doorState, new FuncPredicate(() => interact.UsingDoor()));
-            At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor()));
+            At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor() && !interact.IsCarrying()));
+            At(carryState, doorState, new FuncPredicate(() => interact.UsingDoor()));
+            At(doorState, carryState, new FuncPredicate(() => !interact.UsingDoor() && interact.IsCarrying()));
+            
+            //Obtenir un éclat de verre
+            //Faut que je regarde comment trigger le state
+            //At(locomotionState, obtainShardState, new FuncPredicate(() => interact.));
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);

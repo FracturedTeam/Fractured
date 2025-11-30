@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.DebugSystems.Services {
     public class GeneralDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
@@ -55,8 +56,18 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.BeginVertical("box");
             GUILayout.Label("General Debug", headerStyle);
+            GUILayout.Label("Game", sectionStyle);
             if(GUILayout.Button("Quit Game", buttonStyle))
                 Application.Quit();
+            
+            GUILayout.Label("Scenes", sectionStyle);
+            GUILayout.Label($"Current loaded scene {SceneManager.GetActiveScene().name}", debugStyle);
+            /*for(var i = 0; i < SceneManager.sceneCountInBuildSettings - 1; i++) {
+                var s =  SceneManager.GetSceneAt(i);
+                if (GUILayout.Button($"Load : {s.name}", buttonStyle))
+                    SceneManager.LoadScene(i);
+            }*/
+            
             GUILayout.EndVertical();
         }
 
