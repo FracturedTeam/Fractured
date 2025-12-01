@@ -190,6 +190,7 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if(!canPlayerInteract) return;
+            
             size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
 
             switch (size) {
@@ -219,6 +220,10 @@ namespace _Project.Scripts.Player {
                 default: // No need for logic, just get the only object we detect
                     potentialInteraction = results[0].GetComponent<BaseObject>();
                     break;
+            }
+            
+            if (HasObject) {
+                if (potentialInteraction == currentInteraction) potentialInteraction = null;
             }
         }
 

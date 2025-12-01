@@ -206,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var playerPos = PlayerController.Instance.transform.position;
             var dir = PlayerController.Instance.movement.previousMoveDir;
 
-            Physics.Raycast(playerPos, Vector3.down, out var groundLevel);
+            Physics.Raycast(playerPos, Vector3.down, out var groundLevel, 10, LayerMask.NameToLayer("Walkable"));
                 
             var pos = playerPos + dir.normalized * (boundExtent.x * 3);
             pos.y = groundLevel.point.y + boundExtent.y;
