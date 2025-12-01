@@ -62,7 +62,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract.OnInteract(interaction, interactable);
             
             if(dialogue)
-                HudManager.hud?.SetText(dialogue);
+                HudManager.Instance?.SetText(dialogue);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  

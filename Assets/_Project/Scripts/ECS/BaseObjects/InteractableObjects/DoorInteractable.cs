@@ -45,7 +45,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
-                    var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
+                var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
                 return;
             }
             
