@@ -55,7 +55,7 @@ namespace _Project.Scripts.ECS
             if (!canInteract)
                 return;
 
-            if (!isHeld || (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere))
+            if (!isHeld && (!GameInitializer.Instance.InEditableArea() || !canEditAnywhere))
                 return;
 
             transform.position += (Vector3)eventData.delta;

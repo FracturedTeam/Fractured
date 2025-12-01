@@ -1,5 +1,7 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -8,11 +10,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         
         [Header("Settings")]
-        [SerializeField] private Glass[] shard;
+        [SerializeField] private Glass[] shards;
         
         private bool initialized = false;
         
-        public void Initialize() {
+        public void Initialize() { //To-do save l'obtention pour insantier a nouveau le fragment
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
                 else Debug.LogError($"[ObtainShardInteractable] Cannot find {nameof(BaseObject)} in {nameof(ObtainShardInteractable)}");
@@ -24,12 +26,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             initialized = true;
 
-            if(shard.Length == 0)
+            if(shards.Length == 0)
                 Debug.LogError($"[ObtainShardInteractable] {gameObject.name} No shards referenced !");
-            
-            foreach (var s in shard) {
-                s.gameObject.SetActive(false);
-            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -45,14 +43,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         void ObtainShard() {
-            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Enter Shard");
             baseObject.GetCompletion = InteractionCompletion.Completed;
             
-            foreach (var s in shard) {
-                s.gameObject.SetActive(true);
-                s.Initialize();
-            }
-            
+            GameInitializer.Instance.AddShards(shards);
             baseObject.SetInteract(false);
             
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
