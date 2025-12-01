@@ -15,6 +15,7 @@ namespace _Project.Scripts.ECS
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
+        [SerializeField] private GameObject shard; 
 
         private Camera mainCamera;
         private Image shardSprite;
@@ -33,6 +34,8 @@ namespace _Project.Scripts.ECS
                 Initialize();
             }
         }
+        
+        
 
         public void Initialize()
         {
@@ -64,8 +67,28 @@ namespace _Project.Scripts.ECS
                     mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x / 2),
                 Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y / 2,
                     mainCamera.pixelHeight - shardSprite.rectTransform.sizeDelta.y / 2));
+
+            if (shard)
+                shard.transform.position =
+                    mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y,
+                        -20));
         }
 
+        private void OnEnable()
+        {
+            if (!shard) 
+                return;
+            
+            shard.transform.position =
+                mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y,
+                    -20));
+            shard.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            shard?.SetActive(false);
+        }
         internal void ChangeHoldingState(bool isOn)
         {
             if (!canInteract) return;
