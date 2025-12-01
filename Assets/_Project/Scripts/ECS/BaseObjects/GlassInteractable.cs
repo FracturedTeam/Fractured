@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
+    [RequireComponent(typeof(BaseObject))]
     public class GlassInteractable : MonoBehaviour
     {
         private float GetRadius => radius2D;
@@ -101,7 +102,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         internal void OnInteract(bool isUnder, Glass shard) {
             if(!baseObject)
                 return;
-            
+
+            SetUp();
+
             if (isUnder) 
                 shardsOnTop.Add(shard);
             else if(shardsOnTop.Contains(shard))
