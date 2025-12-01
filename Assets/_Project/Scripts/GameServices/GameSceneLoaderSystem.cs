@@ -41,18 +41,26 @@ namespace _Project.Scripts.GameServices {
             
             scenesToLoad.Clear();
             scenesToLoad.AddRange(persistentScenes);
-            scenesToLoad.Add(sceneSettings.sceneField);
+            scenesToLoad.Add(sceneSettings.levelDesign);
+            scenesToLoad.Add(sceneSettings.levelArt);
 
             GameInitializer.Instance.EmptyInteractable();
+            GameInitializer.Instance.EmptyShards();
             
-            var loading = SceneManager.LoadSceneAsync(sceneSettings.sceneField, LoadSceneMode.Additive);
+            var loadingLevel = SceneManager.LoadSceneAsync(sceneSettings.levelDesign, LoadSceneMode.Additive);
+            var loadingArt = SceneManager.LoadSceneAsync(sceneSettings.levelArt, LoadSceneMode.Additive);
 
-            if (loading == null) {
-                Debug.LogError($"Failed to load scene {sceneSettings.sceneField.SceneName}, Verify Build Settings");
+            if (loadingLevel == null) {
+                Debug.LogError($"Failed to load LD scene {sceneSettings.levelDesign.SceneName}, Verify Build Settings");
                 return;
             }
             
-            while (!loading.isDone) {
+            if (loadingArt == null) {
+                Debug.LogError($"Failed to load Art scene {sceneSettings.levelArt.SceneName}, Verify Build Settings");
+            }
+            
+            
+            while (!loadingLevel.isDone && loadingArt is { isDone: false }) {
                 await Task.Delay(100);
             }
             
@@ -65,7 +73,7 @@ namespace _Project.Scripts.GameServices {
 
             await Task.Delay(500);
             
-            Debug.Log($"Load scene {sceneSettings.sceneField.SceneName}");
+            Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName}");
             await UnloadSceneAsync();
         }
 
@@ -74,7 +82,7 @@ namespace _Project.Scripts.GameServices {
             
             var scenesToUnload = new List<string>();
             var sceneCount = SceneManager.sceneCount;
-
+            
             for (var i = sceneCount - 1; i > 0; i--) {
                 var sceneAt = SceneManager.GetSceneAt(i);
                 if(!sceneAt.isLoaded) continue;
@@ -104,7 +112,8 @@ namespace _Project.Scripts.GameServices {
 
     [Serializable]
     public class SceneSettings {
-        public SceneField sceneField;
+        public SceneField levelDesign;
+        public SceneField levelArt;
         public Vector3 playerPosition;
         public Direction direction;
     }

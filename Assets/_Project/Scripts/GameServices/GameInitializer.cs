@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -108,9 +110,30 @@ namespace _Project.Scripts.GameServices {
             shardService.interactables.Clear();
         }
 
+        public void EmptyShards() {
+            Debug.Log("Shards to destroy "  + shardService.shards.Count);
+            for (int i = shardService.shards.Count - 1; i >= 0; i--) {
+                Debug.Log(shardService.shards[i].gameObject.name);
+                
+                Destroy(shardService.shards[i].gameObject);
+                shardService.shards.RemoveAt(i);
+            }
+        }
+
         public void RepopulateInteractable() {
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             shardService.RepopulateBaseObjet(_interactables);
+        }
+        
+        public void AddShards(Glass[] shards) {
+            var newShards = new List<Glass>();
+            foreach (var shard in shards) {
+                var s = Instantiate(shard, HudManager.Instance.transform);
+                newShards.Add(s);
+            }
+            
+            Debug.Log("Shards to repopulate "  + newShards.Count);
+            shardService.AddShards(newShards.ToArray());
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
