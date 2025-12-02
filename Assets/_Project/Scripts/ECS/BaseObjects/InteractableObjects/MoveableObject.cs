@@ -126,11 +126,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
             
-            if (baseObject.successDialogue is not { oneTime: true, alreadyInteracted: true }) 
-                return;
-                    
-            HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-            baseObject.successDialogue.alreadyInteracted = true;
+            if (baseObject.successDialogue is not{ oneTime: true, alreadyInteracted: true })
+            {
+                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                baseObject.successDialogue.alreadyInteracted = true;
+            }
             
             Debug.Log("[MoveableObject] Grab object");
         }

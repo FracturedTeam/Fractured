@@ -20,7 +20,7 @@ namespace _Project.Scripts.UI
 
         public void SetText(DialogueScriptableObject newDialogue)
         {
-            if(!glassText)
+            if(!glassText || !newDialogue)
                 return;
             
             glassText.Setup(newDialogue);
