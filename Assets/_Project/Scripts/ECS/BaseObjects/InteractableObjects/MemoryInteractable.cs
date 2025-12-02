@@ -1,6 +1,7 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -35,7 +36,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(baseObject.GetCompletion is not InteractionCompletion.Completed) return;
+                if(baseObject.GetCompletion is not InteractionCompletion.Completed)
+                {
+                    if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) 
+                        return;
+                    
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                    
+                    return;
+                }
+                if (baseObject.successDialogue is not { oneTime: true, alreadyInteracted: true }) 
+                    return;
+                    
+                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                baseObject.successDialogue.alreadyInteracted = true;
             }
             
             switch (interaction) {

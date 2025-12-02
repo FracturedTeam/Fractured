@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Structs;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -50,7 +52,20 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             if (GetKeyObject(other.GetBaseObject()))
+            {
                 CheckForResolve(other.GetBaseObject());
+                Dialogue currentDialogue = GetKeyObject(baseObject) ? baseObject.successDialogue : baseObject.failedDialogue;
+                
+                if (currentDialogue is { oneTime: true, alreadyInteracted: true }) 
+                    return;
+                
+                HudManager.Instance.SetText(currentDialogue.dialogue);
+                    
+                if(GetKeyObject(baseObject))
+                    baseObject.successDialogue.alreadyInteracted = true;
+                else 
+                    baseObject.failedDialogue.alreadyInteracted = true;
+            }
         }
 
         public void Tick(float deltaTime) {
