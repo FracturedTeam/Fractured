@@ -84,15 +84,14 @@ namespace _Project.Scripts.ECS
 
         private void OnEnable()
         {
-            if (!shard) 
-                return;
-            
-            shard.SetActive(true);
+            if (shard) 
+                shard.SetActive(true);
         }
 
         private void OnDisable()
         {
-            shard?.SetActive(false);
+            if(shard)
+                shard?.SetActive(false);
         }
         internal void ChangeHoldingState(bool isOn)
         {
