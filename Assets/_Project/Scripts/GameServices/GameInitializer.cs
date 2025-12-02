@@ -124,6 +124,10 @@ namespace _Project.Scripts.GameServices {
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             shardService.RepopulateBaseObjet(_interactables);
         }
+
+        public BaseObject[] GetInteractables() {
+            return shardService.interactables.ToArray();
+        }
         
         public void AddShards(Glass[] shards) {
             var newShards = new List<Glass>();
