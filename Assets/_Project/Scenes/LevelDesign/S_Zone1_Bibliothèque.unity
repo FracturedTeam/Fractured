@@ -15510,8 +15510,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 968596848}
     m_Modifications:
     - target: {fileID: 590945240549504354, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 590945240549504354, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.639
+      objectReference: {fileID: 0}
+    - target: {fileID: 590945240549504354, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.73
       objectReference: {fileID: 0}
     - target: {fileID: 1680239980623189626, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_LocalScale.z
@@ -15532,7 +15540,7 @@ PrefabInstance:
     - target: {fileID: 5433427904451458645, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 4b7ae88d9e49ce944b836ae536454e6e, type: 2}
+      objectReference: {fileID: 2100000, guid: a5028f0c57be2f043aa825af8465ef82, type: 2}
     - target: {fileID: 5473137435246128761, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: timeToMoveObject
       value: 0.2
@@ -15606,8 +15614,16 @@ PrefabInstance:
       value: -0.36
       objectReference: {fileID: 0}
     - target: {fileID: 7490049348158790331, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490049348158790331, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.783
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490049348158790331, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.73
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15615,13 +15631,38 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5527445867229274044, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1621966816}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6168984435731348990, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1149132374}
   m_SourcePrefab: {fileID: 100100000, guid: 125290bce0058974eae7052fab2758e9, type: 3}
 --- !u!4 &1149132372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5527445867229274044, guid: 125290bce0058974eae7052fab2758e9, type: 3}
   m_PrefabInstance: {fileID: 1149132371}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1149132373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6168984435731348990, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+  m_PrefabInstance: {fileID: 1149132371}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1149132374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149132373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
 --- !u!1001 &1150339456
 PrefabInstance:
   m_ObjectHideFlags: 0
