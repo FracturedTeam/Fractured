@@ -1,5 +1,8 @@
+using System;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
+using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using Unity.Cinemachine;
@@ -8,8 +11,21 @@ using UnityEngine;
 namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
-    public class PlayerController : Singleton<PlayerController>
-    {
+    public class PlayerController : Singleton<PlayerController>, IBind<PlayerData> {
+        [field:SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
+        [SerializeField] private PlayerData data;
+        public void Bind(PlayerData data) {
+            this.data = data;
+            this.data.Id = Id;
+            transform.position = data.position;
+        }
+
+        [ContextMenu("Save Data")]
+        public void SaveData() {
+            data.position = transform.position;
+        }
+        
+        
         InputsBrain inputsBrain;
         StateMachine stateMachine;
 
@@ -101,5 +117,11 @@ namespace _Project.Scripts.Player {
         public IState GetCurrentState() {
             return stateMachine.CurrentState;
         }
+    }
+
+    [Serializable]
+    public class PlayerData : ISaveable {
+        [field:SerializeField] public SerializableGuid Id { get; set; }
+        public Vector3 position;
     }
 }
