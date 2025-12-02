@@ -12,13 +12,15 @@ namespace _Project.Scripts.Editor {
     public class DoorInteractableEditor : UnityEditor.Editor {
 
         SerializedProperty sceneToLoad;
-        SerializedProperty sceneField;
+        SerializedProperty levelDesign;
+        SerializedProperty levelArt;
         SerializedProperty positionField;
         SerializedProperty directionField;
 
         void OnEnable() {
             sceneToLoad = serializedObject.FindProperty("sceneToLoad");
-            sceneField = sceneToLoad.FindPropertyRelative("sceneField");
+            levelDesign = sceneToLoad.FindPropertyRelative("levelDesign");
+            levelArt = sceneToLoad.FindPropertyRelative("levelArt");
             positionField = sceneToLoad.FindPropertyRelative("playerPosition");
             directionField = sceneToLoad.FindPropertyRelative("direction");
         }
@@ -44,7 +46,8 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
                 serializedObject.Update();
-                EditorGUILayout.PropertyField(sceneField, true);
+                EditorGUILayout.PropertyField(levelDesign, true);
+                EditorGUILayout.PropertyField(levelArt, true);
                 EditorGUILayout.PropertyField(positionField, true);
                 EditorGUILayout.PropertyField(directionField, true);
                 serializedObject.ApplyModifiedProperties();
