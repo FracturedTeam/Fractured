@@ -62,12 +62,11 @@ namespace _Project.Scripts.ECS
             initialized = true;
         }
 
-        public void OnDrag(PointerEventData eventData)
-        {
-            if (!canInteract)
-                return;
-
-            if (!isHeld && (!GameInitializer.Instance.InEditableArea() || !canEditAnywhere))
+        public void OnDrag(PointerEventData eventData) {
+            if (!canInteract) return;
+            if(!isHeld) return;
+            
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere)
                 return;
 
             transform.position += (Vector3)eventData.delta;

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3548532176501593100
+--- !u!1 &4974438246727398651
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,67 +8,67 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4116017247447547898}
-  - component: {fileID: 4998085159437186283}
-  - component: {fileID: 8396554314833211116}
-  - component: {fileID: 4253787332961916524}
-  - component: {fileID: 8352891327560393143}
+  - component: {fileID: 8971423372965207572}
+  - component: {fileID: 7545855222119323864}
+  - component: {fileID: 3727211471924008331}
+  - component: {fileID: 2324619412208393665}
+  - component: {fileID: 60662280742715225}
   m_Layer: 5
-  m_Name: P_GlassShard_TypeL 2
+  m_Name: P_UI_Shard_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &4116017247447547898
+--- !u!224 &8971423372965207572
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3548532176501593100}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 4974438246727398651}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 294.3401}
+  m_AnchoredPosition: {x: -233, y: 317.01}
+  m_SizeDelta: {x: 150, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4998085159437186283
+--- !u!222 &7545855222119323864
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3548532176501593100}
+  m_GameObject: {fileID: 4974438246727398651}
   m_CullTransparentMesh: 1
---- !u!114 &8396554314833211116
+--- !u!114 &3727211471924008331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3548532176501593100}
+  m_GameObject: {fileID: 4974438246727398651}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.31764707}
+  m_Color: {r: 0, g: 0.4268117, b: 1, a: 0.31764707}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7b9b51dae8cdb3644bea92e78a954e94, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -77,13 +77,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4253787332961916524
+--- !u!114 &2324619412208393665
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3548532176501593100}
+  m_GameObject: {fileID: 4974438246727398651}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 723a75646ece6a34aafaba6fc0290195, type: 3}
@@ -91,13 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Glass
   color2D: 0
   canEditAnywhere: 0
---- !u!60 &8352891327560393143
+--- !u!60 &60662280742715225
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3548532176501593100}
+  m_GameObject: {fileID: 4974438246727398651}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -137,10 +137,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 150}
-      - {x: -100, y: 150}
-      - {x: -100, y: -150}
-      - {x: 100, y: -150}
-      - {x: 100, y: -50}
-      - {x: 0, y: -50}
+    - - {x: 75, y: 100}
+      - {x: -75, y: 100}
+      - {x: -75, y: -100}
+      - {x: 75, y: -100}
   m_UseDelaunayMesh: 0
