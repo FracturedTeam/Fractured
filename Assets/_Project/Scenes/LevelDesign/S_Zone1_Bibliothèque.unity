@@ -947,7 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131ce36cc3fa471c8a9d0d5e24093b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MoveableObject
-  keyObjectNeeded: {fileID: 1490555261}
+  keyObjectNeeded: {fileID: 0}
   moveableType: 3
 --- !u!114 &152584517
 MonoBehaviour:
@@ -4719,7 +4719,7 @@ PrefabInstance:
     - target: {fileID: 8105225286841770278, guid: af16605d82ae3a14d8a9e03709711763, type: 3}
       propertyPath: keyObjectNeeded
       value: 
-      objectReference: {fileID: 1490555261}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8745982785698281474, guid: af16605d82ae3a14d8a9e03709711763, type: 3}
@@ -7071,6 +7071,9 @@ GameObject:
   - component: {fileID: 622554750}
   - component: {fileID: 622554749}
   - component: {fileID: 622554748}
+  - component: {fileID: 622554754}
+  - component: {fileID: 622554753}
+  - component: {fileID: 622554752}
   m_Layer: 0
   m_Name: PLACEHOLDER VALISE
   m_TagString: Untagged
@@ -7163,14 +7166,52 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622554747}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.09, y: -0.071, z: -0.13}
-  m_LocalScale: {x: 2, y: 1.5, z: 0.5}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -2.6874995, y: -5.142, z: 0.9141414}
+  m_LocalScale: {x: 2, y: 1.5000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 723610925}
-  m_Father: {fileID: 1490555260}
+  m_Father: {fileID: 1490555262}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &622554752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622554747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c492f1f76554d35a11a43cd11b8cc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.PedestalInteractable
+--- !u!114 &622554753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622554747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271c56d786cc401f954fc4a8314d236e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
+  memorySprite: {fileID: 21300000, guid: 7cbf658c132f9704786eb986f0414331, type: 3}
+--- !u!114 &622554754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622554747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  dialogue: {fileID: 11400000, guid: 89c0cd04b1a223748b9b6b50c2894a4c, type: 2}
 --- !u!43 &622819101
 Mesh:
   m_ObjectHideFlags: 0
@@ -9123,8 +9164,8 @@ Transform:
   m_GameObject: {fileID: 723610924}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.644, z: -0}
-  m_LocalScale: {x: 0.75, y: 0.33333334, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0.64399725, z: 0}
+  m_LocalScale: {x: 0.75, y: 0.3333333, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 622554751}
@@ -18478,6 +18519,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 968596848}
     m_Modifications:
+    - target: {fileID: 507181588103692061, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1627216538025292430, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
       propertyPath: dialogue
       value: 
@@ -18542,31 +18587,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Pedestal_Memory
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5842056487003529240, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
+    - {fileID: 2301892989753282824, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7911123690832081991, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5430836835773012328, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
-      insertIndex: -1
+    - targetCorrespondingSourceObject: {fileID: 6300798553575960177, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
+      insertIndex: 0
       addedObject: {fileID: 622554751}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
---- !u!4 &1490555260 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5430836835773012328, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
-  m_PrefabInstance: {fileID: 1490555259}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1490555261 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2301892989753282824, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
-  m_PrefabInstance: {fileID: 1490555259}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c492f1f76554d35a11a43cd11b8cc21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.PedestalInteractable
 --- !u!4 &1490555262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6300798553575960177, guid: fa9cc8c0643c1f34cac223ebd5f255f6, type: 3}
