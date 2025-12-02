@@ -16,7 +16,7 @@ namespace _Project.Scripts.GameServices {
         private List<SceneField> scenesToLoad = new List<SceneField>();
         [SerializeField] private SceneField[] persistentScenes;
         
-        public bool LoadingLevel { get; private set; }
+        public bool levelIsLoading { get; private set; }
 
         private void Start() {
             var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
@@ -37,28 +37,29 @@ namespace _Project.Scripts.GameServices {
         }
 
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
-            LoadingLevel = true;
+            levelIsLoading = true;
+            
+            //Save tout ici
+            
+            
+            //Empty ici
+            UnloadObjects();
             
             scenesToLoad.Clear();
             scenesToLoad.AddRange(persistentScenes);
             scenesToLoad.Add(sceneSettings.levelDesign);
             scenesToLoad.Add(sceneSettings.levelArt);
-
-            GameInitializer.Instance.EmptyInteractable();
-            GameInitializer.Instance.EmptyShards();
             
             var loadingLevel = SceneManager.LoadSceneAsync(sceneSettings.levelDesign, LoadSceneMode.Additive);
             var loadingArt = SceneManager.LoadSceneAsync(sceneSettings.levelArt, LoadSceneMode.Additive);
 
-            if (loadingLevel == null) {
+            if (loadingLevel is null) {
                 Debug.LogError($"Failed to load LD scene {sceneSettings.levelDesign.SceneName}, Verify Build Settings");
                 return;
             }
             
-            if (loadingArt == null) {
-                Debug.LogError($"Failed to load Art scene {sceneSettings.levelArt.SceneName}, Verify Build Settings");
-            }
-            
+            if (loadingArt is null)
+                Debug.LogError($"Failed to load Art scene {sceneSettings.levelArt.SceneName}, Verify Build Settings Or if it is Referenced");
             
             while (!loadingLevel.isDone && loadingArt is { isDone: false }) {
                 await Task.Delay(100);
@@ -71,9 +72,9 @@ namespace _Project.Scripts.GameServices {
             while(PlayerController.Instance.cinemachineBrain.IsBlending)
                 await Task.Delay(100);
 
-            await Task.Delay(500);
+            levelIsLoading = false;
+            Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
             
-            Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName}");
             await UnloadSceneAsync();
         }
 
@@ -101,12 +102,11 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
+        }
 
-            GameInitializer.Instance.RepopulateInteractable();
-            
-            //await Ressources.UnloadUnusedAssets();
-            //Une fois toutes les scènes décharger
-            //Set up les objets etc.
+        private void UnloadObjects() {
+            GameInitializer.Instance.EmptyInteractable();
+            GameInitializer.Instance.EmptyShards();
         }
     }
 
