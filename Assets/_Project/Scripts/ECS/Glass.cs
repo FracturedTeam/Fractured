@@ -49,7 +49,16 @@ namespace _Project.Scripts.ECS
 
             if (TryGetComponent(typeof(PolygonCollider2D), out var col))
                 polygonCollider2D = col as PolygonCollider2D;
-
+            
+            if(shard)
+            {
+                var sh = Instantiate(shard);
+                sh.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y, -20));
+                shard = sh;
+                if (shardSprite) 
+                    shardSprite.color = Color.clear;
+            }
+            
             initialized = true;
         }
 
@@ -79,9 +88,6 @@ namespace _Project.Scripts.ECS
             if (!shard) 
                 return;
             
-            shard.transform.position =
-                mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y,
-                    -20));
             shard.SetActive(true);
         }
 
