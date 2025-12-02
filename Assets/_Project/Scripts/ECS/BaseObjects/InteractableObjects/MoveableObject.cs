@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
@@ -206,7 +207,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var playerPos = PlayerController.Instance.transform.position;
             var dir = PlayerController.Instance.movement.previousMoveDir;
 
-            Physics.Raycast(playerPos, Vector3.down, out var groundLevel, 10, LayerMask.NameToLayer("Walkable"));
+            var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
+            var mask = ~(1 << ignoreLayer);
+            
+            Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
                 
             var pos = playerPos + dir.normalized * (boundExtent.x * 3);
             pos.y = groundLevel.point.y + boundExtent.y;
