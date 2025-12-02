@@ -1,7 +1,10 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
+using _Project.Scripts.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -40,7 +43,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
+                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
+                    return;
+            }
+            else if (baseObject.cantInteractDialogue is { oneTime: true, alreadyInteracted: true })
+            {
+                HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                baseObject.cantInteractDialogue.alreadyInteracted = true;
             }
 
             if (doorType is DoorType.BigDoor) {

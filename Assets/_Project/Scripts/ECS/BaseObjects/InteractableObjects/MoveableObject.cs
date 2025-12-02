@@ -2,6 +2,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -118,10 +119,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             
+            
             isGrabbed = true;
             
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
+            
+            if (baseObject.successDialogue is not { oneTime: true, alreadyInteracted: true }) 
+                return;
+                    
+            HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+            baseObject.successDialogue.alreadyInteracted = true;
             
             Debug.Log("[MoveableObject] Grab object");
         }
@@ -138,6 +146,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
+                
+                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
+                {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                }
                 
                 Debug.Log("[MoveableObject] Drop on ground");
             }

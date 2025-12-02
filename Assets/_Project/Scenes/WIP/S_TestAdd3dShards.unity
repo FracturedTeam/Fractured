@@ -1879,7 +1879,7 @@ PrefabInstance:
     - target: {fileID: 4253787332961916524, guid: bb4fadb07d64814448e04db193169580, type: 3}
       propertyPath: shard
       value: 
-      objectReference: {fileID: 8188616033719796519, guid: 90bb020ec8cbcde438247fd53455a074, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4253787332961916524, guid: bb4fadb07d64814448e04db193169580, type: 3}
       propertyPath: canEditAnywhere
       value: 1
@@ -3289,8 +3289,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
-  dialogue: {fileID: 0}
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!1 &551514877
 GameObject:
   m_ObjectHideFlags: 0
@@ -4621,8 +4631,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
-  dialogue: {fileID: 0}
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!43 &842721309
 Mesh:
   m_ObjectHideFlags: 0
@@ -12682,12 +12702,28 @@ PrefabInstance:
       propertyPath: dialogue
       value: 
       objectReference: {fileID: 11400000, guid: 244256f12e42cab4da2bc1a78f4f8e31, type: 2}
+    - target: {fileID: 927519070004159616, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: successDialogue.oneTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 927519070004159616, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: successDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: a2dca7b8ff4a32e45b7cd8c660bbd5e8, type: 2}
     - target: {fileID: 2477003088840435042, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: shards.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
       propertyPath: 'shard.Array.data[0]'
+      value: 
+      objectReference: {fileID: 374077169}
+    - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: 'shards.Array.data[0]'
       value: 
       objectReference: {fileID: 374077169}
     - target: {fileID: 7236488293147311496, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
@@ -13282,6 +13318,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_BigDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: successDialogue.oneTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: successDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: a2dca7b8ff4a32e45b7cd8c660bbd5e8, type: 2}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: cantInteractDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: a2dca7b8ff4a32e45b7cd8c660bbd5e8, type: 2}
     - target: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_LocalScale.x
       value: 6
@@ -14318,6 +14366,14 @@ PrefabInstance:
     - target: {fileID: 4763601884101763890, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.0000005
       objectReference: {fileID: 0}
     - target: {fileID: 6275382852799146018, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: orthographic size
