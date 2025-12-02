@@ -138,7 +138,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnDrop(IInteractable other) {
             if (other == null) {
                 
-                if(ObstructedSpace()) return;
+                if(ObstructedSpace())
+                {
+                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
 
                 var pos = GetGroundPos();
                 
