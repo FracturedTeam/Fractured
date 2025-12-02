@@ -14,7 +14,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ObjectType GetInteractionType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
         
-        [SerializeField] private bool isLocked;
         [SerializeField] private DialogueScriptableObject dialogue;
         
         private MeshRenderer meshRenderer;
@@ -56,13 +55,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
-            if(isLocked)
-                return;
-            
             GetInteract.OnInteract(interaction, interactable);
             
             if(dialogue)
-                HudManager.hud?.SetText(dialogue);
+                HudManager.Instance?.SetText(dialogue);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  

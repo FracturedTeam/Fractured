@@ -114,6 +114,11 @@ namespace _Project.Scripts.GameServices.Services {
             UpdateInteractableObjects();
         }
         
+        public void AddShards(Glass[] newShards) {
+            shards.AddRange(newShards);
+            
+        }
+        
         public void SetEditableArea(bool inArea) {
             PlayerInEditableArea = inArea;
         }
@@ -124,5 +129,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         public int ShardCount => shards.Count;
         public int InteractableCount => interactables.Count;
+
+        
     }
 }

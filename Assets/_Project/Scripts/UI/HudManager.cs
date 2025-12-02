@@ -1,32 +1,21 @@
 using System;
 using _Project.Scripts.ScriptableObjects;
+using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.UI
 {
-    public class HudManager : MonoBehaviour
+    public class HudManager : Singleton<HudManager>
     {
-        public static HudManager hud;
-        
         [SerializeField] private GlassText glassText;
         
         private CountdownTimer textTimer;
 
-        private void Awake()
+        private void Start()
         {
-            if(hud == null)
-                    hud = this;
-            else
-                Destroy(this);
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
-        }
-
-        private void OnDestroy()
-        {
-            if(hud == this)
-                    hud =  null;
         }
 
         public void SetText(DialogueScriptableObject newDialogue)
