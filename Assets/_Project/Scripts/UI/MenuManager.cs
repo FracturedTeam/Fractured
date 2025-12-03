@@ -14,9 +14,9 @@ namespace _Project.Scripts.UI
         [Range(0, 1), SerializeField] private float speed;
         private Camera mainCamera;
         private Transform target;
-        private Transform lastPosition;
+        private Vector3 lastPosition;
+        private Quaternion lastRotation;
         private float moveTime = 0.0f;
-        
     
         public static MenuManager Instance;
 
@@ -32,25 +32,26 @@ namespace _Project.Scripts.UI
         public void ChangeTarget(Transform newTarget)
         {
             target = newTarget;
-            lastPosition = mainCamera.transform;
+            lastPosition = mainCamera.transform.position;
+            lastRotation = mainCamera.transform.rotation;
             moveTime = 0;
         }
         private void Update()
         {
             if(target != null)
-                ChangeCameraTransform(target);
+                ChangeCameraTransform();
         }
 
-        private void ChangeCameraTransform(Transform newCameraTransform)
+        private void ChangeCameraTransform()
         {
             moveTime += Time.deltaTime * speed;
-            mainCamera.transform.position = Vector3.Lerp (lastPosition.transform.position, newCameraTransform.position, moveTime);
-            mainCamera. transform.rotation = Quaternion.Lerp (lastPosition.transform.rotation, newCameraTransform.rotation, moveTime);
+            mainCamera.transform.position = Vector3.Lerp (lastPosition, target.position, moveTime);
+            mainCamera.transform.rotation = Quaternion.Lerp (lastRotation, target.rotation, moveTime);
 
             if (!((mainCamera.transform.position - target.position).magnitude <= 0.1f)) 
                 return;
             
-            if (newCameraTransform.TryGetComponent(typeof(CameraTranstion), out var trans))
+            if (target.TryGetComponent(typeof(CameraTranstion), out var trans))
             {
                 var transPos = trans as CameraTranstion;
                 transPos!.OnTrigger();
