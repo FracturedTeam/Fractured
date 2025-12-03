@@ -150,7 +150,6 @@ namespace _Project.Scripts.GameServices {
                 newShards.Add(s);
             }
             
-            Debug.Log("Shards to repopulate "  + newShards.Count);
             shardService.AddShards(newShards.ToArray());
         }
         

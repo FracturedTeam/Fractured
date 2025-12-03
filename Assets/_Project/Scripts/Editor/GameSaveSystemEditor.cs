@@ -19,6 +19,9 @@ namespace _Project.Scripts.Editor {
             
             if(GUILayout.Button("Delete Game"))
                 saveSystem.DeleteGame(gameName);
+            
+            if(GUILayout.Button("Set Interactable"))
+                saveSystem.GetInteractables();
         }
     }
 }

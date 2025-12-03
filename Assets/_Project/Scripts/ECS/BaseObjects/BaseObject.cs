@@ -8,16 +8,13 @@ using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
-    public class BaseObject : MonoBehaviour, IBind<ObjectData> {
-        [field:SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
+    public class BaseObject : MonoBehaviour {
         [SerializeField] private ObjectData data;
         
         public void Bind(ObjectData data) {
             this.data = data;
-            this.data.Id = Id;
         }
         
-
         [ContextMenu("Load")]
         public void Load() {
             transform.position = data.position;
@@ -109,8 +106,8 @@ namespace _Project.Scripts.ECS.BaseObjects
     }
 
     [Serializable]
-    public class ObjectData : ISaveable {
-        [field:SerializeField] public SerializableGuid Id { get; set; }
+    public class ObjectData {
+        public BaseObject baseObject;
         public Vector3 position;
         public InteractionCompletion completion;
     }

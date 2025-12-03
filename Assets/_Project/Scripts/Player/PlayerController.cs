@@ -11,21 +11,18 @@ using UnityEngine;
 namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
-    public class PlayerController : Singleton<PlayerController>, IBind<PlayerData> {
-        [field:SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
+    public class PlayerController : Singleton<PlayerController>{
         [SerializeField] private PlayerData data;
-        public void Bind(PlayerData data) {
-            this.data = data;
-            this.data.Id = Id;
-        }
         
         [ContextMenu("Load")]
-        public void Load() {
+        public void Load(PlayerData data) {
+            this.data = data;
             transform.position = data.position;
         }
         
         [ContextMenu("Save")]
-        public void SaveData() {
+        public void SaveData(PlayerData data) {
+            this.data = data;
             data.position = transform.position;
         }
         
@@ -124,8 +121,7 @@ namespace _Project.Scripts.Player {
     }
 
     [Serializable]
-    public class PlayerData : ISaveable {
-        [field:SerializeField] public SerializableGuid Id { get; set; }
+    public class PlayerData {
         public Vector3 position;
     }
 }

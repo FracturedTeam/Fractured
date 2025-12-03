@@ -48,9 +48,7 @@ namespace _Project.Scripts.GameServices.Services {
             shards.AddRange(_shards);
             glassTexts.AddRange(_texts);
             
-            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable");
-            Debug.Log($"[GlassShardService] Populating {shards.Count} shards");
-            Debug.Log($"[GlassShardService] Populating {glassTexts.Count} texts");
+            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards | Populating {glassTexts.Count} texts");
             
             UpdateInteractableObjects();
         }
