@@ -1,5 +1,6 @@
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using UnityEngine;
 
 namespace _Project.Scripts.Interfaces {
     public interface IInteractable {
