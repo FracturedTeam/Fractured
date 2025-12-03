@@ -39,10 +39,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (interaction is not ObjectInteraction.Drop) {
                 Debug.LogError($"[KeyInteractable] Interaction is not Drop {nameof(KeyInteractable)} | Interaction is {interaction}");
+                
+                if (baseObject.cantInteractDialogue is { oneTime: true, alreadyInteracted: true })
+                    return;
+
+                HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                baseObject.cantInteractDialogue.alreadyInteracted = true;
                 return;
             }
             if (other == null) {
                 Debug.LogError($"[KeyInteractable] Other is null !");
+                
+                if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                    return;
+
+                HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                baseObject.failedDialogue.alreadyInteracted = true;
                 return;
             }
 
@@ -54,17 +66,20 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (GetKeyObject(other.GetBaseObject()))
             {
                 CheckForResolve(other.GetBaseObject());
-                Dialogue currentDialogue = GetKeyObject(baseObject) ? baseObject.successDialogue : baseObject.failedDialogue;
                 
-                if (currentDialogue is { oneTime: true, alreadyInteracted: true }) 
+                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) 
                     return;
                 
-                HudManager.Instance.SetText(currentDialogue.dialogue);
-                    
-                if(GetKeyObject(baseObject))
-                    baseObject.successDialogue.alreadyInteracted = true;
-                else 
-                    baseObject.failedDialogue.alreadyInteracted = true;
+                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                baseObject.successDialogue.alreadyInteracted = true;
+            }
+            else
+            {
+                if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                    return;
+
+                HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                baseObject.failedDialogue.alreadyInteracted = true;
             }
         }
 

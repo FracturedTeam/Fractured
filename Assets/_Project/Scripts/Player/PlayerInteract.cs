@@ -7,6 +7,7 @@ using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -119,7 +120,10 @@ namespace _Project.Scripts.Player {
                 MemoryInteraction();
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) return;
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject)
+                    {
+                        return;
+                    }
                 }
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;

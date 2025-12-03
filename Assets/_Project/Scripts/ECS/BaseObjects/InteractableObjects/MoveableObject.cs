@@ -138,7 +138,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnDrop(IInteractable other) {
             if (other == null) {
                 
-                if(ObstructedSpace()) return;
+                if(ObstructedSpace())
+                {
+                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
 
                 var pos = GetGroundPos();
                 
@@ -175,6 +183,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
                 else {
                     Debug.Log("[MoveableObject] key is not for this object");
+                     
+                    if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                        return;
+                    
+                    HudManager.Instance.SetText( other.GetBaseObject().failedDialogue.dialogue);
+                    other.GetBaseObject().failedDialogue.alreadyInteracted = true;
                     
                     return;
                 }
@@ -212,6 +226,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Physics.Raycast(playerPos, dir,  out var hit, 2f);
             if (hit.collider) {
                 Debug.Log("[MoveableObject] Something in the way");
+                
                 return true;
             }
             return false;

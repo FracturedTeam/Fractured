@@ -9,6 +9,7 @@ namespace _Project.Scripts.UI
     public class HudManager : Singleton<HudManager>
     {
         [SerializeField] private GlassText glassText;
+        private DialogueScriptableObject currentDialogue;
         
         private CountdownTimer textTimer;
 
@@ -23,18 +24,23 @@ namespace _Project.Scripts.UI
             if(!glassText || !newDialogue)
                 return;
             
-            glassText.Setup(newDialogue);
+            currentDialogue = newDialogue;
             
-            if (newDialogue.time <= 0)
+            glassText.Setup(currentDialogue);
+            
+            if (currentDialogue.time <= 0)
                 return;
             
-            textTimer.Reset(newDialogue.time);
+            textTimer.Reset(currentDialogue.time);
             textTimer.Start();
         }
         
         private void ResetText()
         {
-            glassText.Setup(null);
+            if(currentDialogue && currentDialogue.next)
+                SetText(currentDialogue.next);
+            else
+                glassText.Setup(null);
         }
         
         
