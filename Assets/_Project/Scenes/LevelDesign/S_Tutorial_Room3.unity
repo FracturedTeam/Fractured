@@ -687,7 +687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &61735214
 PrefabInstance:
@@ -4629,7 +4628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!43 &202284286
 Mesh:
@@ -5759,7 +5757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!43 &300731967
 Mesh:
@@ -8428,7 +8425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &497184355
 PrefabInstance:
@@ -9498,7 +9494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &542869710
 PrefabInstance:
@@ -11688,6 +11683,10 @@ PrefabInstance:
       propertyPath: sceneToLoad.levelDesign.m_SceneAsset
       value: 
       objectReference: {fileID: 102900000, guid: 50b1328c8a02c7e4f90382891f36069c, type: 3}
+    - target: {fileID: 1196733023054694978, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a5028f0c57be2f043aa825af8465ef82, type: 2}
     - target: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_Name
       value: P_BigDoor (2)
@@ -11710,7 +11709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.5
+      value: 8.39
       objectReference: {fileID: 0}
     - target: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11743,13 +11742,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 716077565}
   m_SourcePrefab: {fileID: 100100000, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
 --- !u!4 &716077563 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
   m_PrefabInstance: {fileID: 716077562}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &716077564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+  m_PrefabInstance: {fileID: 716077562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &716077565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716077564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
 --- !u!1001 &716273249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12593,7 +12617,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!43 &784456655
 Mesh:
@@ -12874,7 +12897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &826132862
 PrefabInstance:
@@ -20576,7 +20598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!43 &1236827218
 Mesh:
@@ -24628,7 +24649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &1444214920
 PrefabInstance:
@@ -32459,7 +32479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!1001 &2036166954
 PrefabInstance:
@@ -34277,7 +34296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
   dialogue: {fileID: 0}
 --- !u!43 &2119324711
 Mesh:
