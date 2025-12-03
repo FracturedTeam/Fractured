@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
@@ -6,25 +7,32 @@ using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
-    public class BaseObject : MonoBehaviour {
-        /*[field:SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
+    public class BaseObject : MonoBehaviour, IBind<ObjectData> {
+        [field:SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
         [SerializeField] private ObjectData data;
+        
         public void Bind(ObjectData data) {
             this.data = data;
             this.data.Id = Id;
+        }
+        
+
+        [ContextMenu("Load")]
+        public void Load() {
             transform.position = data.position;
             GetCompletion = data.completion;
         }
-
-        [ContextMenu("Save Data")]
+        
+        [ContextMenu("Save")]
         public void SaveData() {
-            data.completion = GetCompletion;
             data.position = transform.position;
-        }*/
+            data.completion = GetCompletion;
+        }
         
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
@@ -104,6 +112,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
     }
 
+    [Serializable]
     public class ObjectData : ISaveable {
         [field:SerializeField] public SerializableGuid Id { get; set; }
         public Vector3 position;

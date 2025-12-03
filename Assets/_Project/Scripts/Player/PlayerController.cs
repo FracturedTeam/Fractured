@@ -17,10 +17,14 @@ namespace _Project.Scripts.Player {
         public void Bind(PlayerData data) {
             this.data = data;
             this.data.Id = Id;
+        }
+        
+        [ContextMenu("Load")]
+        public void Load() {
             transform.position = data.position;
         }
-
-        [ContextMenu("Save Data")]
+        
+        [ContextMenu("Save")]
         public void SaveData() {
             data.position = transform.position;
         }

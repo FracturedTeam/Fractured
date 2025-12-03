@@ -10,10 +10,8 @@ namespace _Project.Scripts.GameServices {
         
         private void OnEnable() {
             roomCamera.Priority = 1;
-            GameInitializer.Instance.AddShards(glassShards);
-            GameInitializer.Instance.RepopulateInteractable();
             
-            //Ici je load la save de cette scène
+            GameInitializer.Instance.AddShards(glassShards);
         }
         
     }

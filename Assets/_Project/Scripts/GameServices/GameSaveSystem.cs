@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -16,8 +17,9 @@ namespace _Project.Scripts.GameServices {
         public string Name;
         public string CurrentLevelName;
         public PlayerData PlayerData;
+        public List<ObjectData> ObjectDatas;
     }
-
+    
     public interface ISaveable {
         SerializableGuid Id { get; set; }
     }
@@ -37,11 +39,14 @@ namespace _Project.Scripts.GameServices {
             dataService = new FileDataService(new JsonSerializer());
         }
 
+        #region Bind
+        
         void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
         void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) { //Revoir pour faire le bind potentiellement autrement
             Bind<PlayerController, PlayerData>(gameData.PlayerData);
+            Bind<BaseObject, ObjectData>(gameData.ObjectDatas);
         }
         
         private void Bind<T, TData>(TData data) where T : MonoBehaviour, IBind<TData> where TData : ISaveable, new() {
@@ -67,16 +72,12 @@ namespace _Project.Scripts.GameServices {
             }
         }
         
-        public void NewGame() {
-            gameData = new GameData {
-                Name = "New Game",
-                CurrentLevelName = "S_InteractableTesting"
-            };
-
-            SceneManager.LoadScene(gameData.CurrentLevelName, LoadSceneMode.Additive);
-        }
+        #endregion
 
         public void SaveGame() {
+            PlayerController.Instance.SaveData();
+            GameInitializer.Instance.SaveInteractable();
+            
             dataService.Save(gameData);
         }
 
@@ -87,13 +88,19 @@ namespace _Project.Scripts.GameServices {
                 gameData.CurrentLevelName = "S_InteractableTesting";
             }
             
-            SceneManager.LoadScene(gameData.CurrentLevelName, LoadSceneMode.Additive);
+            PlayerController.Instance.Load();
+            GameInitializer.Instance.LoadInteractable();
         }
-
-        public void ReloadGame() => LoadGame(gameData.Name);
         
         public void DeleteGame(string gameName) {
             dataService.Delete(gameName);
+        }
+        
+        public void NewGame() {
+            gameData = new GameData {
+                Name = "Test",
+                CurrentLevelName = ""
+            };
         }
     }
 }

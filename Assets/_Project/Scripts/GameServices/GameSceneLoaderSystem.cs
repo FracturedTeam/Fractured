@@ -39,10 +39,9 @@ namespace _Project.Scripts.GameServices {
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             levelIsLoading = true;
             
-            //Save tout ici
+            //Save System
+            GameSaveSystem.Instance.SaveGame();
             
-            
-            //Empty ici
             UnloadObjects();
             
             scenesToLoad.Clear();
@@ -102,6 +101,11 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
+            
+            GameInitializer.Instance.RepopulateInteractable();
+            
+            //Save System
+            GameSaveSystem.Instance.LoadGame("Test");
         }
 
         private void UnloadObjects() {

@@ -128,6 +128,20 @@ namespace _Project.Scripts.GameServices {
         public BaseObject[] GetInteractables() {
             return shardService.interactables.ToArray();
         }
+
+        public void SaveInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                Debug.Log("Interactables saved ");
+                interactable.SaveData();
+            }
+            Debug.Log("Interactables saved " + shardService.interactables.Count);
+        }
+        
+        public void LoadInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                interactable.Load();
+            }
+        }
         
         public void AddShards(Glass[] shards) {
             var newShards = new List<Glass>();
