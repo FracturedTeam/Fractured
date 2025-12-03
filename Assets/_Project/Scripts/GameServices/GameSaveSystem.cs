@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;

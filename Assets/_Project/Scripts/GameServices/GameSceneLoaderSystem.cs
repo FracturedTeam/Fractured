@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
-using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
