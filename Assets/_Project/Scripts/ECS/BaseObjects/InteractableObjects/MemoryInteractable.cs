@@ -38,6 +38,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (key) {
                 if(baseObject.GetCompletion is not InteractionCompletion.Completed)
                 {
+                    if (other == null)
+                    {
+                        if(baseObject.cantInteractDialogue is not { alreadyInteracted: true, oneTime: true })
+                        {
+                            HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                            baseObject.cantInteractDialogue.alreadyInteracted = true;
+                        }
+                        return;
+                    }
+                    
                     if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) 
                         return;
                     

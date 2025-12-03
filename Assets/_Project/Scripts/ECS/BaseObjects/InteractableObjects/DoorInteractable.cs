@@ -44,14 +44,20 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
+                {
+                    if (other == null)
+                    {
+                        if(baseObject.cantInteractDialogue is not { alreadyInteracted: true, oneTime: true })
+                        {
+                            HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                            baseObject.cantInteractDialogue.alreadyInteracted = true;
+                        }
+                    }
                     return;
+                }
+                
             }
-            else if (baseObject.cantInteractDialogue is { oneTime: true, alreadyInteracted: true })
-            {
-                HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                baseObject.cantInteractDialogue.alreadyInteracted = true;
-            }
-
+            
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
                 var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
@@ -59,7 +65,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             if (linkedDoor.key) {
-                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
+                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
+                {
+                    if(baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                        baseObject.failedDialogue.alreadyInteracted =  true;
+                    }
+                    return;
+                }
             }
 
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
