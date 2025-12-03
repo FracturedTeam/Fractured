@@ -45,14 +45,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (key) {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
                 {
-                    if (other == null)
-                    {
-                        if(baseObject.cantInteractDialogue is not { alreadyInteracted: true, oneTime: true })
-                        {
-                            HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                            baseObject.cantInteractDialogue.alreadyInteracted = true;
-                        }
-                    }
+                    if (other != null || baseObject.cantInteractDialogue is { alreadyInteracted: true, oneTime: true }) 
+                        return;
+                        
+                    HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                    baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    
                     return;
                 }
                 
