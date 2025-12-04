@@ -70,8 +70,8 @@ namespace _Project.Scripts.Player {
             var obtainShardState = new PlayerObtainShardState(this, animator);
             
             //Define subState
-            var grabObject = new GrabObjectState(this, animator, grabObjectClip);
-            var dropObject = new DropObjectState(this, animator, dropObjectClip);
+            //var grabObject = new GrabObjectState(this, animator, grabObjectClip);
+            //var dropObject = new DropObjectState(this, animator, dropObjectClip);
             
             //Define all states transitions
             //Locomotion State

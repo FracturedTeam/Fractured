@@ -72,6 +72,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             initialized = true;
+
+            if (objectColor is ColorEnum.Both)
+                baseObject?.SetInteract(false);
             
             underRed = 0;
             underBlue = 0;
@@ -170,11 +173,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
         
-        private void ActivateObjectInside(bool isUnder) { 
+        private void ActivateObjectInside(bool isUnder) {
             interactableInBox?.gameObject.SetActive(isUnder);
 
             if(!selfMoveable) return;
             if (!selfMoveable.IsGrabbed()) return;
+            
+            if(!interactableInBox.gameObject.activeInHierarchy) return;
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
