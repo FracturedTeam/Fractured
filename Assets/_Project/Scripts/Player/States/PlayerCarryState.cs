@@ -1,11 +1,15 @@
 using _Project.Scripts.Systems.StateMachine;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerCarryState : PlayerBaseState {
         static readonly int BlendingHash = Animator.StringToHash("Blend");
+
+        private readonly CountdownTimer animationExitTimer;
         
         public PlayerCarryState(PlayerController player, Animator animator) : base(player, animator) {
+            animationExitTimer = new CountdownTimer();
         }
 
         public override void OnEnter() {
