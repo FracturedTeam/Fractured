@@ -1,19 +1,22 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 
-public class ButtonUI : MonoBehaviour
+namespace _Project.Scripts.UI
 {
-    private Vector3 scale;
-    private float time = 0.5f;
-
-    private void Awake()
+    public class ButtonUI : MonoBehaviour
     {
-        scale = transform.localScale;
-    }
+        private Vector3 scale;
+        [SerializeField] private float time = 0.5f;
+        [SerializeField] private  float multiplicator = 1.15f;
 
-    public void OnHover(bool hovering)
-    {
-        transform.DOScale(hovering ? scale * 2 : scale, time);
+        private void Awake()
+        {
+            scale = transform.localScale;
+        }
+
+        public void OnHover(bool hovering)
+        {
+            transform.DOScale(hovering ? scale * multiplicator : scale, time);
+        }
     }
 }
