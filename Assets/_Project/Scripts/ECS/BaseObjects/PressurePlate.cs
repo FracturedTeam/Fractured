@@ -73,6 +73,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
             lerpValue = timer / timeToMoveObject;
         }
 
+        public void CompleteObject() {
+            
+        }
+
         public void ResetObject() {
         }
 

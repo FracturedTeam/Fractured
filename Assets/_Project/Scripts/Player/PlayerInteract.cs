@@ -97,6 +97,7 @@ namespace _Project.Scripts.Player {
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    Debug.Log("Play Remove");
                 }
                 
                 interactDuration = 0;
@@ -294,8 +295,6 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
-                    return;
                 default:
                     return;
             }

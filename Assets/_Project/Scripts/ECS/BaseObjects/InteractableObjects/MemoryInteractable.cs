@@ -56,11 +56,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     return;
                 }
-                if (baseObject.successDialogue is not { oneTime: true, alreadyInteracted: true }) 
-                    return;
+                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
+                    HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                    baseObject.successDialogue.alreadyInteracted = true;
+                }
                     
-                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                baseObject.successDialogue.alreadyInteracted = true;
             }
             
             switch (interaction) {
@@ -80,6 +80,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+        }
+
+        public void CompleteObject() {
+            if (key) {
+                key.CompleteObject();
+            }
         }
 
         void DisplayMemory() {

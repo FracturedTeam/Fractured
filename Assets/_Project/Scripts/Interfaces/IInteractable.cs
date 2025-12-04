@@ -10,6 +10,8 @@ namespace _Project.Scripts.Interfaces {
         public void  OnInteract(ObjectInteraction interaction, IInteractable other = null);
 
         public void Tick(float deltaTime);
+
+        public void CompleteObject();
         
         public void ResetObject();
         

@@ -1,14 +1,37 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
-using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
+        [SerializeField] private ObjectData data;
+        
+        public void Bind(ObjectData data) {
+            this.data = data;
+        }
+        
+        [ContextMenu("Load")]
+        public void Load() {
+            transform.position = data.position;
+            GetCompletion = data.completion;
+            
+            if (GetCompletion is InteractionCompletion.Completed) {
+                CompleteObject();
+            }
+            
+            SetInteract(data.canInteract);
+        }
+        
+        [ContextMenu("Save")]
+        public void SaveData() {
+            data.position = transform.position;
+            data.completion = GetCompletion;
+            data.canInteract = canBeInteractedWith;
+        }
+        
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
@@ -65,6 +88,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract.OnInteract(isOn, shard);
         }
 
+        private void CompleteObject() {
+            Debug.Log("[BaseObject] Complete Object");
+            GetInteract.CompleteObject();
+        }
+
         public void SetInteract(bool canInteract) {
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
@@ -85,6 +113,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool CanBeInteractedWith() {
             return canBeInteractedWith;
         }
+    }
+
+    [Serializable]
+    public class ObjectData {
+        public BaseObject baseObject;
+        public Vector3 position;
+        public InteractionCompletion completion;
+        public bool canInteract;
     }
 }
 
