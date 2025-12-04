@@ -16,6 +16,8 @@ namespace _Project.Scripts.GameServices.Services {
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
         public bool PlayerInEditableArea {get; private set;}
+        public bool PlayerInRedEditableArea {get; private set;}
+        public bool PlayerInBlueEditableArea {get; private set;}
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
@@ -121,6 +123,14 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerInEditableArea = inArea;
         }
         
+        public void SetRedEditableArea(bool inArea) {
+            PlayerInRedEditableArea = inArea;
+        }
+
+        public void SetBlueEditableArea(bool inArea) {
+            PlayerInBlueEditableArea = inArea;
+        }
+
         public void Dispose() {
             shardsInteractable.Clear();
         }
