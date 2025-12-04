@@ -1,11 +1,13 @@
+using System;
 using _Project.Scripts.ECS;
+using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
-    public class GameSceneSettings : MonoBehaviour {
+    public class GameSceneSettings : Singleton<GameSceneSettings> {
         [SerializeField] private CinemachineCamera roomCamera;
-        [SerializeField] private Glass[] glassShards;
+        [SerializeField] public Glass[] glassShards;
         
         private void OnEnable() {
             roomCamera.Priority = 1;
@@ -13,5 +15,11 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.AddShards(glassShards);
         }
         
+    }
+
+    [Serializable]
+    public class FragmentData {
+        [SerializeField] public Glass glassShards;
+        public Vector3 position;
     }
 }

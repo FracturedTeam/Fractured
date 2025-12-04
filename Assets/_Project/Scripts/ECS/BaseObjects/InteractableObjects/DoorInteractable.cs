@@ -73,6 +73,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Tick(float deltaTime) {
         }
 
+        public void CompleteObject() {
+            if(key)
+                key.CompleteObject();
+        }
+
         public void ResetObject() {
         }
 

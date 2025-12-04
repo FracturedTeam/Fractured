@@ -1,9 +1,7 @@
 using System;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
-using _Project.Scripts.Systems.Save;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -19,12 +17,19 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Load() {
             transform.position = data.position;
             GetCompletion = data.completion;
+            
+            if (GetCompletion is InteractionCompletion.Completed) {
+                CompleteObject();
+            }
+            
+            SetInteract(data.canInteract);
         }
         
         [ContextMenu("Save")]
         public void SaveData() {
             data.position = transform.position;
             data.completion = GetCompletion;
+            data.canInteract = canBeInteractedWith;
         }
         
         public bool GetGlass =>  GetGlassInteract != null;
@@ -83,6 +88,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract.OnInteract(isOn, shard);
         }
 
+        private void CompleteObject() {
+            Debug.Log("[BaseObject] Complete Object");
+            GetInteract.CompleteObject();
+        }
+
         public void SetInteract(bool canInteract) {
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
@@ -110,6 +120,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public BaseObject baseObject;
         public Vector3 position;
         public InteractionCompletion completion;
+        public bool canInteract;
     }
 }
 

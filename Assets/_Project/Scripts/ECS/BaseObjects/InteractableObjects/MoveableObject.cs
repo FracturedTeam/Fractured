@@ -94,6 +94,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             ResetObject();
         }
 
+        public void CompleteObject() {
+            
+        }
+
         public void ResetObject() {
             tween?.Pause();
             tween?.Kill();

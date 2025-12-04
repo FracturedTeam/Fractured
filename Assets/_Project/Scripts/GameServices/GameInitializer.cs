@@ -132,9 +132,21 @@ namespace _Project.Scripts.GameServices {
             }
         }
         
+        public void SaveShards() {
+            foreach (var shard in shardService.shards) {
+                shard.SaveData();
+            }
+        }
+        
         public void LoadInteractable() {
             foreach (var interactable in shardService.interactables) {
                 interactable.Load();
+            }
+        }
+        
+        public void LoadShards() {
+            foreach (var shard in shardService.shards) {
+                shard.LoadData();
             }
         }
         
@@ -146,6 +158,7 @@ namespace _Project.Scripts.GameServices {
             }
             
             shardService.AddShards(newShards.ToArray());
+            GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>

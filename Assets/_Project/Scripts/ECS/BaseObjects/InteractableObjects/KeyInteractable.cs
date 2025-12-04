@@ -31,6 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
             if (HasOneKey() && interaction is ObjectInteraction.Remove) {
+                Debug.Log("[KeyInteractable] Removing");
                 RemoveObject();
                 return;
             }
@@ -69,6 +70,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+        }
+
+        public void CompleteObject() {
+            Debug.Log("[KeyInteractable] Complete Object");
+            foreach (var key in keyObject) {
+                keyUsed.Add(key);
+            }
+            ResolvePuzzle();
         }
 
         private void CheckForResolve(BaseObject key) { //Des chances que cette fonction casse
