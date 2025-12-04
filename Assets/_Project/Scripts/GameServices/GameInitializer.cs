@@ -111,10 +111,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void EmptyShards() {
-            Debug.Log("Shards to destroy "  + shardService.shards.Count);
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
-                Debug.Log(shardService.shards[i].gameObject.name);
-                
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
@@ -124,6 +121,34 @@ namespace _Project.Scripts.GameServices {
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             shardService.RepopulateBaseObjet(_interactables);
         }
+
+        public BaseObject[] GetInteractables() {
+            return shardService.interactables.ToArray();
+        }
+
+        public void SaveInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                interactable.SaveData();
+            }
+        }
+        
+        public void SaveShards() {
+            foreach (var shard in shardService.shards) {
+                shard.SaveData();
+            }
+        }
+        
+        public void LoadInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                interactable.Load();
+            }
+        }
+        
+        public void LoadShards() {
+            foreach (var shard in shardService.shards) {
+                shard.LoadData();
+            }
+        }
         
         public void AddShards(Glass[] shards) {
             var newShards = new List<Glass>();
@@ -132,8 +157,8 @@ namespace _Project.Scripts.GameServices {
                 newShards.Add(s);
             }
             
-            Debug.Log("Shards to repopulate "  + newShards.Count);
             shardService.AddShards(newShards.ToArray());
+            GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>

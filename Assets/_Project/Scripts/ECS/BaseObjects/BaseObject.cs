@@ -1,20 +1,47 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.ScriptableObjects;
-using _Project.Scripts.UI;
+using _Project.Scripts.Structs;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
+        [SerializeField] private ObjectData data;
+        
+        public void Bind(ObjectData data) {
+            this.data = data;
+        }
+        
+        [ContextMenu("Load")]
+        public void Load() {
+            transform.position = data.position;
+            GetCompletion = data.completion;
+            
+            if (GetCompletion is InteractionCompletion.Completed) {
+                CompleteObject();
+            }
+            
+            SetInteract(data.canInteract);
+        }
+        
+        [ContextMenu("Save")]
+        public void SaveData() {
+            data.position = transform.position;
+            data.completion = GetCompletion;
+            data.canInteract = canBeInteractedWith;
+        }
+        
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
         public ObjectType GetInteractionType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
-        
-        [SerializeField] private DialogueScriptableObject dialogue;
+
+        [Header("Dialogues")] 
+        [SerializeField] internal Dialogue successDialogue;
+        [SerializeField] internal Dialogue cantInteractDialogue;
+        [SerializeField] internal Dialogue failedDialogue;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -45,7 +72,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
-            
             initialized = true;
         }
 
@@ -56,13 +82,15 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
             GetInteract.OnInteract(interaction, interactable);
-            
-            if(dialogue)
-                HudManager.Instance?.SetText(dialogue);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
             GetGlassInteract.OnInteract(isOn, shard);
+        }
+
+        private void CompleteObject() {
+            Debug.Log("[BaseObject] Complete Object");
+            GetInteract.CompleteObject();
         }
 
         public void SetInteract(bool canInteract) {
@@ -86,4 +114,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             return canBeInteractedWith;
         }
     }
+
+    [Serializable]
+    public class ObjectData {
+        public BaseObject baseObject;
+        public Vector3 position;
+        public InteractionCompletion completion;
+        public bool canInteract;
+    }
 }
+

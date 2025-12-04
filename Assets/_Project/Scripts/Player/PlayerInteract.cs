@@ -7,6 +7,7 @@ using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -96,6 +97,7 @@ namespace _Project.Scripts.Player {
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    Debug.Log("Play Remove");
                 }
                 
                 interactDuration = 0;
@@ -119,7 +121,10 @@ namespace _Project.Scripts.Player {
                 MemoryInteraction();
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) return;
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject)
+                    {
+                        return;
+                    }
                 }
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
@@ -290,8 +295,6 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
-                    return;
                 default:
                     return;
             }

@@ -1,7 +1,10 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
+using _Project.Scripts.UI;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -40,9 +43,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if (key) {
-                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
+                if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
+                {
+                    if (other != null || baseObject.cantInteractDialogue is { alreadyInteracted: true, oneTime: true }) 
+                        return;
+                        
+                    HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                    baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    
+                    return;
+                }
+                
             }
-
+            
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
                 var load = GameSceneLoaderSystem.Instance.LoadSceneAsync(sceneToLoad);
@@ -50,7 +63,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             if (linkedDoor.key) {
-                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) return;
+                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
+                {
+                    if(baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                        baseObject.failedDialogue.alreadyInteracted =  true;
+                    }
+                    return;
+                }
             }
 
             if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
@@ -62,6 +83,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+        }
+
+        public void CompleteObject() {
+            if(key)
+                key.CompleteObject();
         }
 
         public void ResetObject() {
