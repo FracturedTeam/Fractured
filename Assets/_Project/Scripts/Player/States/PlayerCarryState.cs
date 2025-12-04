@@ -5,16 +5,12 @@ using UnityEngine;
 namespace _Project.Scripts.Player.States {
     public class PlayerCarryState : PlayerBaseState {
         static readonly int BlendingHash = Animator.StringToHash("Blend");
-
-        private readonly CountdownTimer animationExitTimer;
         
         public PlayerCarryState(PlayerController player, Animator animator) : base(player, animator) {
-            animationExitTimer = new CountdownTimer();
         }
 
         public override void OnEnter() {
-            //Prévoir l'animation d'entré dans le state
-            //Animator
+            //Animator -- Set the hold animation while holding object
             animator.SetLayerWeight(UpperBodyLayer, 1);
             animator.CrossFade(CarryHash,  defaultCrossFadeDuration, UpperBodyLayer);
             
@@ -34,7 +30,6 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            //Prévoir l'animation de sortie dans le state
             //Animator
             animator.SetLayerWeight(UpperBodyLayer, 0);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
