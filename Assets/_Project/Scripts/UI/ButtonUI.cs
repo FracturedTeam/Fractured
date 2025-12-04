@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -16,7 +17,12 @@ namespace _Project.Scripts.UI
 
         public void OnHover(bool hovering)
         {
-            transform.DOScale(hovering ? scale * multiplicator : scale, time);
+            transform.DOScale(hovering ? scale * multiplicator : scale, time).SetUpdate(true);
+        }
+
+        private void OnDisable()
+        {
+            OnHover(false);
         }
     }
 }
