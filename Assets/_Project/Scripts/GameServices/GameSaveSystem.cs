@@ -19,34 +19,49 @@ namespace _Project.Scripts.GameServices {
     public class GameSaveSystem : Singleton<GameSaveSystem> {
         [SerializeField] public GameData gameData;
         private IDataService dataService;
+        [SerializeField] private List<BaseObject> baseObjects;
 
         protected override void Awake() {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
         }
 
-        public void SaveGame() {
-            for(var i = 0; i < gameData.ObjectDatas.Count; i++) {
+        private void Bind() {
+            for(var i = 0; i < baseObjects.Count; i++) {
+                gameData.ObjectDatas[i].baseObject = baseObjects[i];
                 gameData.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
             }
+        }
+        
+        public void SaveGame() {
+            Bind();
             
             PlayerController.Instance.SaveData(gameData.PlayerData);
             GameInitializer.Instance.SaveInteractable();
             gameData.Name = gameObject.scene.name;
             
             dataService.Save(gameData);
+            
+            Debug.Log($"[SaveSystem] Saved Data to savefile");
         }
 
+        public void LoadGame() {
+            LoadGame(gameObject.scene.name);
+        }
+        
         public void LoadGame(string gameName) {
+            Debug.Log($"Loading game {gameName}");
+            
             gameData = dataService.Load(gameName);
 
             if (String.IsNullOrWhiteSpace(gameData.Name)) {
-                gameData.Name = "S_InteractableTesting";
+                Debug.Log($"Savefile {gameName} does not exist, creating new one");
+                gameData.Name = gameName;
+                SaveGame();
+                return;
             }
             
-            for(var i = 0; i < gameData.ObjectDatas.Count; i++) { //Attribue les trucs au bons trucs
-                gameData.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
-            }
+            Bind();
             
             PlayerController.Instance.Load(gameData.PlayerData);
             GameInitializer.Instance.LoadInteractable();
@@ -63,12 +78,16 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void GetInteractables() {
+            baseObjects = new List<BaseObject>();
             gameData.ObjectDatas = new List<ObjectData>();
             
             var interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
+            baseObjects.AddRange(interactables);
             foreach (var interactable in interactables) {
                 gameData.ObjectDatas.Add(new ObjectData{baseObject = interactable});
             }
+
+            
             
             #if UNITY_EDITOR
             EditorUtility.SetDirty(this);

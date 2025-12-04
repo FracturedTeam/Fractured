@@ -111,10 +111,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void EmptyShards() {
-            Debug.Log("Shards to destroy "  + shardService.shards.Count);
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
-                Debug.Log(shardService.shards[i].gameObject.name);
-                
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
@@ -131,10 +128,8 @@ namespace _Project.Scripts.GameServices {
 
         public void SaveInteractable() {
             foreach (var interactable in shardService.interactables) {
-                Debug.Log("Interactables saved ");
                 interactable.SaveData();
             }
-            Debug.Log("Interactables saved " + shardService.interactables.Count);
         }
         
         public void LoadInteractable() {

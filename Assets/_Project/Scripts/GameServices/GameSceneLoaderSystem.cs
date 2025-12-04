@@ -41,6 +41,8 @@ namespace _Project.Scripts.GameServices {
             //Save System
             GameSaveSystem.Instance.SaveGame();
             
+            Debug.Log("Passed Save");
+            
             UnloadObjects();
             
             scenesToLoad.Clear();
@@ -104,7 +106,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.RepopulateInteractable();
             
             //Save System
-            GameSaveSystem.Instance.LoadGame("Test");
+            GameSaveSystem.Instance.LoadGame();
         }
 
         private void UnloadObjects() {

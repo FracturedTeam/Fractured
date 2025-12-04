@@ -290,8 +290,6 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
-                    return;
                 default:
                     return;
             }
