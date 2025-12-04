@@ -1,8 +1,7 @@
 using System;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
-using _Project.Scripts.Systems.Save;
+using _Project.Scripts.Player.States.SubStates;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using Unity.Cinemachine;
@@ -30,6 +29,7 @@ namespace _Project.Scripts.Player {
         InputsBrain inputsBrain;
         StateMachine stateMachine;
 
+        [Header("Cinemachine Brain")]
         public CinemachineBrain cinemachineBrain;
         
         [HideInInspector]
@@ -37,7 +37,10 @@ namespace _Project.Scripts.Player {
         [HideInInspector]
         public PlayerInteract interact;
 
+        [Header("Animations Settings")]
         [SerializeField] private Animator animator;
+        [SerializeField] private AnimationClip grabObjectClip;
+        [SerializeField] private AnimationClip dropObjectClip;
         
 
         private void Start() {
@@ -65,6 +68,10 @@ namespace _Project.Scripts.Player {
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator);
             var obtainShardState = new PlayerObtainShardState(this, animator);
+            
+            //Define subState
+            var grabObject = new GrabObjectState(this, animator, grabObjectClip);
+            var dropObject = new DropObjectState(this, animator, dropObjectClip);
             
             //Define all states transitions
             //Locomotion State
