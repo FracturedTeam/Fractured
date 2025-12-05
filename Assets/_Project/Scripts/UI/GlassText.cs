@@ -4,6 +4,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.HashSetUtil;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,11 +17,14 @@ public class GlassText : MonoBehaviour
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
     private ObservableHashSet<Glass> shardsOnTop;
     private TMP_Text text;
+    public CanvasGroup textCanva;
     private string show;
     private string BaseText;
 
     private int underRed = 0;
     private int underBlue = 0;
+
+    private Tweener tween;
 
     private void Start() {
         if (TryGetComponent(typeof(TMP_Text), out var t))
@@ -29,6 +33,7 @@ public class GlassText : MonoBehaviour
             text = gameObject.AddComponent<TMP_Text>();
         
         text.text = "";
+        textCanva.alpha = 0;
         
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
@@ -36,13 +41,16 @@ public class GlassText : MonoBehaviour
 
 
     public void Setup(DialogueScriptableObject scriptableObject) {
+        tween.Kill();
         
-        if (scriptableObject == null)
-        {
+        if (scriptableObject == null) {
+            tween = textCanva.DOFade(0, 0.5f);
             text.text = "";
             dialogue = null;
             return;
         }
+        
+        tween = textCanva.DOFade(1, 0.5f);
         
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
