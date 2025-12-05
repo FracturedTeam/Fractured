@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
-using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,10 +38,11 @@ namespace _Project.Scripts.GameServices {
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             levelIsLoading = true;
             
-            //Save tout ici
+            //Save System
+            GameSaveSystem.Instance.SaveGame();
             
+            Debug.Log("Passed Save");
             
-            //Empty ici
             UnloadObjects();
             
             scenesToLoad.Clear();
@@ -102,6 +102,11 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
+            
+            GameInitializer.Instance.RepopulateInteractable();
+            
+            //Save System
+            GameSaveSystem.Instance.LoadGame();
         }
 
         private void UnloadObjects() {

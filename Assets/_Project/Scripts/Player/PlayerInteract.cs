@@ -39,6 +39,7 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingDoor;
+        private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
 
@@ -72,7 +73,7 @@ namespace _Project.Scripts.Player {
             
             size = 0;
 
-            usingDoor = new CountdownTimer(0.5f);
+            usingDoor = new CountdownTimer(timerToUseDoor);
         }
 
         private void OnEnable() {
@@ -97,6 +98,7 @@ namespace _Project.Scripts.Player {
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    Debug.Log("Play Remove");
                 }
                 
                 interactDuration = 0;
@@ -294,8 +296,6 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
-                    return;
                 default:
                     return;
             }
@@ -370,7 +370,7 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingDoor() {
             usingDoor.Start();
-            usingDoor.Reset(1);
+            usingDoor.Reset(timerToUseDoor);
         }
         
         public bool UsingDoor() {
