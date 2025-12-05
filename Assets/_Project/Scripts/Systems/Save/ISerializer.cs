@@ -1,0 +1,6 @@
+namespace _Project.Scripts.Systems.Save {
+    public interface ISerializer {
+        string Serialize<T>(T obj);
+        T Deserialize<T>(string json);
+    }
+}

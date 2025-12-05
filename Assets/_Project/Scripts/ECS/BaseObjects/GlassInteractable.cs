@@ -29,6 +29,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Debug on UI")]
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
+        [SerializeField, Range(0 ,2)] private float scaleModificator = 1;
         
         internal Vector3[] BoundingBox;
         private MoveableObject selfMoveable;
@@ -71,6 +72,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             initialized = true;
+
+            if (objectColor is ColorEnum.Both)
+                baseObject?.SetInteract(false);
             
             underRed = 0;
             underBlue = 0;
@@ -169,11 +173,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
         
-        private void ActivateObjectInside(bool isUnder) { 
+        private void ActivateObjectInside(bool isUnder) {
             interactableInBox?.gameObject.SetActive(isUnder);
 
             if(!selfMoveable) return;
             if (!selfMoveable.IsGrabbed()) return;
+            
+            if(!interactableInBox.gameObject.activeInHierarchy) return;
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
@@ -222,7 +228,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         ///Auto Setup the collision
-        private void SetUp() {
+        private void SetUp()
+        {
             var points = GetComponent<MeshFilter>().sharedMesh.vertices;
             HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
@@ -243,11 +250,16 @@ namespace _Project.Scripts.ECS.BaseObjects
                     pMax.x = current.x;
                 if (pMax.y < current.y)
                     pMax.y = current.y;
-            } 
-            BoundingBox[0] =  new Vector3(pMin.x, pMin.y);
-            BoundingBox[1] =  new Vector3(pMin.x, pMax.y);
-            BoundingBox[2] =  new Vector3(pMax.x, pMax.y);
-            BoundingBox[3] =  new Vector3(pMax.x, pMin.y);
+            }
+
+            Vector3 middle = new Vector3((pMin.x + pMax.x)/ 2, (pMin.y + pMax.y)/ 2);
+
+            BoundingBox[0] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMin.y), scaleModificator );
+            BoundingBox[1] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMax.y), scaleModificator );  
+            BoundingBox[2] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMax.y), scaleModificator ); 
+            BoundingBox[3] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMin.y), scaleModificator ); 
+            
+            
         }
     }
 }

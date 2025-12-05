@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
@@ -111,10 +113,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void EmptyShards() {
-            Debug.Log("Shards to destroy "  + shardService.shards.Count);
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
-                Debug.Log(shardService.shards[i].gameObject.name);
-                
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
@@ -124,6 +123,34 @@ namespace _Project.Scripts.GameServices {
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             shardService.RepopulateBaseObjet(_interactables);
         }
+
+        public BaseObject[] GetInteractables() {
+            return shardService.interactables.ToArray();
+        }
+
+        public void SaveInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                interactable.SaveData();
+            }
+        }
+        
+        public void SaveShards() {
+            foreach (var shard in shardService.shards) {
+                shard.SaveData();
+            }
+        }
+        
+        public void LoadInteractable() {
+            foreach (var interactable in shardService.interactables) {
+                interactable.Load();
+            }
+        }
+        
+        public void LoadShards() {
+            foreach (var shard in shardService.shards) {
+                shard.LoadData();
+            }
+        }
         
         public void AddShards(Glass[] shards) {
             var newShards = new List<Glass>();
@@ -132,19 +159,40 @@ namespace _Project.Scripts.GameServices {
                 newShards.Add(s);
             }
             
-            Debug.Log("Shards to repopulate "  + newShards.Count);
             shardService.AddShards(newShards.ToArray());
+            GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);
 
-        public void SetEditableArea(bool inArea) {
-            shardService.SetEditableArea(inArea);
+        public void SetEditableArea(bool inArea, ColorEnum color) {
+            switch (color) {
+                case ColorEnum.Blue:
+                    shardService.SetBlueEditableArea(inArea);
+                    break;
+                case ColorEnum.Red:
+                    shardService.SetRedEditableArea(inArea);
+                    break;
+                case ColorEnum.Both:
+                    shardService.SetEditableArea(inArea);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
+            }
+            
         }
         
         public bool InEditableArea() {
             return shardService.PlayerInEditableArea;
+        }
+        
+        public bool InBlueEditableArea() {
+            return shardService.PlayerInBlueEditableArea;
+        }
+        
+        public bool InRedEditableArea() {
+            return shardService.PlayerInRedEditableArea;
         }
 
         #endregion

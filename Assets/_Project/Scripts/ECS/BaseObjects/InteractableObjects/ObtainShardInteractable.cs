@@ -10,7 +10,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         
         [Header("Settings")]
-        [SerializeField] private Glass[] shards;
+        [SerializeField] public Glass[] shards;
         
         private bool initialized = false;
         
@@ -40,6 +40,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+        }
+
+        public void CompleteObject() {
+            ObtainShard();
         }
 
         void ObtainShard() {

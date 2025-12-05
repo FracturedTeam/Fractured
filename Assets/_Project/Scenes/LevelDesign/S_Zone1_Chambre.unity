@@ -3086,7 +3086,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 11400000, guid: 9cc035a645358124798f626221143058, type: 2}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!1001 &365642783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4400,6 +4416,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
+  scaleModificator: 1
 --- !u!114 &521494897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4412,7 +4429,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!1001 &545900836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6733,6 +6766,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
+  scaleModificator: 1
 --- !u!1001 &732299108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9730,7 +9764,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 11400000, guid: 9cc035a645358124798f626221143058, type: 2}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!43 &1040184161
 Mesh:
   m_ObjectHideFlags: 0
@@ -12906,6 +12956,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 781681454}
     m_Modifications:
+    - target: {fileID: 1649497231234541198, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a5028f0c57be2f043aa825af8465ef82, type: 2}
     - target: {fileID: 2077317665240724206, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -18866,6 +18920,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
+  scaleModificator: 1
 --- !u!114 &1885254994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18878,7 +18933,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!43 &1915291177
 Mesh:
   m_ObjectHideFlags: 0
@@ -21091,7 +21162,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 11400000, guid: da5c010bdf6fb1d4683bcf6fb8efc58f, type: 2}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!114 &2301892989197504234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21231,7 +21318,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  dialogue: {fileID: 11400000, guid: 17552e7c5dae1c644bb7ba50f22bca83, type: 2}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!114 &5842056486451953658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21244,7 +21347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271c56d786cc401f954fc4a8314d236e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
-  memorySprite: {fileID: 21300000, guid: 7cbf658c132f9704786eb986f0414331, type: 3}
+  memorySprite: {fileID: 21300000, guid: 6125479e9a895b24e9df779a28a7172f, type: 3}
 --- !u!4 &6300798554093924755
 Transform:
   m_ObjectHideFlags: 0
