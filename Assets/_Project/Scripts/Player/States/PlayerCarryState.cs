@@ -1,4 +1,5 @@
 using _Project.Scripts.Systems.StateMachine;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -9,8 +10,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnEnter() {
-            //Prévoir l'animation d'entré dans le state
-            //Animator
+            //Animator -- Set the hold animation while holding object
             animator.SetLayerWeight(UpperBodyLayer, 1);
             animator.CrossFade(CarryHash,  defaultCrossFadeDuration, UpperBodyLayer);
             
@@ -30,7 +30,6 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            //Prévoir l'animation de sortie dans le state
             //Animator
             animator.SetLayerWeight(UpperBodyLayer, 0);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);

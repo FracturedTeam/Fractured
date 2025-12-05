@@ -78,9 +78,13 @@ namespace _Project.Scripts.ECS
         public void OnDrag(PointerEventData eventData) {
             if (!canInteract) return;
             if(!isHeld) return;
-            
-            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere)
-                return;
+
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) 
+                    return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea())
+                    return;
+            }
 
             transform.position += (Vector3)eventData.delta;
             transform.position = new Vector2(

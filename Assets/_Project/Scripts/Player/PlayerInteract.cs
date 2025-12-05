@@ -72,7 +72,7 @@ namespace _Project.Scripts.Player {
             
             size = 0;
 
-            usingDoor = new CountdownTimer(0.5f);
+            usingDoor = new CountdownTimer(0.15f);
         }
 
         private void OnEnable() {
