@@ -51,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7669737491353943142}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -125,6 +125,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!114 &3680570084261559240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,4 +154,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136d22044ec941c193e68ecb9dc011ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.ObtainShardInteractable
-  shard: {fileID: 0}
+  shards: []
