@@ -205,11 +205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21
+      value: 22.5
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7
+      value: -13.328
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -230,6 +230,10 @@ PrefabInstance:
     - target: {fileID: 6275382852799146018, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: field of view
       value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275382852799146018, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: orthographic size
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8629540748965857753, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_Name
@@ -2196,6 +2200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
   successDialogue:
     dialogue: {fileID: 0}
     oneTime: 0
@@ -3168,6 +3177,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
   successDialogue:
     dialogue: {fileID: 0}
     oneTime: 0
@@ -5384,8 +5398,24 @@ PrefabInstance:
       propertyPath: dialogue
       value: 
       objectReference: {fileID: 11400000, guid: 70191dde6e660844ead045c55f3370b1, type: 2}
+    - target: {fileID: 927519070004159616, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: failedDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 5122c2f7f3fed0f429f8dffe73c0467f, type: 2}
+    - target: {fileID: 927519070004159616, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: successDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: a2dca7b8ff4a32e45b7cd8c660bbd5e8, type: 2}
+    - target: {fileID: 927519070004159616, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: cantInteractDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 8800790ddf7fbc24bb407533dc0c3add, type: 2}
     - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
       propertyPath: shard.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: shards.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
@@ -5394,6 +5424,10 @@ PrefabInstance:
       objectReference: {fileID: 1070663074}
     - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
       propertyPath: 'shard.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1070663074}
+    - target: {fileID: 3680570084261559240, guid: 74459a62d76d4044a981f80812611ee2, type: 3}
+      propertyPath: 'shards.Array.data[0]'
       value: 
       objectReference: {fileID: 1070663074}
     - target: {fileID: 7236488293147311496, guid: 74459a62d76d4044a981f80812611ee2, type: 3}

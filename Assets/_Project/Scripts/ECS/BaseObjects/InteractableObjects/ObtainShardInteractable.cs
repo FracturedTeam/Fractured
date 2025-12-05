@@ -31,7 +31,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
+            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Enter Interact");
+            if(baseObject.GetCompletion is InteractionCompletion.Completed)
+            {
+                if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                    return;
+
+                HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                baseObject.failedDialogue.alreadyInteracted = true;
+                return;
+            }
+            
+            if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })
+                return;
+
+            HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+            baseObject.successDialogue.alreadyInteracted = true;
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
