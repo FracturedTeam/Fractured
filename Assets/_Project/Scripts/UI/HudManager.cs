@@ -33,6 +33,7 @@ namespace _Project.Scripts.UI
 
         private void Start() {
             textTimer = new CountdownTimer(0);
+            textTimer.OnTimerStop  += ResetText;
         }
         
         void OnEnable() {
@@ -41,7 +42,6 @@ namespace _Project.Scripts.UI
             memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
             EventBus<MemoryEvent>.Register(memoryEventBinding);
             
-            textTimer.OnTimerStop  += ResetText;
         }
 
         void OnDisable() {

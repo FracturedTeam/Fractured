@@ -45,12 +45,17 @@ public class GlassText : MonoBehaviour
         
         if (scriptableObject == null) {
             tween = textCanva.DOFade(0, 0.5f);
-            text.text = "";
+            textCanva.blocksRaycasts = false;
+            textCanva.interactable = false;
+            
+            //text.text = "";
             dialogue = null;
             return;
         }
         
         tween = textCanva.DOFade(1, 0.5f);
+        textCanva.blocksRaycasts = true;
+        textCanva.interactable = true;
         
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
@@ -76,9 +81,7 @@ public class GlassText : MonoBehaviour
         
         SetText();
         
-        
         TagPositions = text.mesh.bounds.center;
-
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
