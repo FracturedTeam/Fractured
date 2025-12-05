@@ -1,5 +1,7 @@
+using System;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
+using _Project.Scripts.Player.States.SubStates;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using Unity.Cinemachine;
@@ -8,17 +10,37 @@ using UnityEngine;
 namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
-    public class PlayerController : Singleton<PlayerController>
-    {
+    public class PlayerController : Singleton<PlayerController>{
+        [SerializeField, HideInInspector] private PlayerData data;
+        
+        [ContextMenu("Load")]
+        public void Load(PlayerData data) {
+            this.data = data;
+            transform.position = data.position;
+        }
+        
+        [ContextMenu("Save")]
+        public void SaveData(PlayerData data) {
+            this.data = data;
+            data.position = transform.position;
+        }
+        
+        
         InputsBrain inputsBrain;
         StateMachine stateMachine;
 
+        [Header("Cinemachine Brain")]
         public CinemachineBrain cinemachineBrain;
         
         [HideInInspector]
         public PlayerMovementController movement;
         [HideInInspector]
         public PlayerInteract interact;
+
+        [Header("Animations Settings")]
+        [SerializeField] private Animator animator;
+        [SerializeField] private AnimationClip grabObjectClip;
+        [SerializeField] private AnimationClip dropObjectClip;
         
 
         private void Start() {
@@ -40,12 +62,42 @@ namespace _Project.Scripts.Player {
 
         void DefineState() {
             //Create All State
-            var locomotionState = new PlayerLocomotionState(this);
-            var fallState = new PlayerFallState(this);
+            var locomotionState = new PlayerLocomotionState(this, animator);
+            var fallState = new PlayerFallState(this, animator);
+            var carryState = new PlayerCarryState(this, animator);
+            var memoryState = new PlayerMemoryState(this, animator);
+            var doorState = new PlayerUsingDoorState(this, animator);
+            var obtainShardState = new PlayerObtainShardState(this, animator);
+            
+            //Define subState
+            //var grabObject = new GrabObjectState(this, animator, grabObjectClip);
+            //var dropObject = new DropObjectState(this, animator, dropObjectClip);
             
             //Define all states transitions
+            //Locomotion State
             At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
             At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
+            
+            //Carrying State
+            At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));
+            At(carryState, locomotionState, new FuncPredicate(() => !interact.IsCarrying()));
+            At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
+            At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));
+            
+            //Memory State
+            At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            At(memoryState, locomotionState, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
+            At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            
+            //Using door state
+            At(locomotionState, doorState, new FuncPredicate(() => interact.UsingDoor()));
+            At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor() && !interact.IsCarrying()));
+            At(carryState, doorState, new FuncPredicate(() => interact.UsingDoor()));
+            At(doorState, carryState, new FuncPredicate(() => !interact.UsingDoor() && interact.IsCarrying()));
+            
+            //Obtenir un éclat de verre
+            //Faut que je regarde comment trigger le state
+            //At(locomotionState, obtainShardState, new FuncPredicate(() => interact.));
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);
@@ -73,5 +125,10 @@ namespace _Project.Scripts.Player {
         public IState GetCurrentState() {
             return stateMachine.CurrentState;
         }
+    }
+
+    [Serializable]
+    public class PlayerData {
+        public Vector3 position;
     }
 }

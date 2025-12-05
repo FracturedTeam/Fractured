@@ -5,5 +5,8 @@ namespace _Project.Scripts.Enums {
         Drop,
         Reset,
         Contextual,
+        EnterMemory,
+        LeaveMemory,
+        Remove
     }
 }

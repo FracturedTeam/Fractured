@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
+    [RequireComponent(typeof(BaseObject))]
     public class GlassInteractable : MonoBehaviour
     {
-        public float GetRadius => radius2D;
+        private float GetRadius => radius2D;
         
         private BaseObject baseObject;
         private Camera mainCamera;
@@ -19,19 +22,23 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ColorEnum objectColor;
 
         [Header("Behaviour")] 
-        [Tooltip("If true, when the object is under a shard, it will transit into a new object that can be interacted with")]
-        [SerializeField] private bool swapObject = false;
-        [SerializeField] private GameObject alternateObjectMesh;
+        [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
+        [SerializeField] private bool objectInside = false;
+        [SerializeField] private MoveableObject interactableInBox;
         
         [Header("Debug on UI")]
-        [SerializeField] internal Vector2 pos2D;
         [SerializeField] private float radius2D;
         [SerializeField] private bool showColliders;
+        [SerializeField, Range(0 ,2)] private float scaleModificator = 1;
+        
+        internal Vector3[] BoundingBox;
+        private MoveableObject selfMoveable;
         
         private int underRed;
         private int underBlue;
         
         private bool initialized = false;
+        private bool objectOut = false;
         
         public  void Initialize() {
             mainCamera = Camera.main;
@@ -41,12 +48,33 @@ namespace _Project.Scripts.ECS.BaseObjects
                     baseObject = component as BaseObject;
                 else
                     Debug.LogError($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
+
+                if (TryGetComponent(out MoveableObject m))
+                    selfMoveable = m;
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
+
+                /*switch (objectColor) { //Faudra set up ça pour le mesh en enfant OU le mettre a la main
+                    case ColorEnum.Blue:
+                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 01");
+                        break;
+                    case ColorEnum.Red:
+                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 02");
+                        break;
+                    case ColorEnum.Both:
+                        gameObject.layer = LayerMask.NameToLayer("NoLUT");
+                        break;
+                    default:
+                        Debug.LogWarning($"[GlassInteractable] Unknown color set : {gameObject.name}");
+                        break;
+                }*/
             }
             
             initialized = true;
+
+            if (objectColor is ColorEnum.Both)
+                baseObject?.SetInteract(false);
             
             underRed = 0;
             underBlue = 0;
@@ -54,12 +82,20 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(objectColor != ColorEnum.Both);
             baseObject!.SetCollider(objectColor != ColorEnum.Both);
 
-            if (swapObject) {
-                if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-                alternateObjectMesh?.SetActive(false);
+            if (objectInside) {
+                if (interactableInBox != null) {
+                    interactableInBox.gameObject.SetActive(false);
+                    interactableInBox.transform.position = transform.position;
+                }
+                else
+                    Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
             }
             
-            
+            BoundingBox = new Vector3[4];
+            for (int i = 0; i < BoundingBox.Length; i++)
+            {
+                BoundingBox[i] = new Vector3(0, 0, 0);
+            }
             SetUp();
         }
 
@@ -70,20 +106,24 @@ namespace _Project.Scripts.ECS.BaseObjects
         internal void OnInteract(bool isUnder, Glass shard) {
             if(!baseObject)
                 return;
-            
+
+            SetUp();
+
             if (isUnder) 
                 shardsOnTop.Add(shard);
             else if(shardsOnTop.Contains(shard))
                 shardsOnTop.Remove(shard);
         }
         
-        private void Update() { //Le problème vient d'ici -> Le reset de underRed et underBlue a 0 cause le reset constant l'interactable
-            pos2D = mainCamera!.WorldToScreenPoint(transform.position);
+        public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
+
+            if (!objectInside) return;
+            if (objectOut) return;
+            interactableInBox.transform.position = transform.position;
+            if (interactableInBox.IsGrabbed()) objectOut = true;
         }
 
         private void UpdateShards() {
-            Debug.Log("[GlassInteractable] Updating shards");
-            
             underBlue = 0;
             underRed = 0;
 
@@ -103,55 +143,47 @@ namespace _Project.Scripts.ECS.BaseObjects
                         Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
                         break;
                 }
-            
-            if(swapObject) 
-                SwapObject();
-            else
-                SetVisibility();
-        }
-        
-        private void SetVisibility()
-        {
-            switch (objectColor) {
-                case ColorEnum.Both:
-                    baseObject.SetRenderer(underRed > 0 && underBlue > 0);
-                    baseObject.SetCollider(underRed > 0 && underBlue > 0);
-                    baseObject.SetInteract(underRed > 0 && underBlue > 0);
-                    break;
-                case ColorEnum.Red:
-                    baseObject.SetRenderer(underRed < 1);
-                    baseObject.SetCollider(underRed < 1);
-                    baseObject.SetInteract(underRed < 1);
-                    break;
-                case ColorEnum.Blue:
-                    baseObject.SetRenderer(underBlue < 1);
-                    baseObject.SetCollider(underBlue < 1);
-                    baseObject.SetInteract(underBlue < 1);
-                    break;
-            }
-        }
 
-        private void SwapObject() {
             switch (objectColor) {
                 case ColorEnum.Both:
-                    baseObject.SetRenderer(!(underRed > 0 && underBlue > 0));
-                    alternateObjectMesh?.SetActive(underRed > 0 && underBlue > 0);
-                    baseObject.SetInteract(underRed > 0 && underBlue > 0);
-                    break;
-                case ColorEnum.Blue:
-                    baseObject.SetRenderer(underBlue < 1);
-                    alternateObjectMesh?.SetActive(underBlue > 0);
-                    baseObject.SetInteract(underBlue > 0);
+                    SetVisibility(underRed > 0 && underBlue > 0);
                     break;
                 case ColorEnum.Red:
-                    baseObject.SetRenderer(underRed < 1);
-                    alternateObjectMesh?.SetActive(underRed > 0);
-                    baseObject.SetInteract(underRed > 0);
+                    SetVisibility(underRed < 1 || underBlue > 0);
+                    break;
+                case ColorEnum.Blue:
+                    SetVisibility(underBlue < 1 || underRed > 0);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
+                    break;
             }
+        }
+        
+        private void SetVisibility(bool isUnder) {
+            baseObject.SetRenderer(isUnder);
+            baseObject.SetCollider(isUnder);
+            if (baseObject.TryGetComponent(out MoveableObject move) && !move.IsGrabbed()) 
+                baseObject.SetInteract(isUnder);
+            else
+                baseObject.SetInteract(isUnder);
             
+            if (objectInside && !objectOut) {
+                ActivateObjectInside(!isUnder);
+            }
+        }
+        
+        private void ActivateObjectInside(bool isUnder) {
+            interactableInBox?.gameObject.SetActive(isUnder);
+
+            if(!selfMoveable) return;
+            if (!selfMoveable.IsGrabbed()) return;
+            
+            if(!interactableInBox.gameObject.activeInHierarchy) return;
+            
+            selfMoveable.OnInteract(ObjectInteraction.Drop);
+            PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
+            objectOut = true;
         }
 
         public void ResetObject() {
@@ -162,16 +194,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!swapObject) return;
+            if (!objectInside || objectOut) return;
             
-            if(alternateObjectMesh == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-            alternateObjectMesh?.SetActive(false);
+            if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
+            interactableInBox?.gameObject.SetActive(false);
         }
 
         public bool UnderGlass() {
             return objectColor switch {
-                ColorEnum.Red => underRed > 0,
-                ColorEnum.Blue => underBlue > 0,
+                ColorEnum.Red => underRed > 0 && underBlue < 1,
+                ColorEnum.Blue => underBlue > 0 && underRed < 1,
                 ColorEnum.Both => underRed > 0 && underBlue > 0,
                 _ => false
             };
@@ -179,31 +211,55 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         ///Draw The Gizmos of the collider, only in Editor
         private void OnDrawGizmos() {
-            if(!showColliders)
-                return;
-      
             Gizmos.color = objectColor switch {
                 ColorEnum.Blue => Color.dodgerBlue,
                 ColorEnum.Red => Color.crimson,
                 _ => Color.darkOrchid
             };
-            Gizmos.DrawSphere(pos2D, GetRadius);
+            
+            if(!mainCamera)
+                return;
+            
+            foreach (var pos in BoundingBox)
+            {
+                Gizmos.DrawSphere(pos, 10);
+            }
+            
         }
 
         ///Auto Setup the collision
-        [ContextMenu("SetUp")]
-        private void SetUp() {
-            var meshRenderer = GetComponent<MeshRenderer>();
-            if(mainCamera == null) mainCamera = Camera.main;
-        
-            var min = meshRenderer.bounds.min;
-            var max = meshRenderer.bounds.max;
-            var screenMin = Camera.main!.WorldToScreenPoint(min);
-            var screenMax = Camera.main!.WorldToScreenPoint(max);
-            var mag = (transform.position + mainCamera!.transform.position).magnitude;
+        private void SetUp()
+        {
+            var points = GetComponent<MeshFilter>().sharedMesh.vertices;
+            HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
-            pos2D = mainCamera!.WorldToScreenPoint(transform.position);
-            radius2D = Mathf.Abs((screenMax-screenMin).magnitude *  -transform.position.z + (screenMax-screenMin).magnitude) / mag * 4;
+
+            Vector3 pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);
+
+            foreach (var point in pointsHashSet)
+            {
+                var current =  transform.TransformPoint(point);
+                current = mainCamera.WorldToScreenPoint(current);
+                
+                if (pMin.x > current.x)
+                    pMin.x = current.x;
+                if (pMin.y > current.y)
+                    pMin.y = current.y;
+                if (pMax.x < current.x)
+                    pMax.x = current.x;
+                if (pMax.y < current.y)
+                    pMax.y = current.y;
+            }
+
+            Vector3 middle = new Vector3((pMin.x + pMax.x)/ 2, (pMin.y + pMax.y)/ 2);
+
+            BoundingBox[0] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMin.y), scaleModificator );
+            BoundingBox[1] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMax.y), scaleModificator );  
+            BoundingBox[2] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMax.y), scaleModificator ); 
+            BoundingBox[3] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMin.y), scaleModificator ); 
+            
+            
         }
     }
 }

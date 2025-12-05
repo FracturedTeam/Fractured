@@ -1,5 +1,6 @@
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using UnityEngine;
 
 namespace _Project.Scripts.Interfaces {
     public interface IInteractable {
@@ -7,6 +8,10 @@ namespace _Project.Scripts.Interfaces {
         public void Initialize();
         
         public void  OnInteract(ObjectInteraction interaction, IInteractable other = null);
+
+        public void Tick(float deltaTime);
+
+        public void CompleteObject();
         
         public void ResetObject();
         
@@ -17,4 +22,5 @@ namespace _Project.Scripts.Interfaces {
         public void OnGrab(IInteractable other = null);
         public void OnDrop(IInteractable other);
     }
+    
 }

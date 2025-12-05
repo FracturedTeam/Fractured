@@ -41,6 +41,15 @@ namespace _Project.Scripts.DebugSystems.Services {
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft
             };
+            
+            var buttonStyle = new GUIStyle(GUI.skin.button) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleCenter,
+                normal = {
+                    textColor = Color.ghostWhite
+                }
+            };
 
             GUILayout.BeginVertical("box");
             GUILayout.Label("Player Debug Service", headerStyle);
@@ -59,7 +68,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label("Interaction", sectionStyle);
             GUILayout.Label($"Can player interact : {player.interact.CanInteract}", debugStyle);
             GUILayout.Label($"{player.interact.size} Object in the interact area", debugStyle);
-            GUILayout.Label($"Is player holding an object : {player.interact.hasObject}", debugStyle);
+            GUILayout.Label($"Is player holding an object : {player.interact.HasObject}", debugStyle);
             
             // -> Est-ce que le joueur est en train d'interagir avec un souvenir ou autre ?
             

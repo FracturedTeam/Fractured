@@ -1,74 +1,159 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace _Project.Scripts.ECS {
-    public class Glass : MonoBehaviour {
-        public ColorEnum GetColor => color2D;
-    
-        [Header("Settings")]
-        [SerializeField] private ColorEnum color2D;
-        [SerializeField] private bool canEditAnywhere = false;
+namespace _Project.Scripts.ECS
+{
+    public class Glass : MonoBehaviour, IDragHandler {
+        [SerializeField, HideInInspector] private FragmentData data;
         
+        public void Bind(FragmentData data) {
+            this.data = data;
+        }
+        
+        public void SaveData() {
+            data.position = transform.position;
+        }
+        
+        public void LoadData() {
+            transform.position = data.position;
+        }
+        
+        public ColorEnum GetColor => color2D;
+
+        [Header("Settings")] [SerializeField] private ColorEnum color2D;
+        [SerializeField] private bool canEditAnywhere = false;
+        [SerializeField] private GameObject shard; 
+
         private Camera mainCamera;
         private Image shardSprite;
         private PolygonCollider2D polygonCollider2D;
         private Vector2 mousePosition;
-        
-        
+
         private bool isHeld;
-        internal bool IsActivated;
 
-        private void Start() {
-            mainCamera = Camera.main;
-            
-            if(mainCamera == null)
-                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
-            
-            if (TryGetComponent(typeof(Image), out var img)) 
-                shardSprite = img as Image;
-            
-            if (TryGetComponent(typeof(PolygonCollider2D), out var col)) 
-                polygonCollider2D = col as PolygonCollider2D;
-        }
+        private bool initialized = false;
+        private bool canInteract = true;
 
-        private void Update() {
-            if(isHeld && (GameInitializer.Instance.InEditableArea() || canEditAnywhere))
+        private void Start()
+        {
+            if (!initialized)
             {
-                transform.position = new Vector2(Math.Clamp(Mouse.current.position.ReadValue().x, 0  + shardSprite.rectTransform.sizeDelta.x /2,  mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x /2),
-                    Mathf.Clamp(Mouse.current.position.ReadValue().y,  0 + shardSprite.rectTransform.sizeDelta.y /2 ,  mainCamera.pixelHeight  -  shardSprite.rectTransform.sizeDelta.y /2));
+                Initialize();
             }
         }
         
+        
+
+        public void Initialize()
+        {
+            mainCamera = Camera.main;
+
+            if (mainCamera == null)
+                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+
+            if (TryGetComponent(typeof(Image), out var img))
+                shardSprite = img as Image;
+
+            if (TryGetComponent(typeof(PolygonCollider2D), out var col))
+                polygonCollider2D = col as PolygonCollider2D;
+            
+            if(shard)
+            {
+                var sh = Instantiate(shard);
+                sh.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y, -20));
+                shard = sh;
+                if (shardSprite) 
+                    shardSprite.color = Color.clear;
+            }
+            
+            initialized = true;
+        }
+
+        public void OnDrag(PointerEventData eventData) {
+            if (!canInteract) return;
+            if(!isHeld) return;
+
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) 
+                    return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea())
+                    return;
+            }
+
+            transform.position += (Vector3)eventData.delta;
+            transform.position = new Vector2(
+                Math.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x / 2,
+                    mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x / 2),
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y / 2,
+                    mainCamera.pixelHeight - shardSprite.rectTransform.sizeDelta.y / 2));
+
+            if (shard)
+                shard.transform.position =
+                    mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y,
+                        -20));
+        }
+
+        private void OnEnable()
+        {
+            if (shard) 
+                shard.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            if(shard)
+                shard?.SetActive(false);
+        }
         internal void ChangeHoldingState(bool isOn)
         {
+            if (!canInteract) return;
+
             isHeld = isOn;
-            if (isOn)
-                ChangeStateActivation(false);
         }
 
         internal void ChangeStateActivation(bool isOn)
         {
-            IsActivated = isOn;
-            
-            if(!shardSprite)
+            if (!shardSprite)
                 return;
-            
-            //Will be replaced by the shader
-            shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
-        }
 
+            //Will be replaced by the shader
+            //shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
+        }
+        
+        
         ///Get if an object is colliding with any the colliders 2D
-        internal bool IsColliding(Vector3 position, bool mouse = false)
+        internal bool IsColliding(Vector3 position)
         {
-            if(!mainCamera || (!IsActivated && !mouse))
+            if (!mainCamera)
                 return false;
-            
+
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
             return closest == position;
+        }
+
+        internal bool IsColliding(Vector3[] positions)
+        {
+            if (!mainCamera)
+                return false;
+            
+            foreach (var position in positions)
+            {
+                Vector3 closest = polygonCollider2D.ClosestPoint(position);
+                if(closest != position)
+                    return false;
+            }
+            return true;
+        }
+        
+
+        private void SetInteract(bool canInteract) {
+            this.canInteract = canInteract;
         }
 
         public void SetEditAnywhere(bool editAnywhere) {
