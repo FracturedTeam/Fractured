@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Transform originalParent;
         
         private Vector3 boundExtent;
+        private Vector3 boundCenter;
         
         [Header("Key Settings")]
         [Tooltip("The object location where he must be put to resolve the puzzle")]
@@ -56,6 +57,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             originalParent = transform.parent;
             boundExtent = baseObject.GetCollider().bounds.extents;
+            boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
             
             canBeGrab = true;
         }
@@ -246,7 +248,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
                 
             var pos = playerPos + dir.normalized * (boundExtent.x * 3);
-            pos.y = groundLevel.point.y + boundExtent.y;
+            pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
             
             return pos;
         }
