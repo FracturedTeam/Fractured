@@ -9,7 +9,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private CinemachineCamera roomCamera;
         [SerializeField] public Glass[] glassShards;
         
-        private void OnEnable() {
+        private void Start() {
             roomCamera.Priority = 1;
             
             GameInitializer.Instance.AddShards(glassShards);

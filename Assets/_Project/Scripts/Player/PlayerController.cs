@@ -11,7 +11,7 @@ namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
     public class PlayerController : Singleton<PlayerController>{
-        [SerializeField] private PlayerData data;
+        [SerializeField, HideInInspector] private PlayerData data;
         
         [ContextMenu("Load")]
         public void Load(PlayerData data) {

@@ -6,6 +6,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
@@ -21,6 +22,7 @@ namespace _Project.Scripts.GameServices {
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool InitializeDebugger = true;
+        public bool deleteSaveOnPlay = true;
         #endif
         
         private new void Awake() {
@@ -32,6 +34,11 @@ namespace _Project.Scripts.GameServices {
             
             //Populate the glassShardService
             PopulateShardOnStart();
+
+            if (deleteSaveOnPlay) {
+                var dataService = new FileDataService(new JsonSerializer());
+                dataService.DeleteAll();
+            }
         }
 
         private void InitializeGameSystems() {

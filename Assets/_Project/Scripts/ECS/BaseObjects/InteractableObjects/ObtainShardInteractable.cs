@@ -31,7 +31,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Enter Interact");
             if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             if (interaction is ObjectInteraction.Contextual) {
@@ -48,9 +47,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void ObtainShard() {
             baseObject.GetCompletion = InteractionCompletion.Completed;
+            baseObject.SetInteract(false);
             
             GameInitializer.Instance.AddShards(shards);
-            baseObject.SetInteract(false);
             
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
         }
