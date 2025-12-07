@@ -25,10 +25,14 @@ namespace _Project.Scripts.GameServices {
         
         [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
         [SerializeField, HideInInspector] private List<Glass> shards;
-
+        
         protected override void Awake() {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+        }
+
+        private void Update() {
+            
         }
 
         private void Bind() {
@@ -96,6 +100,7 @@ namespace _Project.Scripts.GameServices {
             }
         }
         
+        #if UNITY_EDITOR
         public void GetInteractables() {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
@@ -126,11 +131,11 @@ namespace _Project.Scripts.GameServices {
             }
 
             
-            #if UNITY_EDITOR
+            
             EditorUtility.SetDirty(this);
             if (!Application.isPlaying)
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-            #endif
         }
+        #endif
     }
 }

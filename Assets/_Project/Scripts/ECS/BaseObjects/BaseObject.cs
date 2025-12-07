@@ -7,7 +7,7 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
-        [SerializeField] private ObjectData data;
+        [SerializeField, HideInInspector] private ObjectData data;
         
         public void Bind(ObjectData data) {
             this.data = data;
