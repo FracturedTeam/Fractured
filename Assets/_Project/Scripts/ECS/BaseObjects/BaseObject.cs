@@ -8,6 +8,7 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
+        #region Save
         [SerializeField, HideInInspector] private ObjectData data;
         
         public void Bind(ObjectData data) {
@@ -32,6 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
         }
+        #endregion
         
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
