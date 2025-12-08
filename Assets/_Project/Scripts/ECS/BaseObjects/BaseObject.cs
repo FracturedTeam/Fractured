@@ -83,9 +83,19 @@ namespace _Project.Scripts.ECS.BaseObjects
             initialized = true;
         }
         
+        Collider[] inObjects = new Collider[4];
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
+            
+            if (GetCollider() && GetInteractionType is ObjectType.Moveable) {
+                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents * 2, inObjects, transform.rotation, gameObject.layer);
+                
+                if (size > 0) {
+                    var dir = (inObjects[0].transform.position - transform.position).normalized;
+                    transform.position += new Vector3(dir.x, 0, dir.z) * 3;
+                }
+            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
@@ -109,16 +119,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
-            
-            var inObjects = new Collider[1];
-            var layer = LayerMask.NameToLayer("Interactable");
-            if (objectCollider.enabled && GetInteract != null) {
-                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents, inObjects, Quaternion.identity, layer);
-                if (size > 0) {
-                    var dir = (inObjects[0].transform.position - transform.position).normalized * objectCollider.bounds.extents.magnitude;
-                    transform.position += new  Vector3(dir.x, 0, dir.z);
-                }
-            }
         }
         
         public Collider GetCollider() => objectCollider;
