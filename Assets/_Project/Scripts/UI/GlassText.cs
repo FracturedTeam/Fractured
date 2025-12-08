@@ -8,10 +8,14 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
 {
+    //debug, will be changed 
+    [SerializeField] private Image forceShowImage;
+    
     internal Vector2 TagPositions;
     private DialogueScriptableObject dialogue;
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -34,6 +38,7 @@ public class GlassText : MonoBehaviour
         
         text.text = "";
         textCanva.alpha = 0;
+        forceShowImage.gameObject.SetActive(false);
         
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
@@ -47,12 +52,14 @@ public class GlassText : MonoBehaviour
             tween = textCanva.DOFade(0, 0.5f);
             textCanva.blocksRaycasts = false;
             textCanva.interactable = false;
+            forceShowImage.gameObject.SetActive(false);
             
             //text.text = "";
             dialogue = null;
             return;
         }
         
+        forceShowImage.gameObject.SetActive(true);
         tween = textCanva.DOFade(1, 0.5f);
         textCanva.blocksRaycasts = true;
         textCanva.interactable = true;
@@ -81,7 +88,7 @@ public class GlassText : MonoBehaviour
         
         SetText();
         
-        TagPositions = text.mesh.bounds.center;
+        TagPositions = forceShowImage.transform.position;
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
