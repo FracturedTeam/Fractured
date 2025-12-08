@@ -33,11 +33,13 @@ namespace _Project.Scripts.GameServices {
         public void SaveGame() {
             SaveInstance.Instance.Bind();
             
+            gameData = SaveInstance.Instance.GetGameData();
+            
             PlayerController.Instance.SaveData(saveFile.PlayerData);
             GameInitializer.Instance.SaveInteractable();
             GameInitializer.Instance.SaveShards();
-            
-            gameData.SceneName = gameObject.scene.name;
+
+            gameData.SceneName = SaveInstance.Instance.gameObject.scene.name;
             saveFile.CurrentScene = gameData.SceneName;
             
             bool foundExisting = false;
@@ -45,27 +47,27 @@ namespace _Project.Scripts.GameServices {
                 if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
                     saveFile.SceneDatas[i] = gameData;
                     foundExisting = true;
-                    Debug.Log($"[SaveSystem] Has Found Existing ");
+                    Debug.Log($"[SaveSystem] Has found existing Scene");
                     break;
                 }
             }
 
             if (!foundExisting) {
-                Debug.Log($"[SaveSystem] Has Not Found Existing ");
+                Debug.Log($"[SaveSystem] Has not found existing Scene, Creating new one !");
                 saveFile.SceneDatas.Add(gameData);
             }
             
             dataService.Save(saveFile);
             
-            Debug.Log($"[SaveSystem] Saved Data to savefile");
+            Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
         public void LoadGame() {
-            LoadGame(gameObject.scene.name);
+            LoadGame(SaveInstance.Instance.gameObject.scene.name);
         }
         
         public void LoadGame(string gameName) {
-            Debug.Log($"Loading game {gameName}");
+            Debug.Log($"Loading save {gameName} from saveFile {saveFile.SaveName}");
             
             saveFile = dataService.Load(saveFile.SaveName);
             
@@ -80,15 +82,15 @@ namespace _Project.Scripts.GameServices {
 
             //if (String.IsNullOrWhiteSpace(saveFile.Name)) {
             if(!foundExisting) {  
-                Debug.Log($"Savefile {gameName} does not exist, creating new one");
                 gameData.SceneName = gameName;
                 SaveGame();
                 return;
             }
             
+            
+            
             SaveInstance.Instance.Bind();
             
-            //PlayerController.Instance.Load(gameData.PlayerData);
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
         }
@@ -96,12 +98,8 @@ namespace _Project.Scripts.GameServices {
         public void DeleteGame(string gameName) {
             dataService.Delete(gameName);
         }
-        
-        public void NewGame() {
-            NewGame("NewGame");
-        }
 
-        public void NewGame(string gameName) {
+        public void NewGame(string gameName = "New Game") {
             saveFile = new SaveFile {
                 SaveName = gameName,
             };
@@ -109,8 +107,8 @@ namespace _Project.Scripts.GameServices {
         
         public void SetRuntimeShard(List<Glass> shards) {
             for (int i = 0; i < shards.Count; i++) {
-                SaveInstance.Instance.shards[i] = shards[i];
-                gameData.FragmentDatas[i].glassShards = shards[i];
+                SaveInstance.Instance.GetShards()[i] = shards[i];
+                SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
             }
         }
     }

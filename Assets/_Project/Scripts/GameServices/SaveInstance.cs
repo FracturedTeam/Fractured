@@ -18,8 +18,8 @@ namespace _Project.Scripts.GameServices {
     
     public class SaveInstance : Singleton<SaveInstance> {
         [SerializeField] public GameData gameData;
-        public List<BaseObject> baseObjects { get; private set; }
-        public List<Glass> shards {get; private set;}
+        [SerializeField] private List<BaseObject> baseObjects;
+        [SerializeField] private List<Glass> shards;
         
         public void Bind() {
             for(var i = 0; i < baseObjects.Count; i++) {
@@ -32,8 +32,17 @@ namespace _Project.Scripts.GameServices {
                 gameData.FragmentDatas[i].glassShards.Bind(gameData.FragmentDatas[i]);
             }
         }
+
+        public GameData GetGameData() {
+            return gameData;   
+        }
+        
+        public List<Glass> GetShards() {
+            return shards;
+        }
         
 #if UNITY_EDITOR
+        [ContextMenu("Set Interactables")]
         public void SetInteractables() {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
