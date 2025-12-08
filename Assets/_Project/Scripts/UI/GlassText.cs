@@ -43,7 +43,9 @@ public class GlassText : MonoBehaviour
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
     }
+    
 
+    [SerializeField] private int i;
 
     public void Setup(DialogueScriptableObject scriptableObject) {
         tween.Kill();
@@ -67,28 +69,35 @@ public class GlassText : MonoBehaviour
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
         text.text = BaseText;
-        
-       /*
-        var firstCharInfo = 0;
 
-        for (var i = 0; i < text.textInfo.characterInfo.Length -1 ; i++)
-        {
-            print(i);
-            if (text.textInfo.characterInfo != null)
-                    return;
-            
-            if (text.textInfo.characterInfo[i].textElement.unicode == '{')
-                firstCharInfo = i;
-            
-        }
-        */
+        //BaseText
+        var begin = 0;      
+        var ending = 0;
+        text.ForceMeshUpdate(); 
+        
 
         underRed = 0;
         underBlue = 0;
         
-        SetText();
+
+        for (int j = 0; j < text.textInfo.characterCount; j++)
+        {
+            if (text.textInfo.characterInfo[j].character == '{')
+            {
+                print("first" + j);
+                begin = j;
+            }
+            if (text.textInfo.characterInfo[j].character == '}')
+            {
+                print("last" + j);
+                ending = j;
+            }
+        }
         
-        TagPositions = forceShowImage.transform.position;
+        SetText();
+        TagPositions = (text.textInfo.characterInfo[begin].bottomLeft);
+        print(TagPositions);
+        Instantiate(text, TagPositions, text.gameObject.transform.rotation, text.transform.parent);
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
@@ -158,20 +167,20 @@ public class GlassText : MonoBehaviour
         {
             case > 0 when underBlue > 0:
                 replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                    dialogue.both == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.both}</u>") + "</u>";
+                    dialogue.both == " " ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.both}</u>")  +  "<color=\"white\"> </u>";
                 break;
             case > 0:
                 replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                    dialogue.red == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.red}</u>")+ "</u>";
+                    dialogue.red ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.red}</u>")  +  "<color=\"white\"></u>";
                 break;
             default:
             {
                 if (underBlue > 0)
                     replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                        dialogue.blue == "<u>" + "" ? $" <u>{dialogue.basic}</u>" : $"<u>{dialogue.blue}</u>" + "</u>");
+                        dialogue.blue ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.blue}</u>" + "<color=\"white\"></u>");
                 else
                     replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                        dialogue.basic == "" ? random : $" <u>{dialogue.basic}</u>" );
+                        dialogue.basic == "" ? random : $"<#B761FA> <u> {dialogue.basic}</u> <color=\"white\">" );
                 break;
             }
         }
