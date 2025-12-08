@@ -47,10 +47,8 @@ namespace _Project.Scripts.ECS
                 Initialize();
             }
         }
-        
-        
 
-        public void Initialize()
+        private void Initialize()
         {
             mainCamera = Camera.main;
 
