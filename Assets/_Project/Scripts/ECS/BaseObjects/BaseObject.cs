@@ -19,7 +19,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Load() {
             transform.position = data.position;
             GetCompletion = data.completion;
-            
+            Debug.Log($"[BaseObject] {nameof(BaseObject)} {data.position}");
             if (GetCompletion is InteractionCompletion.Completed) {
                 CompleteObject();
             }

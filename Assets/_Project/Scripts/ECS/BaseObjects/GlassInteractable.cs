@@ -99,10 +99,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             SetUp();
         }
 
-        void OnDisable() {
-            shardsOnTop.onUpdate -= UpdateShards;
-        }
-
         internal void OnInteract(bool isUnder, Glass shard) {
             if(!baseObject)
                 return;
