@@ -109,6 +109,16 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+            
+            var inObjects = new Collider[1];
+            var layer = LayerMask.NameToLayer("Interactable");
+            if (objectCollider.enabled && GetInteract != null) {
+                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents, inObjects, Quaternion.identity, layer);
+                if (size > 0) {
+                    var dir = (inObjects[0].transform.position - transform.position).normalized * objectCollider.bounds.extents.magnitude;
+                    transform.position += new  Vector3(dir.x, 0, dir.z);
+                }
+            }
         }
         
         public Collider GetCollider() => objectCollider;

@@ -99,7 +99,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void CompleteObject() {
             
         }
-
+        
         public void ResetObject() {
             tween?.Pause();
             tween?.Kill();
