@@ -2,11 +2,13 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
+        #region Save
         [SerializeField, HideInInspector] private ObjectData data;
         
         public void Bind(ObjectData data) {
@@ -31,6 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
         }
+        #endregion
         
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
@@ -49,14 +52,19 @@ namespace _Project.Scripts.ECS.BaseObjects
         private bool initialized = false;
         private bool canBeInteractedWith;
 
+        private CountdownTimer glassInitializationDelay = new CountdownTimer(0.1f);
+
         private void Awake() {
             Initialize();
         }
 
         public void Initialize() {
             if(!initialized) {
-                if(TryGetComponent(typeof(GlassInteractable), out var g))
+                if (TryGetComponent(typeof(GlassInteractable), out var g)) {
                     GetGlassInteract = g as GlassInteractable;
+                    glassInitializationDelay.Start();
+                    glassInitializationDelay.OnTimerStop += GetGlassInteract.Initialize;
+                }
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -71,10 +79,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         
             GetInteract?.Initialize();
-            GetGlassInteract?.Initialize();
+            
             initialized = true;
         }
-
+        
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
