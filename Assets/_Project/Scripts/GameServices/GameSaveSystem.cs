@@ -31,10 +31,6 @@ namespace _Project.Scripts.GameServices {
             dataService = new FileDataService(new JsonSerializer());
         }
 
-        private void Update() {
-            
-        }
-
         private void Bind() {
             for(var i = 0; i < baseObjects.Count; i++) {
                 gameData.ObjectDatas[i].baseObject = baseObjects[i];
@@ -78,7 +74,7 @@ namespace _Project.Scripts.GameServices {
             
             Bind();
             
-            PlayerController.Instance.Load(gameData.PlayerData);
+            //PlayerController.Instance.Load(gameData.PlayerData);
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
         }
