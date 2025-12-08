@@ -21,20 +21,24 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private List<BaseObject> baseObjects;
         [SerializeField] private List<Glass> shards;
         
-        public void Bind() {
+        public void Bind(GameData saveFile) {
             for(var i = 0; i < baseObjects.Count; i++) {
-                gameData.ObjectDatas[i].baseObject = baseObjects[i];
-                gameData.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
+                saveFile.ObjectDatas[i].baseObject = baseObjects[i];
+                saveFile.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
             }
 
             for (var i = 0; i < shards.Count; i++) {
-                gameData.FragmentDatas[i].glassShards = shards[i];
-                gameData.FragmentDatas[i].glassShards.Bind(gameData.FragmentDatas[i]);
+                saveFile.FragmentDatas[i].glassShards = shards[i];
+                saveFile.FragmentDatas[i].glassShards.Bind(gameData.FragmentDatas[i]);
             }
         }
 
         public GameData GetGameData() {
             return gameData;   
+        }
+
+        public void SetGameData(GameData data) {
+            gameData = data;
         }
         
         public List<Glass> GetShards() {

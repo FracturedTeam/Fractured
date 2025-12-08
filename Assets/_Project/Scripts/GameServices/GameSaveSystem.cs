@@ -31,9 +31,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SaveGame() {
-            SaveInstance.Instance.Bind();
-            
-            gameData = SaveInstance.Instance.GetGameData();
+            SaveInstance.Instance.Bind(gameData = SaveInstance.Instance.GetGameData());
             
             PlayerController.Instance.SaveData(saveFile.PlayerData);
             GameInitializer.Instance.SaveInteractable();
@@ -71,13 +69,15 @@ namespace _Project.Scripts.GameServices {
             
             saveFile = dataService.Load(saveFile.SaveName);
             
-            bool foundExisting = false;
-            for (int i = 0; i < saveFile.SceneDatas.Count; i++) {
-                if (saveFile.SceneDatas[i].SceneName == gameName) {
-                    gameData = saveFile.SceneDatas[i];
-                    foundExisting = true;
-                    break;
-                }
+            var foundExisting = false;
+            var index = 0;
+            for (var i = 0; i < saveFile.SceneDatas.Count; i++) {
+                if (saveFile.SceneDatas[i].SceneName != gameName) continue;
+                
+                gameData = saveFile.SceneDatas[i];
+                foundExisting = true;
+                index = i;
+                break;
             }
 
             //if (String.IsNullOrWhiteSpace(saveFile.Name)) {
@@ -87,9 +87,8 @@ namespace _Project.Scripts.GameServices {
                 return;
             }
             
-            
-            
-            SaveInstance.Instance.Bind();
+            SaveInstance.Instance.SetGameData(saveFile.SceneDatas[index]);
+            SaveInstance.Instance.Bind(saveFile.SceneDatas[index]);
             
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
