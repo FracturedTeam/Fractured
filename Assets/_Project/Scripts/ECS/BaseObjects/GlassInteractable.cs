@@ -99,10 +99,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             SetUp();
         }
 
-        void OnDisable() {
-            shardsOnTop.onUpdate -= UpdateShards;
-        }
-
         internal void OnInteract(bool isUnder, Glass shard) {
             if(!baseObject)
                 return;
@@ -162,15 +158,20 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private void SetVisibility(bool isUnder) {
             baseObject.SetRenderer(isUnder);
-            baseObject.SetCollider(isUnder);
-            if (baseObject.TryGetComponent(out MoveableObject move) && !move.IsGrabbed()) 
-                baseObject.SetInteract(isUnder);
-            else
-                baseObject.SetInteract(isUnder);
-            
-            if (objectInside && !objectOut) {
-                ActivateObjectInside(!isUnder);
+            //Check if object is held
+            if (baseObject.TryGetComponent(out MoveableObject move)) {
+                if (!move.IsGrabbed()) {
+                    baseObject.SetCollider(isUnder);
+                    baseObject.SetInteract(isUnder);
+                }
             }
+            else {
+                baseObject.SetCollider(isUnder);
+                baseObject.SetInteract(isUnder);
+            }
+            
+            if (objectInside && !objectOut)
+                ActivateObjectInside(!isUnder);
         }
         
         private void ActivateObjectInside(bool isUnder) {
@@ -202,9 +203,9 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool UnderGlass() {
             return objectColor switch {
-                ColorEnum.Red => underRed > 0 && underBlue < 1,
-                ColorEnum.Blue => underBlue > 0 && underRed < 1,
-                ColorEnum.Both => underRed > 0 && underBlue > 0,
+                ColorEnum.Red => underRed != 0 && underBlue < 1,
+                ColorEnum.Blue => underBlue != 0 && underRed < 1,
+                ColorEnum.Both => underRed != 0 && underBlue > 0,
                 _ => false
             };
         }

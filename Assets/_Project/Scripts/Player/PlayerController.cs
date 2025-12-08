@@ -75,8 +75,8 @@ namespace _Project.Scripts.Player {
             
             //Define all states transitions
             //Locomotion State
-            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
-            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
+            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded() && !interact.IsCarrying()));
+            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded() && !interact.IsCarrying()));
             
             //Carrying State
             At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));

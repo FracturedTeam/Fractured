@@ -214,9 +214,9 @@ namespace _Project.Scripts.Player {
                         var dist = Vector3.Distance(transform.position, results[i].transform.position);
                         var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
 
-                        if (!(facing > closestAngle)) continue;
+                        if (!(facing < closestAngle)) continue;
                         closestAngle = facing;
-                        if (!(dist < closestDist)) continue;
+                        if (dist > closestDist) continue;
                         closestDist = dist;
                         index = i;
                     }

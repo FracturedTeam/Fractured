@@ -70,6 +70,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
+                if(shard == null) continue;
                 glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
@@ -95,6 +96,7 @@ namespace _Project.Scripts.GameServices.Services {
                     
                     shards.Remove(currentGlass);
                     shards.Insert(0, currentGlass);
+                    shard.transform.SetAsLastSibling();
 
                     return;
                 }
