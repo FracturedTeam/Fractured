@@ -7,7 +7,7 @@ namespace _Project.Scripts.Editor {
     public class GameSaveSystemEditor : UnityEditor.Editor {
         public override void OnInspectorGUI() {
             var saveSystem = (GameSaveSystem) target;
-            var gameName = saveSystem.gameData.Name;
+            var gameName = saveSystem.saveFile.CurrentScene;
             
             DrawDefaultInspector();
             
@@ -15,13 +15,10 @@ namespace _Project.Scripts.Editor {
                 saveSystem.SaveGame();
             
             if(GUILayout.Button("Load Game"))
-                saveSystem.LoadGame(saveSystem.gameData.Name);
+                saveSystem.LoadGame(saveSystem.saveFile.CurrentScene);
             
             if(GUILayout.Button("Delete Game"))
                 saveSystem.DeleteGame(gameName);
-            
-            if(GUILayout.Button("Set Interactable"))
-                saveSystem.GetInteractables();
         }
     }
 }

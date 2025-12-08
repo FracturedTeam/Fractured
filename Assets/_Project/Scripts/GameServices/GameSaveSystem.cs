@@ -12,46 +12,50 @@ using UnityEngine;
 namespace _Project.Scripts.GameServices {
 
     [Serializable]
-    public struct GameData {
-        public string Name;
+    public struct SaveFile {
+        public string SaveName;
+        public string CurrentScene;
         public PlayerData PlayerData;
-        public List<ObjectData> ObjectDatas;
-        public List<FragmentData> FragmentDatas;
+        public List<GameData> SceneDatas;
     }
     
     public class GameSaveSystem : Singleton<GameSaveSystem> {
-        [SerializeField] public GameData gameData;
+        private GameData gameData;
         private IDataService dataService;
         
-        [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
-        [SerializeField, HideInInspector] private List<Glass> shards;
+        [SerializeField] public SaveFile saveFile;
         
         protected override void Awake() {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
         }
-
-        private void Bind() {
-            for(var i = 0; i < baseObjects.Count; i++) {
-                gameData.ObjectDatas[i].baseObject = baseObjects[i];
-                gameData.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
-            }
-
-            for (var i = 0; i < shards.Count; i++) {
-                gameData.FragmentDatas[i].glassShards = shards[i];
-                gameData.FragmentDatas[i].glassShards.Bind(gameData.FragmentDatas[i]);
-            }
-        }
         
         public void SaveGame() {
-            Bind();
+            SaveInstance.Instance.Bind();
             
-            PlayerController.Instance.SaveData(gameData.PlayerData);
+            PlayerController.Instance.SaveData(saveFile.PlayerData);
             GameInitializer.Instance.SaveInteractable();
             GameInitializer.Instance.SaveShards();
-            gameData.Name = gameObject.scene.name;
             
-            dataService.Save(gameData);
+            gameData.SceneName = gameObject.scene.name;
+            saveFile.CurrentScene = gameData.SceneName;
+            
+            bool foundExisting = false;
+            for (int i = 0; i < saveFile.SceneDatas.Count; i++)  {
+                if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
+                    saveFile.SceneDatas[i] = gameData;
+                    foundExisting = true;
+                    Debug.Log($"[SaveSystem] Has Found Existing ");
+                    break;
+                }
+            }
+
+            if (!foundExisting) {
+                Debug.Log($"[SaveSystem] Has Not Found Existing ");
+                saveFile.SceneDatas.Add(gameData);
+            }
+            
+            dataService.Save(saveFile);
             
             Debug.Log($"[SaveSystem] Saved Data to savefile");
         }
@@ -63,16 +67,26 @@ namespace _Project.Scripts.GameServices {
         public void LoadGame(string gameName) {
             Debug.Log($"Loading game {gameName}");
             
-            gameData = dataService.Load(gameName);
+            saveFile = dataService.Load(saveFile.SaveName);
+            
+            bool foundExisting = false;
+            for (int i = 0; i < saveFile.SceneDatas.Count; i++) {
+                if (saveFile.SceneDatas[i].SceneName == gameName) {
+                    gameData = saveFile.SceneDatas[i];
+                    foundExisting = true;
+                    break;
+                }
+            }
 
-            if (String.IsNullOrWhiteSpace(gameData.Name)) {
+            //if (String.IsNullOrWhiteSpace(saveFile.Name)) {
+            if(!foundExisting) {  
                 Debug.Log($"Savefile {gameName} does not exist, creating new one");
-                gameData.Name = gameName;
+                gameData.SceneName = gameName;
                 SaveGame();
                 return;
             }
             
-            Bind();
+            SaveInstance.Instance.Bind();
             
             //PlayerController.Instance.Load(gameData.PlayerData);
             GameInitializer.Instance.LoadInteractable();
@@ -84,54 +98,20 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void NewGame() {
-            gameData = new GameData {
-                Name = ""
-            };
+            NewGame("NewGame");
         }
 
+        public void NewGame(string gameName) {
+            saveFile = new SaveFile {
+                SaveName = gameName,
+            };
+        }
+        
         public void SetRuntimeShard(List<Glass> shards) {
             for (int i = 0; i < shards.Count; i++) {
-                this.shards[i] = shards[i];
+                SaveInstance.Instance.shards[i] = shards[i];
                 gameData.FragmentDatas[i].glassShards = shards[i];
             }
         }
-        
-        #if UNITY_EDITOR
-        public void GetInteractables() {
-            baseObjects = new List<BaseObject>();
-            shards = new List<Glass>();
-            gameData.ObjectDatas = new List<ObjectData>();
-            gameData.FragmentDatas = new List<FragmentData>();
-            
-            //Set Shards
-            shards.AddRange(GameSceneSettings.Instance.glassShards);
-            
-            foreach (var shard in GameSceneSettings.Instance.glassShards) {
-                gameData.FragmentDatas.Add(new FragmentData{glassShards = shard});
-            }
-            
-            //Set interactable
-            var interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            baseObjects.AddRange(interactables);
-            
-            foreach (var interactable in interactables) {
-                gameData.ObjectDatas.Add(new ObjectData{baseObject = interactable});
-                
-                //Set shard in interactable
-                if (interactable.TryGetComponent(out ObtainShardInteractable shard)) {
-                    shards.AddRange(shard.shards);
-                    foreach (var s in shard.shards) {
-                        gameData.FragmentDatas.Add(new FragmentData{glassShards = s});
-                    }
-                }
-            }
-
-            
-            
-            EditorUtility.SetDirty(this);
-            if (!Application.isPlaying)
-                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-        }
-        #endif
     }
 }
