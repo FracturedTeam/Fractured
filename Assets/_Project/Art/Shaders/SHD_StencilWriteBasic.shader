@@ -9,9 +9,9 @@ Shader "Custom/SHD_StencilWriteBasic"
     {
         Tags 
         { 
-            "RenderType" = "Opaque" 
-            "RenderPipeline" = "UniversalPipeline" 
-            "Queue" = "Geometry"
+            //"RenderType" = "Opaque" 
+            //"RenderPipeline" = "UniversalPipeline" 
+            //"Queue" = "Geometry"
         }
 
         Pass
@@ -23,7 +23,7 @@ Shader "Custom/SHD_StencilWriteBasic"
             {
                 Ref [_StencilID]
                 Comp Always
-                Pass Keep
+                Pass Replace
                 Fail Keep
             }
         }
