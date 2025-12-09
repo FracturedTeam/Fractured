@@ -105,10 +105,8 @@ namespace _Project.Scripts.GameServices {
         #region ShardService
 
         private void PopulateShardOnStart() {
-            if (!FindAnyObjectByType<EventSystem>()) { //Add event system component if there is none
-                gameObject.AddComponent<EventSystem>();
-                gameObject.AddComponent<InputSystemUIInputModule>();
-            }
+            gameObject.AddComponent<EventSystem>();
+            gameObject.AddComponent<InputSystemUIInputModule>();
             
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);

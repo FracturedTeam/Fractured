@@ -14,25 +14,12 @@ namespace _Project.Scripts.GameServices {
     public class GameSceneLoaderSystem : Singleton<GameSceneLoaderSystem> {
         private List<SceneField> scenesToLoad = new List<SceneField>();
         [SerializeField] private SceneField[] persistentScenes;
-        
+        [SerializeField] private SceneField menuScene;
+        [SerializeField] private SceneField newGameScene;
         public bool levelIsLoading { get; private set; }
 
         private void Start() {
-            /*var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
-            var sceneCount = SceneManager.sceneCount;
-
-            for (var i = sceneCount - 1; i > 0; i--) {
-                var sceneAt = SceneManager.GetSceneAt(i);
-                if(sceneAt.isLoaded) continue;
-                
-                if(!toLoad.Contains(sceneAt.name)) continue;
-                
-                var loading = SceneManager.LoadSceneAsync(sceneAt.name, LoadSceneMode.Additive);
-                Debug.Log($"Loading scene {sceneAt.name}");
-            }
-            
-            GameInitializer.Instance.EmptyInteractable();
-            GameInitializer.Instance.RepopulateInteractable();*/
+            var load = LoadMenuAsync(menuScene);
         }
 
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
@@ -67,7 +54,7 @@ namespace _Project.Scripts.GameServices {
             levelIsLoading = false;
             Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
             
-            await UnloadSceneAsync();
+            //await UnloadSceneAsync();
         }
         
         public async Task UnloadSceneAsync() {
@@ -84,6 +71,7 @@ namespace _Project.Scripts.GameServices {
                 
                 var sceneName = sceneAt.name;
                 scenesToUnload.Add(sceneName);
+                Debug.Log($"Unload scene {sceneName}");
             }
 
             foreach (var scene in scenesToUnload) {
@@ -96,8 +84,7 @@ namespace _Project.Scripts.GameServices {
             }
             
             GameInitializer.Instance.RepopulateInteractable();
-
-            await Task.Delay(100);
+            await Task.Yield();
             
             //Save System Load data
             GameSaveSystem.Instance.LoadGame();
@@ -119,10 +106,48 @@ namespace _Project.Scripts.GameServices {
 
             Debug.Log($"Load scene {levelArt.SceneName} Successfully");
         }
+        
+        public async Task LoadMenuAsync(SceneField menuScene) {
+            scenesToLoad.Add(menuScene);
+            
+            var loadingMenu = SceneManager.LoadSceneAsync(menuScene, LoadSceneMode.Additive);
 
+            if (loadingMenu is null) {
+                Debug.LogError($"Failed to load menu scene {menuScene.SceneName}, Verify Build Settings Or if it is Referenced");
+                return;
+            }
+            
+            while (loadingMenu is { isDone: false }) {
+                await Task.Yield();
+            }
+
+            Debug.Log($"Load scene {menuScene.SceneName} Successfully");
+        }
+
+        private async Task LoadNewGameAsync(SceneField scene) {
+            scenesToLoad = new List<SceneField>();
+            scenesToLoad.AddRange(persistentScenes);
+            scenesToLoad.Add(scene);
+
+            foreach (var s in scenesToLoad) {
+                var load = SceneManager.LoadSceneAsync(s, LoadSceneMode.Additive);
+                while (!load.isDone) {
+                    await Task.Yield();
+                }
+            }
+            
+            //await UnloadSceneAsync();
+        }
+
+        public void NewGame() {
+            var newGame = LoadNewGameAsync(newGameScene);
+        }
+        
         public void SetSceneToLoad(SceneField[] scenes) {
             scenesToLoad.Clear();
             scenesToLoad.AddRange(scenes);
+
+            var unload = UnloadSceneAsync();
         }
         
         private void UnloadObjects() {
