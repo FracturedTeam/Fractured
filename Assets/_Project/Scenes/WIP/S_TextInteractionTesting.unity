@@ -199,17 +199,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3754880757641364908, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.5
+      value: 22.25
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.328
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 5042233969229290551, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -235,6 +239,14 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7558046545189773983, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: memory
+      value: 
+      objectReference: {fileID: 1606210396}
+    - target: {fileID: 7558046545189773983, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1847167712}
     - target: {fileID: 8629540748965857753, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_Name
       value: P_PlayerObject
@@ -1587,10 +1599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139212f3bcf2446ab45559c6f1a3f0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.TestUI
-  interactionUI: {fileID: 1238278356}
-  interactionText: {fileID: 513161659}
-  memoryHUD: {fileID: 1453073115}
-  memoryImage: {fileID: 1215313851}
 --- !u!225 &457155935
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5077,6 +5085,11 @@ PrefabInstance:
       addedObject: {fileID: 298349062}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8d8d2806098c5d48b06114ef9ab1788, type: 3}
+--- !u!199 &1606210396 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 7947620235467390182, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+  m_PrefabInstance: {fileID: 54714546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1732552252
 GameObject:
   m_ObjectHideFlags: 0
@@ -5167,6 +5180,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b00a176f9dcd26b46a0c295b81997c37, type: 3}
+--- !u!95 &1847167712 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3743119816247940796, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+  m_PrefabInstance: {fileID: 54714546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1890484154
 GameObject:
   m_ObjectHideFlags: 0
