@@ -17,12 +17,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [ContextMenu("Load")]
         public void Load() {
+            if (GetGlass) {
+                GetGlassInteract.ObjectOut = data.objectOut;
+                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
+            }
+            
             transform.position = data.position;
             GetCompletion = data.completion;
-            
-            if (GetCompletion is InteractionCompletion.Completed) {
-                CompleteObject();
-            }
+            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
             
             SetInteract(data.canInteract);
         }
@@ -32,6 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.position = transform.position;
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
+            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
         #endregion
         
@@ -52,19 +55,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         private bool initialized = false;
         private bool canBeInteractedWith;
 
-        private CountdownTimer glassInitializationDelay = new CountdownTimer(0.1f);
-
         private void Awake() {
             Initialize();
         }
 
         public void Initialize() {
             if(!initialized) {
-                if (TryGetComponent(typeof(GlassInteractable), out var g)) {
+                if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
-                    glassInitializationDelay.Start();
-                    glassInitializationDelay.OnTimerStop += GetGlassInteract.Initialize;
-                }
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -77,13 +75,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
+            initialized = true;
         
             GetInteract?.Initialize();
-            
-            initialized = true;
+            GetGlassInteract?.Initialize();
         }
         
-        Collider[] inObjects = new Collider[4];
+        //Collider[] inObjects = new Collider[4];
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
@@ -131,6 +129,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool CanBeInteractedWith() {
             return canBeInteractedWith;
         }
+
+        public MeshRenderer GetRendered() {
+            return meshRenderer;
+        }
     }
 
     [Serializable]
@@ -139,6 +141,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public Vector3 position;
         public InteractionCompletion completion;
         public bool canInteract;
+        public bool objectOut;
     }
 }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -127,8 +128,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void RepopulateInteractable() {
-            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            shardService.RepopulateBaseObjet(_interactables);
+            shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
         }
 
         public BaseObject[] GetInteractables() {

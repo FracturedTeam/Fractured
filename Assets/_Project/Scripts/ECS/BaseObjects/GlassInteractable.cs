@@ -10,8 +10,7 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     [RequireComponent(typeof(BaseObject))]
-    public class GlassInteractable : MonoBehaviour
-    {
+    public class GlassInteractable : MonoBehaviour {
         private float GetRadius => radius2D;
         
         private BaseObject baseObject;
@@ -38,7 +37,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private int underBlue;
         
         private bool initialized = false;
-        private bool objectOut = false;
+        public bool ObjectOut { get; set; }
         
         public  void Initialize() {
             mainCamera = Camera.main;
@@ -84,7 +83,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectInside) {
                 if (interactableInBox != null) {
-                    interactableInBox.gameObject.SetActive(false);
+                    SetInteractableInBox(false);
+                    
                     interactableInBox.transform.position = transform.position;
                 }
                 else
@@ -92,15 +92,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             BoundingBox = new Vector3[4];
-            for (int i = 0; i < BoundingBox.Length; i++)
-            {
+            for (int i = 0; i < BoundingBox.Length; i++) {
                 BoundingBox[i] = new Vector3(0, 0, 0);
             }
             SetUp();
-        }
-
-        void OnDisable() {
-            shardsOnTop.onUpdate -= UpdateShards;
         }
 
         internal void OnInteract(bool isUnder, Glass shard) {
@@ -116,11 +111,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
-
             if (!objectInside) return;
-            if (objectOut) return;
-            interactableInBox.transform.position = transform.position;
-            if (interactableInBox.IsGrabbed()) objectOut = true;
+            if (ObjectOut) return;
+            
+            interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
+            if (interactableInBox.IsGrabbed()) ObjectOut = true;
         }
 
         private void UpdateShards() {
@@ -174,21 +169,21 @@ namespace _Project.Scripts.ECS.BaseObjects
                 baseObject.SetInteract(isUnder);
             }
             
-            if (objectInside && !objectOut)
+            if (objectInside && !ObjectOut)
                 ActivateObjectInside(!isUnder);
         }
         
         private void ActivateObjectInside(bool isUnder) {
-            interactableInBox?.gameObject.SetActive(isUnder);
+            SetInteractableInBox(isUnder);
 
             if(!selfMoveable) return;
             if (!selfMoveable.IsGrabbed()) return;
             
-            if(!interactableInBox.gameObject.activeInHierarchy) return;
+            if(!InteractableInBoxActive()) return;
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
-            objectOut = true;
+            ObjectOut = true;
         }
 
         public void ResetObject() {
@@ -199,12 +194,26 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!objectInside || objectOut) return;
+            if (!objectInside || ObjectOut) return;
             
             if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
             interactableInBox?.gameObject.SetActive(false);
         }
 
+        public void SetInteractableInBox(bool revealed) {
+            if(interactableInBox == null) return;
+
+            interactableInBox?.GetBaseObject().SetInteract(revealed);
+            interactableInBox?.GetBaseObject().SetCollider(revealed);
+            interactableInBox?.GetBaseObject().SetRenderer(revealed);
+        }
+
+        bool InteractableInBoxActive() {
+            return interactableInBox.GetBaseObject().GetCollider().enabled &&
+                   interactableInBox.GetBaseObject().CanBeInteractedWith() &&
+                   interactableInBox.GetBaseObject().GetRendered().enabled;
+        }
+        
         public bool UnderGlass() {
             return objectColor switch {
                 ColorEnum.Red => underRed != 0 && underBlue < 1,
@@ -225,16 +234,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!mainCamera)
                 return;
             
-            foreach (var pos in BoundingBox)
-            {
+            foreach (var pos in BoundingBox) {
                 Gizmos.DrawSphere(pos, 10);
             }
             
         }
 
         ///Auto Setup the collision
-        private void SetUp()
-        {
+        private void SetUp() {
             var points = GetComponent<MeshFilter>().sharedMesh.vertices;
             HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
@@ -242,8 +249,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             Vector3 pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);
 
-            foreach (var point in pointsHashSet)
-            {
+            foreach (var point in pointsHashSet) {
                 var current =  transform.TransformPoint(point);
                 current = mainCamera.WorldToScreenPoint(current);
                 
