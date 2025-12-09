@@ -90,19 +90,26 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void DisplayMemory() {
             baseObject.SetInteract(false);
+            
+            /*
             EventBus<MemoryEvent>.Raise(new MemoryEvent {
                 showMemory = true,
                 memory = memorySprite
             });
+            */
+            MemoryManager.instance.SetMemory(true,  memorySprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
+            /*
             EventBus<MemoryEvent>.Raise(new MemoryEvent {
                 showMemory = false,
                 memory = null
             });
+            */
+            MemoryManager.instance.SetMemory(false);
             Debug.Log($"[MemoryInteractable] Leaving memory");
         }
         
