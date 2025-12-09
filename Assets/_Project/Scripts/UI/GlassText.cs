@@ -13,14 +13,11 @@ using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
 {
-    //debug, will be changed 
-    [SerializeField] private Image forceShowImage;
-    
+    [SerializeField] private List<TextMeshProUGUI> texts = new ();
     internal Vector2 TagPositions;
     private DialogueScriptableObject dialogue;
     private const string Glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
-    private ObservableHashSet<Glass> shardsOnTop;
-    private TMP_Text text;
+    private ObservableHashSet<Glass> shardsOnTop = new();
     public CanvasGroup textCanva;
     private string show;
     private string BaseText;
@@ -31,14 +28,7 @@ public class GlassText : MonoBehaviour
     private Tweener tween;
 
     private void Start() {
-        if (TryGetComponent(typeof(TMP_Text), out var t))
-            text = (TMP_Text)t;
-        else
-            text = gameObject.AddComponent<TMP_Text>();
-        
-        text.text = "";
         textCanva.alpha = 0;
-        forceShowImage.gameObject.SetActive(false);
         
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
@@ -52,50 +42,25 @@ public class GlassText : MonoBehaviour
             tween = textCanva.DOFade(0, 0.5f);
             textCanva.blocksRaycasts = false;
             textCanva.interactable = false;
-            forceShowImage.gameObject.SetActive(false);
             
             //text.text = "";
             dialogue = null;
             return;
         }
         
-        forceShowImage.gameObject.SetActive(true);
         tween = textCanva.DOFade(1, 0.5f);
         textCanva.blocksRaycasts = true;
         textCanva.interactable = true;
         
         dialogue = scriptableObject;
         BaseText =  scriptableObject.dialogue;
-        text.text = BaseText;
-
-        //BaseText
-        var begin = 0;      
-        var ending = 0;
-        text.ForceMeshUpdate(); 
-        
+        texts[0].text = BaseText;
 
         underRed = 0;
         underBlue = 0;
         
-
-        for (int j = 0; j < text.textInfo.characterCount; j++)
-        {
-            if (text.textInfo.characterInfo[j].character == '{')
-            {
-                print("first" + j);
-                begin = j;
-            }
-            if (text.textInfo.characterInfo[j].character == '}')
-            {
-                print("last" + j);
-                ending = j;
-            }
-        }
-        
         SetText();
-        TagPositions =forceShowImage.transform.position;
         print(TagPositions);
-        Instantiate(text, TagPositions, text.gameObject.transform.rotation, text.transform.parent);
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
@@ -109,12 +74,6 @@ public class GlassText : MonoBehaviour
     {
         UpdateShards();
         SetText();
-        
-        foreach (var t in text.textInfo.linkInfo)
-        {
-            print(underBlue);
-            print(underRed);
-        }
     }
     
     private void UpdateShards() {
@@ -159,30 +118,30 @@ public class GlassText : MonoBehaviour
             random += Glyphs[Random.Range(0, Glyphs.Length)];
         }
             
-        var replace = "";
+        var first = "";
+        var middle = "";
+        var last = "";
 
         switch (underRed)
         {
             case > 0 when underBlue > 0:
-                replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                    dialogue.both == " " ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.both}</u>")  +  "<color=\"white\"> </u>";
+                middle = dialogue.both == " " ? $" <#B761FA><u>{dialogue.basic}</u>" : $" <#B761FA><u>{dialogue.both}</u>"  +  "<color=\"white\"> </u>";
                 break;
             case > 0:
-                replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                    dialogue.red ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.red}</u>")  +  "<color=\"white\"></u>";
+                middle = dialogue.red ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $" <#B761FA><u>{dialogue.red}</u>" +  "<color=\"white\"></u>";
                 break;
             default:
             {
                 if (underBlue > 0)
-                    replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                        dialogue.blue ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $"<#B761FA><u>{dialogue.blue}</u>" + "<color=\"white\"></u>");
+                    middle = dialogue.blue ==  "" ? $" <#B761FA><u>{dialogue.basic}</u>" : $" <#B761FA><u>{dialogue.blue}</u>" + "<color=\"white\"></u>";
                 else
-                    replace = show.Replace("{" + $"{dialogue.variableName}" + "}",
-                        dialogue.basic == "" ? random : $"<#B761FA> <u> {dialogue.basic}</u> <color=\"white\">" );
+                    middle = dialogue.basic == "" ? random : $" <#B761FA><u>{dialogue.basic}</u> <color=\"white\">" ;
                 break;
             }
         }
-        show = replace;
-        text.text = show;
+        texts[0].text = show.Split('{')[0];
+        texts[1].text = middle;
+        texts[2].text = show.Split('}')[1];
+        TagPositions = texts[1].transform.position;
     }
 }
