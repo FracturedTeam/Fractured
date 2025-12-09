@@ -203,7 +203,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
 
-            Debug.Log("Set object in box");
             interactableInBox?.GetBaseObject().SetInteract(revealed);
             interactableInBox?.GetBaseObject().SetCollider(revealed);
             interactableInBox?.GetBaseObject().SetRenderer(revealed);

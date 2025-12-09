@@ -17,12 +17,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [ContextMenu("Load")]
         public void Load() {
-            Debug.Log("Load Data");
             if (GetGlass) {
                 GetGlassInteract.ObjectOut = data.objectOut;
-                if (data.objectOut) {
-                    GetGlassInteract.SetInteractableInBox(true);
-                }
+                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
             }
             
             transform.position = data.position;
@@ -37,8 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.position = transform.position;
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
-            if (GetGlass)
-                data.objectOut = GetGlassInteract.ObjectOut;
+            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
         #endregion
         
