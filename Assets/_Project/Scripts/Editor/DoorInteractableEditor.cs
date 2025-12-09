@@ -13,14 +13,12 @@ namespace _Project.Scripts.Editor {
 
         SerializedProperty sceneToLoad;
         SerializedProperty levelDesign;
-        SerializedProperty levelArt;
         SerializedProperty positionField;
         SerializedProperty directionField;
 
         void OnEnable() {
             sceneToLoad = serializedObject.FindProperty("sceneToLoad");
             levelDesign = sceneToLoad.FindPropertyRelative("levelDesign");
-            levelArt = sceneToLoad.FindPropertyRelative("levelArt");
             positionField = sceneToLoad.FindPropertyRelative("playerPosition");
             directionField = sceneToLoad.FindPropertyRelative("direction");
         }
@@ -47,7 +45,6 @@ namespace _Project.Scripts.Editor {
                 
                 serializedObject.Update();
                 EditorGUILayout.PropertyField(levelDesign, true);
-                EditorGUILayout.PropertyField(levelArt, true);
                 EditorGUILayout.PropertyField(positionField, true);
                 EditorGUILayout.PropertyField(directionField, true);
                 serializedObject.ApplyModifiedProperties();
