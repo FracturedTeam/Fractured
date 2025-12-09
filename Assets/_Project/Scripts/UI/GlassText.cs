@@ -45,8 +45,6 @@ public class GlassText : MonoBehaviour
     }
     
 
-    [SerializeField] private int i;
-
     public void Setup(DialogueScriptableObject scriptableObject) {
         tween.Kill();
         
@@ -95,7 +93,7 @@ public class GlassText : MonoBehaviour
         }
         
         SetText();
-        TagPositions = (text.textInfo.characterInfo[begin].bottomLeft);
+        TagPositions =forceShowImage.transform.position;
         print(TagPositions);
         Instantiate(text, TagPositions, text.gameObject.transform.rotation, text.transform.parent);
     }
