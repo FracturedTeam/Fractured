@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f35e63998f0da74e94b0ff7813475ac, type: 3}
   m_Name: PlayerConfiguration
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfiguration
-  normalMoveSpeed: 8
-  grabMoveSpeed: 8
+  normalMoveSpeed: 23
+  grabMoveSpeed: 23
   moveMult: 3
   airMoveMult: 0.1
-  rotationSpeed: 10
-  accelTime: 0.5
+  rotationSpeed: 7
+  accelTime: 0.1
   accelCurve:
     serializedVersion: 2
     m_Curve:
@@ -42,7 +42,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  decelTime: 0.01
+  decelTime: 0.005
   decelCurve:
     serializedVersion: 2
     m_Curve:
@@ -67,12 +67,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeBeforeMoving: 0.1
-  timeBeforeMovingReset: 1
+  timeBeforeMoving: 0.05
+  timeBeforeMovingReset: 0.1
   maxSlopeAngle: 40
   maxSlopeDecreaseSpeed: 0.7
   maxFallSpeed: 20
   fallSpeedAccel: 5
   timeBeforeApplyingFallSpeed: 0.05
-  groundDrag: 4
+  groundDrag: 12
   airDrag: 0.4
