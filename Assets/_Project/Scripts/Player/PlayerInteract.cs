@@ -39,6 +39,7 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingDoor;
+        private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
 
@@ -72,7 +73,7 @@ namespace _Project.Scripts.Player {
             
             size = 0;
 
-            usingDoor = new CountdownTimer(0.15f);
+            usingDoor = new CountdownTimer(timerToUseDoor);
         }
 
         private void OnEnable() {
@@ -213,9 +214,9 @@ namespace _Project.Scripts.Player {
                         var dist = Vector3.Distance(transform.position, results[i].transform.position);
                         var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
 
-                        if (!(facing > closestAngle)) continue;
+                        if (!(facing < closestAngle)) continue;
                         closestAngle = facing;
-                        if (!(dist < closestDist)) continue;
+                        if (dist > closestDist) continue;
                         closestDist = dist;
                         index = i;
                     }
@@ -369,7 +370,7 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingDoor() {
             usingDoor.Start();
-            usingDoor.Reset(1);
+            usingDoor.Reset(timerToUseDoor);
         }
         
         public bool UsingDoor() {

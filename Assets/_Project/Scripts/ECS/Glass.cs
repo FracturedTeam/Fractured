@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace _Project.Scripts.ECS
 {
     public class Glass : MonoBehaviour, IDragHandler {
-        [SerializeField] private FragmentData data;
+        [SerializeField, HideInInspector] private FragmentData data;
         
         public void Bind(FragmentData data) {
             this.data = data;
@@ -47,10 +47,8 @@ namespace _Project.Scripts.ECS
                 Initialize();
             }
         }
-        
-        
 
-        public void Initialize()
+        private void Initialize()
         {
             mainCamera = Camera.main;
 

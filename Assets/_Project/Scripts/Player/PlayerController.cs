@@ -11,7 +11,7 @@ namespace _Project.Scripts.Player {
     
     [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
     public class PlayerController : Singleton<PlayerController>{
-        [SerializeField] private PlayerData data;
+        [SerializeField, HideInInspector] private PlayerData data;
         
         [ContextMenu("Load")]
         public void Load(PlayerData data) {
@@ -75,8 +75,8 @@ namespace _Project.Scripts.Player {
             
             //Define all states transitions
             //Locomotion State
-            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded()));
-            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded()));
+            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded() && !interact.IsCarrying()));
+            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded() && !interact.IsCarrying()));
             
             //Carrying State
             At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));

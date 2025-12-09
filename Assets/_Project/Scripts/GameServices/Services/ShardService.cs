@@ -95,6 +95,7 @@ namespace _Project.Scripts.GameServices.Services {
                     
                     shards.Remove(currentGlass);
                     shards.Insert(0, currentGlass);
+                    shard.transform.SetAsLastSibling();
 
                     return;
                 }
