@@ -47733,7 +47733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Name
-      value: Image (1)
+      value: OptionsBtt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291969285294723151, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: m_text
+      value: Options
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -63010,7 +63014,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Name
-      value: Image (2)
+      value: QuitBtt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291969285294723151, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: m_text
+      value: Quit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -70339,6 +70347,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e539518bd466ea84bbe3dab9aa99a429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  scenesToLoad:
+  - m_SceneAsset: {fileID: 102900000, guid: 041257b0111baf14191be6550b757915, type: 3}
+    m_SceneName: PersistentGameplay
+  - m_SceneAsset: {fileID: 102900000, guid: b15c61a78979fbf47850be717b0280a0, type: 3}
+    m_SceneName: S_Tutorial_Room1
 --- !u!1001 &1060752960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141713,48 +141726,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.data[2].eventID
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1054950854}
     - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadScene
+      value: NewGame
       objectReference: {fileID: 0}
     - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BasicSceneLoader, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: PersistentGameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 1889230817627740080, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
-      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: _Project.Scripts.UI.MenuSceneLoader, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: m_Name
-      value: Image
+      value: PlayBtt
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291969285294723151, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: m_text
+      value: New Game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

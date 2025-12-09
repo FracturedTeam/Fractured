@@ -18,7 +18,7 @@ namespace _Project.Scripts.GameServices {
         public bool levelIsLoading { get; private set; }
 
         private void Start() {
-            var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
+            /*var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             var sceneCount = SceneManager.sceneCount;
 
             for (var i = sceneCount - 1; i > 0; i--) {
@@ -32,7 +32,7 @@ namespace _Project.Scripts.GameServices {
             }
             
             GameInitializer.Instance.EmptyInteractable();
-            GameInitializer.Instance.RepopulateInteractable();
+            GameInitializer.Instance.RepopulateInteractable();*/
         }
 
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
@@ -70,7 +70,7 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
         }
         
-        private async Task UnloadSceneAsync() {
+        public async Task UnloadSceneAsync() {
             var keepScenes = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             
             var scenesToUnload = new List<string>();
@@ -118,6 +118,11 @@ namespace _Project.Scripts.GameServices {
             }
 
             Debug.Log($"Load scene {levelArt.SceneName} Successfully");
+        }
+
+        public void SetSceneToLoad(SceneField[] scenes) {
+            scenesToLoad.Clear();
+            scenesToLoad.AddRange(scenes);
         }
         
         private void UnloadObjects() {
