@@ -31,15 +31,16 @@ namespace _Project.Scripts.GameServices {
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
+            
+            if (deleteSaveOnPlay) {
+                var dataService = new FileDataService(new JsonSerializer());
+                dataService.DeleteAll();
+            }
             #endif
             
             //Populate the glassShardService
             PopulateShardOnStart();
 
-            if (deleteSaveOnPlay) {
-                var dataService = new FileDataService(new JsonSerializer());
-                dataService.DeleteAll();
-            }
         }
 
         private void InitializeGameSystems() {
@@ -105,10 +106,8 @@ namespace _Project.Scripts.GameServices {
         #region ShardService
 
         private void PopulateShardOnStart() {
-            if (!FindAnyObjectByType<EventSystem>()) { //Add event system component if there is none
-                gameObject.AddComponent<EventSystem>();
-                gameObject.AddComponent<InputSystemUIInputModule>();
-            }
+            //gameObject.AddComponent<EventSystem>();
+            //gameObject.AddComponent<InputSystemUIInputModule>();
             
             var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
             var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);

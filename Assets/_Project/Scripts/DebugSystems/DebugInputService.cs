@@ -21,6 +21,7 @@ namespace _Project.Scripts.DebugSystems {
         }
         
         public void Dispose() {
+            inputs.Debug.Disable();
             inputs.Dispose();
         }
     }

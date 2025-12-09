@@ -8,6 +8,7 @@ using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI

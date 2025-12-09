@@ -14,30 +14,24 @@ namespace _Project.Scripts.GameServices {
     public class GameSceneLoaderSystem : Singleton<GameSceneLoaderSystem> {
         private List<SceneField> scenesToLoad = new List<SceneField>();
         [SerializeField] private SceneField[] persistentScenes;
-        
-        public bool levelIsLoading { get; private set; }
+        [SerializeField] private SceneField menuScene;
+        [SerializeField] private SceneField newGameScene;
 
         private void Start() {
-            var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
-            var sceneCount = SceneManager.sceneCount;
-
-            for (var i = sceneCount - 1; i > 0; i--) {
-                var sceneAt = SceneManager.GetSceneAt(i);
-                if(sceneAt.isLoaded) continue;
-                
-                if(!toLoad.Contains(sceneAt.name)) continue;
-                
-                var loading = SceneManager.LoadSceneAsync(sceneAt.name, LoadSceneMode.Additive);
-                Debug.Log($"Loading scene {sceneAt.name}");
-            }
-            
-            GameInitializer.Instance.EmptyInteractable();
-            GameInitializer.Instance.RepopulateInteractable();
+            var load = LoadMenuAsync(menuScene);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
-            levelIsLoading = true;
-            
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (scene.name == "PersistentGameplay") {
+                var unload = UnloadGameplaySceneAsync();
+            }
+        }
+
+        //Load/Unload Non GameplayScene
+        #region Loading Unloading Gameplay Scene
+        
+        public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             GameSaveSystem.Instance.SaveGame();
             
             UnloadObjects();
@@ -64,13 +58,12 @@ namespace _Project.Scripts.GameServices {
             while(PlayerController.Instance.cinemachineBrain.IsBlending)
                 await Task.Yield();
 
-            levelIsLoading = false;
             Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
-            
-            await UnloadSceneAsync();
+
+            await UnloadGameplaySceneAsync();
         }
         
-        private async Task UnloadSceneAsync() {
+        public async Task UnloadGameplaySceneAsync() {
             var keepScenes = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             
             var scenesToUnload = new List<string>();
@@ -84,6 +77,7 @@ namespace _Project.Scripts.GameServices {
                 
                 var sceneName = sceneAt.name;
                 scenesToUnload.Add(sceneName);
+                Debug.Log($"Unload scene {sceneName}");
             }
 
             foreach (var scene in scenesToUnload) {
@@ -94,10 +88,11 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
-            
-            GameInitializer.Instance.RepopulateInteractable();
 
             await Task.Delay(100);
+            
+            GameInitializer.Instance.RepopulateInteractable();
+            await Task.Yield();
             
             //Save System Load data
             GameSaveSystem.Instance.LoadGame();
@@ -118,6 +113,71 @@ namespace _Project.Scripts.GameServices {
             }
 
             Debug.Log($"Load scene {levelArt.SceneName} Successfully");
+        }
+        
+        #endregion
+        
+        //Load/Unload Non GameplayScene
+        #region Loading Unloading Non Gameplay Scene
+        private async Task LoadMenuAsync(SceneField menuScene) {
+            scenesToLoad.Add(menuScene);
+            
+            var loadingMenu = SceneManager.LoadSceneAsync(menuScene, LoadSceneMode.Additive);
+
+            if (loadingMenu is null) {
+                Debug.LogError($"Failed to load menu scene {menuScene.SceneName}, Verify Build Settings Or if it is Referenced");
+                return;
+            }
+            
+            while (loadingMenu is { isDone: false }) {
+                await Task.Yield();
+            }
+        }
+
+        private async Task LoadNewGameAsync(SceneField scene) {
+            scenesToLoad = new List<SceneField>();
+            scenesToLoad.AddRange(persistentScenes);
+            scenesToLoad.Add(scene);
+
+            foreach (var s in scenesToLoad) {
+                var load = SceneManager.LoadSceneAsync(s, LoadSceneMode.Additive);
+                while (!load.isDone) {
+                    await Task.Yield();
+                }
+            }
+        }
+        
+        public async Task UnloadSceneAsync() {
+            var scenesToUnload = new List<string>();
+            var sceneCount = SceneManager.sceneCount;
+            
+            for (var i = sceneCount - 1; i > 0; i--) {
+                var sceneAt = SceneManager.GetSceneAt(i);
+                if(!sceneAt.isLoaded) continue;
+                
+                var sceneName = sceneAt.name;
+                scenesToUnload.Add(sceneName);
+            }
+
+            foreach (var scene in scenesToUnload) {
+                var unload = SceneManager.UnloadSceneAsync(scene);
+                if(unload == null) continue;
+
+                while (!unload.isDone) {
+                    await Task.Delay(100);
+                }
+            }
+        }
+        
+        #endregion
+
+        public void LoadMenu() {
+            var unload = UnloadSceneAsync();
+            var menu = LoadMenuAsync(menuScene);
+        }
+        
+        public void NewGame() {
+            var newGame = LoadNewGameAsync(newGameScene);
         }
         
         private void UnloadObjects() {
