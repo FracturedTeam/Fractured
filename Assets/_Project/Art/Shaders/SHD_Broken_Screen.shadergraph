@@ -38,6 +38,9 @@
         },
         {
             "m_Id": "69ba23c5991f447cb49c9c9917e506a1"
+        },
+        {
+            "m_Id": "c617befbe3514fe8a73cfac02b20baaf"
         }
     ],
     "m_Keywords": [],
@@ -233,6 +236,9 @@
         },
         {
             "m_Id": "511307e67f294fe1930809f4819ff04d"
+        },
+        {
+            "m_Id": "fe4c75b507a44a2fa074455c369a8567"
         }
     ],
     "m_GroupDatas": [
@@ -1059,6 +1065,20 @@
                 },
                 "m_SlotId": 1
             }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "fe4c75b507a44a2fa074455c369a8567"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c05626851e8448048463175fa18f1817"
+                },
+                "m_SlotId": 1
+            }
         }
     ],
     "m_VertexContext": {
@@ -1739,8 +1759,8 @@
     "m_ObjectId": "197c328834f74f3d9436504f00bd803e",
     "m_Title": "Image Deformation",
     "m_Position": {
-        "x": -2426.999755859375,
-        "y": -184.99998474121095
+        "x": -2427.0,
+        "y": -185.00001525878907
     }
 }
 
@@ -6435,6 +6455,39 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "c617befbe3514fe8a73cfac02b20baaf",
+    "m_Guid": {
+        "m_GuidSerialized": "67067f2c-f509-4881-953d-d88248cb76bb"
+    },
+    "m_Name": "MemoryTexture",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "MemoryTexture",
+    "m_DefaultReferenceName": "_MemoryTexture",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"9356d4336a5f0a14eb5a2402fcf56304\",\"type\":3}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "useTexelSize": true,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "c630d86debc04660a3564535df6f0401",
     "m_Group": {
@@ -6615,6 +6668,19 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "cf6ba542f6cc4b008220cc1366fc0914",
+    "m_Id": 0,
+    "m_DisplayName": "MemoryTexture",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "d0d10acef63047cf805c5e7401d4fc55",
     "m_Id": 0,
@@ -6714,8 +6780,8 @@
     "m_ObjectId": "d4f328ee0be545b983b56fcc951362f5",
     "m_Title": "Lighter Edges",
     "m_Position": {
-        "x": -1500.999755859375,
-        "y": 472.9998779296875
+        "x": -1501.0,
+        "y": 473.0
     }
 }
 
@@ -6840,6 +6906,9 @@
         },
         {
             "m_Id": "69ba23c5991f447cb49c9c9917e506a1"
+        },
+        {
+            "m_Id": "c617befbe3514fe8a73cfac02b20baaf"
         }
     ]
 }
@@ -7734,8 +7803,8 @@
     "m_ObjectId": "f8151a2798484d309006c4afc0f71cbc",
     "m_Title": "Fragments Sides",
     "m_Position": {
-        "x": -1328.999755859375,
-        "y": -656.9998779296875
+        "x": -1329.0,
+        "y": -657.0
     }
 }
 
@@ -7898,6 +7967,42 @@
         "e31": 0.0,
         "e32": 0.0,
         "e33": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "fe4c75b507a44a2fa074455c369a8567",
+    "m_Group": {
+        "m_Id": "197c328834f74f3d9436504f00bd803e"
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1933.0001220703125,
+            "y": 253.0000457763672,
+            "width": 166.0,
+            "height": 33.99998474121094
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "cf6ba542f6cc4b008220cc1366fc0914"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "c617befbe3514fe8a73cfac02b20baaf"
     }
 }
 

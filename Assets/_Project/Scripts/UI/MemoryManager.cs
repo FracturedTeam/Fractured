@@ -6,9 +6,10 @@ namespace _Project.Scripts.UI
    {
       private static readonly int ActiveMemory = Animator.StringToHash("ActiveMemory");
       [SerializeField] Animator animator;
-      [SerializeField] ParticleSystemRenderer memory;
+      [SerializeField] Material memoryMat;
+        [SerializeField] Material brokenScreenMat;
 
-      public static MemoryManager instance;
+        public static MemoryManager instance;
 
       private void Awake()
       {
@@ -18,10 +19,13 @@ namespace _Project.Scripts.UI
 
       public void SetMemory(bool isOn, Sprite sprite = null)
       {
+         if (!memoryMat)
+              return;
+
          if(sprite)
          {
-            var texture = TextureFromSprite(sprite);
-            memory.material.mainTexture = texture;
+             memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
+             brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
          }
          animator.SetBool(ActiveMemory, isOn);
       }
