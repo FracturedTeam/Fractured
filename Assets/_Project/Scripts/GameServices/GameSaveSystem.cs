@@ -60,7 +60,7 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
-        public void LoadGame() {
+        public void LoadGame() { //Data are loaded here
             LoadGame(SaveInstance.Instance.gameObject.scene.name);
         }
         

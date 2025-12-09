@@ -37,7 +37,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private int underBlue;
         
         private bool initialized = false;
-        private bool objectOut = false;
+        public bool ObjectOut { get; set; }
         
         public  void Initialize() {
             mainCamera = Camera.main;
@@ -112,10 +112,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             if (!objectInside) return;
-            if (objectOut) return;
+            if (ObjectOut) return;
             
-            interactableInBox.transform.position = transform.position;
-            if (interactableInBox.IsGrabbed()) objectOut = true;
+            interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
+            if (interactableInBox.IsGrabbed()) ObjectOut = true;
         }
 
         private void UpdateShards() {
@@ -169,7 +169,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 baseObject.SetInteract(isUnder);
             }
             
-            if (objectInside && !objectOut)
+            if (objectInside && !ObjectOut)
                 ActivateObjectInside(!isUnder);
         }
         
@@ -183,7 +183,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
-            objectOut = true;
+            ObjectOut = true;
         }
 
         public void ResetObject() {
@@ -194,15 +194,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!objectInside || objectOut) return;
+            if (!objectInside || ObjectOut) return;
             
             if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
             interactableInBox?.gameObject.SetActive(false);
         }
 
-        void SetInteractableInBox(bool revealed) {
+        public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
-            
+
+            Debug.Log("Set object in box");
             interactableInBox?.GetBaseObject().SetInteract(revealed);
             interactableInBox?.GetBaseObject().SetCollider(revealed);
             interactableInBox?.GetBaseObject().SetRenderer(revealed);

@@ -104,8 +104,10 @@ namespace _Project.Scripts.GameServices {
             }
             
             GameInitializer.Instance.RepopulateInteractable();
+
+            await Task.Delay(100);
             
-            //Save System
+            //Save System Load data
             GameSaveSystem.Instance.LoadGame();
         }
 
