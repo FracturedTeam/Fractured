@@ -140,7 +140,7 @@ public class GlassText : MonoBehaviour
         }
         texts[0].text = show.Split('{')[0];
         texts[1].text = middle;
-        texts[2].text = show.Split('}')[1];
+        texts[2].text = show.Contains('}') ? show.Split('}')[1] : "";
         TagPositions = texts[1].transform.position;
     }
 }
