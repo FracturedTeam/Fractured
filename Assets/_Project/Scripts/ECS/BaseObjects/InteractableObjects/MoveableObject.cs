@@ -36,7 +36,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
                 
                 baseObject.GetInteractionType = ObjectType.Moveable;
-                baseObject.GetCompletion = InteractionCompletion.None;
+                baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+                
                 baseObject?.SetInteract(true);
                 
                 if(keyObjectNeeded == null)
@@ -97,7 +98,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void CompleteObject() {
-            
+            if (keyObjectNeeded) {
+                transform.SetParent(originalParent);
+                TweenObjectDrop(keyObjectNeeded.transform);
+                    
+                baseObject.SetInteract(false);
+                baseObject.SetCollider(false);
+                    
+                keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
+            }
         }
         
         public void ResetObject() {
@@ -184,7 +193,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject.SetCollider(false);
                     
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
-                    
+                    baseObject.GetCompletion = InteractionCompletion.Completed;
                     Debug.Log("[MoveableObject] key location");
                 }
                 else {
@@ -266,6 +275,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         public BaseObject GetBaseObject() {
+            if (baseObject is not null) return baseObject;
+            
+            TryGetComponent(out baseObject);
+            baseObject.Initialize();
             return baseObject;
         }
     }

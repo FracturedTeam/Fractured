@@ -44,8 +44,9 @@ namespace _Project.Scripts.Player {
         private Interaction interactionType;
 
         private float interactDuration = 0;
-        private float holdInteractionNeeded = 2;
+        private float holdInteractionNeeded = 0.5f;
         private bool interactionHold = false;
+        private bool hasRemoved = false;
         
         public bool CanInteract {
             get => canInteract;
@@ -95,13 +96,8 @@ namespace _Project.Scripts.Player {
             if (ctx.canceled) 
                 interactionHold = false;
 
-            if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
-                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
-                    Debug.Log("Play Remove");
-                }
-                
-                interactDuration = 0;
+            if (hasRemoved) {
+                hasRemoved = false;
                 return;
             }
             
@@ -187,6 +183,17 @@ namespace _Project.Scripts.Player {
 
             if(interactionHold)
                 interactDuration += Time.deltaTime;
+            
+            if (interactDuration >= holdInteractionNeeded && !HasObject) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
+                    Debug.Log("Play Remove");
+                }
+                
+                interactDuration = 0;
+                return;
+            }
             
             HandleInteraction();
             SetPlayerInteraction();
