@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects {
@@ -19,6 +20,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         
         private float lerpValue;
         private float timer;
+        private bool isActivated;
         private readonly Collider[] results = new Collider[10];
 
         private bool initialized = false;
@@ -48,11 +50,20 @@ namespace _Project.Scripts.ECS.BaseObjects {
             }
             else {
                 var size = Physics.OverlapBoxNonAlloc(pressurePlateTriggerPos.position, pressurePlateSize, results, transform.rotation, interactLayerMask );
+                timer += size >  0 ? deltaTime : -deltaTime;
                 
-                if(size >  0) timer += deltaTime;
-                else timer -= deltaTime;
+                if((size >  0 && !isActivated) || (size <= 0 && isActivated))
+                {
+                    isActivated = !isActivated;
+                    var dia = size > 0 ? baseObject.successDialogue : baseObject.failedDialogue;
+                    if (!dia.oneTime || !dia.alreadyInteracted)
+                    {
+                        HudManager.Instance.SetText(dia.dialogue);
+                        if (size > 0) baseObject.successDialogue.alreadyInteracted = true;
+                        else baseObject.failedDialogue.alreadyInteracted = true;
+                    }
+                }
             }
-            
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
 
             foreach (var obj in movedObjects) {
@@ -60,6 +71,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
             }
             
             lerpValue = timer / timeToMoveObject;
+        }
+
+        public void CompleteObject() {
+            
         }
 
         public void ResetObject() {

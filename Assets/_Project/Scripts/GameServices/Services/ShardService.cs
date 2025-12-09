@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
@@ -16,6 +17,8 @@ namespace _Project.Scripts.GameServices.Services {
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
         public bool PlayerInEditableArea {get; private set;}
+        public bool PlayerInRedEditableArea {get; private set;}
+        public bool PlayerInBlueEditableArea {get; private set;}
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
@@ -27,9 +30,9 @@ namespace _Project.Scripts.GameServices.Services {
             Cursor.lockState = CursorLockMode.Confined; 
         }
 
-        void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
+        private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
             if(interactables.Count == 0) return;
-            
+
             foreach (var interactable in interactables) {
                 interactable.Initialize();
                 if (interactable.GetGlass) {
@@ -48,9 +51,7 @@ namespace _Project.Scripts.GameServices.Services {
             shards.AddRange(_shards);
             glassTexts.AddRange(_texts);
             
-            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable");
-            Debug.Log($"[GlassShardService] Populating {shards.Count} shards");
-            Debug.Log($"[GlassShardService] Populating {glassTexts.Count} texts");
+            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards | Populating {glassTexts.Count} texts");
             
             UpdateInteractableObjects();
         }
@@ -95,6 +96,7 @@ namespace _Project.Scripts.GameServices.Services {
                     
                     shards.Remove(currentGlass);
                     shards.Insert(0, currentGlass);
+                    shard.transform.SetAsLastSibling();
 
                     return;
                 }
@@ -123,6 +125,14 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerInEditableArea = inArea;
         }
         
+        public void SetRedEditableArea(bool inArea) {
+            PlayerInRedEditableArea = inArea;
+        }
+
+        public void SetBlueEditableArea(bool inArea) {
+            PlayerInBlueEditableArea = inArea;
+        }
+
         public void Dispose() {
             shardsInteractable.Clear();
         }

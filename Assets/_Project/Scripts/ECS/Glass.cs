@@ -9,8 +9,21 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
 {
-    public class Glass : MonoBehaviour, IDragHandler
-    {
+    public class Glass : MonoBehaviour, IDragHandler {
+        [SerializeField, HideInInspector] private FragmentData data;
+        
+        public void Bind(FragmentData data) {
+            this.data = data;
+        }
+        
+        public void SaveData() {
+            data.position = transform.position;
+        }
+        
+        public void LoadData() {
+            transform.position = data.position;
+        }
+        
         public ColorEnum GetColor => color2D;
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
@@ -34,10 +47,8 @@ namespace _Project.Scripts.ECS
                 Initialize();
             }
         }
-        
-        
 
-        public void Initialize()
+        private void Initialize()
         {
             mainCamera = Camera.main;
 
@@ -65,9 +76,13 @@ namespace _Project.Scripts.ECS
         public void OnDrag(PointerEventData eventData) {
             if (!canInteract) return;
             if(!isHeld) return;
-            
-            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere)
-                return;
+
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) 
+                    return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea())
+                    return;
+            }
 
             transform.position += (Vector3)eventData.delta;
             transform.position = new Vector2(
@@ -84,15 +99,14 @@ namespace _Project.Scripts.ECS
 
         private void OnEnable()
         {
-            if (!shard) 
-                return;
-            
-            shard.SetActive(true);
+            if (shard) 
+                shard.SetActive(true);
         }
 
         private void OnDisable()
         {
-            shard?.SetActive(false);
+            if(shard)
+                shard?.SetActive(false);
         }
         internal void ChangeHoldingState(bool isOn)
         {

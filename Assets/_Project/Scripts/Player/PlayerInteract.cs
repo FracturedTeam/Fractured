@@ -7,6 +7,7 @@ using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,12 +39,14 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingDoor;
+        private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
 
         private float interactDuration = 0;
-        private float holdInteractionNeeded = 2;
+        private float holdInteractionNeeded = 0.5f;
         private bool interactionHold = false;
+        private bool hasRemoved = false;
         
         public bool CanInteract {
             get => canInteract;
@@ -71,7 +74,7 @@ namespace _Project.Scripts.Player {
             
             size = 0;
 
-            usingDoor = new CountdownTimer(0.5f);
+            usingDoor = new CountdownTimer(timerToUseDoor);
         }
 
         private void OnEnable() {
@@ -93,12 +96,8 @@ namespace _Project.Scripts.Player {
             if (ctx.canceled) 
                 interactionHold = false;
 
-            if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
-                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
-                }
-                
-                interactDuration = 0;
+            if (hasRemoved) {
+                hasRemoved = false;
                 return;
             }
             
@@ -119,7 +118,10 @@ namespace _Project.Scripts.Player {
                 MemoryInteraction();
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) return;
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject)
+                    {
+                        return;
+                    }
                 }
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
@@ -182,6 +184,17 @@ namespace _Project.Scripts.Player {
             if(interactionHold)
                 interactDuration += Time.deltaTime;
             
+            if (interactDuration >= holdInteractionNeeded && !HasObject) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
+                    Debug.Log("Play Remove");
+                }
+                
+                interactDuration = 0;
+                return;
+            }
+            
             HandleInteraction();
             SetPlayerInteraction();
         }
@@ -208,9 +221,9 @@ namespace _Project.Scripts.Player {
                         var dist = Vector3.Distance(transform.position, results[i].transform.position);
                         var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
 
-                        if (!(facing > closestAngle)) continue;
+                        if (!(facing < closestAngle)) continue;
                         closestAngle = facing;
-                        if (!(dist < closestDist)) continue;
+                        if (dist > closestDist) continue;
                         closestDist = dist;
                         index = i;
                     }
@@ -290,8 +303,6 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
-                    Debug.Log($"[PlayerInteract] Potential interaction set to type None : {potentialInteraction.name}");
-                    return;
                 default:
                     return;
             }
@@ -366,7 +377,7 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingDoor() {
             usingDoor.Start();
-            usingDoor.Reset(1);
+            usingDoor.Reset(timerToUseDoor);
         }
         
         public bool UsingDoor() {

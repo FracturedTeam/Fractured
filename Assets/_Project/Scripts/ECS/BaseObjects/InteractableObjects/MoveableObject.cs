@@ -1,7 +1,9 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Transform originalParent;
         
         private Vector3 boundExtent;
+        private Vector3 boundCenter;
         
         [Header("Key Settings")]
         [Tooltip("The object location where he must be put to resolve the puzzle")]
@@ -33,7 +36,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
                 
                 baseObject.GetInteractionType = ObjectType.Moveable;
-                baseObject.GetCompletion = InteractionCompletion.None;
+                baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+                
                 baseObject?.SetInteract(true);
                 
                 if(keyObjectNeeded == null)
@@ -54,6 +58,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             originalParent = transform.parent;
             boundExtent = baseObject.GetCollider().bounds.extents;
+            boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
             
             canBeGrab = true;
         }
@@ -92,6 +97,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             ResetObject();
         }
 
+        public void CompleteObject() {
+            if (keyObjectNeeded) {
+                transform.SetParent(originalParent);
+                TweenObjectDrop(keyObjectNeeded.transform);
+                    
+                baseObject.SetInteract(false);
+                baseObject.SetCollider(false);
+                    
+                keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
+            }
+        }
+        
         public void ResetObject() {
             tween?.Pause();
             tween?.Kill();
@@ -118,10 +135,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             
+            
             isGrabbed = true;
             
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
+            
+            if (baseObject.successDialogue is not{ oneTime: true, alreadyInteracted: true })
+            {
+                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                baseObject.successDialogue.alreadyInteracted = true;
+            }
             
             Debug.Log("[MoveableObject] Grab object");
         }
@@ -129,7 +153,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnDrop(IInteractable other) {
             if (other == null) {
                 
-                if(ObstructedSpace()) return;
+                if(ObstructedSpace())
+                {
+                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
 
                 var pos = GetGroundPos();
                 
@@ -138,6 +170,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
+                
+                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
+                {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                }
                 
                 Debug.Log("[MoveableObject] Drop on ground");
             }
@@ -155,11 +193,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject.SetCollider(false);
                     
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
-                    
+                    baseObject.GetCompletion = InteractionCompletion.Completed;
                     Debug.Log("[MoveableObject] key location");
                 }
                 else {
                     Debug.Log("[MoveableObject] key is not for this object");
+                     
+                    if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+                        return;
+                    
+                    HudManager.Instance.SetText( other.GetBaseObject().failedDialogue.dialogue);
+                    other.GetBaseObject().failedDialogue.alreadyInteracted = true;
                     
                     return;
                 }
@@ -197,6 +241,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Physics.Raycast(playerPos, dir,  out var hit, 2f);
             if (hit.collider) {
                 Debug.Log("[MoveableObject] Something in the way");
+                
                 return true;
             }
             return false;
@@ -206,10 +251,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var playerPos = PlayerController.Instance.transform.position;
             var dir = PlayerController.Instance.movement.previousMoveDir;
 
-            Physics.Raycast(playerPos, Vector3.down, out var groundLevel, 10, LayerMask.NameToLayer("Walkable"));
+            var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
+            var mask = ~(1 << ignoreLayer);
+            
+            Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
                 
             var pos = playerPos + dir.normalized * (boundExtent.x * 3);
-            pos.y = groundLevel.point.y + boundExtent.y;
+            pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
             
             return pos;
         }
@@ -227,6 +275,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         public BaseObject GetBaseObject() {
+            if (baseObject is not null) return baseObject;
+            
+            TryGetComponent(out baseObject);
+            baseObject.Initialize();
             return baseObject;
         }
     }

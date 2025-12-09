@@ -7,13 +7,15 @@ namespace _Project.Scripts.ScriptableObjects
     {
         [TextArea(15,20)]
         public string dialogue;
-        
+
+        public DialogueScriptableObject next;
+
         public string variableName;
         public string basic;
         public string red;
         public string blue;
         public string both;
-        
+
         public int letters;
         public float time;
     }

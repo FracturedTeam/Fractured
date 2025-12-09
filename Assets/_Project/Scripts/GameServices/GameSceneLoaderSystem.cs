@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
-using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,7 +15,7 @@ namespace _Project.Scripts.GameServices {
         private List<SceneField> scenesToLoad = new List<SceneField>();
         [SerializeField] private SceneField[] persistentScenes;
         
-        public bool LoadingLevel { get; private set; }
+        public bool levelIsLoading { get; private set; }
 
         private void Start() {
             var toLoad = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
@@ -37,30 +36,24 @@ namespace _Project.Scripts.GameServices {
         }
 
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
-            LoadingLevel = true;
+            levelIsLoading = true;
+            
+            GameSaveSystem.Instance.SaveGame();
+            
+            UnloadObjects();
             
             scenesToLoad.Clear();
             scenesToLoad.AddRange(persistentScenes);
             scenesToLoad.Add(sceneSettings.levelDesign);
-            scenesToLoad.Add(sceneSettings.levelArt);
-
-            GameInitializer.Instance.EmptyInteractable();
-            GameInitializer.Instance.EmptyShards();
             
             var loadingLevel = SceneManager.LoadSceneAsync(sceneSettings.levelDesign, LoadSceneMode.Additive);
-            var loadingArt = SceneManager.LoadSceneAsync(sceneSettings.levelArt, LoadSceneMode.Additive);
 
-            if (loadingLevel == null) {
+            if (loadingLevel is null) {
                 Debug.LogError($"Failed to load LD scene {sceneSettings.levelDesign.SceneName}, Verify Build Settings");
                 return;
             }
             
-            if (loadingArt == null) {
-                Debug.LogError($"Failed to load Art scene {sceneSettings.levelArt.SceneName}, Verify Build Settings");
-            }
-            
-            
-            while (!loadingLevel.isDone && loadingArt is { isDone: false }) {
+            while (!loadingLevel.isDone) {
                 await Task.Delay(100);
             }
             
@@ -69,14 +62,14 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.ResetCameras();
             
             while(PlayerController.Instance.cinemachineBrain.IsBlending)
-                await Task.Delay(100);
+                await Task.Yield();
 
-            await Task.Delay(500);
+            levelIsLoading = false;
+            Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
             
-            Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName}");
             await UnloadSceneAsync();
         }
-
+        
         private async Task UnloadSceneAsync() {
             var keepScenes = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             
@@ -101,19 +94,41 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
-
-            GameInitializer.Instance.RepopulateInteractable();
             
-            //await Ressources.UnloadUnusedAssets();
-            //Une fois toutes les scènes décharger
-            //Set up les objets etc.
+            GameInitializer.Instance.RepopulateInteractable();
+
+            await Task.Delay(100);
+            
+            //Save System Load data
+            GameSaveSystem.Instance.LoadGame();
+        }
+
+        public async Task LoadLevelArtAsync(SceneField levelArt) {
+            scenesToLoad.Add(levelArt);
+            
+            var loadingArt = SceneManager.LoadSceneAsync(levelArt, LoadSceneMode.Additive);
+
+            if (loadingArt is null) {
+                Debug.LogError($"Failed to load Art scene {levelArt.SceneName}, Verify Build Settings Or if it is Referenced");
+                return;
+            }
+            
+            while (loadingArt is { isDone: false }) {
+                await Task.Delay(100);
+            }
+
+            Debug.Log($"Load scene {levelArt.SceneName} Successfully");
+        }
+        
+        private void UnloadObjects() {
+            GameInitializer.Instance.EmptyInteractable();
+            GameInitializer.Instance.EmptyShards();
         }
     }
-
+    
     [Serializable]
     public class SceneSettings {
         public SceneField levelDesign;
-        public SceneField levelArt;
         public Vector3 playerPosition;
         public Direction direction;
     }
