@@ -60,7 +60,6 @@ public class GlassText : MonoBehaviour
         underBlue = 0;
         
         SetText();
-        print(TagPositions);
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
