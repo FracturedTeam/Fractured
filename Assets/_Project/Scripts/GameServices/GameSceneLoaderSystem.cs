@@ -16,15 +16,22 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private SceneField[] persistentScenes;
         [SerializeField] private SceneField menuScene;
         [SerializeField] private SceneField newGameScene;
-        public bool levelIsLoading { get; private set; }
 
         private void Start() {
             var load = LoadMenuAsync(menuScene);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
-            levelIsLoading = true;
-            
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (scene.name == "PersistentGameplay") {
+                var unload = UnloadGameplaySceneAsync();
+            }
+        }
+
+        //Load/Unload Non GameplayScene
+        #region Loading Unloading Gameplay Scene
+        
+        public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             GameSaveSystem.Instance.SaveGame();
             
             UnloadObjects();
@@ -51,11 +58,12 @@ namespace _Project.Scripts.GameServices {
             while(PlayerController.Instance.cinemachineBrain.IsBlending)
                 await Task.Yield();
 
-            levelIsLoading = false;
             Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
+
+            await UnloadGameplaySceneAsync();
         }
         
-        public async Task UnloadSceneAsync() {
+        public async Task UnloadGameplaySceneAsync() {
             var keepScenes = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             
             var scenesToUnload = new List<string>();
@@ -105,6 +113,10 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"Load scene {levelArt.SceneName} Successfully");
         }
         
+        #endregion
+        
+        //Load/Unload Non GameplayScene
+        #region Loading Unloading Non Gameplay Scene
         private async Task LoadMenuAsync(SceneField menuScene) {
             scenesToLoad.Add(menuScene);
             
@@ -132,6 +144,30 @@ namespace _Project.Scripts.GameServices {
                 }
             }
         }
+        
+        public async Task UnloadSceneAsync() {
+            var scenesToUnload = new List<string>();
+            var sceneCount = SceneManager.sceneCount;
+            
+            for (var i = sceneCount - 1; i > 0; i--) {
+                var sceneAt = SceneManager.GetSceneAt(i);
+                if(!sceneAt.isLoaded) continue;
+                
+                var sceneName = sceneAt.name;
+                scenesToUnload.Add(sceneName);
+            }
+
+            foreach (var scene in scenesToUnload) {
+                var unload = SceneManager.UnloadSceneAsync(scene);
+                if(unload == null) continue;
+
+                while (!unload.isDone) {
+                    await Task.Delay(100);
+                }
+            }
+        }
+        
+        #endregion
 
         public void LoadMenu() {
             var unload = UnloadSceneAsync();
@@ -140,13 +176,6 @@ namespace _Project.Scripts.GameServices {
         
         public void NewGame() {
             var newGame = LoadNewGameAsync(newGameScene);
-        }
-        
-        public void SetSceneToLoad(SceneField[] scenes) {
-            scenesToLoad.Clear();
-            scenesToLoad.AddRange(scenes);
-
-            var unload = UnloadSceneAsync();
         }
         
         private void UnloadObjects() {

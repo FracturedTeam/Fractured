@@ -18,7 +18,7 @@ namespace _Project.Scripts.GameServices {
             
             roomCamera.Priority = 1;
             GameInitializer.Instance.AddShards(glassShards);
-            var unload = GameSceneLoaderSystem.Instance.UnloadSceneAsync();
+            //var unload = GameSceneLoaderSystem.Instance.UnloadSceneAsync();
         }
         
     }

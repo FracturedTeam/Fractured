@@ -7,17 +7,23 @@ using UnityEngine;
 namespace _Project.Scripts.Systems.Save {
     public class FileDataService : IDataService {
         private ISerializer serializer;
-        string dataPath;
-        string fileExtension;
+        private string dataPath;
+        private string saveFolder;
+        private string fileExtension;
 
         public FileDataService(ISerializer serializer) {
-            this.dataPath = Application.persistentDataPath;
-            this.fileExtension = "json";
+            dataPath = Application.persistentDataPath;
+            saveFolder = Path.Combine(dataPath, "Saves");
+            fileExtension = "json";
             this.serializer = serializer;
+
+            if (!Directory.Exists(saveFolder)) {
+                Directory.CreateDirectory(saveFolder);
+            }
         }
 
         private string GetPathToFile(string fileName) {
-            return Path.Combine(dataPath, string.Concat(fileName, ".", fileExtension));
+            return Path.Combine(saveFolder, string.Concat(fileName, ".", fileExtension));
         }
         
         public void Save(SaveFile data, bool overwrite = true) {
@@ -48,13 +54,14 @@ namespace _Project.Scripts.Systems.Save {
         }
 
         public void DeleteAll() {
-            foreach (var filePath in Directory.GetFiles(dataPath)) {
+            foreach (var filePath in Directory.GetFiles(saveFolder)) {
+                Debug.Log(filePath);
                 File.Delete(filePath);
             }
         }
 
         public IEnumerable<string> ListSaves() {
-            foreach (var path in Directory.EnumerateFiles(dataPath)) {
+            foreach (var path in Directory.EnumerateFiles(saveFolder)) {
                 if(Path.GetExtension(path) == fileExtension)
                     yield return Path.GetFileNameWithoutExtension(path);
             }

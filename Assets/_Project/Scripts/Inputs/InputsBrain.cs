@@ -27,6 +27,8 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.Move.canceled -= PlayerMove;
             inputs.Player.Interact.performed -= Interact;
             inputs.Player.Interact.canceled -= Interact;
+            
+            inputs.Disable();
         }
 
         private void PlayerMove(InputAction.CallbackContext context) {

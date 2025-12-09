@@ -12,7 +12,7 @@ namespace _Project.Scripts.UI
         [SerializeField] Transform creditsScreenCameraTransform;
 
         [Range(0, 1), SerializeField] private float speed;
-        private Camera mainCamera;
+        [SerializeField] private Camera mainCamera;
         private Transform target;
         private Vector3 lastPosition;
         private Quaternion lastRotation;
@@ -22,7 +22,7 @@ namespace _Project.Scripts.UI
 
         private void Awake()
         {
-            mainCamera = Camera.main;
+            //mainCamera = Camera.main;
             
             if(Instance == null) Instance =  this;
             else Destroy(this);

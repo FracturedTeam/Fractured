@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -13,6 +14,9 @@ namespace _Project.Scripts.UI
         List<TMP_Text> texts = new ();
         [SerializeField] private float openingTime = 2;
         [SerializeField] private float closingTime = 1;
+
+        private Tweener textTween;
+        private Tweener imgTween;
         private void Awake()
         {
             foreach (Transform child in transform)
@@ -24,11 +28,11 @@ namespace _Project.Scripts.UI
             }
             foreach (var image in  images)
             {
-                image.DOFade(0, 0);
+                imgTween = image.DOFade(0, 0);
             }
             foreach (var text in  texts)
             {
-                text.DOFade(0, 0);
+                textTween = text.DOFade(0, 0);
             }
             gameObject.SetActive(false);
         }
@@ -37,11 +41,11 @@ namespace _Project.Scripts.UI
         {
             foreach (var image in  images)
             {
-                image.DOFade(1, openingTime);
+                imgTween = image.DOFade(1, openingTime);
             }
             foreach (var text in  texts)
             {
-                text.DOFade(1, openingTime);
+                textTween = text.DOFade(1, openingTime);
             }
         }
 
@@ -49,15 +53,29 @@ namespace _Project.Scripts.UI
         {
             foreach (var image in  images)
             {
-                image.DOFade(0, closingTime);
+               imgTween = image.DOFade(0, closingTime);
             }
             foreach (var text in  texts)
             {
-                text.DOFade(0, closingTime);
+               textTween = text.DOFade(0, closingTime);
             }
             Invoke(nameof(Closed), closingTime);
         }
 
         private void Closed() => gameObject.SetActive(false);
+
+        private void OnDisable() {
+            imgTween.Kill();
+            textTween.Kill();
+            imgTween = null;
+            textTween = null;
+        }
+
+        private void OnDestroy() {
+            imgTween.Kill();
+            textTween.Kill();
+            imgTween = null;
+            textTween = null;
+        }
     }
 }
