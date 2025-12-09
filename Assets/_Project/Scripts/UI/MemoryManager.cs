@@ -18,8 +18,11 @@ namespace _Project.Scripts.UI
 
       public void SetMemory(bool isOn, Sprite sprite = null)
       {
-         var texture = TextureFromSprite(sprite);
-         memory.material.mainTexture = texture;
+         if(sprite)
+         {
+            var texture = TextureFromSprite(sprite);
+            memory.material.mainTexture = texture;
+         }
          animator.SetBool(ActiveMemory, isOn);
       }
 

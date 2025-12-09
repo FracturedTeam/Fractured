@@ -109,7 +109,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = null
             });
             */
-            MemoryManager.instance.SetMemory(false,  memorySprite);
+            MemoryManager.instance.SetMemory(false);
             Debug.Log($"[MemoryInteractable] Leaving memory");
         }
         
