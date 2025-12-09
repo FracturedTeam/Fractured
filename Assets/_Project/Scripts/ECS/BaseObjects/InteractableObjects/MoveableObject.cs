@@ -266,6 +266,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         public BaseObject GetBaseObject() {
+            if (baseObject is not null) return baseObject;
+            
+            TryGetComponent(out baseObject);
+            baseObject.Initialize();
             return baseObject;
         }
     }
