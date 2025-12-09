@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Scripts.GameServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,6 +43,10 @@ public class PausePanel : MonoBehaviour
     {
         foreach (var panel in panels)
             panel.SetActive(false);
+    }
+
+    public void LoadMenu() {
+        GameSceneLoaderSystem.Instance.LoadMenu();
     }
         
 }

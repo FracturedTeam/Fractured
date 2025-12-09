@@ -53,8 +53,6 @@ namespace _Project.Scripts.GameServices {
 
             levelIsLoading = false;
             Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
-            
-            //await UnloadSceneAsync();
         }
         
         public async Task UnloadSceneAsync() {
@@ -107,7 +105,7 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"Load scene {levelArt.SceneName} Successfully");
         }
         
-        public async Task LoadMenuAsync(SceneField menuScene) {
+        private async Task LoadMenuAsync(SceneField menuScene) {
             scenesToLoad.Add(menuScene);
             
             var loadingMenu = SceneManager.LoadSceneAsync(menuScene, LoadSceneMode.Additive);
@@ -120,8 +118,6 @@ namespace _Project.Scripts.GameServices {
             while (loadingMenu is { isDone: false }) {
                 await Task.Yield();
             }
-
-            Debug.Log($"Load scene {menuScene.SceneName} Successfully");
         }
 
         private async Task LoadNewGameAsync(SceneField scene) {
@@ -135,10 +131,13 @@ namespace _Project.Scripts.GameServices {
                     await Task.Yield();
                 }
             }
-            
-            //await UnloadSceneAsync();
         }
 
+        public void LoadMenu() {
+            var unload = UnloadSceneAsync();
+            var menu = LoadMenuAsync(menuScene);
+        }
+        
         public void NewGame() {
             var newGame = LoadNewGameAsync(newGameScene);
         }
