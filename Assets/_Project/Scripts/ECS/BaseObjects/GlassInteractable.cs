@@ -10,8 +10,7 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     [RequireComponent(typeof(BaseObject))]
-    public class GlassInteractable : MonoBehaviour
-    {
+    public class GlassInteractable : MonoBehaviour {
         private float GetRadius => radius2D;
         
         private BaseObject baseObject;
@@ -84,7 +83,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectInside) {
                 if (interactableInBox != null) {
-                    interactableInBox.gameObject.SetActive(false);
+                    SetInteractableInBox(false);
+                    
                     interactableInBox.transform.position = transform.position;
                 }
                 else
@@ -92,15 +92,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             BoundingBox = new Vector3[4];
-            for (int i = 0; i < BoundingBox.Length; i++)
-            {
+            for (int i = 0; i < BoundingBox.Length; i++) {
                 BoundingBox[i] = new Vector3(0, 0, 0);
             }
             SetUp();
-        }
-
-        void OnDisable() {
-            shardsOnTop.onUpdate -= UpdateShards;
         }
 
         internal void OnInteract(bool isUnder, Glass shard) {
@@ -116,9 +111,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
-
             if (!objectInside) return;
             if (objectOut) return;
+            
             interactableInBox.transform.position = transform.position;
             if (interactableInBox.IsGrabbed()) objectOut = true;
         }
@@ -179,12 +174,12 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void ActivateObjectInside(bool isUnder) {
-            interactableInBox?.gameObject.SetActive(isUnder);
+            SetInteractableInBox(isUnder);
 
             if(!selfMoveable) return;
             if (!selfMoveable.IsGrabbed()) return;
             
-            if(!interactableInBox.gameObject.activeInHierarchy) return;
+            if(!InteractableInBoxActive()) return;
             
             selfMoveable.OnInteract(ObjectInteraction.Drop);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
@@ -205,6 +200,20 @@ namespace _Project.Scripts.ECS.BaseObjects
             interactableInBox?.gameObject.SetActive(false);
         }
 
+        void SetInteractableInBox(bool revealed) {
+            if(interactableInBox == null) return;
+            
+            interactableInBox?.GetBaseObject().SetInteract(revealed);
+            interactableInBox?.GetBaseObject().SetCollider(revealed);
+            interactableInBox?.GetBaseObject().SetRenderer(revealed);
+        }
+
+        bool InteractableInBoxActive() {
+            return interactableInBox.GetBaseObject().GetCollider().enabled &&
+                   interactableInBox.GetBaseObject().CanBeInteractedWith() &&
+                   interactableInBox.GetBaseObject().GetRendered().enabled;
+        }
+        
         public bool UnderGlass() {
             return objectColor switch {
                 ColorEnum.Red => underRed != 0 && underBlue < 1,
@@ -225,16 +234,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!mainCamera)
                 return;
             
-            foreach (var pos in BoundingBox)
-            {
+            foreach (var pos in BoundingBox) {
                 Gizmos.DrawSphere(pos, 10);
             }
             
         }
 
         ///Auto Setup the collision
-        private void SetUp()
-        {
+        private void SetUp() {
             var points = GetComponent<MeshFilter>().sharedMesh.vertices;
             HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
@@ -242,8 +249,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             Vector3 pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);
 
-            foreach (var point in pointsHashSet)
-            {
+            foreach (var point in pointsHashSet) {
                 var current =  transform.TransformPoint(point);
                 current = mainCamera.WorldToScreenPoint(current);
                 

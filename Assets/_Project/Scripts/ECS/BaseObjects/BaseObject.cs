@@ -19,7 +19,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Load() {
             transform.position = data.position;
             GetCompletion = data.completion;
-            
+            Debug.Log($"[BaseObject] {nameof(BaseObject)} {data.position}");
             if (GetCompletion is InteractionCompletion.Completed) {
                 CompleteObject();
             }
@@ -52,19 +52,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         private bool initialized = false;
         private bool canBeInteractedWith;
 
-        private CountdownTimer glassInitializationDelay = new CountdownTimer(0.1f);
-
         private void Awake() {
             Initialize();
         }
 
         public void Initialize() {
             if(!initialized) {
-                if (TryGetComponent(typeof(GlassInteractable), out var g)) {
+                if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
-                    glassInitializationDelay.Start();
-                    glassInitializationDelay.OnTimerStop += GetGlassInteract.Initialize;
-                }
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -77,15 +72,25 @@ namespace _Project.Scripts.ECS.BaseObjects
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
+            initialized = true;
         
             GetInteract?.Initialize();
-            
-            initialized = true;
+            GetGlassInteract?.Initialize();
         }
         
+        //Collider[] inObjects = new Collider[4];
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
+            
+            /*if (GetCollider() && GetInteractionType is ObjectType.Moveable) {
+                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents * 2, inObjects, transform.rotation, gameObject.layer);
+                
+                if (size > 0) {
+                    var dir = (inObjects[0].transform.position - transform.position).normalized;
+                    transform.position += new Vector3(dir.x, 0, dir.z) * 3;
+                }
+            }*/
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
@@ -120,6 +125,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool CanBeInteractedWith() {
             return canBeInteractedWith;
+        }
+
+        public MeshRenderer GetRendered() {
+            return meshRenderer;
         }
     }
 
