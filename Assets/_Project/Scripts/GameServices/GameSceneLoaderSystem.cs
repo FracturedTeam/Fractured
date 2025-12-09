@@ -38,10 +38,7 @@ namespace _Project.Scripts.GameServices {
         public async Task LoadSceneAsync(SceneSettings sceneSettings) { //Handle ce qu'il faut pour déplacer le joueur etc.
             levelIsLoading = true;
             
-            //Save System
             GameSaveSystem.Instance.SaveGame();
-            
-            Debug.Log("Passed Save");
             
             UnloadObjects();
             
@@ -70,7 +67,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.ResetCameras();
             
             while(PlayerController.Instance.cinemachineBrain.IsBlending)
-                await Task.Delay(100);
+                await Task.Yield();
 
             levelIsLoading = false;
             Debug.Log($"Load scene {sceneSettings.levelDesign.SceneName} Successfully");
@@ -104,8 +101,10 @@ namespace _Project.Scripts.GameServices {
             }
             
             GameInitializer.Instance.RepopulateInteractable();
+
+            await Task.Delay(100);
             
-            //Save System
+            //Save System Load data
             GameSaveSystem.Instance.LoadGame();
         }
 

@@ -45,13 +45,13 @@ namespace _Project.Scripts.GameServices {
                 if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
                     saveFile.SceneDatas[i] = gameData;
                     foundExisting = true;
-                    Debug.Log($"[SaveSystem] Has found existing Scene");
+                    Debug.Log($"[SaveSystem] Has found existing Scene Save");
                     break;
                 }
             }
 
             if (!foundExisting) {
-                Debug.Log($"[SaveSystem] Has not found existing Scene, Creating new one !");
+                Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
                 saveFile.SceneDatas.Add(gameData);
             }
             
@@ -60,12 +60,12 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
-        public void LoadGame() {
+        public void LoadGame() { //Data are loaded here
             LoadGame(SaveInstance.Instance.gameObject.scene.name);
         }
         
         public void LoadGame(string gameName) {
-            Debug.Log($"Loading save {gameName} from saveFile {saveFile.SaveName}");
+            Debug.Log($"Loading Scene Save {gameName} from saveFile {saveFile.SaveName}");
             
             saveFile = dataService.Load(saveFile.SaveName);
             
