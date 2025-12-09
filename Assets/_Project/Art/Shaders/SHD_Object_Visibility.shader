@@ -6,6 +6,7 @@ Shader "Custom/SHD_Object_Visibility"
 	{
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[IntRange] _StencilID("Stencil ID", Range(0,255)) = 0
+		[ToggleUI] _Visible("Visible", Float) = 1.0
 		_Tiling( "Tiling", Vector ) = ( 1, 1, 0, 0 )
 		_BaseColor( "BaseColor", 2D ) = "white" {}
 		_Normal( "Normal", 2D ) = "white" {}
@@ -334,6 +335,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -610,7 +612,7 @@ Shader "Custom/SHD_Object_Visibility"
 				float Smoothness = ( 1.0 - saturate( ( tex2DNode16.g * _RoughnessMultiplier ) ) );
 				float Occlusion = saturate( tex2DNode16.r );
 				float3 Emission = 0;
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -945,6 +947,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -1141,7 +1144,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -1536,6 +1539,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -1742,7 +1746,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				float3 BaseColor = lerpResult44;
 				float3 Emission = 0;
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( _ALPHATEST_ON )
@@ -1834,6 +1838,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2025,7 +2030,7 @@ Shader "Custom/SHD_Object_Visibility"
 				
 
 				float3 BaseColor = lerpResult44;
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 
 				half4 color = half4(BaseColor, Alpha );
@@ -2134,6 +2139,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2349,7 +2355,7 @@ Shader "Custom/SHD_Object_Visibility"
 				
 
 				float3 Normal = UnpackNormalScale( tex2D( _Normal, texCoord27 ), 1.0f );
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -2539,6 +2545,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2808,7 +2815,7 @@ Shader "Custom/SHD_Object_Visibility"
 				float Smoothness = ( 1.0 - saturate( ( tex2DNode16.g * _RoughnessMultiplier ) ) );
 				float Occlusion = saturate( tex2DNode16.r );
 				float3 Emission = 0;
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -3015,6 +3022,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3195,7 +3203,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				surfaceDescription.Alpha = 1;
+				surfaceDescription.Alpha = _Visible;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -3296,6 +3304,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3476,7 +3485,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				surfaceDescription.Alpha = 1;
+				surfaceDescription.Alpha = _Visible;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -3586,6 +3595,7 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
+			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3698,7 +3708,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				float Alpha = 1;
+				float Alpha = _Visible;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )

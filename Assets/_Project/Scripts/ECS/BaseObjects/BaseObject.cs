@@ -17,12 +17,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [ContextMenu("Load")]
         public void Load() {
+            if (GetGlass) {
+                GetGlassInteract.ObjectOut = data.objectOut;
+                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
+            }
+            
             transform.position = data.position;
             GetCompletion = data.completion;
-            Debug.Log($"[BaseObject] {nameof(BaseObject)} {data.position}");
-            if (GetCompletion is InteractionCompletion.Completed) {
-                CompleteObject();
-            }
+            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
             
             SetInteract(data.canInteract);
         }
@@ -32,6 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.position = transform.position;
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
+            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
         #endregion
         
@@ -138,6 +141,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public Vector3 position;
         public InteractionCompletion completion;
         public bool canInteract;
+        public bool objectOut;
     }
 }
 

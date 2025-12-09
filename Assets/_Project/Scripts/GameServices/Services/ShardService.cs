@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
@@ -29,9 +30,9 @@ namespace _Project.Scripts.GameServices.Services {
             Cursor.lockState = CursorLockMode.Confined; 
         }
 
-        void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
+        private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
             if(interactables.Count == 0) return;
-            
+
             foreach (var interactable in interactables) {
                 interactable.Initialize();
                 if (interactable.GetGlass) {
