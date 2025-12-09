@@ -89,9 +89,12 @@ namespace _Project.Scripts.GameServices {
                 }
             }
 
-            await Task.Delay(10);
+            await Task.Delay(100);
             
             GameInitializer.Instance.RepopulateInteractable();
+            await Task.Yield();
+            
+            //Save System Load data
             GameSaveSystem.Instance.LoadGame();
         }
 
