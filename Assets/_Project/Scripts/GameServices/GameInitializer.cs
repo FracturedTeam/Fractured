@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
@@ -19,6 +22,7 @@ namespace _Project.Scripts.GameServices {
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool InitializeDebugger = true;
+        public bool deleteSaveOnPlay = true;
         #endif
         
         private new void Awake() {
@@ -30,6 +34,11 @@ namespace _Project.Scripts.GameServices {
             
             //Populate the glassShardService
             PopulateShardOnStart();
+
+            if (deleteSaveOnPlay) {
+                var dataService = new FileDataService(new JsonSerializer());
+                dataService.DeleteAll();
+            }
         }
 
         private void InitializeGameSystems() {
@@ -164,12 +173,33 @@ namespace _Project.Scripts.GameServices {
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);
 
-        public void SetEditableArea(bool inArea) {
-            shardService.SetEditableArea(inArea);
+        public void SetEditableArea(bool inArea, ColorEnum color) {
+            switch (color) {
+                case ColorEnum.Blue:
+                    shardService.SetBlueEditableArea(inArea);
+                    break;
+                case ColorEnum.Red:
+                    shardService.SetRedEditableArea(inArea);
+                    break;
+                case ColorEnum.Both:
+                    shardService.SetEditableArea(inArea);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
+            }
+            
         }
         
         public bool InEditableArea() {
             return shardService.PlayerInEditableArea;
+        }
+        
+        public bool InBlueEditableArea() {
+            return shardService.PlayerInBlueEditableArea;
+        }
+        
+        public bool InRedEditableArea() {
+            return shardService.PlayerInRedEditableArea;
         }
 
         #endregion

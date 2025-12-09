@@ -2,12 +2,14 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
-        [SerializeField] private ObjectData data;
+        #region Save
+        [SerializeField, HideInInspector] private ObjectData data;
         
         public void Bind(ObjectData data) {
             this.data = data;
@@ -17,7 +19,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Load() {
             transform.position = data.position;
             GetCompletion = data.completion;
-            
+            Debug.Log($"[BaseObject] {nameof(BaseObject)} {data.position}");
             if (GetCompletion is InteractionCompletion.Completed) {
                 CompleteObject();
             }
@@ -31,6 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
         }
+        #endregion
         
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
@@ -55,7 +58,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void Initialize() {
             if(!initialized) {
-                if(TryGetComponent(typeof(GlassInteractable), out var g))
+                if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
@@ -69,15 +72,25 @@ namespace _Project.Scripts.ECS.BaseObjects
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
+            initialized = true;
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
-            initialized = true;
         }
-
+        
+        //Collider[] inObjects = new Collider[4];
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
+            
+            /*if (GetCollider() && GetInteractionType is ObjectType.Moveable) {
+                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents * 2, inObjects, transform.rotation, gameObject.layer);
+                
+                if (size > 0) {
+                    var dir = (inObjects[0].transform.position - transform.position).normalized;
+                    transform.position += new Vector3(dir.x, 0, dir.z) * 3;
+                }
+            }*/
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
@@ -112,6 +125,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool CanBeInteractedWith() {
             return canBeInteractedWith;
+        }
+
+        public MeshRenderer GetRendered() {
+            return meshRenderer;
         }
     }
 

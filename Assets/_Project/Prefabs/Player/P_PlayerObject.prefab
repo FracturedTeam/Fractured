@@ -62,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 4831234619962423155}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: -6.328}
+  m_LocalPosition: {x: 0, y: 2.25, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -133,22 +133,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08bd1b2922c819d44b8cd04675d9092e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  <Id>k__BackingField:
-    Part1: 3488783512
-    Part2: 1149590232
-    Part3: 992676769
-    Part4: 1869006490
   data:
-    <Id>k__BackingField:
-      Part1: 0
-      Part2: 0
-      Part3: 0
-      Part4: 0
     position: {x: 0, y: 0, z: 0}
   cinemachineBrain: {fileID: 551608302285027002}
   movement: {fileID: 0}
   interact: {fileID: 0}
   animator: {fileID: 7540031476292566157}
+  grabObjectClip: {fileID: 0}
+  dropObjectClip: {fileID: 0}
 --- !u!114 &4559356953594915415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.PlayerInteract
   interactCenterZone: {fileID: 1435820487394736344}
-  interactZoneSize: {x: 1, y: 2, z: 1}
+  interactZoneSize: {x: 1, y: 3.25, z: 1}
   interactLayerMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -559,15 +551,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.0075
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.0075
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.0075
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalPosition.x
@@ -579,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776ae57278b6c346b1061eb46831227, type: 3}
       propertyPath: m_LocalRotation.w
