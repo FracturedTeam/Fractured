@@ -31,7 +31,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            Debug.Log($"[ObtainShardInteractable] {gameObject.name} Enter Interact");
             if(baseObject.GetCompletion is InteractionCompletion.Completed)
             {
                 if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
