@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -12,21 +11,31 @@ using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
         private GameSystems gameSystems;
         private ShardService  shardService;
 
+        [Header("Services")]
+        [SerializeField] private GameSaveSystem gameSaveSystem;
+        [SerializeField] private GameSceneLoaderSystem gameSceneLoaderSystem;
+        [SerializeField] private PlayerService player;
+        [SerializeField] private HudManager hudManager;
+        
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool InitializeDebugger = true;
         public bool deleteSaveOnPlay = true;
         #endif
         
-        private new void Awake() {
+        protected override void Awake() {
+            base.Awake();
+            if (!GameSaveSystem.HasInstance) Instantiate(gameSaveSystem);
+            if (!GameSceneLoaderSystem.HasInstance) Instantiate(gameSceneLoaderSystem);
+            if (!PlayerService.HasInstance) Instantiate(player);
+            if (!HudManager.HasInstance) Instantiate(hudManager);
+            
             InitializeGameSystems();
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD

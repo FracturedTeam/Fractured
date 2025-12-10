@@ -5,27 +5,31 @@ using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace _Project.Scripts.GameServices {
-    public class GameSceneLoaderSystem : Singleton<GameSceneLoaderSystem> {
+    public class GameSceneLoaderSystem : PersistentSingleton<GameSceneLoaderSystem> {
         private List<SceneField> scenesToLoad = new List<SceneField>();
         [SerializeField] private SceneField[] persistentScenes;
         [SerializeField] private SceneField menuScene;
         [SerializeField] private SceneField newGameScene;
 
         private void Start() {
-            var load = LoadMenuAsync(menuScene);
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            if (SceneManager.loadedSceneCount == 1) {
+                _ = LoadMenuAsync(menuScene);
+            }
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (scene.name == "PersistentGameplay") {
+            /*if (scene.name == newGameScene) {
                 var unload = UnloadGameplaySceneAsync();
-            }
+            }*/
         }
 
         //Load/Unload Non GameplayScene
@@ -167,17 +171,25 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
+
+            //await UnloadGameplaySceneAsync();
         }
         
         #endregion
 
         public void LoadMenu() {
+            GameSaveSystem.Instance.SaveGame();
             var unload = UnloadSceneAsync();
             var menu = LoadMenuAsync(menuScene);
+            
+            Destroy(PlayerService.Instance.gameObject);
+            Destroy(GameInitializer.Instance.gameObject);
+            Destroy(HudManager.Instance.gameObject);
         }
         
         public void NewGame() {
             var newGame = LoadNewGameAsync(newGameScene);
+            _ = UnloadGameplaySceneAsync();
         }
         
         private void UnloadObjects() {

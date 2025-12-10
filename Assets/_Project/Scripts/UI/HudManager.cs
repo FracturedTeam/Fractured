@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
 {
-    public class HudManager : Singleton<HudManager>
+    public class HudManager : PersistentSingleton<HudManager>
     {
         [Header("HUD")]
         [SerializeField] private CanvasGroup interactionUI;

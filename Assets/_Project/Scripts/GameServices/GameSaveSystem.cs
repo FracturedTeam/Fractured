@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
-using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
-using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
@@ -19,7 +16,7 @@ namespace _Project.Scripts.GameServices {
         public List<GameData> SceneDatas;
     }
     
-    public class GameSaveSystem : Singleton<GameSaveSystem> {
+    public class GameSaveSystem : PersistentSingleton<GameSaveSystem> {
         private GameData gameData;
         private IDataService dataService;
         
@@ -105,8 +102,6 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            Debug.Log($"[GameSaveSystem] Inputs shards count {shards.Count}");
-            Debug.Log($"[GameSaveSystem] ShardManager shards count {SaveInstance.Instance.GetShards().Count}");
             for (int i = 0; i < shards.Count; i++) {
                 SaveInstance.Instance.GetShards()[i] = shards[i];
                 SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
