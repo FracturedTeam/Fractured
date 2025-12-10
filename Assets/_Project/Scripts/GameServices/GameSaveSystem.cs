@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
-using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
-using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
@@ -19,7 +16,7 @@ namespace _Project.Scripts.GameServices {
         public List<GameData> SceneDatas;
     }
     
-    public class GameSaveSystem : Singleton<GameSaveSystem> {
+    public class GameSaveSystem : PersistentSingleton<GameSaveSystem> {
         private GameData gameData;
         private IDataService dataService;
         
