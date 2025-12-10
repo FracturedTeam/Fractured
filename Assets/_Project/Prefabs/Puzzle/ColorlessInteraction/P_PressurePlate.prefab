@@ -264,8 +264,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  isLocked: 0
-  dialogue: {fileID: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!114 &5473137435246128761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +298,7 @@ MonoBehaviour:
   pressurePlateSize: {x: 0.7, y: 0.15, z: 0.7}
   interactLayerMask:
     serializedVersion: 2
-    m_Bits: 10240
+    m_Bits: 75904
   timeToMoveObject: 1
   movedObjects:
   - objectMoved: {fileID: 1680239980623189626}
