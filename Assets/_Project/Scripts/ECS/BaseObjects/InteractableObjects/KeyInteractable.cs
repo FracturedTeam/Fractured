@@ -113,6 +113,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             baseObject.SetInteract(true);
+            objectRemoved.GetCompletion = InteractionCompletion.NotCompleted;
             PlayerController.Instance.interact.SetGrabbedObject(objectRemoved);
         }
 

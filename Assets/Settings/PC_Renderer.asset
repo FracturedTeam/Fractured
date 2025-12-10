@@ -62,48 +62,6 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
---- !u!114 &-4747886368539217985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: BrokenScreenClearStencilA
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 0
-  settings:
-    passTag: BrokenScreenClearStencilA
-    Event: 600
-    filterSettings:
-      RenderQueueType: 1
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 32768
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: c7767b9ea4cd02a45afef18669d1ad29, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 1
-      stencilReference: 2
-      stencilCompareFunction: 2
-      passOperation: 2
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
 --- !u!114 &-4346678658889891993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,9 +250,9 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 197632
+        m_Bits: 66560
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 60e1ab3ef585f6e46aa24f474e47dc28, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: 4a9a38b02b653104a89ecad1bfadcce7, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
@@ -331,48 +289,6 @@ MonoBehaviour:
   showInSceneView: 1
   scale: 39
   margin: 1
---- !u!114 &-489301198366568056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: ObjectStencilB
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 0
-  settings:
-    passTag: ObjectStencilB
-    Event: 300
-    filterSettings:
-      RenderQueueType: 0
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 131072
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: c7767b9ea4cd02a45afef18669d1ad29, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 1
-      stencilReference: 9
-      stencilCompareFunction: 8
-      passOperation: 2
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
 --- !u!114 &-97301351772812910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: OutlineTest
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: OutlineTest
     Event: 300
@@ -441,8 +357,6 @@ MonoBehaviour:
     probeVolumeBlendStatesCS: {fileID: 7200000, guid: b9a23f869c4fd45f19c5ada54dd82176, type: 3}
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
-  - {fileID: -489301198366568056}
-  - {fileID: 137094754228533480}
   - {fileID: -5294952180343454184}
   - {fileID: -3650072775678963363}
   - {fileID: -3644943342196224855}
@@ -452,12 +366,10 @@ MonoBehaviour:
   - {fileID: 433001801202367172}
   - {fileID: 9218444575335058611}
   - {fileID: -4346678658889891993}
-  - {fileID: 7183302008794437207}
-  - {fileID: -4747886368539217985}
   - {fileID: -3566987686430494380}
   - {fileID: -3520292838973313507}
   - {fileID: 0}
-  m_RendererFeatureMap: ad6b866f10d7b46c8811300b27a735f9e8785cdef30ee70118c6f2bb0b8d84b65dd15441265658cda90cf88d578f6acd92896aa3ef50a6fec4eb1c85ae290580d640236157dbb307c47ac513d8540206b30c79f67f7eee7f67bf1818ca7eadc357d68a441e37b063bfef4cd1801e1cbe54311e1099837fce1deea473506825cf3ba03659c79b9622
+  m_RendererFeatureMap: ad6b866f10d7b46c18c6f2bb0b8d84b65dd15441265658cda90cf88d578f6acd92896aa3ef50a6fec4eb1c85ae290580d640236157dbb307c47ac513d8540206b30c79f67f7eee7f67bf1818ca7eadc354311e1099837fce1deea473506825cf3ba03659c79b9622
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -486,48 +398,6 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
---- !u!114 &137094754228533480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: ObjectStencilA
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 0
-  settings:
-    passTag: ObjectStencilA
-    Event: 300
-    filterSettings:
-      RenderQueueType: 0
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 65536
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 689a4bdbbafc196499f1b18c542871e3, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 8
-      stencilCompareFunction: 8
-      passOperation: 2
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
 --- !u!114 &433001801202367172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,48 +499,6 @@ MonoBehaviour:
   showInSceneView: 1
   scale: 40
   margin: 0.2
---- !u!114 &7183302008794437207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: BrokenScreenClearStencilB
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 0
-  settings:
-    passTag: BrokenScreenClearStencilB
-    Event: 600
-    filterSettings:
-      RenderQueueType: 1
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 32768
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: c7767b9ea4cd02a45afef18669d1ad29, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 1
-      stencilReference: 9
-      stencilCompareFunction: 3
-      passOperation: 4
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
 --- !u!114 &7384870291830212751
 MonoBehaviour:
   m_ObjectHideFlags: 0
