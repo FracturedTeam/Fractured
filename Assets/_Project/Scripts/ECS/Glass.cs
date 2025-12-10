@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Player;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -50,7 +51,7 @@ namespace _Project.Scripts.ECS
 
         private void Initialize()
         {
-            mainCamera = Camera.main;
+            mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
             if (mainCamera == null)
                 Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");

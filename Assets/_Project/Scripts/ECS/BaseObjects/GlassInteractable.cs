@@ -40,7 +40,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool ObjectOut { get; set; }
         
         public  void Initialize() {
-            mainCamera = Camera.main;
+            mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component))
@@ -59,8 +59,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             initialized = true;
 
-            if (objectColor is ColorEnum.Both)
-                baseObject?.SetInteract(false);
+            if (objectColor is ColorEnum.Both) {
+                SetVisibility(false);
+            }
             
             underRed = 0;
             underBlue = 0;
