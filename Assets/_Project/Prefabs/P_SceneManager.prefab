@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4988382695392522534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2368546089697211265}
+  - component: {fileID: 106614911072689722}
+  - component: {fileID: 583110423771898799}
+  m_Layer: 0
+  m_Name: P_SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2368546089697211265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &106614911072689722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bdbeb2dedb4ecfb0b1fa41fd9a5fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSceneLoaderSystem
+  AutoUnparentOnAwake: 1
+  persistentScenes: []
+  menuScene:
+    m_SceneAsset: {fileID: 102900000, guid: 4e38015cc80761b47a78607545d8d663, type: 3}
+    m_SceneName: S_MainMenu
+  newGameScene:
+    m_SceneAsset: {fileID: 102900000, guid: b15c61a78979fbf47850be717b0280a0, type: 3}
+    m_SceneName: S_Tutorial_Room1
+--- !u!114 &583110423771898799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbe548193e74785b60bdf980314f609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSaveSystem
+  AutoUnparentOnAwake: 1
+  saveFile:
+    SaveName: 
+    CurrentScene: 
+    PlayerData:
+      position: {x: 0, y: 0, z: 0}
+    SceneDatas: []
