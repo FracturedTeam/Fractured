@@ -20,12 +20,16 @@ namespace _Project.Scripts.GameServices {
 
         private void Start() {
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            if (SceneManager.loadedSceneCount == 1) {
+                _ = LoadMenuAsync(menuScene);
+            }
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (scene.name == newGameScene) {
+            /*if (scene.name == newGameScene) {
                 var unload = UnloadGameplaySceneAsync();
-            }
+            }*/
         }
 
         //Load/Unload Non GameplayScene
@@ -167,11 +171,14 @@ namespace _Project.Scripts.GameServices {
                     await Task.Delay(100);
                 }
             }
+
+            //await UnloadGameplaySceneAsync();
         }
         
         #endregion
 
         public void LoadMenu() {
+            GameSaveSystem.Instance.SaveGame();
             var unload = UnloadSceneAsync();
             var menu = LoadMenuAsync(menuScene);
             
@@ -182,6 +189,7 @@ namespace _Project.Scripts.GameServices {
         
         public void NewGame() {
             var newGame = LoadNewGameAsync(newGameScene);
+            _ = UnloadGameplaySceneAsync();
         }
         
         private void UnloadObjects() {
