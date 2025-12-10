@@ -54,7 +54,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
-                gameObject.layer = LayerMask.NameToLayer("NoLUT");
+                gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
             }
             
             initialized = true;
