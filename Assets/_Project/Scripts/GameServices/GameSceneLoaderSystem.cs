@@ -20,6 +20,10 @@ namespace _Project.Scripts.GameServices {
 
         private void Start() {
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            if (SceneManager.loadedSceneCount == 1) {
+                _ = LoadMenuAsync(menuScene);
+            }
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {

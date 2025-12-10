@@ -53,21 +53,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
-
-                /*switch (objectColor) { //Faudra set up ça pour le mesh en enfant OU le mettre a la main
-                    case ColorEnum.Blue:
-                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 01");
-                        break;
-                    case ColorEnum.Red:
-                        gameObject.layer = LayerMask.NameToLayer("Fragment Color 02");
-                        break;
-                    case ColorEnum.Both:
-                        gameObject.layer = LayerMask.NameToLayer("NoLUT");
-                        break;
-                    default:
-                        Debug.LogWarning($"[GlassInteractable] Unknown color set : {gameObject.name}");
-                        break;
-                }*/
+                
+                gameObject.layer = LayerMask.NameToLayer("NoLUT");
             }
             
             initialized = true;
