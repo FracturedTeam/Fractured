@@ -102,8 +102,6 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            Debug.Log($"[GameSaveSystem] Inputs shards count {shards.Count}");
-            Debug.Log($"[GameSaveSystem] ShardManager shards count {SaveInstance.Instance.GetShards().Count}");
             for (int i = 0; i < shards.Count; i++) {
                 SaveInstance.Instance.GetShards()[i] = shards[i];
                 SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
