@@ -144,6 +144,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private void SetVisibility(bool isUnder) {
             baseObject.SetRenderer(isUnder);
+            for(var i = 0; i < baseObject.transform.childCount; i++) {
+                baseObject.transform.GetChild(i).gameObject.SetActive(isUnder);
+            }
             //Check if object is held
             if (baseObject.TryGetComponent(out MoveableObject move)) {
                 if (!move.IsGrabbed()) {
