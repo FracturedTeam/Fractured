@@ -13,12 +13,19 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private CinemachineCamera roomCamera;
         [SerializeField] public Glass[] glassShards;
         
+        [Header("Game Service")]
+        [SerializeField] private GameInitializer gameInitializer;
+
+        protected override void Awake() {
+            base.Awake();
+            if(!GameInitializer.HasInstance) Instantiate(gameInitializer);
+        }
+
         private void Start() {
             var task = GameSceneLoaderSystem.Instance.LoadLevelArtAsync(levelArt);
             
             roomCamera.Priority = 1;
             GameInitializer.Instance.AddShards(glassShards);
-            //var unload = GameSceneLoaderSystem.Instance.UnloadSceneAsync();
         }
         
     }
