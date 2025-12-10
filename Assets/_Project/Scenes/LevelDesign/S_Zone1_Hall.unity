@@ -6815,6 +6815,24 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 695243700}
+    - targetCorrespondingSourceObject: {fileID: 8863227662348273556, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1710611149}
+    - targetCorrespondingSourceObject: {fileID: 8863227662348273556, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1710611148}
+    - targetCorrespondingSourceObject: {fileID: 8399085603173382054, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 695243713}
+    - targetCorrespondingSourceObject: {fileID: 8399085603173382054, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 695243712}
+    - targetCorrespondingSourceObject: {fileID: 7299872882360661722, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 695243710}
+    - targetCorrespondingSourceObject: {fileID: 7299872882360661722, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 695243709}
   m_SourcePrefab: {fileID: 100100000, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
 --- !u!4 &695243694 stripped
 Transform:
@@ -6832,6 +6850,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &695243696 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7299872882360661722, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+  m_PrefabInstance: {fileID: 695243693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &695243697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8399085603173382054, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+  m_PrefabInstance: {fileID: 695243693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &695243698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8863227662348273556, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+  m_PrefabInstance: {fileID: 695243693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &695243700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6850,6 +6883,102 @@ MonoBehaviour:
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
+--- !u!114 &695243709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &695243710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+--- !u!114 &695243712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &695243713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!1001 &701810641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16554,6 +16683,54 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!114 &1710611148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &1710611149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695243698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!43 &1725540787
 Mesh:
   m_ObjectHideFlags: 0
