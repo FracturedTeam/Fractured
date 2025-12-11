@@ -24,10 +24,10 @@ namespace _Project.Scripts.GameServices {
         private void Start() {
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
             
-            roomCamera.Priority = 1;
             GameInitializer.Instance.AddShards(glassShards);
+            
+            roomCamera.Priority = 1;
         }
-        
     }
 
     [Serializable]

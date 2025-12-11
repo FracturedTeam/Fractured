@@ -54,9 +54,11 @@ namespace _Project.Scripts.GameServices {
             await LoadSceneAsync(sceneSettings.levelDesign);
             
             PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
-            
-            while(PlayerController.Instance.cinemachineBrain.IsBlending)
-                await Task.Delay(10);
+
+            //Faire une fonction qui active le blend je penses pour ça
+            /*while (PlayerController.Instance.cinemachineBrain.IsBlending) {
+                await Task.Delay(4000);
+            }*/
 
             _ = UnloadGameplaySceneAsync();
         }
