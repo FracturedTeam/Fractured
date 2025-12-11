@@ -27,6 +27,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private KeyInteractable key;
         private bool initialized = false;
         
+        private bool hasBeenInteracted = false;
+        
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
@@ -42,6 +44,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if(hasBeenInteracted) return;
+            
             if (key) {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
                     if (other != null || baseObject.cantInteractDialogue is { alreadyInteracted: true, oneTime: true }) 
@@ -56,7 +60,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
-                
+                hasBeenInteracted = true;
                 GameInitializer.Instance.LoadNewLevel(sceneToLoad);
                 return;
             }
