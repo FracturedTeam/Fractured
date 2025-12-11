@@ -18,7 +18,20 @@ namespace _Project.Scripts.UI
         [Header("HUD")]
         [SerializeField] private CanvasGroup interactionUI;
         [SerializeField] private TextMeshProUGUI interactionText;
+
+        [Header("Interaction Texts")] 
+        [SerializeField] private string grab = "Pick up";
+        [SerializeField] private string obtainShard = "Break the frame";
+        [SerializeField] private string enterMemory = "View Memory";
+        [SerializeField] private string leaveMemory = "Leave";
+        [SerializeField] private string useDoor = "Enter";
+        [SerializeField] private string useKey = "Unlock the door";
+        [SerializeField] private string useFragment = "Put";
+        [SerializeField] private string needFragment = "[E] to interact";
+        [SerializeField] private string needKey = "Door locked";
+        [SerializeField] private string needSomethingElse = "[E] to interact";
         
+        [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
         [SerializeField] private Image memoryImage;
         
@@ -79,21 +92,21 @@ namespace _Project.Scripts.UI
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
 
-                interactionText.text = e.interaction switch {
-                    Interaction.Grab => "grab",
-                    Interaction.ObtainShard => "obtain shard",
-                    Interaction.EnterMemory => "enter memory",
-                    Interaction.LeaveMemory => "leave memory",
-                    Interaction.UseDoor  => "use door",
-                    Interaction.UseKey =>  "use key",
-                    Interaction.UseFragment => "use fragment",
-                    Interaction.needFragment => "need fragment",
-                    Interaction.needKey  => "need key",
-                    Interaction.needSomethingElse => "need something else",
+                interactionText.text = e.Interaction switch {
+                    Interaction.Grab => $"{grab} {e.ObjectName}",
+                    Interaction.ObtainShard => $"{obtainShard}",
+                    Interaction.EnterMemory => $"{enterMemory}",
+                    Interaction.LeaveMemory => $"{leaveMemory}",
+                    Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
+                    Interaction.UseKey =>  $"{useKey}",
+                    Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
+                    Interaction.needFragment => $"{needFragment}",
+                    Interaction.needKey  => $"{needKey}",
+                    Interaction.needSomethingElse => $"{needSomethingElse}",
                     _ => "Not supported"
                 };
                 
-                interactTween = interactionUI.DOFade(e.showInteraction ? 1f : 0f, 0.25f);
+                interactTween = interactionUI.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
             }
 
             void ShowMemory(MemoryEvent e) {

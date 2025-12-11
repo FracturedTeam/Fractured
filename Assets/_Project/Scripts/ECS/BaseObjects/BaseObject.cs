@@ -44,6 +44,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ObjectType GetInteractionType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
 
+        [Header("Object Name")]
+        public string ObjectName;
+        
         [Header("Dialogues")] 
         [SerializeField] internal Dialogue successDialogue;
         [SerializeField] internal Dialogue cantInteractDialogue;
