@@ -15,7 +15,7 @@ namespace _Project.Scripts.Editor {
                 saveSystem.SaveGame();
             
             if(GUILayout.Button("Load Game"))
-                saveSystem.LoadGame(saveSystem.saveFile.CurrentScene);
+                saveSystem.LoadData(saveSystem.saveFile.CurrentScene);
             
             if(GUILayout.Button("Delete Game"))
                 saveSystem.DeleteGame(gameName);
