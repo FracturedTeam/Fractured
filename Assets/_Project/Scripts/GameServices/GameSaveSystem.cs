@@ -95,6 +95,13 @@ namespace _Project.Scripts.GameServices {
             PlayerController.Instance.Load(saveFile.PlayerData);
         }
         
+        public void NewGame(string gameName = "New Game") {
+            saveFile = new SaveFile {
+                SaveName = gameName,
+            };
+            GameSceneLoaderSystem.Instance.NewGame();
+        }
+        
         public void LoadGame() {
             saveFile = dataService.Load(saveFile.SaveName);
             GameSceneLoaderSystem.Instance.LoadGame(saveFile.CurrentScene);
@@ -102,12 +109,6 @@ namespace _Project.Scripts.GameServices {
         
         public void DeleteGame(string gameName) {
             dataService.Delete(gameName);
-        }
-
-        public void NewGame(string gameName = "New Game") {
-            saveFile = new SaveFile {
-                SaveName = gameName,
-            };
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
