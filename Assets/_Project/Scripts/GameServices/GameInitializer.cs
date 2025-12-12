@@ -41,10 +41,10 @@ namespace _Project.Scripts.GameServices {
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
             
-            if (deleteSaveOnPlay) {
+            /*if (deleteSaveOnPlay) {
                 var dataService = new FileDataService(new JsonSerializer());
                 dataService.DeleteAll();
-            }
+            }*/
             #endif
             
             //Populate the glassShardService
@@ -142,7 +142,7 @@ namespace _Project.Scripts.GameServices {
 
         public void RepopulateInteractableOnLoadLevel() {
             shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
-            GameSaveSystem.Instance.LoadGame();
+            GameSaveSystem.Instance.LoadData();
         }
 
         public BaseObject[] GetInteractables() {

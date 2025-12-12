@@ -18,6 +18,8 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private SceneField menuScene;
         [SerializeField] private SceneField newGameScene;
 
+        [SerializeField] public SceneField[] allScenes;
+        
         private void Start() {
             scenesToLoad = new List<SceneField>();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -111,6 +113,30 @@ namespace _Project.Scripts.GameServices {
             scenesToLoad.Clear();
             await LoadSceneAsync(newGameScene);
             _ = UnloadGameplaySceneAsync();
+        }
+        
+        public void LoadGame(string sceneName) {
+            _ = LoadSave(sceneName);
+        }
+
+        private async Task LoadSave(string sceneName) {
+            scenesToLoad.Clear();
+            
+            var foundScene = false;
+            foreach (var scene in allScenes) {
+                if (scene.SceneName != sceneName) continue;
+                foundScene = true;
+                await LoadSceneAsync(scene);
+                break;
+            }
+
+            if (!foundScene) {
+                Debug.LogError($"Failed to find scene {sceneName}");
+                return;
+            }
+            
+            _ = UnloadGameplaySceneAsync();
+            GameSaveSystem.Instance.LoadPlayerData();
         }
     }
     
