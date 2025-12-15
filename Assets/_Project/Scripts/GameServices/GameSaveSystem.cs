@@ -57,11 +57,11 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
-        public void LoadGame() { //Data are loaded here
-            LoadGame(SaveInstance.Instance.gameObject.scene.name);
+        public void LoadData() { //Data are loaded here
+            LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
-        public void LoadGame(string gameName) {
+        public void LoadData(string gameName) {
             Debug.Log($"Loading Scene Save {gameName} from saveFile {saveFile.SaveName}");
             
             saveFile = dataService.Load(saveFile.SaveName);
@@ -90,15 +90,25 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
         }
-        
-        public void DeleteGame(string gameName) {
-            dataService.Delete(gameName);
-        }
 
+        public void LoadPlayerData() {
+            PlayerController.Instance.Load(saveFile.PlayerData);
+        }
+        
         public void NewGame(string gameName = "New Game") {
             saveFile = new SaveFile {
                 SaveName = gameName,
             };
+            GameSceneLoaderSystem.Instance.NewGame();
+        }
+        
+        public void LoadGame() {
+            saveFile = dataService.Load(saveFile.SaveName);
+            GameSceneLoaderSystem.Instance.LoadGame(saveFile.CurrentScene);
+        }
+        
+        public void DeleteGame(string gameName) {
+            dataService.Delete(gameName);
         }
         
         public void SetRuntimeShard(List<Glass> shards) {

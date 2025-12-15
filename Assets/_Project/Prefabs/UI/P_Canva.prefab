@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 280, y: 80}
+  m_SizeDelta: {x: 780, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3113192550041682403
 CanvasRenderer:
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1492,8 +1492,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d96fb2b2be7ad4458bd6dee2e90996b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.HudManager
+  AutoUnparentOnAwake: 1
   interactionUI: {fileID: 1026744800605279112}
   interactionText: {fileID: 1249318999072714066}
+  grab: Pick up
+  obtainShard: Break the frame
+  enterMemory: View Memory
+  leaveMemory: Leave
+  useDoor: Enter
+  useKey: Unlock the door
+  useFragment: Put
+  needFragment: '[E] to interact'
+  needKey: Door locked
+  needSomethingElse: '[E] to interact'
   memoryHUD: {fileID: 7167016436826003744}
   memoryImage: {fileID: 4888903144888406352}
   glassText: {fileID: 3572007939286609663}

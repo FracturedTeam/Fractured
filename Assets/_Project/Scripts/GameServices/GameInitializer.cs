@@ -41,10 +41,10 @@ namespace _Project.Scripts.GameServices {
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
             
-            if (deleteSaveOnPlay) {
+            /*if (deleteSaveOnPlay) {
                 var dataService = new FileDataService(new JsonSerializer());
                 dataService.DeleteAll();
-            }
+            }*/
             #endif
             
             //Populate the glassShardService
@@ -124,19 +124,25 @@ namespace _Project.Scripts.GameServices {
             shardService.PopulateService(_interactables, _shards, _text);
         }
 
-        public void EmptyInteractable() {
+        private void EmptyAll() {
+            EmptyInteractable();
+            EmptyShards();
+        }
+        
+        private void EmptyInteractable() {
             shardService.interactables.Clear();
         }
 
-        public void EmptyShards() {
+        private void EmptyShards() {
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
         }
 
-        public void RepopulateInteractable() {
+        public void RepopulateInteractableOnLoadLevel() {
             shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
+            GameSaveSystem.Instance.LoadData();
         }
 
         public BaseObject[] GetInteractables() {
@@ -208,6 +214,18 @@ namespace _Project.Scripts.GameServices {
         
         public bool InRedEditableArea() {
             return shardService.PlayerInRedEditableArea;
+        }
+
+        #endregion
+
+        #region LoadScene
+
+        public void LoadNewLevel(SceneSettings sceneSettings) {
+            GameSaveSystem.Instance.SaveGame();
+            EmptyAll();
+            ResetCameras();
+            
+            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);
         }
 
         #endregion

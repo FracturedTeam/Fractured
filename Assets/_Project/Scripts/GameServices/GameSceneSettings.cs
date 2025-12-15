@@ -22,12 +22,12 @@ namespace _Project.Scripts.GameServices {
         }
 
         private void Start() {
-            var task = GameSceneLoaderSystem.Instance.LoadLevelArtAsync(levelArt);
+            _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
+            
+            GameInitializer.Instance.AddShards(glassShards);
             
             roomCamera.Priority = 1;
-            GameInitializer.Instance.AddShards(glassShards);
         }
-        
     }
 
     [Serializable]
