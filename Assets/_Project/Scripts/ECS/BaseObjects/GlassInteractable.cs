@@ -177,7 +177,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             ObjectOut = true;
         }
 
-        public void ResetObject() {
+        public void ResetObjectUnderShard() {
             underRed = 0;
             underBlue = 0;
             shardsOnTop.Clear();
@@ -187,10 +187,23 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (!objectInside || ObjectOut) return;
             
-            if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
             SetInteractableInBox(false);
         }
 
+        public void ResetObject() {
+            underRed = 0;
+            underBlue = 0;
+            shardsOnTop.Clear();
+            
+            baseObject!.SetRenderer(true);
+            baseObject!.SetCollider(true);
+
+            if (!objectInside) return;
+
+            ObjectOut = false;
+            SetInteractableInBox(false);
+        }
+        
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
 
