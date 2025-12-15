@@ -88,15 +88,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
-            
-            /*if (GetCollider() && GetInteractionType is ObjectType.Moveable) {
-                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents * 2, inObjects, transform.rotation, gameObject.layer);
-                
-                if (size > 0) {
-                    var dir = (inObjects[0].transform.position - transform.position).normalized;
-                    transform.position += new Vector3(dir.x, 0, dir.z) * 3;
-                }
-            }*/
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 

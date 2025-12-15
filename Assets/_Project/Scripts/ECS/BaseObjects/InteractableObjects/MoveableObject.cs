@@ -103,6 +103,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+            IsColliding();
+            
             if (!baseObject.GetGlass) return;
 
             if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
@@ -121,7 +123,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         
-        public void DropUnderShard() {
+        private void DropUnderShard() {
             tween?.Pause();
             tween?.Kill();
             DOTween.Kill(transform);
@@ -295,6 +297,63 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
             
             return pos;
+        }
+
+        private static readonly Collider[] _hits = new Collider[16];
+        
+        private bool IsColliding() {
+            /*var inObjects = new Collider[4];
+            var layer = LayerMask.GetMask("Interactable", "InteractableNoLUT");
+
+            if (!baseObject.GetCollider().enabled) return false;
+            var size = Physics.OverlapBoxNonAlloc(transform.position, boundExtent, inObjects, transform.rotation, layer);
+
+            if (size <= 0) return false;
+            
+            var dir = (inObjects[0].transform.position - transform.position).normalized;
+            transform.position += new Vector3(dir.x, 0, dir.z) * (boundExtent.magnitude * 2.5f);
+            return true;*/
+            var myCol = baseObject.GetCollider();
+            if (!myCol || !myCol.enabled)
+                return false;
+
+            var mask = LayerMask.GetMask(
+                "Interactable",
+                "InteractableNoLUT",
+                "Default",
+                "Walkable"
+            );
+
+            var count = Physics.OverlapBoxNonAlloc(
+                myCol.bounds.center,
+                myCol.bounds.extents,
+                _hits,
+                myCol.transform.rotation,
+                mask,
+                QueryTriggerInteraction.Ignore
+            );
+
+            var resolved = false;
+
+            for (var i = 0; i < count; i++)
+            {
+                var other = _hits[i];
+                if (!other || other == myCol)
+                    continue;
+
+                if (Physics.ComputePenetration(
+                        myCol, myCol.transform.position, myCol.transform.rotation,
+                        other, other.transform.position, other.transform.rotation,
+                        out Vector3 dir,
+                        out float distance))
+                {
+                    // Push OUT of collision
+                    transform.position += dir * (distance + 0.001f);
+                    resolved = true;
+                }
+            }
+
+            return resolved;
         }
         
 		public MoveableType GetObjectType(){
