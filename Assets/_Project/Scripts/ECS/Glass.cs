@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -29,7 +30,7 @@ namespace _Project.Scripts.ECS
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
-        [SerializeField] private GameObject shard; 
+        [SerializeField] private Fragment shard; 
 
         private Camera mainCamera;
         private Image shardSprite;
@@ -65,10 +66,14 @@ namespace _Project.Scripts.ECS
             if(shard)
             {
                 var sh = Instantiate(shard);
-                sh.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y, -20));
                 shard = sh;
+                
+               shard.SetColor(color2D);
+                
                 if (shardSprite) 
                     shardSprite.color = Color.clear;
+
+                Set3DShard();
             }
             
             initialized = true;
@@ -95,22 +100,31 @@ namespace _Project.Scripts.ECS
                     mainCamera.pixelHeight - shardSprite.rectTransform.sizeDelta.y / 2));
                     */
 
-            if (shard)
-                shard.transform.position =
-                    mainCamera.ScreenToWorldPoint(new Vector3(-transform.position.x, -transform.position.y,
-                        -20));
+            Set3DShard();
+        }
+
+        private void Set3DShard()
+        {
+            if (!shard) 
+                return;
+            
+            List<Vector3> cornersPos = new ();
+            foreach (var points in polygonCollider2D.points)
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x, transform.position.y +points.y, 10)));
+                
+            shard.Setup(cornersPos);
         }
 
         private void OnEnable()
         {
             if (shard) 
-                shard.SetActive(true);
+                shard.gameObject.SetActive(true);
         }
 
         private void OnDisable()
         {
             if(shard)
-                shard?.SetActive(false);
+                shard?.gameObject.SetActive(false);
         }
         internal void ChangeHoldingState(bool isOn)
         {
