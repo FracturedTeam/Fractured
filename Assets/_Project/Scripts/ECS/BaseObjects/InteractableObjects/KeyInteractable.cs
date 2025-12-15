@@ -88,11 +88,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void CompleteObject() {
-            /*Debug.Log("[KeyInteractable] Complete Object");
-            foreach (var key in keyObject) {
-                keyUsed.Add(key);
-            }
-            ResolvePuzzle();*/
         }
 
         private void CheckForResolve(BaseObject key) { //Des chances que cette fonction casse
