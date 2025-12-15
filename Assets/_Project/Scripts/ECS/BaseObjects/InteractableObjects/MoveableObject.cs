@@ -33,7 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
+                if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
                 
                 originalPosition = transform.position;
@@ -60,8 +60,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             initialized = true;
             
             originalParent = transform.parent;
-            boundExtent = baseObject.GetCollider().bounds.extents;
-            boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+            if (!baseObject.GetCollider().enabled) {
+                baseObject.SetCollider(true);
+                boundExtent = baseObject.GetCollider().bounds.extents;
+                boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+                baseObject.SetCollider(false);
+            }
+            else {
+                boundExtent = baseObject.GetCollider().bounds.extents;
+                boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+            }
+            
             
             canBeGrab = true;
         }
@@ -129,7 +138,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.position = pos;
             
             PlayerController.Instance.interact.SetDropObject();
-            baseObject.GetGlassInteract?.ResetObject();
+            baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
             Debug.Log("[MoveableObject] Drop under shard");
         }
