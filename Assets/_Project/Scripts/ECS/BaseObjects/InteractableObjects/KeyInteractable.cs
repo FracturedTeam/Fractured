@@ -10,7 +10,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class KeyInteractable : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
-        private List<BaseObject> keyObject;
+        private List<BaseObject> keyRequired;
         private List<BaseObject> keyUsed;
 
         private bool initialized = false;
@@ -22,7 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                 
-                keyObject = new List<BaseObject>();
+                keyRequired = new List<BaseObject>();
                 keyUsed = new List<BaseObject>();
             }
             
@@ -96,7 +96,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             keyUsed.Add(key);
             
-            if(keyUsed.Count == keyObject.Count)
+            if(keyUsed.Count == keyRequired.Count)
                 ResolvePuzzle();
         }
 
@@ -120,7 +120,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public virtual void ResetObject() {
-            //Voir le reset qu'il y a besoin de faire ici - Si il y a besoin
+            Debug.Log("[KeyInteractable] Reset Object");
+            keyUsed.Clear();
+            baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+            baseObject.SetInteract(true);
         }
 
         public virtual BaseObject GetBaseObject() {
@@ -128,18 +131,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public bool GetKeyObject(BaseObject currentInteraction) {
-            foreach (var key in keyObject) {
+            foreach (var key in keyRequired) {
                 if (key == currentInteraction) return true;
             }
             return false;
         }
 
         public bool HasOneKey() {
-            return keyObject.Count > 0;
+            return keyRequired.Count > 0;
         }
         
         public void SetKeyObject(BaseObject key) {
-            keyObject.Add(key);
+            keyRequired.Add(key);
         }
     }
 

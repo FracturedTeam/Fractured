@@ -64,6 +64,20 @@ namespace _Project.Scripts.GameServices {
 
             _ = UnloadGameplaySceneAsync();
         }
+
+        public async Task LoadSceneFromDebug(SceneField scene) {
+            GameSaveSystem.Instance.SaveGame();
+            GameInitializer.Instance.EmptyAll();
+            GameInitializer.Instance.ResetCameras();
+            
+            scenesToLoad.Clear();
+
+            await LoadSceneAsync(scene);
+            await UnloadGameplaySceneAsync();
+            
+            //Input la position joueur a spawn lorsqu'il entre dans la salle
+            PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+        }
         
         private async Task UnloadGameplaySceneAsync() {
             await UnloadSceneAsync();
@@ -137,6 +151,10 @@ namespace _Project.Scripts.GameServices {
             
             _ = UnloadGameplaySceneAsync();
             GameSaveSystem.Instance.LoadPlayerData();
+        }
+
+        public List<SceneField> GetLoadedScenes() {
+            return scenesToLoad;
         }
     }
     

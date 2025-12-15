@@ -113,6 +113,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         public void ResetObject() {
+            if(key)
+                key.ResetObject();
             Debug.Log($"[MemoryInteractable] Reset {nameof(MemoryInteractable)}");
         }
 
