@@ -12,6 +12,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MoveableObject : MonoBehaviour, IInteractable, IMoveable {
         private BaseObject baseObject;
         private Transform originalParent;
+        private Vector3 originalPosition;
         
         private Vector3 boundExtent;
         private Vector3 boundCenter;
@@ -34,6 +35,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
                 else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
+                
+                originalPosition = transform.position;
                 
                 baseObject.GetInteractionType = ObjectType.Moveable;
                 baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
@@ -94,7 +97,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (!baseObject.GetGlass) return;
 
             if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
-            ResetObject();
+            DropUnderShard();
         }
 
         public void CompleteObject() {
@@ -109,7 +112,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         
-        public void ResetObject() {
+        public void DropUnderShard() {
             tween?.Pause();
             tween?.Kill();
             DOTween.Kill(transform);
@@ -126,7 +129,30 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.position = pos;
             
             PlayerController.Instance.interact.SetDropObject();
-            baseObject.GetGlassInteract.ResetObject();
+            baseObject.GetGlassInteract?.ResetObject();
+            
+            Debug.Log("[MoveableObject] Drop under shard");
+        }
+
+        public void ResetObject() {
+            baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+            
+            tween?.Pause();
+            tween?.Kill();
+            DOTween.Kill(transform);
+            
+            colTimer.Pause();
+            
+            baseObject.SetInteract(true);
+            baseObject.SetCollider(true);
+            
+            isGrabbed = false;
+            
+            transform.SetParent(originalParent);
+            transform.position = originalPosition;
+            
+            PlayerController.Instance.interact.SetDropObject();
+            baseObject.GetGlassInteract?.ResetObject();
             
             Debug.Log("[MoveableObject] Reset object");
         }

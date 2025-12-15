@@ -112,6 +112,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract.CompleteObject();
         }
 
+        public void ResetInteract() {
+            GetInteract?.ResetObject();
+            GetGlassInteract?.ResetObject();
+        }
+        
         public void SetInteract(bool canInteract) {
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;

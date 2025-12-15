@@ -29,7 +29,7 @@ namespace _Project.Scripts.GameServices {
         
         public void SaveGame() {
             SaveInstance.Instance.Bind(gameData = SaveInstance.Instance.GetGameData());
-            
+             
             PlayerController.Instance.SaveData(saveFile.PlayerData);
             GameInitializer.Instance.SaveInteractable();
             GameInitializer.Instance.SaveShards();
@@ -98,6 +98,8 @@ namespace _Project.Scripts.GameServices {
         public void NewGame(string gameName = "New Game") {
             saveFile = new SaveFile {
                 SaveName = gameName,
+                PlayerData = new PlayerData(),
+                SceneDatas = new List<GameData>()
             };
             GameSceneLoaderSystem.Instance.NewGame();
         }

@@ -124,7 +124,7 @@ namespace _Project.Scripts.GameServices {
             shardService.PopulateService(_interactables, _shards, _text);
         }
 
-        private void EmptyAll() {
+        public void EmptyAll() {
             EmptyInteractable();
             EmptyShards();
         }
@@ -182,6 +182,14 @@ namespace _Project.Scripts.GameServices {
             
             shardService.AddShards(newShards.ToArray());
             GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
+        }
+
+        public void ResetInteractable() {
+            EmptyShards();
+            foreach (var interactable in shardService.interactables)
+                interactable.ResetInteract();
+            
+            GameSceneSettings.Instance.ResetShard();
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>

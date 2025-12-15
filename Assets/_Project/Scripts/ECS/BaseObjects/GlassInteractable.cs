@@ -188,7 +188,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!objectInside || ObjectOut) return;
             
             if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-            interactableInBox?.gameObject.SetActive(false);
+            SetInteractableInBox(false);
         }
 
         public void SetInteractableInBox(bool revealed) {

@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
@@ -16,6 +17,9 @@ namespace _Project.Scripts.GameServices {
         [Header("Game Service")]
         [SerializeField] private GameInitializer gameInitializer;
 
+        [Header("Debug Settings")]
+        public Vector3 playerPosition;
+        
         protected override void Awake() {
             base.Awake();
             if(!GameInitializer.HasInstance) Instantiate(gameInitializer);
@@ -27,6 +31,18 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.AddShards(glassShards);
             
             roomCamera.Priority = 1;
+        }
+
+        public void ResetShard() {
+            GameInitializer.Instance.AddShards(glassShards);
+        }
+
+        public void SetPlayerPos(Vector3 pos) {
+            playerPosition = pos;
+            
+            EditorUtility.SetDirty(this);
+            if (!Application.isPlaying)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         }
     }
 

@@ -41,11 +41,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 return;
             }
             
-            if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })
-                return;
+            if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: false }) {
+                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                baseObject.successDialogue.alreadyInteracted = true;
+            }
 
-            HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-            baseObject.successDialogue.alreadyInteracted = true;
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
@@ -69,6 +69,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
+            baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+            baseObject?.SetInteract(true);
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Reset Object");
         }
 
