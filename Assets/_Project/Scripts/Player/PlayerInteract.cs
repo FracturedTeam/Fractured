@@ -303,6 +303,10 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.ObtainShard;
                     RaiseInteraction();
                     return;
+                case ObjectType.Dialogue:
+                    interactionType = Interaction.dialogue;
+                    RaiseInteraction();
+                    return;
                 case ObjectType.None:
                 default:
                     return;

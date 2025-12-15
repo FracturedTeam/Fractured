@@ -30,6 +30,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private string needFragment = "[E] to interact";
         [SerializeField] private string needKey = "Door locked";
         [SerializeField] private string needSomethingElse = "[E] to interact";
+        [SerializeField] private string dialogueInteraction = "...";
         
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
@@ -103,6 +104,7 @@ namespace _Project.Scripts.UI
                     Interaction.needFragment => $"{needFragment}",
                     Interaction.needKey  => $"{needKey}",
                     Interaction.needSomethingElse => $"{needSomethingElse}",
+                    Interaction.dialogue => $"{dialogueInteraction}",
                     _ => "Not supported"
                 };
                 

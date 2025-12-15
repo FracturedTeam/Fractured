@@ -4,6 +4,7 @@ namespace _Project.Scripts.Enums {
         Moveable,
         Memory,
         Door,
+        Dialogue,
         Shard
     }
 }

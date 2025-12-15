@@ -9,6 +9,7 @@ namespace _Project.Scripts.Enums {
         LeaveMemory,
         needKey,
         needFragment,
-        needSomethingElse
+        needSomethingElse,
+        dialogue
     }
 }
