@@ -1,37 +1,26 @@
+using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 
 namespace _Project.Scripts.UI
 {
-   public class MemoryManager : MonoBehaviour
-   {
+   public class MemoryManager : Singleton<MemoryManager> {
       private static readonly int ActiveMemory = Animator.StringToHash("ActiveMemory");
       [SerializeField] Animator animator;
       [SerializeField] Material memoryMat;
-        [SerializeField] Material brokenScreenMat;
+      [SerializeField] Material brokenScreenMat;
 
-        public static MemoryManager instance;
-
-      private void Awake()
-      {
-         if(!instance)  instance = this;
-         else Destroy(this);
-      }
-
-      public void SetMemory(bool isOn, Sprite sprite = null)
-      {
+      public void SetMemory(bool isOn, Sprite sprite = null) {
          if (!memoryMat)
               return;
 
-         if(sprite)
-         {
+         if(sprite) {
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
              brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
          }
          animator.SetBool(ActiveMemory, isOn);
       }
 
-      private static Texture2D TextureFromSprite(Sprite sprite)
-      {
+      private static Texture2D TextureFromSprite(Sprite sprite) {
          if (Mathf.Approximately(sprite.rect.width, sprite.texture.width)) 
             return sprite.texture;
          
