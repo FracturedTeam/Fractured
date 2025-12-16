@@ -8,36 +8,6 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
-        #region Save
-        [SerializeField, HideInInspector] private ObjectData data;
-        
-        public void Bind(ObjectData data) {
-            this.data = data;
-        }
-        
-        [ContextMenu("Load")]
-        public void Load() {
-            if (GetGlass) {
-                GetGlassInteract.ObjectOut = data.objectOut;
-                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
-            }
-            
-            transform.position = data.position;
-            GetCompletion = data.completion;
-            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
-            
-            SetInteract(data.canInteract);
-        }
-        
-        [ContextMenu("Save")]
-        public void SaveData() {
-            data.position = transform.position;
-            data.completion = GetCompletion;
-            data.canInteract = canBeInteractedWith;
-            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
-        }
-        #endregion
-        
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
@@ -58,6 +28,38 @@ namespace _Project.Scripts.ECS.BaseObjects
         private bool initialized = false;
         private bool canBeInteractedWith;
 
+        #region Save
+        [SerializeField, HideInInspector] private ObjectData data;
+        
+        public void Bind(ObjectData data) {
+            this.data = data;
+        }
+        
+        [ContextMenu("Load")]
+        public void Load() {
+            if (GetGlass) {
+                GetGlassInteract.ObjectOut = data.objectOut;
+                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
+            }
+            
+            if(GetInteractionType is ObjectType.Moveable)
+                transform.position = data.position;
+            GetCompletion = data.completion;
+            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
+            
+            SetInteract(data.canInteract);
+        }
+        
+        [ContextMenu("Save")]
+        public void SaveData() {
+            if(GetInteractionType is ObjectType.Moveable)
+                data.position = transform.position;
+            data.completion = GetCompletion;
+            data.canInteract = canBeInteractedWith;
+            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
+        }
+        #endregion
+        
         private void Awake() {
             Initialize();
         }
