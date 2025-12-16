@@ -22,6 +22,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal Dialogue cantInteractDialogue;
         [SerializeField] internal Dialogue failedDialogue;
         
+        [Header("Locked Behind a Memory")]
+        [SerializeField] internal bool locked;
+        [SerializeField] internal int memoryId;
+        
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
 

@@ -15,6 +15,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryInteractable : MonoBehaviour,  IInteractable {
         private BaseObject baseObject;
         
+        [SerializeField] private int unlockedMemoryId;
+        
         [SerializeField] private Sprite memorySprite;
         private KeyInteractable key;
         
@@ -96,7 +98,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = memorySprite
             });
             */
-            MemoryManager.Instance.SetMemory(true,  memorySprite);
+            MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
