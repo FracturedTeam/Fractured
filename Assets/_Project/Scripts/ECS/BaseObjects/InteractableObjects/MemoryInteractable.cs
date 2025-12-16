@@ -85,9 +85,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void CompleteObject() {
-            if (key) {
-                key.CompleteObject();
-            }
         }
 
         void DisplayMemory() {
@@ -99,7 +96,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = memorySprite
             });
             */
-            MemoryManager.instance.SetMemory(true,  memorySprite);
+            MemoryManager.Instance.SetMemory(true,  memorySprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
@@ -111,11 +108,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = null
             });
             */
-            MemoryManager.instance.SetMemory(false);
+            MemoryManager.Instance.SetMemory(false);
             Debug.Log($"[MemoryInteractable] Leaving memory");
         }
         
         public void ResetObject() {
+            if(key)
+                key.ResetObject();
             Debug.Log($"[MemoryInteractable] Reset {nameof(MemoryInteractable)}");
         }
 

@@ -7,7 +7,6 @@ namespace _Project.Scripts.Editor {
     public class SaveInstanceEditor : UnityEditor.Editor {
         public override void OnInspectorGUI() {
             var saveSystem = (SaveInstance) target;
-            var gameName = saveSystem.gameData;
             
             DrawDefaultInspector();
             

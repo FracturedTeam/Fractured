@@ -14,8 +14,9 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
-        public bool showInteraction;
-        public Interaction interaction;
+        public bool ShowInteraction;
+        public Interaction Interaction;
+        public string ObjectName;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -55,8 +56,8 @@ namespace _Project.Scripts.Player {
                 
                 canInteract = value;
                 EventBus<InteractEvent>.Raise(new InteractEvent {
-                    showInteraction = value,
-                    interaction = interactionType
+                    ShowInteraction = value,
+                    Interaction = interactionType
                 });
             }
         }
@@ -302,6 +303,10 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.ObtainShard;
                     RaiseInteraction();
                     return;
+                case ObjectType.Dialogue:
+                    interactionType = Interaction.dialogue;
+                    RaiseInteraction();
+                    return;
                 case ObjectType.None:
                 default:
                     return;
@@ -312,8 +317,9 @@ namespace _Project.Scripts.Player {
         
         private void RaiseInteraction() {
             EventBus<InteractEvent>.Raise(new InteractEvent {
-                showInteraction = canInteract,
-                interaction = interactionType
+                ShowInteraction = canInteract,
+                Interaction = interactionType,
+                ObjectName = potentialInteraction.ObjectName
             });
         }
         

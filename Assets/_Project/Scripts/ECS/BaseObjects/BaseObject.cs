@@ -8,6 +8,26 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects
 {
     public class BaseObject : MonoBehaviour {
+        public bool GetGlass =>  GetGlassInteract != null;
+        public GlassInteractable GetGlassInteract { get; private set; }
+        public IInteractable GetInteract  { get; set; }
+        public ObjectType GetInteractionType { get; set; }
+        public InteractionCompletion GetCompletion { get; set; }
+
+        [Header("Object Name")]
+        public string ObjectName;
+        
+        [Header("Dialogues")] 
+        [SerializeField] internal Dialogue successDialogue;
+        [SerializeField] internal Dialogue cantInteractDialogue;
+        [SerializeField] internal Dialogue failedDialogue;
+        
+        private MeshRenderer meshRenderer;
+        private Collider objectCollider;
+
+        private bool initialized = false;
+        private bool canBeInteractedWith;
+
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
         
@@ -22,7 +42,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
             }
             
-            transform.position = data.position;
+            if(GetInteractionType is ObjectType.Moveable)
+                transform.position = data.position;
             GetCompletion = data.completion;
             if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
             
@@ -31,30 +52,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [ContextMenu("Save")]
         public void SaveData() {
-            data.position = transform.position;
+            if(GetInteractionType is ObjectType.Moveable)
+                data.position = transform.position;
             data.completion = GetCompletion;
             data.canInteract = canBeInteractedWith;
             if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
         #endregion
         
-        public bool GetGlass =>  GetGlassInteract != null;
-        public GlassInteractable GetGlassInteract { get; private set; }
-        public IInteractable GetInteract  { get; set; }
-        public ObjectType GetInteractionType { get; set; }
-        public InteractionCompletion GetCompletion { get; set; }
-
-        [Header("Dialogues")] 
-        [SerializeField] internal Dialogue successDialogue;
-        [SerializeField] internal Dialogue cantInteractDialogue;
-        [SerializeField] internal Dialogue failedDialogue;
-        
-        private MeshRenderer meshRenderer;
-        private Collider objectCollider;
-
-        private bool initialized = false;
-        private bool canBeInteractedWith;
-
         private void Awake() {
             Initialize();
         }
@@ -85,15 +90,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         private void Update() {
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
-            
-            /*if (GetCollider() && GetInteractionType is ObjectType.Moveable) {
-                var size = Physics.OverlapBoxNonAlloc(transform.position, objectCollider.bounds.extents * 2, inObjects, transform.rotation, gameObject.layer);
-                
-                if (size > 0) {
-                    var dir = (inObjects[0].transform.position - transform.position).normalized;
-                    transform.position += new Vector3(dir.x, 0, dir.z) * 3;
-                }
-            }*/
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
@@ -109,6 +105,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract.CompleteObject();
         }
 
+        public void ResetInteract() {
+            GetInteract?.ResetObject();
+            GetGlassInteract?.ResetObject();
+        }
+        
         public void SetInteract(bool canInteract) {
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;

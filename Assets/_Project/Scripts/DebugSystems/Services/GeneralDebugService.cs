@@ -1,3 +1,4 @@
+using _Project.Scripts.GameServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -60,13 +61,22 @@ namespace _Project.Scripts.DebugSystems.Services {
             if(GUILayout.Button("Quit Game", buttonStyle))
                 Application.Quit();
             
+            GUILayout.Label("Save System", sectionStyle);
+            if(GUILayout.Button("Save game", buttonStyle))
+                GameSaveSystem.Instance.SaveGame();
+            if(GUILayout.Button("Load save", buttonStyle))
+                GameSaveSystem.Instance.LoadGame();
+            if(GUILayout.Button("Delete save", buttonStyle))
+                GameSaveSystem.Instance.DeleteGame(GameSaveSystem.Instance.saveFile.SaveName);
+            
             GUILayout.Label("Scenes", sectionStyle);
-            GUILayout.Label($"Current loaded scene {SceneManager.GetActiveScene().name}", debugStyle);
-            /*for(var i = 0; i < SceneManager.sceneCountInBuildSettings - 1; i++) {
-                var s =  SceneManager.GetSceneAt(i);
-                if (GUILayout.Button($"Load : {s.name}", buttonStyle))
-                    SceneManager.LoadScene(i);
-            }*/
+            GUILayout.Label($"Current loaded scene {GameSceneLoaderSystem.Instance.GetLoadedScenes()[0]}", debugStyle);
+            for(var i = 0; i < GameSceneLoaderSystem.Instance.allScenes.Length; i++) {
+                var s =  GameSceneLoaderSystem.Instance.allScenes[i];
+                if (GUILayout.Button($"Load : {s.SceneName}", buttonStyle)) {
+                    _ = GameSceneLoaderSystem.Instance.LoadSceneFromDebug(s);
+                }
+            }
             
             GUILayout.EndVertical();
         }
