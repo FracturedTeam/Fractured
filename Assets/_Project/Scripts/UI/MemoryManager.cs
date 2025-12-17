@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace _Project.Scripts.UI
       [SerializeField] Material brokenScreenMat;
       
       Dictionary<int, bool> memories = new Dictionary<int, bool>();
+      public bool isInMemory { get; private set; }
 
       public void SetMemory(bool isOn, int id = 0, Sprite sprite = null) {
          if (!memoryMat)
@@ -18,6 +20,8 @@ namespace _Project.Scripts.UI
          
          memories.TryAdd(id, true);
          memories[id] = true;
+
+         isInMemory = isOn;
          
          if(sprite) {
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
@@ -49,5 +53,6 @@ namespace _Project.Scripts.UI
          
          return memories[id];
       }
+      
    }
 }

@@ -223,6 +223,7 @@ namespace _Project.Scripts.GameServices {
         public bool InRedEditableArea() {
             return shardService.PlayerInRedEditableArea;
         }
+        
 
         #endregion
 
