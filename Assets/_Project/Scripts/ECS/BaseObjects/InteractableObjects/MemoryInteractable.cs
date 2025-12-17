@@ -60,16 +60,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     return;
                 }
-                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
-                    HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                    baseObject.successDialogue.alreadyInteracted = true;
-                }
                     
             }
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
+                {
                     DisplayMemory();
+                    if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
+                        HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                        baseObject.successDialogue.alreadyInteracted = true;
+                    }
+                }
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();
