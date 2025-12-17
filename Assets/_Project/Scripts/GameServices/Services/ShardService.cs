@@ -27,7 +27,7 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
             
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
@@ -131,6 +131,7 @@ namespace _Project.Scripts.GameServices.Services {
         public void SetBlueEditableArea(bool inArea) {
             PlayerInBlueEditableArea = inArea;
         }
+        
 
         public void Dispose() {
             shardsInteractable.Clear();
