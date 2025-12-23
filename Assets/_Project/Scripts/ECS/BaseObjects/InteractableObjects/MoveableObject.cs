@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Structs;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using DG.Tweening;
@@ -22,6 +23,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private KeyInteractable keyObjectNeeded;
         [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
         [SerializeField] private MoveableType moveableType;
+        [SerializeField] internal Dialogue specialDialogue;
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
@@ -177,11 +179,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
+
+            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.SwitchDialogue()
+                ? specialDialogue
+                : baseObject.successDialogue;
             
-            if (baseObject.successDialogue is not{ oneTime: true, alreadyInteracted: true })
+            if (dialogue is not{ oneTime: true, alreadyInteracted: true })
             {
-                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                baseObject.successDialogue.alreadyInteracted = true;
+                HudManager.Instance.SetText(dialogue.dialogue);
+                dialogue.alreadyInteracted = true;
             }
             
             Debug.Log("[MoveableObject] Grab object");

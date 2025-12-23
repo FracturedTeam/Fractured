@@ -233,6 +233,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             };
         }
 
+        public bool SwitchDialogue()
+        {
+            return UnderGlass() && interactableInBox;
+        }
+
         ///Draw The Gizmos of the collider, only in Editor
         private void OnDrawGizmos() {
             Gizmos.color = objectColor switch {
