@@ -233,12 +233,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             };
         }
 
-        public bool SwitchDialogue()
-        {
-            //quick fix, might need to be reworked down the line
-            return interactableInBox && Vector3.Distance(interactableInBox.transform.position, transform.position) > 1 ;
-        }
-
         ///Draw The Gizmos of the collider, only in Editor
         private void OnDrawGizmos() {
             Gizmos.color = objectColor switch {

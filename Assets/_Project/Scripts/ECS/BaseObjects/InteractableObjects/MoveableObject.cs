@@ -180,7 +180,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
 
-            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.SwitchDialogue()
+            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.ObjectOut
                 ? specialDialogue
                 : baseObject.successDialogue;
             
