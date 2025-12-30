@@ -2,7 +2,6 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
-using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -22,8 +21,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal Dialogue cantInteractDialogue;
         [SerializeField] internal Dialogue failedDialogue;
         
+        [Header("Locked Behind a Memory")]
+        [SerializeField] internal bool locked;
+        [SerializeField] internal int memoryId;
+        
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
+        
+        private FMODUnity.StudioEventEmitter emitter;
 
         private bool initialized = false;
         private bool canBeInteractedWith;
@@ -71,7 +76,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
-            
+                
+                if(TryGetComponent(out FMODUnity.StudioEventEmitter e))
+                    emitter = e;
+                
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
@@ -133,6 +141,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public MeshRenderer GetRendered() {
             return meshRenderer;
+        }
+
+        public FMODUnity.StudioEventEmitter GetEmitter() {
+            return emitter;
         }
     }
 

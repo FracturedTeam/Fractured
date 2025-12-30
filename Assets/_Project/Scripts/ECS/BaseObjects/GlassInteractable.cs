@@ -5,7 +5,9 @@ using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
+using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngineInternal;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -107,6 +109,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
+
+            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId))
+                return;
+            
             underBlue = 0;
             underRed = 0;
 

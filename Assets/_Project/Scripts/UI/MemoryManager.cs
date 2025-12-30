@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 
@@ -8,15 +10,24 @@ namespace _Project.Scripts.UI
       [SerializeField] Animator animator;
       [SerializeField] Material memoryMat;
       [SerializeField] Material brokenScreenMat;
+      
+      Dictionary<int, bool> memories = new Dictionary<int, bool>();
+      public bool isInMemory { get; private set; }
 
-      public void SetMemory(bool isOn, Sprite sprite = null) {
+      public void SetMemory(bool isOn, int id = 0, Sprite sprite = null) {
          if (!memoryMat)
               return;
+         
+         memories.TryAdd(id, true);
+         memories[id] = true;
 
+         isInMemory = isOn;
+         
          if(sprite) {
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
              brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
          }
+         
          animator.SetBool(ActiveMemory, isOn);
       }
 
@@ -34,5 +45,14 @@ namespace _Project.Scripts.UI
          
          return newText;
       }
+
+      public bool IsUnlockedMemory(int id)
+      {
+         if (!memories.ContainsKey(id))
+            memories.Add(id, false);
+         
+         return memories[id];
+      }
+      
    }
 }

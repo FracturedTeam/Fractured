@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
@@ -84,9 +85,9 @@ namespace _Project.Scripts.ECS
             if(!isHeld) return;
 
             if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) 
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea() && !MemoryManager.Instance.isInMemory)
                     return;
-                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea())
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea() && !MemoryManager.Instance.isInMemory)
                     return;
             }
 

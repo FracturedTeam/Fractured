@@ -55,12 +55,31 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 if((size >  0 && !isActivated) || (size <= 0 && isActivated))
                 {
                     isActivated = !isActivated;
-                    var dia = size > 0 ? baseObject.successDialogue : baseObject.failedDialogue;
-                    if (!dia.oneTime || !dia.alreadyInteracted)
+                    if (size > 0)
                     {
-                        HudManager.Instance.SetText(dia.dialogue);
-                        if (size > 0) baseObject.successDialogue.alreadyInteracted = true;
-                        else baseObject.failedDialogue.alreadyInteracted = true;
+                        var avatarActivated = false;
+
+                        for (int i = 0; i < size; i++)
+                        {
+                            if (results[i].gameObject.CompareTag("Player"))
+                                avatarActivated = true;
+                        }
+                        
+                        var dia = avatarActivated ? baseObject.successDialogue : baseObject.cantInteractDialogue;
+                        if (!dia.oneTime || !dia.alreadyInteracted)
+                        {
+                            HudManager.Instance.SetText(dia.dialogue);
+                            if (avatarActivated) baseObject.successDialogue.alreadyInteracted = true;
+                            else baseObject.cantInteractDialogue.alreadyInteracted = true;
+                        }
+                    }
+                    else
+                    {
+                        if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted)
+                        {
+                            HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                            baseObject.failedDialogue.alreadyInteracted = true;
+                        }
                     }
                 }
             }

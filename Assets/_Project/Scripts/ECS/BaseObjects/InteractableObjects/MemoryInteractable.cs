@@ -15,6 +15,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryInteractable : MonoBehaviour,  IInteractable {
         private BaseObject baseObject;
         
+        [SerializeField] private int unlockedMemoryId;
+        
         [SerializeField] private Sprite memorySprite;
         private KeyInteractable key;
         
@@ -58,16 +60,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     return;
                 }
-                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
-                    HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                    baseObject.successDialogue.alreadyInteracted = true;
-                }
                     
             }
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
+                {
                     DisplayMemory();
+                    if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
+                        HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+                        baseObject.successDialogue.alreadyInteracted = true;
+                    }
+                }
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();
@@ -96,7 +100,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = memorySprite
             });
             */
-            MemoryManager.Instance.SetMemory(true,  memorySprite);
+            MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
