@@ -41,10 +41,10 @@ namespace _Project.Scripts.GameServices {
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
             
-            /*if (deleteSaveOnPlay) {
+            if (deleteSaveOnPlay) {
                 var dataService = new FileDataService(new JsonSerializer());
                 dataService.DeleteAll();
-            }*/
+            }
             #endif
             
             //Populate the glassShardService
