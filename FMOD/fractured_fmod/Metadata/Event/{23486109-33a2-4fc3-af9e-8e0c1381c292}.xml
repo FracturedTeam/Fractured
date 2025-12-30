@@ -5,10 +5,10 @@
 			<value>Ouais</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{42430cd6-235f-4236-8507-8d03513ce277}</destination>
+			<destination>{3d66f57c-c201-44df-b315-be05fd919c17}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{a9a4f75b-9662-4edd-89a4-a1a990311229}</destination>
@@ -30,6 +30,9 @@
 		</relationship>
 		<relationship name="parameters">
 			<destination>{8c3d541a-741f-41fe-aff1-8dc9cca77ed2}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{7a11ad5f-9efe-4b43-80bf-29981b59dfe9}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{a9a4f75b-9662-4edd-89a4-a1a990311229}">
@@ -53,7 +56,7 @@
 			<destination>{70d44247-1d22-47be-863f-7187703da9e5}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{4a4b8c2f-3c86-49f6-8152-fe59eab1eb67}</destination>
+			<destination>{6b15bd4f-e03f-4b96-aed4-776a142337e5}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{88bd1c1b-41cd-49c1-baf8-a9e35dcc3fba}" />
@@ -93,6 +96,7 @@
 	<object class="MixerBusEffectChain" id="{43a5ae79-2da8-4129-be5f-8d1bd01d761b}">
 		<relationship name="effects">
 			<destination>{5273e168-e382-4180-acbb-a88015997f3d}</destination>
+			<destination>{82acb488-99a1-402d-b990-cb5aa47ffb6c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{4d144555-4909-403c-80d1-bbd3be876ddb}" />
@@ -107,6 +111,7 @@
 	</object>
 	<object class="MixerBusFader" id="{8913e8fe-1e7a-4d60-86ed-78db50110311}" />
 	<object class="MixerBusFader" id="{5273e168-e382-4180-acbb-a88015997f3d}" />
+	<object class="SpatialiserEffect" id="{82acb488-99a1-402d-b990-cb5aa47ffb6c}" />
 	<object class="SingleSound" id="{4e9a8fbb-682f-4f6b-8bc3-5356d78c7790}">
 		<relationship name="audioFile">
 			<destination>{640d4ace-7017-434d-a588-eed0c895fd87}</destination>
