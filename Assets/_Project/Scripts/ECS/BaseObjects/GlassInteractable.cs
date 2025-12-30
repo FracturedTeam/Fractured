@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.UI;
@@ -168,6 +169,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (objectInside && !ObjectOut)
                 ActivateObjectInside(!isUnder);
+            
+            if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
+            else AudioManager.Instance.PlayRevealObjectSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {

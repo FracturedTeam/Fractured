@@ -10,6 +10,8 @@ namespace _Project.Scripts.Enums {
         needKey,
         needFragment,
         needSomethingElse,
-        dialogue
+        dialogue,
+        EnterPressurePlate,
+        LeavePressurePlate
     }
 }

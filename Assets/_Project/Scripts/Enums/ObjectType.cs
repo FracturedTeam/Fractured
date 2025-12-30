@@ -5,6 +5,7 @@ namespace _Project.Scripts.Enums {
         Memory,
         Door,
         Dialogue,
-        Shard
+        Shard,
+        PressurePlate,
     }
 }

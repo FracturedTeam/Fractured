@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
@@ -141,6 +142,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var pos = GetGroundPos();
             transform.position = pos;
             
+            AudioManager.Instance.PlayDropSound(transform.position);
+            
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
@@ -174,12 +177,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             
-            
             isGrabbed = true;
             
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
 
+            //Call audio
+            if(keyObjectNeeded == null)
+                AudioManager.Instance.PlayPickUpSound(transform.position);
+            else
+                AudioManager.Instance.PlayPickUpKeySound(transform.position);
+            
             var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.ObjectOut
                 ? specialDialogue
                 : baseObject.successDialogue;
@@ -214,6 +222,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
+                AudioManager.Instance.PlayDropSound(transform.position);
+                
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
                 {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
@@ -237,6 +247,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
                     baseObject.GetCompletion = InteractionCompletion.Completed;
+                    
+                    AudioManager.Instance.PlayDropSound(transform.position);
+                    
                     Debug.Log("[MoveableObject] key location");
                 }
                 else {
@@ -256,6 +269,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
             tween = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
@@ -272,7 +286,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             tween = transform.DOMove(pos, 0.5f);
             tween = transform.DORotate(rot, 0.5f);
         }
-
+        
         private void ActiveCollision() {
             baseObject.SetCollider(true);
         }
@@ -308,17 +322,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private static readonly Collider[] _hits = new Collider[16];
         
         private bool IsColliding() {
-            /*var inObjects = new Collider[4];
-            var layer = LayerMask.GetMask("Interactable", "InteractableNoLUT");
-
-            if (!baseObject.GetCollider().enabled) return false;
-            var size = Physics.OverlapBoxNonAlloc(transform.position, boundExtent, inObjects, transform.rotation, layer);
-
-            if (size <= 0) return false;
-            
-            var dir = (inObjects[0].transform.position - transform.position).normalized;
-            transform.position += new Vector3(dir.x, 0, dir.z) * (boundExtent.magnitude * 2.5f);
-            return true;*/
             var myCol = baseObject.GetCollider();
             if (!myCol || !myCol.enabled)
                 return false;
@@ -381,5 +384,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.Initialize();
             return baseObject;
         }
+        #endregion
     }
 }
