@@ -127,11 +127,12 @@ namespace _Project.Scripts.ECS
             if(shard)
                 shard?.gameObject.SetActive(false);
         }
-        internal void ChangeHoldingState(bool isOn)
-        {
+        internal void ChangeHoldingState(bool isOn) {
             if (!canInteract) return;
 
             isHeld = isOn;
+            if (isOn) AudioManager.Instance.PlayGrabGlassSound();
+            else AudioManager.Instance.PlayDropGlassSound();
         }
 
         internal void ChangeStateActivation(bool isOn)

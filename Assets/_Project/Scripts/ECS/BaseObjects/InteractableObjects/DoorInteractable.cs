@@ -1,11 +1,8 @@
-using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
-using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.UI;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -48,6 +45,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (key) {
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
+                    if(doorType is DoorType.BigDoor) AudioManager.Instance.PlayLockedBigSound(transform.position);
+                    else AudioManager.Instance.PlayLockedSmallSound(transform.position);
+                    
                     if (other != null || baseObject.cantInteractDialogue is { alreadyInteracted: true, oneTime: true }) 
                         return;
                         
@@ -61,15 +61,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
                 hasBeenInteracted = true;
+                AudioManager.Instance.PlayOpenBigSound(transform.position);
                 GameInitializer.Instance.LoadNewLevel(sceneToLoad);
                 return;
             }
             
             if (linkedDoor.key) {
-                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed)
-                {
-                    if(baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
-                    {
+                if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
+                    AudioManager.Instance.PlayLockedSmallSound(transform.position);
+                   
+                    if(baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true }) {
                         HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                         baseObject.failedDialogue.alreadyInteracted =  true;
                     }
@@ -77,10 +78,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
             }
 
-            if(!linkedDoor.GetBaseObject().GetCollider().enabled) return;
+            if (!linkedDoor.GetBaseObject().GetCollider().enabled) {
+                AudioManager.Instance.PlayLockedSmallSound(transform.position);
+                return;
+            }
             
             if (interaction is not ObjectInteraction.Contextual) return;
             
+            AudioManager.Instance.PlayOpenSmallSound(transform.position);
             PlayerController.Instance.interact.StartUsingDoor();
             PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
         }

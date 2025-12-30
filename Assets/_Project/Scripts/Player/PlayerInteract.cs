@@ -37,6 +37,7 @@ namespace _Project.Scripts.Player {
         private bool canPlayerInteract = false;
         private bool canInteract;
         private bool inMemory = false;
+        private bool inPressurePlate = false;
 
         private PlayerController player;
         private CountdownTimer usingDoor;
@@ -110,6 +111,11 @@ namespace _Project.Scripts.Player {
                 
                 return;
             }
+
+            if (inPressurePlate) {
+                if(potentialInteraction != null) LeavePressurePlate();
+                return;
+            }
             
             if(CanGrab())
                 GrabObject();
@@ -117,10 +123,11 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if(IsMemory())
                 MemoryInteraction();
+            else if (IsPressurePlate())
+                PressurePlateInteraction();
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject)
-                    {
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
                         return;
                     }
                 }
@@ -175,6 +182,29 @@ namespace _Project.Scripts.Player {
             inMemory = false;
             
             Debug.Log($"[PlayerInteract] Leave memory");
+        }
+        
+        private void PressurePlateInteraction() {
+            if (potentialInteraction != null) {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate, currentInteraction.GetInteract);
+            }
+            else {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate);
+                inPressurePlate = true;
+            }
+            
+            
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Interact with Pressure Plate");
+        }
+
+        private void LeavePressurePlate() {
+            potentialInteraction?.OnInteract(ObjectInteraction.LeavePressurePlate);
+            potentialInteraction = null;
+            
+            inPressurePlate = false;
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Leave Pressure Plate");
         }
 
         #endregion
@@ -256,8 +286,14 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
-            if (IsInMemory()) {
+            if (inMemory) {
                 interactionType = Interaction.LeaveMemory;
+                RaiseInteraction();
+                return;
+            }
+
+            if (inPressurePlate) {
+                interactionType = Interaction.LeavePressurePlate;
                 RaiseInteraction();
                 return;
             }
@@ -369,6 +405,15 @@ namespace _Project.Scripts.Player {
             return false;
         }
 
+        private bool IsPressurePlate() {
+            if (potentialInteraction == null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out PressurePlate plate))
+                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.NotCompleted;
+            
+            return false;
+        }
+
         private bool CanContextualInteract() {
             return CanInteract;
         }
@@ -379,6 +424,10 @@ namespace _Project.Scripts.Player {
         
         public bool IsInMemory() {
             return inMemory;
+        }
+        
+        public bool IsInPressurePlate() {
+            return inPressurePlate;
         }
 
         public void StartUsingDoor() {
