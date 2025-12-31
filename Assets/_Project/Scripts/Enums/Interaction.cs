@@ -12,6 +12,8 @@ namespace _Project.Scripts.Enums {
         needSomethingElse,
         dialogue,
         EnterPressurePlate,
-        LeavePressurePlate
+        LeavePressurePlate,
+        PutObjectOnPressurePlate,
+        PickObjectOnPressurePlate,
     }
 }

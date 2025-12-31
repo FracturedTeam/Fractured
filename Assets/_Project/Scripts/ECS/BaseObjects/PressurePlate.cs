@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
 
@@ -20,18 +21,17 @@ namespace _Project.Scripts.ECS.BaseObjects {
         private float timer;
         
         private bool isActive;
-
-        private KeyInteractable key;
         private bool initialized = false;
 
+        private MoveableObject objectOnPressurePlate;
+        
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
                 else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(PressurePlate)}");
                 
-                if(TryGetComponent(out KeyInteractable k)) key = k;
-                
                 baseObject.GetInteractionType = ObjectType.PressurePlate;
+                baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             }
             
             baseObject?.SetInteract(true);
@@ -42,37 +42,41 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(other != null) return;
+            if(other != null && objectOnPressurePlate != null) return;
+            if (other != null && objectOnPressurePlate == null) {
+                objectOnPressurePlate = other as MoveableObject;
+                other.OnInteract(ObjectInteraction.Drop, this);
+                
+                isActive = true;
+                baseObject.GetCompletion = InteractionCompletion.Completed;
+            }
             
             if(interaction is not ObjectInteraction.Remove && baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             switch (interaction) {
                 case ObjectInteraction.EnterPressurePlate:
+                    if(objectOnPressurePlate != null) return;
                     isActive = true;
                     break;
                 case ObjectInteraction.LeavePressurePlate:
+                    if(objectOnPressurePlate != null) return;
                     isActive = false;
                     break;
                 case ObjectInteraction.Remove:
-                    key?.OnInteract(ObjectInteraction.Remove);
+                    if(objectOnPressurePlate is null) return;
+                    
+                    objectOnPressurePlate.GetBaseObject().SetInteract(true);
+                    PlayerController.Instance.interact.SetGrabbedObject(objectOnPressurePlate.GetBaseObject());
+                    objectOnPressurePlate = null;
+                    
+                    isActive = false;
+                    baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                     break;
                 default:
                     Debug.LogWarning($"[PressurePlate] Unhandled interaction {interaction} on {nameof(PressurePlate)}");
                     break;
             }
-        }
-
-        public void Tick(float deltaTime) {
-            if (!baseObject.CanBeInteractedWith()) {
-                timer -= deltaTime;
-                return;
-            }
             
-            if(baseObject.GetCompletion is InteractionCompletion.Completed && !isActive) isActive = true;
-            else if(baseObject.GetCompletion is InteractionCompletion.NotCompleted && isActive) isActive = false;
-            
-            timer += isActive ? deltaTime : -deltaTime;
-
             if (isActive) {
                 var dia = baseObject.GetCompletion is InteractionCompletion.Completed ? baseObject.successDialogue : baseObject.cantInteractDialogue;
                 if (!dia.oneTime || !dia.alreadyInteracted) {
@@ -88,8 +92,15 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     baseObject.failedDialogue.alreadyInteracted = true;
                 }
             }
+        }
+
+        public void Tick(float deltaTime) {
+            if (!baseObject.CanBeInteractedWith()) {
+                timer -= deltaTime;
+                return;
+            }
             
-            
+            timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
 
             foreach (var obj in movedObjects) {
@@ -100,7 +111,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void CompleteObject() {
-            
+            isActive = true;
         }
 
         public void ResetObject() {

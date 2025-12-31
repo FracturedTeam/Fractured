@@ -69,6 +69,7 @@ namespace _Project.Scripts.Player {
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator);
             var obtainShardState = new PlayerObtainShardState(this, animator);
+            var pressurePlateState = new PlayerPressurePlateState(this, animator);
             
             //Define subState
             //var grabObject = new GrabObjectState(this, animator, grabObjectClip);
@@ -95,6 +96,10 @@ namespace _Project.Scripts.Player {
             At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor() && !interact.IsCarrying()));
             At(carryState, doorState, new FuncPredicate(() => interact.UsingDoor()));
             At(doorState, carryState, new FuncPredicate(() => !interact.UsingDoor() && interact.IsCarrying()));
+            
+            //Use PressurePlate
+            At(locomotionState, pressurePlateState, new FuncPredicate(() => interact.IsInPressurePlate()));
+            At(pressurePlateState, locomotionState, new FuncPredicate(() => !interact.IsInPressurePlate()));
             
             //Obtenir un éclat de verre
             //Faut que je regarde comment trigger le state
