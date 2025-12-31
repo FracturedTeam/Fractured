@@ -31,6 +31,10 @@ namespace _Project.Scripts.UI
         [SerializeField] private string needKey = "Door locked";
         [SerializeField] private string needSomethingElse = "[E] to interact";
         [SerializeField] private string dialogueInteraction = "...";
+        [SerializeField] private string enterPressurePlate = "[E] to interact";
+        [SerializeField] private string leavePressurePlate = "[E] to leave";
+        [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
+        [SerializeField] private string pickObjectPressurePlate = "Hold [E] to pick up";
         
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
@@ -105,6 +109,10 @@ namespace _Project.Scripts.UI
                     Interaction.needKey  => $"{needKey}",
                     Interaction.needSomethingElse => $"{needSomethingElse}",
                     Interaction.dialogue => $"{dialogueInteraction}",
+                    Interaction.EnterPressurePlate => $"{enterPressurePlate}",
+                    Interaction.LeavePressurePlate => $"{leavePressurePlate}",
+                    Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
+                    Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
                 

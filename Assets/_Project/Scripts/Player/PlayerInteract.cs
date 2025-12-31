@@ -185,7 +185,7 @@ namespace _Project.Scripts.Player {
         }
         
         private void PressurePlateInteraction() {
-            if (potentialInteraction != null) {
+            if (currentInteraction != null) {
                 potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate, currentInteraction.GetInteract);
             }
             else {
@@ -216,10 +216,13 @@ namespace _Project.Scripts.Player {
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
-                    Debug.Log("Play Remove");
+                }
+                else if (potentialInteraction.GetInteractionType is ObjectType.PressurePlate) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
                 }
                 
                 interactDuration = 0;
@@ -343,6 +346,14 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.dialogue;
                     RaiseInteraction();
                     return;
+                case ObjectType.PressurePlate:
+                    if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is not null)
+                        interactionType = Interaction.PutObjectOnPressurePlate;
+                    else if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is null)
+                        interactionType = IsInPressurePlate() ? Interaction.LeavePressurePlate : Interaction.EnterPressurePlate;
+                    else interactionType = Interaction.PickObjectOnPressurePlate;
+                    RaiseInteraction();
+                    return;
                 case ObjectType.None:
                 default:
                     return;
@@ -379,7 +390,7 @@ namespace _Project.Scripts.Player {
         }
         
         private bool CanGrab() {
-            if(potentialInteraction ==  null) return false;
+            if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
                 return CanInteract && !HasObject && currentInteraction == null && moveable.CanBeGrab();
@@ -409,7 +420,7 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction == null) return false;
             
             if (potentialInteraction.TryGetComponent(out PressurePlate plate))
-                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.NotCompleted;
+                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.Completed;
             
             return false;
         }

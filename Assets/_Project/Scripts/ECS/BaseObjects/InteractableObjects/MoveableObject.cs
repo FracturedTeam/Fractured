@@ -192,8 +192,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 ? specialDialogue
                 : baseObject.successDialogue;
             
-            if (dialogue is not{ oneTime: true, alreadyInteracted: true })
-            {
+            if (dialogue is not{ oneTime: true, alreadyInteracted: true }) {
                 HudManager.Instance.SetText(dialogue.dialogue);
                 dialogue.alreadyInteracted = true;
             }
@@ -233,6 +232,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 Debug.Log("[MoveableObject] Drop on ground");
             }
             else {
+                if (other.GetBaseObject().GetInteract as PressurePlate) {
+                    transform.SetParent(originalParent);
+                    TweenObjectDrop(other.GetBaseObject().transform);
+                    
+                    baseObject.SetInteract(false);
+                    baseObject.SetCollider(false);
+                    
+                    AudioManager.Instance.PlayDropSound(transform.position);
+                    
+                    isGrabbed = false;
+                    PlayerController.Instance.interact.SetDropObject();
+                    
+                    Debug.Log("[MoveableObject] Pressure Plate Location");
+                    return;
+                }
+                
                 if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
                     Debug.LogError("[MoveableObject] Not a key location !");
                     return;
