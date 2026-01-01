@@ -135,7 +135,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         void OnDrawGizmos() {
-            Gizmos.DrawWireCube(triggerPoint.position, new Vector3(3f,4.5f,1));
+            if(doorType is DoorType.SmallDoor)
+                Gizmos.DrawWireCube(triggerPoint.position, new Vector3(3f,4.5f,1));
         }
     }
 }
