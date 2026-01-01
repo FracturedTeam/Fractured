@@ -272,6 +272,7 @@ namespace _Project.Scripts.Player {
             if (HasObject) {
                 if (potentialInteraction == currentInteraction) potentialInteraction = null;
             }
+            
         }
 
         void SetPlayerInteraction() {
@@ -285,7 +286,14 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction.CanBeInteractedWith())
                 CanInteract = canPlayerInteract && size > 0;
             else
+            {
                 CanInteract = false;
+                return;
+            }
+            
+            if (potentialInteraction != null && UnityEngine.Camera.main)
+                HudManager.InteractionSetPosition(
+                    UnityEngine.Camera.main.WorldToScreenPoint(potentialInteraction.GetUIPosition()));
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update

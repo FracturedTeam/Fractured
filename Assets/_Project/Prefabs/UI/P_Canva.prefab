@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 3113192550041682403}
   - component: {fileID: 527380730450585855}
   m_Layer: 5
-  m_Name: Background
+  m_Name: interactImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,10 +107,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6877591446580449748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 780, y: 80}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3113192550041682403
 CanvasRenderer:
@@ -1495,6 +1495,7 @@ MonoBehaviour:
   AutoUnparentOnAwake: 1
   interactionUI: {fileID: 1026744800605279112}
   interactionText: {fileID: 1249318999072714066}
+  interactionImage: {fileID: 527380730450585855}
   grab: Pick up
   obtainShard: Break the frame
   enterMemory: View Memory
@@ -1506,6 +1507,16 @@ MonoBehaviour:
   needKey: Door locked
   needSomethingElse: '[E] to interact'
   dialogueInteraction: ...
+  enterPressurePlate: '[E] to interact'
+  leavePressurePlate: '[E] to leave'
+  putObjectPressurePlate: '[E] to put object on'
+  pickObjectPressurePlate: Hold [E] to pick up
+  spriteNormal: {fileID: -1643592744, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
+  spriteGlass: {fileID: -235758299, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
+  spriteUseDoor: {fileID: -295308186, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
+  spriteKey: {fileID: 836058013, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
+  spriteUp: {fileID: -213739919, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
+  spriteDown: {fileID: 1177196074, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
   memoryHUD: {fileID: 7167016436826003744}
   memoryImage: {fileID: 4888903144888406352}
   glassText: {fileID: 3572007939286609663}
@@ -2368,10 +2379,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6877591446580449748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 125, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4183135216986211625
 CanvasRenderer:
@@ -2428,12 +2439,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 20
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 36
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2606,6 +2617,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6877591446580449748}
   - component: {fileID: 1026744800605279112}
+  - component: {fileID: 1741107484251672004}
+  - component: {fileID: 9072669413076467609}
+  - component: {fileID: 3407491358302043774}
   m_Layer: 5
   m_Name: Interact
   m_TagString: Untagged
@@ -2632,7 +2646,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 102.96}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1026744800605279112
 CanvasGroup:
@@ -2646,6 +2660,70 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1741107484251672004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477191440671700215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 3
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!222 &9072669413076467609
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477191440671700215}
+  m_CullTransparentMesh: 1
+--- !u!114 &3407491358302043774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477191440671700215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 4.17
 --- !u!1 &7484243781849089462
 GameObject:
   m_ObjectHideFlags: 0

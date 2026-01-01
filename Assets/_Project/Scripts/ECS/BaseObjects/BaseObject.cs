@@ -3,6 +3,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -24,6 +25,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Locked Behind a Memory")]
         [SerializeField] internal bool locked;
         [SerializeField] internal int memoryId;
+
+        [Header("HUD")] 
+        [SerializeField] private Transform hudTransformPoint;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -145,6 +149,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public FMODUnity.StudioEventEmitter GetEmitter() {
             return emitter;
+        }
+
+        public Vector3 GetUIPosition() {
+            return hudTransformPoint ? hudTransformPoint.position : transform.position;
         }
     }
 
