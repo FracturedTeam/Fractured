@@ -1,5 +1,7 @@
 using System;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
 using UnityEngine;
@@ -54,7 +56,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(GetInteractionType is ObjectType.Moveable)
                 transform.position = data.position;
             GetCompletion = data.completion;
-            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
+            
+            if (GetCompletion is InteractionCompletion.Completed) {
+                if (GetInteractionType is ObjectType.PressurePlate) {
+                    var p = GetInteract as PressurePlate;
+                    p.objectOnPressurePlate = SaveInstance.Instance.gameData.ObjectDatas[data.objectIndexOnDisplay].baseObject.GetInteract as MoveableObject;
+                }
+                CompleteObject();
+            }
             
             SetInteract(data.canInteract);
         }
@@ -63,7 +72,21 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SaveData() {
             if(GetInteractionType is ObjectType.Moveable)
                 data.position = transform.position;
+                    
             data.completion = GetCompletion;
+            if (GetCompletion is InteractionCompletion.Completed && GetInteractionType is ObjectType.PressurePlate) {
+                var p = GetInteract as PressurePlate;
+                var index = 0;
+                for (var i = 0; i < SaveInstance.Instance.gameData.ObjectDatas.Count; i++) {
+                    if (p.objectOnPressurePlate.GetBaseObject() == SaveInstance.Instance.gameData.ObjectDatas[i].baseObject) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                data.objectIndexOnDisplay = index;
+            }
+            
             data.canInteract = canBeInteractedWith;
             if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
@@ -163,6 +186,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public InteractionCompletion completion;
         public bool canInteract;
         public bool objectOut;
+        public int objectIndexOnDisplay;
     }
 }
 

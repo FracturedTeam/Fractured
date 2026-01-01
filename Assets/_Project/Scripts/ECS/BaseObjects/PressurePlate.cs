@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
@@ -23,7 +24,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         private bool isActive;
         private bool initialized = false;
 
-        private MoveableObject objectOnPressurePlate;
+        public MoveableObject objectOnPressurePlate;
         
         public void Initialize() {
             if (!initialized) {
@@ -112,6 +113,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public void CompleteObject() {
             isActive = true;
+            objectOnPressurePlate?.OnInteract(ObjectInteraction.Drop, this);
         }
 
         public void ResetObject() {
