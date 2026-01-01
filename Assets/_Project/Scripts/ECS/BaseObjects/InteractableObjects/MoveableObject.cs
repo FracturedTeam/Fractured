@@ -94,6 +94,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     else
                         Debug.Log("[MoveableObject] Cannot drop object !");
                     break;
+                case ObjectInteraction.DropNoTimer:
+                    if (isGrabbed)
+                        OnDropNoTimer(other);
+                    else
+                        Debug.Log("[MoveableObject] Cannot drop object !");
+                    break;
                 //Reset Object
                 case ObjectInteraction.Reset:
                     ResetObject();
@@ -278,6 +284,40 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     return;
                 }
+            }
+            
+            isGrabbed = false;
+            PlayerController.Instance.interact.SetDropObject();
+        }
+        
+        private void OnDropNoTimer(IInteractable other) {
+            if (other == null) {
+                if(ObstructedSpace())
+                {
+                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
+
+                var pos = GetGroundPos();
+                
+                transform.SetParent(originalParent);
+                TweenObjectDrop(pos, transform.eulerAngles);
+                
+                baseObject.SetInteract(true);
+                
+                AudioManager.Instance.PlayDropSound(transform.position);
+                
+                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
+                {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                }
+                
+                Debug.Log("[MoveableObject] Drop on ground");
             }
             
             isGrabbed = false;

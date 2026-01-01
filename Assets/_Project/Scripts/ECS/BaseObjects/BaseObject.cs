@@ -153,6 +153,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+            Debug.Log($"[BaseObject] Set Collider {isOn} on {gameObject.name}");
         }
         
         public Collider GetCollider() => objectCollider;

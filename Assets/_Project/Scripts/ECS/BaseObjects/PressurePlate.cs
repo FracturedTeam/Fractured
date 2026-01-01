@@ -24,7 +24,8 @@ namespace _Project.Scripts.ECS.BaseObjects {
         private bool isActive;
         private bool initialized = false;
 
-        public MoveableObject objectOnPressurePlate;
+        [HideInInspector] public MoveableObject objectOnPressurePlate;
+        [SerializeField] BaseObject[] lockedBehindThis;
         
         public void Initialize() {
             if (!initialized) {
@@ -33,6 +34,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 
                 baseObject.GetInteractionType = ObjectType.PressurePlate;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+                
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(false);
+                }
             }
             
             baseObject?.SetInteract(true);
@@ -86,12 +91,24 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     if (baseObject.GetCompletion is InteractionCompletion.Completed) baseObject.successDialogue.alreadyInteracted = true;
                     else baseObject.cantInteractDialogue.alreadyInteracted = true;
                 }
+
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(true);
+                }
+                
+                AudioManager.Instance.PlayPlateActiveSound(transform.position);
             }
             else {
                 if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted) {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                     baseObject.failedDialogue.alreadyInteracted = true;
                 }
+                
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(false);
+                }
+                
+                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
             }
         }
 
@@ -114,6 +131,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
         public void CompleteObject() {
             isActive = true;
             objectOnPressurePlate?.OnInteract(ObjectInteraction.Drop, this);
+            
+            foreach (var locked in lockedBehindThis) {
+                locked.SetInteract(true);
+            }
         }
 
         public void ResetObject() {
