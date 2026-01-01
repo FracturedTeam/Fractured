@@ -34,8 +34,10 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.LabelField("Small Door Settings", EditorStyles.boldLabel);
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 door.exitPoint = (Transform)EditorGUILayout.ObjectField("Exit Point", door.exitPoint, typeof(Transform), true);
+                door.triggerPoint = (Transform)EditorGUILayout.ObjectField("Trigger Point", door.triggerPoint, typeof(Transform), true);
                 door.linkedDoor = (DoorInteractable)EditorGUILayout.ObjectField("Linked Door", door.linkedDoor, typeof(DoorInteractable), true);
                 door.exitDir = (Direction)EditorGUILayout.EnumPopup("Exit Direction", door.exitDir);
+                door.doorAnimator = (Animator)EditorGUILayout.ObjectField("DoorAnimator", door.doorAnimator, typeof(Animator), true);
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space();
             }
@@ -48,6 +50,8 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.PropertyField(positionField, true);
                 EditorGUILayout.PropertyField(directionField, true);
                 serializedObject.ApplyModifiedProperties();
+                
+                door.doorAnimator = (Animator)EditorGUILayout.ObjectField("DoorAnimator", door.doorAnimator, typeof(Animator), true);
                 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space();

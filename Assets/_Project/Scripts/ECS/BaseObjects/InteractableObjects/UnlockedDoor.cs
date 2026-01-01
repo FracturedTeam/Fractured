@@ -9,7 +9,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         protected override void ResolvePuzzle() {
             base.ResolvePuzzle();
             
-            GetBaseObject().SetInteract(true);
+            //GetBaseObject().SetInteract(true);
+            GetBaseObject().SetCollider(false);
             AudioManager.Instance.PlayOneShot(unlockedDoorEvent, transform.position);
         }
     }

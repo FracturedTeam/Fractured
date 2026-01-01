@@ -41,6 +41,7 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingDoor;
+        private CountdownTimer InteractCooldown;
         private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
@@ -77,6 +78,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingDoor = new CountdownTimer(timerToUseDoor);
+            InteractCooldown = new CountdownTimer(0.5f);
         }
 
         private void OnEnable() {
@@ -104,6 +106,8 @@ namespace _Project.Scripts.Player {
             }
             
             interactDuration = 0;
+            
+            if(InteractCooldown.IsRunning) return;
             
             if (inMemory) {
                 if(memoryInteraction != null) LeaveMemory();
@@ -136,6 +140,8 @@ namespace _Project.Scripts.Player {
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
+            
+            InteractCooldown.Start();
         }
 
         #region InteractionMethods
