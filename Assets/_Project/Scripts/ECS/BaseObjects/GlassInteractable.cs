@@ -182,7 +182,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(!InteractableInBoxActive()) return;
             
-            selfMoveable.OnInteract(ObjectInteraction.Drop);
+            selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
             ObjectOut = true;
         }
