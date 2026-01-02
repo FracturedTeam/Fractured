@@ -40,9 +40,12 @@ namespace _Project.Scripts.Player {
 
         [Header("Animations Settings")]
         [SerializeField] private Animator animator;
+        [SerializeField] public AnimationClip useDoorClip;
         [SerializeField] private AnimationClip grabObjectClip;
         [SerializeField] private AnimationClip dropObjectClip;
+        [SerializeField] private AnimationClip failedDropClip;
         [SerializeField] private AnimationClip breakObjectClip;
+        [SerializeField] private AnimationClip failedDoorClip;
         
 
         private void Start() {
@@ -68,14 +71,15 @@ namespace _Project.Scripts.Player {
             var fallState = new PlayerFallState(this, animator);
             var carryState = new PlayerCarryState(this, animator);
             var memoryState = new PlayerMemoryState(this, animator);
-            var doorState = new PlayerUsingDoorState(this, animator);
+            var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
             var pressurePlateState = new PlayerPressurePlateState(this, animator);
             
             //Define subState
             var grabObject = new GrabObjectState(this, animator, grabObjectClip);
             var dropObject = new DropObjectState(this, animator, dropObjectClip);
-            var failedDropObject = new DropObjectState(this, animator, dropObjectClip);
+            var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
+            var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
             
             //Define all states transitions
             //Locomotion State
@@ -84,10 +88,10 @@ namespace _Project.Scripts.Player {
             
             //Carrying State
             At(locomotionState, grabObject, new FuncPredicate(() => interact.IsCarrying()));
-            At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.animationExitTimer.IsFinished));
+            At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.IsClipFinished()));
             
             At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
-            At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.animationExitTimer.IsFinished));
+            At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.IsClipFinished()));
             
             At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
             At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));
@@ -98,10 +102,14 @@ namespace _Project.Scripts.Player {
             At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
             
             //Using door state
-            At(locomotionState, doorState, new FuncPredicate(() => interact.UsingDoor()));
-            At(doorState, locomotionState, new FuncPredicate(() => !interact.UsingDoor() && !interact.IsCarrying()));
-            At(carryState, doorState, new FuncPredicate(() => interact.UsingDoor()));
-            At(doorState, carryState, new FuncPredicate(() => !interact.UsingDoor() && interact.IsCarrying()));
+            At(locomotionState, doorState, new FuncPredicate(() => interact.triggerDoor));
+            At(doorState, locomotionState, new FuncPredicate(() => !interact.triggerDoor && doorState.animationExitTimer.IsFinished));
+            /*At(carryState, doorState, new FuncPredicate(() => interact.UsingLockedDoor()));
+            At(doorState, carryState, new FuncPredicate(() => !interact.UsingLockedDoor() && interact.IsCarrying()));*/
+            
+            //Failed Door
+            At(locomotionState, failedDoor, new FuncPredicate(() => interact.UsingLockedDoor()));
+            At(failedDoor, locomotionState, new FuncPredicate(() => !interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
             
             //Use PressurePlate
             At(locomotionState, pressurePlateState, new FuncPredicate(() => interact.IsInPressurePlate()));

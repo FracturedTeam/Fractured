@@ -53,6 +53,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     if(doorType is DoorType.BigDoor) AudioManager.Instance.PlayLockedBigSound(transform.position);
                     else AudioManager.Instance.PlayLockedSmallSound(transform.position);
                     
+                    PlayerController.Instance.interact.StartUsingLockedDoor();
+                    
                     if (other != null || baseObject.cantInteractDialogue is { alreadyInteracted: true, oneTime: true }) 
                         return;
                         
@@ -66,15 +68,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (doorType is DoorType.BigDoor) {
                 if (sceneToLoad == null) return;
                 hasBeenInteracted = true;
-                AudioManager.Instance.PlayOpenBigSound(transform.position);
-                GameInitializer.Instance.LoadNewLevel(sceneToLoad);
+                PlayerController.Instance.interact.TriggerBigDoor(sceneToLoad, transform.position);
                 return;
             }
             
             if (linkedDoor.key) {
                 if(linkedDoor.key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
                     AudioManager.Instance.PlayLockedSmallSound(transform.position);
-                   
+                    PlayerController.Instance.interact.StartUsingLockedDoor();
+                    
                     if(baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true }) {
                         HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                         baseObject.failedDialogue.alreadyInteracted =  true;
@@ -96,7 +98,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
                 if (size > 0) {
                     AudioManager.Instance.PlayOpenSmallSound(transform.position);
-                    PlayerController.Instance.interact.StartUsingDoor();
                     PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
                 }
                 

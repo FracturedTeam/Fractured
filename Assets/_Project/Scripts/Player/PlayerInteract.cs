@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
@@ -38,10 +40,11 @@ namespace _Project.Scripts.Player {
         private bool canInteract;
         private bool inMemory = false;
         private bool inPressurePlate = false;
-        public bool triggerShard = false;
+        [HideInInspector] public bool triggerShard = false;
+        [HideInInspector] public bool triggerDoor = false;
 
         private PlayerController player;
-        private CountdownTimer usingDoor;
+        private CountdownTimer usingLockedDoor;
         private CountdownTimer InteractCooldown;
         private float timerToUseDoor = 0.15f;
         
@@ -78,7 +81,7 @@ namespace _Project.Scripts.Player {
             
             size = 0;
 
-            usingDoor = new CountdownTimer(timerToUseDoor);
+            usingLockedDoor = new CountdownTimer(timerToUseDoor);
             InteractCooldown = new CountdownTimer(0.5f);
         }
 
@@ -458,13 +461,24 @@ namespace _Project.Scripts.Player {
             return inPressurePlate;
         }
 
-        public void StartUsingDoor() {
-            usingDoor.Start();
-            usingDoor.Reset(timerToUseDoor);
+        public void StartUsingLockedDoor() {
+            usingLockedDoor.Start();
+            usingLockedDoor.Reset(timerToUseDoor);
         }
         
-        public bool UsingDoor() {
-            return usingDoor.IsRunning;
+        public bool UsingLockedDoor() {
+            return usingLockedDoor.IsRunning;
+        }
+
+        public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
+            triggerDoor = true;
+            StartCoroutine(LoadScene(toLoad, position));
+        }
+
+        private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
+            yield return new WaitForSeconds(player.useDoorClip.length);
+            AudioManager.Instance.PlayOpenBigSound(position);
+            GameInitializer.Instance.LoadNewLevel(toLoad);
         }
     }
 }
