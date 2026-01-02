@@ -18,6 +18,7 @@ namespace _Project.Scripts.UI
         [Header("HUD")]
         [SerializeField] private CanvasGroup interactionUI;
         [SerializeField] private TextMeshProUGUI interactionText;
+        [SerializeField] private Image interactionImage;
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
@@ -31,6 +32,18 @@ namespace _Project.Scripts.UI
         [SerializeField] private string needKey = "Door locked";
         [SerializeField] private string needSomethingElse = "[E] to interact";
         [SerializeField] private string dialogueInteraction = "...";
+        [SerializeField] private string enterPressurePlate = "[E] to interact";
+        [SerializeField] private string leavePressurePlate = "[E] to leave";
+        [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
+        [SerializeField] private string pickObjectPressurePlate = "Hold [E] to pick up";
+        
+        [Header("Interaction Image")] 
+        [SerializeField] private Sprite spriteNormal;
+        [SerializeField] private Sprite spriteGlass;
+        [SerializeField] private Sprite spriteUseDoor;
+        [SerializeField] private Sprite spriteKey;
+        [SerializeField] private Sprite spriteUp;
+        [SerializeField] private Sprite spriteDown;
         
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
@@ -56,7 +69,6 @@ namespace _Project.Scripts.UI
             EventBus<InteractEvent>.Register(interactEventBinding);
             memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
             EventBus<MemoryEvent>.Register(memoryEventBinding);
-            
         }
 
         void OnDisable() {
@@ -92,7 +104,6 @@ namespace _Project.Scripts.UI
         
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
-
                 interactionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
                     Interaction.ObtainShard => $"{obtainShard}",
@@ -105,10 +116,33 @@ namespace _Project.Scripts.UI
                     Interaction.needKey  => $"{needKey}",
                     Interaction.needSomethingElse => $"{needSomethingElse}",
                     Interaction.dialogue => $"{dialogueInteraction}",
+                    Interaction.EnterPressurePlate => $"{enterPressurePlate}",
+                    Interaction.LeavePressurePlate => $"{leavePressurePlate}",
+                    Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
+                    Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
+                };
+
+                //a vérifier avec les GAs les bons sprites
+                interactionImage.sprite = e.Interaction switch
+                {
+                    Interaction.Grab => spriteUp,
+                    Interaction.ObtainShard => spriteGlass,
+                    Interaction.UseDoor => spriteUseDoor,
+                    Interaction.UseKey => spriteKey,
+                    Interaction.UseFragment => spriteDown,
+                    Interaction.needFragment => spriteGlass,
+                    Interaction.needKey => spriteKey,
+                    //Interaction.dialogue => 
+                    _ => spriteNormal
                 };
                 
                 interactTween = interactionUI.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
+            }
+
+            public static void InteractionSetPosition(Vector3 position)
+            {
+                Instance.interactionUI.transform.position = position;
             }
 
             void ShowMemory(MemoryEvent e) {
