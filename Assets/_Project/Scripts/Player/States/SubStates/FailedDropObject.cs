@@ -3,10 +3,10 @@ using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
-    public class GrabObjectState : PlayerBaseState{
+    public class FailedDropObject : PlayerBaseState {
         private readonly CountdownTimer animationExitTimer;
 
-        public GrabObjectState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+        public FailedDropObject(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
             animationExitTimer = new CountdownTimer(clip.length);
         }
         
@@ -15,7 +15,7 @@ namespace _Project.Scripts.Player.States.SubStates {
             
             //Set the grab animation when entering holding state
             animator.SetLayerWeight(FullBodyLayer, 1);
-            animator.CrossFade(GrabObjectHash, defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(FailedDropHash, defaultCrossFadeDuration, FullBodyLayer);
         }
 
         public override void OnUpdate() {
