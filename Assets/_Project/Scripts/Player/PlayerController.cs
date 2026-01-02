@@ -93,8 +93,11 @@ namespace _Project.Scripts.Player {
             At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
             At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.IsClipFinished()));
             
-            At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
-            At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));
+            At(carryState, failedDropObject, new FuncPredicate(() => interact.triggerFailedDrop));
+            At(failedDropObject, carryState, new FuncPredicate(() => !interact.triggerFailedDrop && failedDropObject.IsClipFinished()));
+            
+            /*At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
+            At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));*/
             
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));

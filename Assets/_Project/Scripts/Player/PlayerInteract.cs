@@ -42,6 +42,7 @@ namespace _Project.Scripts.Player {
         private bool inPressurePlate = false;
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
+        [HideInInspector] public bool triggerFailedDrop = false;
 
         private PlayerController player;
         private CountdownTimer usingLockedDoor;
