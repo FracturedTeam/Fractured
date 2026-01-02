@@ -108,7 +108,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         SetDoor(true);
                 }
                 else { //Pour les portes qui peuvent disparaitre
-                    if(baseObject.GetCollider().enabled && linkedDoor.baseObject.GetCollider().enabled) 
+                    if(baseObject.GetRendered().enabled && linkedDoor.baseObject.GetRendered().enabled) 
                         SetDoor(true);
                     else
                         SetDoor(false);
@@ -135,8 +135,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         void OnDrawGizmos() {
-            if(doorType is DoorType.SmallDoor)
-                Gizmos.DrawWireCube(triggerPoint.position, new Vector3(3f,4.5f,1));
+            if (doorType is DoorType.SmallDoor) {
+                Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+                Gizmos.DrawWireCube(triggerPoint.localPosition, new Vector3(3f,4.5f,1));
+            }
         }
     }
 }
