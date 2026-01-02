@@ -211,6 +211,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(ObstructedSpace())
                 {
+                    PlayerController.Instance.interact.triggerFailedDrop = true;
                     if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
                     {
                         HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
