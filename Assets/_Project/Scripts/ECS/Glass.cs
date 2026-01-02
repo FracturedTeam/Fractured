@@ -149,6 +149,8 @@ namespace _Project.Scripts.ECS
         internal bool IsColliding(Vector3 position)
         {
             if (!mainCamera)
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
+            if (mainCamera == null)
                 return false;
 
             Vector3 closest = polygonCollider2D.ClosestPoint(position);
