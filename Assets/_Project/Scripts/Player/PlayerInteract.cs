@@ -38,6 +38,7 @@ namespace _Project.Scripts.Player {
         private bool canInteract;
         private bool inMemory = false;
         private bool inPressurePlate = false;
+        public bool triggerShard = false;
 
         private PlayerController player;
         private CountdownTimer usingDoor;
@@ -135,6 +136,8 @@ namespace _Project.Scripts.Player {
                         return;
                     }
                 }
+                if(potentialInteraction.GetInteractionType is ObjectType.Shard)
+                    triggerShard = true;
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
             }

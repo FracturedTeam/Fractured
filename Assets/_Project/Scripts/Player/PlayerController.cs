@@ -42,6 +42,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] private Animator animator;
         [SerializeField] private AnimationClip grabObjectClip;
         [SerializeField] private AnimationClip dropObjectClip;
+        [SerializeField] private AnimationClip breakObjectClip;
         
 
         private void Start() {
@@ -68,12 +69,13 @@ namespace _Project.Scripts.Player {
             var carryState = new PlayerCarryState(this, animator);
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator);
-            var obtainShardState = new PlayerObtainShardState(this, animator);
+            var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
             var pressurePlateState = new PlayerPressurePlateState(this, animator);
             
             //Define subState
-            //var grabObject = new GrabObjectState(this, animator, grabObjectClip);
-            //var dropObject = new DropObjectState(this, animator, dropObjectClip);
+            var grabObject = new GrabObjectState(this, animator, grabObjectClip);
+            var dropObject = new DropObjectState(this, animator, dropObjectClip);
+            var failedDropObject = new DropObjectState(this, animator, dropObjectClip);
             
             //Define all states transitions
             //Locomotion State
@@ -81,8 +83,12 @@ namespace _Project.Scripts.Player {
             At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded() && !interact.IsCarrying()));
             
             //Carrying State
-            At(locomotionState, carryState, new FuncPredicate(() => interact.IsCarrying()));
-            At(carryState, locomotionState, new FuncPredicate(() => !interact.IsCarrying()));
+            At(locomotionState, grabObject, new FuncPredicate(() => interact.IsCarrying()));
+            At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.animationExitTimer.IsFinished));
+            
+            At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
+            At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.animationExitTimer.IsFinished));
+            
             At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
             At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));
             
@@ -102,8 +108,8 @@ namespace _Project.Scripts.Player {
             At(pressurePlateState, locomotionState, new FuncPredicate(() => !interact.IsInPressurePlate()));
             
             //Obtenir un éclat de verre
-            //Faut que je regarde comment trigger le state
-            //At(locomotionState, obtainShardState, new FuncPredicate(() => interact.));
+            At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));
+            At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);

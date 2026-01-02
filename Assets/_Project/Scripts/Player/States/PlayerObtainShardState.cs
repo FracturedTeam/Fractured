@@ -1,9 +1,12 @@
 using _Project.Scripts.Systems.StateMachine;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerObtainShardState : PlayerBaseState {
-        public PlayerObtainShardState(PlayerController player, Animator animator) : base(player, animator) {
+        public readonly CountdownTimer animationExitTimer;
+        public PlayerObtainShardState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+            animationExitTimer = new CountdownTimer(clip.length);
         }
 
         public override void OnEnter() {
@@ -13,6 +16,9 @@ namespace _Project.Scripts.Player.States {
             
             player.interact.SetInteract(false);
             player.movement.FreezeController();
+            
+            animationExitTimer.Start();
+            player.interact.triggerShard = false;
         }
 
         public override void OnUpdate() {
