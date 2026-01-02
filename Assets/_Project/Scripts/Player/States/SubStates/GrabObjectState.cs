@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
     public class GrabObjectState : PlayerBaseState{
-        private readonly CountdownTimer animationExitTimer;
+        public readonly CountdownTimer animationExitTimer;
 
         public GrabObjectState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
             animationExitTimer = new CountdownTimer(clip.length);
