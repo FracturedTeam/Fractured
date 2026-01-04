@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Picture_Dead_Glass
-  m_Shader: {fileID: -6465566751694194690, guid: 4325d32f9522e124fbb34f4720d71925, type: 3}
+  m_Name: M_GlassPicture_02_Broken
+  m_Shader: {fileID: -6465566751694194690, guid: 0f057dde4148dd1499947649c52b2783, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -39,6 +39,14 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BrokenEdgesTexture:
+        m_Texture: {fileID: 2800000, guid: 97c3b8d73a6fea6479e41638a0df9513, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BrokenInteriorTexture:
+        m_Texture: {fileID: 2800000, guid: 71a46fac24b77594d9e3469f5a6258bb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -108,7 +116,8 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _Broken: 0
+    - _Broken: 1
+    - _BrokenEdgeFadeAmount: 1.81
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -124,7 +133,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0
+    - _Metallic: 0.4
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -151,8 +160,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.43529412, g: 0.43529412, b: 0.43529412, a: 1}
+    - _BrokenEdgeFadeSmoothstep: {r: 0, g: 1, b: 0, a: 0}
+    - _BrokenEdges2Color: {r: 0, g: 0, b: 0, a: 1}
+    - _BrokenEdges2Offset: {r: 0.001, g: 0.001, b: 0, a: 0}
     - _BrokenEdgesColor: {r: 5.3403144, g: 5.3403144, b: 5.3403144, a: 1}
-    - _BrokenTextureTiling: {r: 0.2, g: 0.23, b: 0, a: 0}
+    - _BrokenTextureOffset: {r: -0.24, g: 0, b: 0, a: 0}
+    - _BrokenTextureTiling: {r: 0.22, g: 1, b: 0, a: 0}
     - _BrokenVariationColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

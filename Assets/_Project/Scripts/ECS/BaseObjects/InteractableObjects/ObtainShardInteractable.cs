@@ -3,6 +3,7 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -11,9 +12,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         [Header("Settings")]
         [SerializeField] public Glass[] shards;
-        
+
+        [SerializeField] private ParticleSystem obtainShardParticleSystem; //ajout� par Paloma
+        [SerializeField] private Material GlassBaseMaterial; //ajout� par Paloma
+        [SerializeField] private Material GlassBrokenMaterial; //ajout� par Paloma
+
         private bool initialized = false;
         
+
         public void Initialize() { //To-do save l'obtention pour insantier a nouveau le fragment
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
@@ -22,6 +28,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetInteractionType = ObjectType.Shard;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                 baseObject?.SetInteract(true);
+
+                GameObject glassMesh = transform.Find("Glass").gameObject; //ajout� par Paloma
+                if (GlassBaseMaterial) { glassMesh.GetComponent<MeshRenderer>().material = GlassBaseMaterial; } //ajout� par Paloma
             }
 
             initialized = true;
@@ -31,6 +40,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+
             if(baseObject.GetCompletion is InteractionCompletion.Completed)
             {
                 if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
@@ -50,6 +60,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
                 AudioManager.Instance.PlayBreakGlassSound(transform.position);
+
+                GameObject glassMesh = transform.Find("Glass").gameObject; //ajout� par Paloma
+                if (GlassBrokenMaterial) { glassMesh.GetComponent<MeshRenderer>().material = GlassBrokenMaterial; } //ajout� par Paloma
+                if (obtainShardParticleSystem){Instantiate(obtainShardParticleSystem, transform);} //ajout� par Paloma
             }
         }
 
@@ -61,15 +75,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         void ObtainShard() {
+
             baseObject.GetCompletion = InteractionCompletion.Completed;
             baseObject.SetInteract(false);
-            
+
             GameInitializer.Instance.AddShards(shards);
             
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
         }
 
         public void ResetObject() {
+            GameObject glassMesh = transform.Find("Glass").gameObject; //ajout� par Paloma
+            if (GlassBaseMaterial) { glassMesh.GetComponent<MeshRenderer>().material = GlassBaseMaterial; } //ajout� par Paloma
+
             baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             baseObject?.SetInteract(true);
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Reset Object");
