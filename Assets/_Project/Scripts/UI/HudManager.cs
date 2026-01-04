@@ -19,6 +19,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private CanvasGroup interactionUI;
         [SerializeField] private TextMeshProUGUI interactionText;
         [SerializeField] private Image interactionImage;
+        [field:SerializeField] public Transform glassHolder {get; private set;}
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
