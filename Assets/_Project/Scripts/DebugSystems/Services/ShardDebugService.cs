@@ -1,3 +1,4 @@
+using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
 using UnityEngine;
 
@@ -69,6 +70,9 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
+            if (GUILayout.Button("Reset interactable", buttonStyle)) {
+                GameInitializer.Instance.ResetInteractable();
+            }
             
             GUILayout.EndVertical();
         }

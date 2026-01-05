@@ -1,37 +1,37 @@
+using System.Collections.Generic;
+using _Project.Scripts.GameServices;
+using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 
 namespace _Project.Scripts.UI
 {
-   public class MemoryManager : MonoBehaviour
-   {
+   public class MemoryManager : Singleton<MemoryManager> {
       private static readonly int ActiveMemory = Animator.StringToHash("ActiveMemory");
       [SerializeField] Animator animator;
       [SerializeField] Material memoryMat;
-        [SerializeField] Material brokenScreenMat;
+      [SerializeField] Material brokenScreenMat;
+      
+      Dictionary<int, bool> memories = new Dictionary<int, bool>();
+      public bool isInMemory { get; private set; }
 
-        public static MemoryManager instance;
-
-      private void Awake()
-      {
-         if(!instance)  instance = this;
-         else Destroy(this);
-      }
-
-      public void SetMemory(bool isOn, Sprite sprite = null)
-      {
+      public void SetMemory(bool isOn, int id = 0, Sprite sprite = null) {
          if (!memoryMat)
               return;
+         
+         memories.TryAdd(id, true);
+         memories[id] = true;
 
-         if(sprite)
-         {
+         isInMemory = isOn;
+         
+         if(sprite) {
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
              brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
          }
+         
          animator.SetBool(ActiveMemory, isOn);
       }
 
-      private static Texture2D TextureFromSprite(Sprite sprite)
-      {
+      private static Texture2D TextureFromSprite(Sprite sprite) {
          if (Mathf.Approximately(sprite.rect.width, sprite.texture.width)) 
             return sprite.texture;
          
@@ -45,5 +45,14 @@ namespace _Project.Scripts.UI
          
          return newText;
       }
+
+      public bool IsUnlockedMemory(int id)
+      {
+         if (!memories.ContainsKey(id))
+            memories.Add(id, false);
+         
+         return memories[id];
+      }
+      
    }
 }

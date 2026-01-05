@@ -8,7 +8,11 @@ namespace _Project.Scripts.UI {
         }
 
         public void NewGame() {
-            GameSceneLoaderSystem.Instance.NewGame();
+            GameSaveSystem.Instance.NewGame();
+        }
+
+        public void LoadGame() {
+            GameSaveSystem.Instance.LoadGame();
         }
     }
 }

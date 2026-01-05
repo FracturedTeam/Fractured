@@ -5,7 +5,9 @@ using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
+using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngineInternal;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -107,6 +109,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
+
+            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId))
+                return;
+            
             underBlue = 0;
             underRed = 0;
 
@@ -177,7 +183,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             ObjectOut = true;
         }
 
-        public void ResetObject() {
+        public void ResetObjectUnderShard() {
             underRed = 0;
             underBlue = 0;
             shardsOnTop.Clear();
@@ -187,10 +193,23 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (!objectInside || ObjectOut) return;
             
-            if(interactableInBox?.gameObject == null) Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have alternateObjectMesh");
-            interactableInBox?.gameObject.SetActive(false);
+            SetInteractableInBox(false);
         }
 
+        public void ResetObject() {
+            underRed = 0;
+            underBlue = 0;
+            shardsOnTop.Clear();
+            
+            baseObject!.SetRenderer(true);
+            baseObject!.SetCollider(true);
+
+            if (!objectInside) return;
+
+            ObjectOut = false;
+            SetInteractableInBox(false);
+        }
+        
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
 

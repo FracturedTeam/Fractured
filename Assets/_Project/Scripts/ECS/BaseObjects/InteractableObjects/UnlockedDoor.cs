@@ -5,9 +5,5 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             GetBaseObject().SetInteract(true);
         }
-        
-        public override void ResetObject() {
-            base.ResetObject();
-        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
@@ -16,7 +17,7 @@ namespace _Project.Scripts.Player {
         [ContextMenu("Load")]
         public void Load(PlayerData data) {
             this.data = data;
-            transform.position = data.position;
+            movement.SetPosition(data.position, Direction.Up);
         }
         
         [ContextMenu("Save")]

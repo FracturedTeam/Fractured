@@ -124,19 +124,25 @@ namespace _Project.Scripts.GameServices {
             shardService.PopulateService(_interactables, _shards, _text);
         }
 
-        public void EmptyInteractable() {
+        public void EmptyAll() {
+            EmptyInteractable();
+            EmptyShards();
+        }
+        
+        private void EmptyInteractable() {
             shardService.interactables.Clear();
         }
 
-        public void EmptyShards() {
+        private void EmptyShards() {
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
         }
 
-        public void RepopulateInteractable() {
+        public void RepopulateInteractableOnLoadLevel() {
             shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
+            GameSaveSystem.Instance.LoadData();
         }
 
         public BaseObject[] GetInteractables() {
@@ -177,6 +183,14 @@ namespace _Project.Scripts.GameServices {
             shardService.AddShards(newShards.ToArray());
             GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
         }
+
+        public void ResetInteractable() {
+            EmptyShards();
+            foreach (var interactable in shardService.interactables)
+                interactable.ResetInteract();
+            
+            GameSceneSettings.Instance.ResetShard();
+        }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);
@@ -208,6 +222,19 @@ namespace _Project.Scripts.GameServices {
         
         public bool InRedEditableArea() {
             return shardService.PlayerInRedEditableArea;
+        }
+        
+
+        #endregion
+
+        #region LoadScene
+
+        public void LoadNewLevel(SceneSettings sceneSettings) {
+            GameSaveSystem.Instance.SaveGame();
+            EmptyAll();
+            ResetCameras();
+            
+            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);
         }
 
         #endregion

@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Structs;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using DG.Tweening;
@@ -12,6 +13,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MoveableObject : MonoBehaviour, IInteractable, IMoveable {
         private BaseObject baseObject;
         private Transform originalParent;
+        private Vector3 originalPosition;
         
         private Vector3 boundExtent;
         private Vector3 boundCenter;
@@ -21,6 +23,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private KeyInteractable keyObjectNeeded;
         [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
         [SerializeField] private MoveableType moveableType;
+        [SerializeField] internal Dialogue specialDialogue;
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
@@ -32,8 +35,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize() {
             if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
+                if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
+                
+                originalPosition = transform.position;
                 
                 baseObject.GetInteractionType = ObjectType.Moveable;
                 baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
@@ -57,8 +62,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             initialized = true;
             
             originalParent = transform.parent;
-            boundExtent = baseObject.GetCollider().bounds.extents;
-            boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+            if (!baseObject.GetCollider().enabled) {
+                baseObject.SetCollider(true);
+                boundExtent = baseObject.GetCollider().bounds.extents;
+                boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+                baseObject.SetCollider(false);
+            }
+            else {
+                boundExtent = baseObject.GetCollider().bounds.extents;
+                boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
+            }
+            
             
             canBeGrab = true;
         }
@@ -91,10 +105,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+            IsColliding();
+            
             if (!baseObject.GetGlass) return;
 
             if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
-            ResetObject();
+            DropUnderShard();
         }
 
         public void CompleteObject() {
@@ -109,7 +125,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         
-        public void ResetObject() {
+        private void DropUnderShard() {
             tween?.Pause();
             tween?.Kill();
             DOTween.Kill(transform);
@@ -126,7 +142,30 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.position = pos;
             
             PlayerController.Instance.interact.SetDropObject();
-            baseObject.GetGlassInteract.ResetObject();
+            baseObject.GetGlassInteract?.ResetObjectUnderShard();
+            
+            Debug.Log("[MoveableObject] Drop under shard");
+        }
+
+        public void ResetObject() {
+            baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+            
+            tween?.Pause();
+            tween?.Kill();
+            DOTween.Kill(transform);
+            
+            colTimer.Pause();
+            
+            baseObject.SetInteract(true);
+            baseObject.SetCollider(true);
+            
+            isGrabbed = false;
+            
+            transform.SetParent(originalParent);
+            transform.position = originalPosition;
+            
+            PlayerController.Instance.interact.SetDropObject();
+            baseObject.GetGlassInteract?.ResetObject();
             
             Debug.Log("[MoveableObject] Reset object");
         }
@@ -140,11 +179,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             transform.SetParent(PlayerController.Instance.transform);
             TweenObjectOnPlayer();
+
+            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.ObjectOut
+                ? specialDialogue
+                : baseObject.successDialogue;
             
-            if (baseObject.successDialogue is not{ oneTime: true, alreadyInteracted: true })
+            if (dialogue is not{ oneTime: true, alreadyInteracted: true })
             {
-                HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                baseObject.successDialogue.alreadyInteracted = true;
+                HudManager.Instance.SetText(dialogue.dialogue);
+                dialogue.alreadyInteracted = true;
             }
             
             Debug.Log("[MoveableObject] Grab object");
@@ -260,6 +303,63 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
             
             return pos;
+        }
+
+        private static readonly Collider[] _hits = new Collider[16];
+        
+        private bool IsColliding() {
+            /*var inObjects = new Collider[4];
+            var layer = LayerMask.GetMask("Interactable", "InteractableNoLUT");
+
+            if (!baseObject.GetCollider().enabled) return false;
+            var size = Physics.OverlapBoxNonAlloc(transform.position, boundExtent, inObjects, transform.rotation, layer);
+
+            if (size <= 0) return false;
+            
+            var dir = (inObjects[0].transform.position - transform.position).normalized;
+            transform.position += new Vector3(dir.x, 0, dir.z) * (boundExtent.magnitude * 2.5f);
+            return true;*/
+            var myCol = baseObject.GetCollider();
+            if (!myCol || !myCol.enabled)
+                return false;
+
+            var mask = LayerMask.GetMask(
+                "Interactable",
+                "InteractableNoLUT",
+                "Default",
+                "Walkable"
+            );
+
+            var count = Physics.OverlapBoxNonAlloc(
+                myCol.bounds.center,
+                myCol.bounds.extents,
+                _hits,
+                myCol.transform.rotation,
+                mask,
+                QueryTriggerInteraction.Ignore
+            );
+
+            var resolved = false;
+
+            for (var i = 0; i < count; i++)
+            {
+                var other = _hits[i];
+                if (!other || other == myCol)
+                    continue;
+
+                if (Physics.ComputePenetration(
+                        myCol, myCol.transform.position, myCol.transform.rotation,
+                        other, other.transform.position, other.transform.rotation,
+                        out Vector3 dir,
+                        out float distance))
+                {
+                    // Push OUT of collision
+                    transform.position += dir * (distance + 0.001f);
+                    resolved = true;
+                }
+            }
+
+            return resolved;
         }
         
 		public MoveableType GetObjectType(){
