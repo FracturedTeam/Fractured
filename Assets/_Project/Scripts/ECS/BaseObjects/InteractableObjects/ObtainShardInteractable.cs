@@ -59,10 +59,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
-
                 GameObject glassMesh = transform.Find("Glass").gameObject; //ajouté par Paloma
                 if (GlassBrokenMaterial) { glassMesh.GetComponent<MeshRenderer>().material = GlassBrokenMaterial; } //ajouté par Paloma
-                if (obtainShardParticleSystem){Instantiate(obtainShardParticleSystem, transform);} //ajouté par Paloma
+                if (obtainShardParticleSystem) { Instantiate(obtainShardParticleSystem, transform); } //ajouté par Paloma
+                AudioManager.Instance.PlayBreakGlassSound(transform.position);
             }
         }
 
