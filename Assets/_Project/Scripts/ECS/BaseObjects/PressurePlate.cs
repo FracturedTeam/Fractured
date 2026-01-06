@@ -1,6 +1,9 @@
 using System;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
 
@@ -10,9 +13,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
         private BaseObject baseObject;
         
         [Header("Pressure Plate Settings")]
-        [SerializeField] private Transform pressurePlateTriggerPos;
-        [SerializeField] private Vector3 pressurePlateSize;
-        [SerializeField] private LayerMask interactLayerMask;
         [SerializeField] private float timeToMoveObject;
         
         [Header("Moved Object Settings")]
@@ -20,18 +20,24 @@ namespace _Project.Scripts.ECS.BaseObjects {
         
         private float lerpValue;
         private float timer;
-        private bool isActivated;
-        private readonly Collider[] results = new Collider[10];
-
+        
+        private bool isActive;
         private bool initialized = false;
 
+        [HideInInspector] public MoveableObject objectOnPressurePlate;
+        [SerializeField] BaseObject[] lockedBehindThis;
+        
         public void Initialize() {
-
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
                 else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(PressurePlate)}");
                 
-                gameObject.layer = LayerMask.NameToLayer("Walkable");
+                baseObject.GetInteractionType = ObjectType.PressurePlate;
+                baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+                
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(false);
+                }
             }
             
             baseObject?.SetInteract(true);
@@ -42,47 +48,77 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if(other != null && objectOnPressurePlate != null) return;
+            if (other != null && objectOnPressurePlate == null) {
+                objectOnPressurePlate = other as MoveableObject;
+                other.OnInteract(ObjectInteraction.Drop, this);
+                
+                isActive = true;
+                baseObject.GetCompletion = InteractionCompletion.Completed;
+            }
+            
+            if(interaction is not ObjectInteraction.Remove && baseObject.GetCompletion is InteractionCompletion.Completed) return;
+            
+            switch (interaction) {
+                case ObjectInteraction.EnterPressurePlate:
+                    if(objectOnPressurePlate != null) return;
+                    isActive = true;
+                    break;
+                case ObjectInteraction.LeavePressurePlate:
+                    if(objectOnPressurePlate != null) return;
+                    isActive = false;
+                    break;
+                case ObjectInteraction.Remove:
+                    if(objectOnPressurePlate is null) return;
+                    
+                    objectOnPressurePlate.GetBaseObject().SetInteract(true);
+                    PlayerController.Instance.interact.SetGrabbedObject(objectOnPressurePlate.GetBaseObject());
+                    objectOnPressurePlate = null;
+                    
+                    isActive = false;
+                    baseObject.GetCompletion = InteractionCompletion.NotCompleted;
+                    break;
+                default:
+                    Debug.LogWarning($"[PressurePlate] Unhandled interaction {interaction} on {nameof(PressurePlate)}");
+                    break;
+            }
+            
+            if (isActive) {
+                var dia = baseObject.GetCompletion is InteractionCompletion.Completed ? baseObject.successDialogue : baseObject.cantInteractDialogue;
+                if (!dia.oneTime || !dia.alreadyInteracted) {
+                    HudManager.Instance.SetText(dia.dialogue);
+                    
+                    if (baseObject.GetCompletion is InteractionCompletion.Completed) baseObject.successDialogue.alreadyInteracted = true;
+                    else baseObject.cantInteractDialogue.alreadyInteracted = true;
+                }
+
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(true);
+                }
+                
+                AudioManager.Instance.PlayPlateActiveSound(transform.position);
+            }
+            else {
+                if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted) {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                }
+                
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(false);
+                }
+                
+                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+            }
         }
 
         public void Tick(float deltaTime) {
             if (!baseObject.CanBeInteractedWith()) {
                 timer -= deltaTime;
+                return;
             }
-            else {
-                var size = Physics.OverlapBoxNonAlloc(pressurePlateTriggerPos.position, pressurePlateSize, results, transform.rotation, interactLayerMask );
-                timer += size >  0 ? deltaTime : -deltaTime;
-                
-                if((size >  0 && !isActivated) || (size <= 0 && isActivated))
-                {
-                    isActivated = !isActivated;
-                    if (size > 0)
-                    {
-                        var avatarActivated = false;
-
-                        for (int i = 0; i < size; i++)
-                        {
-                            if (results[i].gameObject.CompareTag("Player"))
-                                avatarActivated = true;
-                        }
-                        
-                        var dia = avatarActivated ? baseObject.successDialogue : baseObject.cantInteractDialogue;
-                        if (!dia.oneTime || !dia.alreadyInteracted)
-                        {
-                            HudManager.Instance.SetText(dia.dialogue);
-                            if (avatarActivated) baseObject.successDialogue.alreadyInteracted = true;
-                            else baseObject.cantInteractDialogue.alreadyInteracted = true;
-                        }
-                    }
-                    else
-                    {
-                        if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted)
-                        {
-                            HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
-                            baseObject.failedDialogue.alreadyInteracted = true;
-                        }
-                    }
-                }
-            }
+            
+            timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
 
             foreach (var obj in movedObjects) {
@@ -93,7 +129,12 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void CompleteObject() {
+            isActive = true;
+            objectOnPressurePlate?.OnInteract(ObjectInteraction.Drop, this);
             
+            foreach (var locked in lockedBehindThis) {
+                locked.SetInteract(true);
+            }
         }
 
         public void ResetObject() {
@@ -101,21 +142,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public BaseObject GetBaseObject() {
             return baseObject;
-        }
-
-        private void OnDrawGizmos() {
-            Gizmos.color = Color.cadetBlue;
-            Gizmos.DrawWireCube(pressurePlateTriggerPos.position, pressurePlateSize);
-
-            Gizmos.color = Color.red;
-            foreach (var obj in movedObjects) {
-                Gizmos.DrawWireSphere(obj.initialPos.position, 0.5f);
-            }
-            
-            Gizmos.color = Color.green;
-            foreach (var obj in movedObjects) {
-                Gizmos.DrawWireSphere(obj.movedPos.position, 0.5f);
-            }
         }
     }
 

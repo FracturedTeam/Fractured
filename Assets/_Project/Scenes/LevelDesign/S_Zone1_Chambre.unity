@@ -3139,12 +3139,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!1001 &365642783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4497,12 +4499,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!1001 &545900836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10127,12 +10131,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!43 &1040184161
 Mesh:
   m_ObjectHideFlags: 0
@@ -13777,6 +13783,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5097335268525527173, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5677691744506975756, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5677691744506975756, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7763848895202634821, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
@@ -20210,12 +20224,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!43 &1915291177
 Mesh:
   m_ObjectHideFlags: 0
@@ -22445,12 +22461,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!114 &2301892989197504234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22605,12 +22623,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!114 &5842056486451953658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22625,6 +22645,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 0
   memorySprite: {fileID: 21300000, guid: 6125479e9a895b24e9df779a28a7172f, type: 3}
+  associateMemorySound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!4 &6300798554093924755
 Transform:
   m_ObjectHideFlags: 0
@@ -22678,6 +22705,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.InteractableObjects.MoveableObject
   keyObjectNeeded: {fileID: 2301892989197504234}
   moveableType: 3
+  specialDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
 --- !u!1 &7911123690309921701
 GameObject:
   m_ObjectHideFlags: 0

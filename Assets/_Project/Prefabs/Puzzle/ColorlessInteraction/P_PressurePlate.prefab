@@ -126,40 +126,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7490049348158790331}
-  - {fileID: 590945240549504354}
   - {fileID: 5953869752208411117}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5660870035908506239
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 590945240549504354}
-  m_Layer: 0
-  m_Name: TriggerPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &590945240549504354
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5660870035908506239}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.35, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5527445867229274044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6168984435731348990
 GameObject:
@@ -174,6 +142,7 @@ GameObject:
   - component: {fileID: 5433427904451458645}
   - component: {fileID: 7914744859639943675}
   - component: {fileID: 5473137435246128761}
+  - component: {fileID: 4501089007471668542}
   m_Layer: 0
   m_Name: PressurePlate
   m_TagString: Untagged
@@ -190,8 +159,8 @@ Transform:
   m_GameObject: {fileID: 6168984435731348990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1.75, y: 0.2, z: 1.75}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5527445867229274044}
@@ -264,12 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
+  ObjectName: 
   successDialogue:
     dialogue: {fileID: 0}
     oneTime: 0
@@ -282,6 +246,14 @@ MonoBehaviour:
     dialogue: {fileID: 0}
     oneTime: 0
     alreadyInteracted: 0
+  locked: 0
+  memoryId: 0
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
 --- !u!114 &5473137435246128761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,16 +266,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d4a98e36b8482493caa813a9c0c322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.PressurePlate
-  pressurePlateTriggerPos: {fileID: 590945240549504354}
-  pressurePlateSize: {x: 0.7, y: 0.15, z: 0.7}
-  interactLayerMask:
-    serializedVersion: 2
-    m_Bits: 75904
   timeToMoveObject: 1
   movedObjects:
   - objectMoved: {fileID: 1680239980623189626}
     initialPos: {fileID: 7305547877780494093}
     movedPos: {fileID: 6937373451456998431}
+--- !u!65 &4501089007471668542
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168984435731348990}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7475853719079711462
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,9 +37,11 @@ namespace _Project.Scripts.Player {
         private bool canPlayerInteract = false;
         private bool canInteract;
         private bool inMemory = false;
+        private bool inPressurePlate = false;
 
         private PlayerController player;
         private CountdownTimer usingDoor;
+        private CountdownTimer InteractCooldown;
         private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
@@ -76,6 +78,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingDoor = new CountdownTimer(timerToUseDoor);
+            InteractCooldown = new CountdownTimer(0.5f);
         }
 
         private void OnEnable() {
@@ -104,10 +107,17 @@ namespace _Project.Scripts.Player {
             
             interactDuration = 0;
             
+            if(InteractCooldown.IsRunning) return;
+            
             if (inMemory) {
                 if(memoryInteraction != null) LeaveMemory();
                 else Debug.LogError("[PlayerInteract] Current memory interaction is null");
                 
+                return;
+            }
+
+            if (inPressurePlate) {
+                if(potentialInteraction != null) LeavePressurePlate();
                 return;
             }
             
@@ -117,10 +127,11 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if(IsMemory())
                 MemoryInteraction();
+            else if (IsPressurePlate())
+                PressurePlateInteraction();
             else if (CanContextualInteract()) {
                 if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject)
-                    {
+                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
                         return;
                     }
                 }
@@ -129,6 +140,8 @@ namespace _Project.Scripts.Player {
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
+            
+            InteractCooldown.Start();
         }
 
         #region InteractionMethods
@@ -176,6 +189,29 @@ namespace _Project.Scripts.Player {
             
             Debug.Log($"[PlayerInteract] Leave memory");
         }
+        
+        private void PressurePlateInteraction() {
+            if (currentInteraction != null) {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate, currentInteraction.GetInteract);
+            }
+            else {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate);
+                inPressurePlate = true;
+            }
+            
+            
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Interact with Pressure Plate");
+        }
+
+        private void LeavePressurePlate() {
+            potentialInteraction?.OnInteract(ObjectInteraction.LeavePressurePlate);
+            potentialInteraction = null;
+            
+            inPressurePlate = false;
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Leave Pressure Plate");
+        }
 
         #endregion
         
@@ -186,10 +222,13 @@ namespace _Project.Scripts.Player {
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is InteractionCompletion.Completed or InteractionCompletion.NotCompleted) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
-                    Debug.Log("Play Remove");
+                }
+                else if (potentialInteraction.GetInteractionType is ObjectType.PressurePlate) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
                 }
                 
                 interactDuration = 0;
@@ -239,6 +278,7 @@ namespace _Project.Scripts.Player {
             if (HasObject) {
                 if (potentialInteraction == currentInteraction) potentialInteraction = null;
             }
+            
         }
 
         void SetPlayerInteraction() {
@@ -252,12 +292,25 @@ namespace _Project.Scripts.Player {
             if (potentialInteraction.CanBeInteractedWith())
                 CanInteract = canPlayerInteract && size > 0;
             else
+            {
                 CanInteract = false;
+                return;
+            }
+            
+            if (potentialInteraction != null && UnityEngine.Camera.main)
+                HudManager.InteractionSetPosition(
+                    UnityEngine.Camera.main.WorldToScreenPoint(potentialInteraction.GetUIPosition()));
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
-            if (IsInMemory()) {
+            if (inMemory) {
                 interactionType = Interaction.LeaveMemory;
+                RaiseInteraction();
+                return;
+            }
+
+            if (inPressurePlate) {
+                interactionType = Interaction.LeavePressurePlate;
                 RaiseInteraction();
                 return;
             }
@@ -307,6 +360,14 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.dialogue;
                     RaiseInteraction();
                     return;
+                case ObjectType.PressurePlate:
+                    if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is not null)
+                        interactionType = Interaction.PutObjectOnPressurePlate;
+                    else if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is null)
+                        interactionType = IsInPressurePlate() ? Interaction.LeavePressurePlate : Interaction.EnterPressurePlate;
+                    else interactionType = Interaction.PickObjectOnPressurePlate;
+                    RaiseInteraction();
+                    return;
                 case ObjectType.None:
                 default:
                     return;
@@ -343,7 +404,7 @@ namespace _Project.Scripts.Player {
         }
         
         private bool CanGrab() {
-            if(potentialInteraction ==  null) return false;
+            if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
                 return CanInteract && !HasObject && currentInteraction == null && moveable.CanBeGrab();
@@ -369,6 +430,15 @@ namespace _Project.Scripts.Player {
             return false;
         }
 
+        private bool IsPressurePlate() {
+            if (potentialInteraction == null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out PressurePlate plate))
+                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.Completed;
+            
+            return false;
+        }
+
         private bool CanContextualInteract() {
             return CanInteract;
         }
@@ -379,6 +449,10 @@ namespace _Project.Scripts.Player {
         
         public bool IsInMemory() {
             return inMemory;
+        }
+        
+        public bool IsInPressurePlate() {
+            return inPressurePlate;
         }
 
         public void StartUsingDoor() {
