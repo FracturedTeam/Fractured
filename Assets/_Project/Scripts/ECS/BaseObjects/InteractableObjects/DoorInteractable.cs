@@ -92,7 +92,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
-            if (doorType is DoorType.SmallDoor) {
+            if (doorType is DoorType.SmallDoor) { //Rentrer dans une petite porte pour être TP
                 var mask = LayerMask.GetMask("Player");
                 var size = Physics.OverlapBoxNonAlloc(triggerPoint.position, new Vector3(3f,4.5f,1), cols, transform.rotation, mask);
 
