@@ -3,19 +3,20 @@ using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
-    public class GrabObjectState : PlayerBaseState{
+    public class FailedDropObject : PlayerBaseState {
         private readonly CountdownTimer animationExitTimer;
 
-        public GrabObjectState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+        public FailedDropObject(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
             animationExitTimer = new CountdownTimer(clip.length);
         }
         
         public override void OnEnter() {
             animationExitTimer.Start();
+            player.interact.triggerFailedDrop = false;
             
             //Set the grab animation when entering holding state
-            animator.SetLayerWeight(FullBodyLayer, 1);
-            animator.CrossFade(GrabObjectHash, defaultCrossFadeDuration, FullBodyLayer);
+            animator.SetLayerWeight(UpperBodyLayer, 1);
+            animator.CrossFade(FailedDropHash, defaultCrossFadeDuration, UpperBodyLayer);
         }
 
         public override void OnUpdate() {
@@ -28,8 +29,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Stop();
             
             //Exit the grab animation when timer is finished
-            animator.SetLayerWeight(FullBodyLayer, 0);
-            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
+            animator.SetLayerWeight(UpperBodyLayer, 0);
+            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;
