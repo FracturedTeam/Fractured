@@ -1,9 +1,12 @@
 using _Project.Scripts.Systems.StateMachine;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
     public class PlayerUsingDoorState : PlayerBaseState {
-        public PlayerUsingDoorState(PlayerController player, Animator animator) : base(player, animator) {
+        public readonly CountdownTimer animationExitTimer;
+        public PlayerUsingDoorState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+            animationExitTimer = new CountdownTimer(clip.length);
         }
 
         public override void OnEnter() {
@@ -12,6 +15,8 @@ namespace _Project.Scripts.Player.States {
             animator.CrossFade(OpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);
+            animationExitTimer.Start();
+            player.interact.triggerDoor = false;
         }
 
         public override void OnUpdate() {

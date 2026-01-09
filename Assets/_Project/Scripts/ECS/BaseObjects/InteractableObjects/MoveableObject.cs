@@ -185,7 +185,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isGrabbed = true;
             
-            transform.SetParent(PlayerController.Instance.transform);
+            transform.SetParent(PlayerController.Instance.interact.objectPos);
             TweenObjectOnPlayer();
 
             //Call audio
@@ -211,6 +211,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(ObstructedSpace())
                 {
+                    PlayerController.Instance.interact.triggerFailedDrop = true;
                     if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
                     {
                         HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
@@ -327,7 +328,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
-            tween = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
+            tween = transform.DOLocalMove(Vector3.zero, 0.5f);
             tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
         }
         
