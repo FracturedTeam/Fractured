@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_GlassPicture_02_Base
-  m_Shader: {fileID: -6465566751694194690, guid: 4325d32f9522e124fbb34f4720d71925, type: 3}
+  m_Name: M_GlassPicture_01_Broken
+  m_Shader: {fileID: -6465566751694194690, guid: 0f057dde4148dd1499947649c52b2783, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -86,11 +86,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_2315b12d3fa943c29a675ac2f47a5625_Texture_1_Texture2D:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 891e8a59caac4d54cb54ca41ca273fc4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_7e509412276d4a72a3358d8fad72ada8_Texture_1_Texture2D:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2b7f0ae561c62ba4b824ef44214f7cf5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -116,8 +116,8 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _Broken: 0
-    - _BrokenEdgeFadeAmount: 0.47
+    - _Broken: 1
+    - _BrokenEdgeFadeAmount: 0.42
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -143,11 +143,11 @@ Material:
     - _Shine2: 0
     - _Shine2Offset: 0
     - _Shine2Width: 0.7
-    - _ShineDuration: 2
+    - _ShineDuration: 5
     - _ShineFrequency: 4
-    - _ShineIntensity: 0.228
-    - _ShineLoopDuration: 3
-    - _ShineWidth: 0.3
+    - _ShineIntensity: 0.751
+    - _ShineLoopDuration: 5
+    - _ShineWidth: 0.08
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -159,19 +159,17 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
-    - _BrokenEdgeFadeSmoothstep: {r: 0.43, g: 1.09, b: 0, a: 0}
+    - _BaseColor: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
+    - _BrokenEdgeFadeSmoothstep: {r: 0, g: 1, b: 0, a: 0}
     - _BrokenEdges2Color: {r: 0, g: 0, b: 0, a: 1}
-    - _BrokenEdges2Offset: {r: 0.003, g: 0.003, b: 0, a: 0}
-    - _BrokenEdgesColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BrokenEdgesColor_1: {r: 0, g: 0, b: 0, a: 1}
-    - _BrokenTextureOffset: {r: -0.36, g: 0, b: 0, a: 0}
-    - _BrokenTextureOffset_1: {r: 0.002, g: 0.002, b: 0, a: 0}
-    - _BrokenTextureTiling: {r: 0.08, g: 1, b: 0, a: 0}
-    - _BrokenVariationColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BrokenEdges2Offset: {r: 0.001, g: 0.001, b: 0, a: 0}
+    - _BrokenEdgesColor: {r: 2.249227, g: 2.249227, b: 2.249227, a: 1}
+    - _BrokenTextureOffset: {r: -0.24, g: 0, b: 0, a: 0}
+    - _BrokenTextureTiling: {r: 0.1, g: 1, b: 0, a: 0}
+    - _BrokenVariationColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FixOffset: {r: 8.29, g: -2.75, b: 0, a: 0}
+    - _FixOffset: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _ShineColor: {r: 0.7490197, g: 0.7490197, b: 0.7490197, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
