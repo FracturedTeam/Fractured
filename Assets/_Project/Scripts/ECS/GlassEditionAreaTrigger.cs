@@ -27,7 +27,7 @@ namespace _Project.Scripts.ECS {
         private void OnTriggerExit(Collider other) {
             if (other.CompareTag("Player")) {
                 GameInitializer.Instance.SetEditableArea(false, colorEdition);
-                screenEffectMat.DOFloat(0, "_Progression", 1); //ajout� par paloma
+                screenEffectMat.DOFloat(0, "_Progression", 0.5f); //ajout� par paloma
             }
         }
         
