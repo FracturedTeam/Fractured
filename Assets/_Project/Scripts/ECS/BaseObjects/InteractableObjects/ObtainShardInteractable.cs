@@ -36,9 +36,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     brokenMat = Resources.Load<Material>("Materials/M_GlassPicture_02_Broken");
                 if(shardParticle == null)
                     shardParticle = Resources.Load<ParticleSystem>("VFX/P_MirrorBreakParticles");
-                
-                glassRenderer = transform.Find("Glass").GetComponent<MeshRenderer>();
-                glassRenderer.material = baseMat; 
+                if (transform.Find("Glass")) {
+                    glassRenderer = transform.Find("Glass").GetComponent<MeshRenderer>();
+                    glassRenderer.material = baseMat; 
+                }
             }
 
             initialized = true;
@@ -84,7 +85,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
 
             GameInitializer.Instance.AddShards(shards);
-            glassRenderer.material = brokenMat;
+            if(glassRenderer)
+                glassRenderer.material = brokenMat;
             
             Debug.Log($"[ObtainShardInteractable] {gameObject.name} Obtain Shard");
         }

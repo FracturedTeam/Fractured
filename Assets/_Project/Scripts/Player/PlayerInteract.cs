@@ -24,6 +24,7 @@ namespace _Project.Scripts.Player {
     public class PlayerInteract : MonoBehaviour {
         private InputsBrain inputsBrain;
 
+        [SerializeField] public Transform objectPos;
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
@@ -221,10 +222,15 @@ namespace _Project.Scripts.Player {
         }
 
         #endregion
+
+        private void HandleInteractRotation(Vector3 playerDir) {
+            var newPos = transform.position + player.movement.mesh.forward * interactZoneSize.z;
+            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.movement.playerConfig.rotationSpeed * Time.deltaTime);
+        }
         
         public void HandleUpdate(Vector3 playerDir) {
-            interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
-
+            HandleInteractRotation(playerDir);
+            
             if(interactionHold)
                 interactDuration += Time.deltaTime;
             
@@ -257,25 +263,21 @@ namespace _Project.Scripts.Player {
                 case 0:
                     potentialInteraction = null;
                     return;
-                case > 1: // Sort the closer object from the player or the object the player is looking at -> Refaire la formule
-                    //Voir aussi si il y a pas moyen de get autrement le base object depuis le raycast
-                    var index = 0;
+                case > 1:
                     var closestDist = 0f;
-                    var closestAngle = 0f;
-                    for (var i = 0; i < size; i++) {
-                        if (!results[index].GetComponent<BaseObject>().CanBeInteractedWith()) continue;
+                    BaseObject closest = null;
+                    foreach (Collider c in results) {
+                        if(c == null) continue;
+                        if (!c.TryGetComponent(out BaseObject b)) continue;
+                        if(!b.CanBeInteractedWith()) continue;
                         
-                        var dist = Vector3.Distance(transform.position, results[i].transform.position);
-                        var facing = Vector3.Dot((transform.position - interactCenterZone.position).normalized, (results[i].transform.position - transform.position).normalized);
-
-                        if (!(facing < closestAngle)) continue;
-                        closestAngle = facing;
-                        if (dist > closestDist) continue;
+                        var t = c.transform.position - transform.position;
+                        var dist = t.x*t.x + t.y*t.y + t.z*t.z;  // Same as "= t.sqrMagnitude;" but faster
+                        if (!(dist < closestDist)) continue;
+                        closest = b;
                         closestDist = dist;
-                        index = i;
                     }
-                    
-                    potentialInteraction = results[index].GetComponent<BaseObject>();
+                    potentialInteraction = closest;
                     break;
                 default: // No need for logic, just get the only object we detect
                     potentialInteraction = results[0].GetComponent<BaseObject>();
@@ -321,7 +323,8 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
-            
+
+            if (potentialInteraction == null) return;
             switch (potentialInteraction.GetInteractionType) {
                 case ObjectType.Moveable:
                     interactionType = Interaction.Grab;
