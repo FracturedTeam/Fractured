@@ -13,9 +13,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Header("Settings")]
         [SerializeField] public Glass[] shards;
 
-        private ParticleSystem shardParticle;
-        private Material baseMat; 
-        private Material brokenMat; 
+        [SerializeField] private ParticleSystem shardParticle;
+        [SerializeField] private Material baseMat; 
+        [SerializeField] private Material brokenMat; 
 
         private bool initialized = false;
         private MeshRenderer glassRenderer;
@@ -30,9 +30,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject?.SetInteract(true);
                 
                 //Get materials and particles
-                baseMat = Resources.Load<Material>("Materials/M_GlassPicture_01_Base");
-                brokenMat = Resources.Load<Material>("Materials/M_GlassPicture_01_Broken");
-                shardParticle = Resources.Load<ParticleSystem>("VFX/P_MirrorBreakParticles");
+                if(baseMat == null)
+                    baseMat = Resources.Load<Material>("Materials/M_GlassPicture_01_Base");
+                if(brokenMat == null)
+                    brokenMat = Resources.Load<Material>("Materials/M_GlassPicture_02_Broken");
+                if(shardParticle == null)
+                    shardParticle = Resources.Load<ParticleSystem>("VFX/P_MirrorBreakParticles");
                 
                 glassRenderer = transform.Find("Glass").GetComponent<MeshRenderer>();
                 glassRenderer.material = baseMat; 
