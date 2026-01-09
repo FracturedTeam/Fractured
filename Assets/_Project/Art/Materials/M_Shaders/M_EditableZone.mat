@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_438aa18d77284048998a819502a6e5b4_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2b7f0ae561c62ba4b824ef44214f7cf5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c7388d7d50513ec40b3a8c1afeb299a2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_4d5d4466d609480592392dbd738b6b52_Texture_1_Texture2D:
@@ -98,7 +98,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_d9dd285437734882a38c6638b4864301_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2b7f0ae561c62ba4b824ef44214f7cf5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c7388d7d50513ec40b3a8c1afeb299a2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_dd4d73c89b804058a6b27da6804317bc_Texture_1_Texture2D:
@@ -106,7 +106,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_fc4a8416095347a29bcbd9f000a59949_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 891e8a59caac4d54cb54ca41ca273fc4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 26aaef8499d013c45937549e6258ce80, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -135,6 +135,7 @@ Material:
     - _BumpScale: 1
     - _CenterMaximum: 0.5
     - _CenterSmoothstep: 0.83
+    - _ChromaticAberrationIntensity: 3.58
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ColoredNoiseIntensity: 0.4
@@ -147,37 +148,48 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _Edges1Opacity: 0.68
-    - _Edges2Opacity: 0.239
+    - _Edges1Opacity: 0.76
+    - _Edges2Opacity: 0.361
     - _EdgesColoredNoiseBrightness: 3.45
     - _EdgesColoredNoiseContrast: 2
     - _EdgesColoredNoiseIntensity: 0.9
     - _EdgesMaskDeformationIntensity: 0.92
     - _EnvironmentReflections: 1
     - _Float: 0
+    - _Fullscreen_AlphaBlendOperation: 0
+    - _Fullscreen_BlendMode: 1
+    - _Fullscreen_ColorBlendOperation: 0
+    - _Fullscreen_DepthWrite: 0
+    - _Fullscreen_DstAlphaBlend: 10
+    - _Fullscreen_DstColorBlend: 10
+    - _Fullscreen_SrcAlphaBlend: 1
+    - _Fullscreen_SrcColorBlend: 5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HighlightsNoiseAmount: 0.324
-    - _HighlightsNoiseIntensity: 1.98
-    - _HighlightsNoiseScale: 400
+    - _HighlightsNoiseAmount: 0.286
+    - _HighlightsNoiseIntensity: 7
+    - _HighlightsNoiseScale: 500
     - _HighlightsNoiseVariationAmplitude: 0
     - _HighlightsNoiseVariationSpeed: 1
     - _InteriorMaskDeformationIntensity: 0.41
-    - _MaskDeformationIntensity: 0.4
+    - _MaskDeformationIntensity: 0.1
     - _MaskDeformationScale: 20
     - _Metallic: 0
     - _NoiseAmount: 0.265
     - _NoiseIntensity: 100
     - _NoiseScale: 400
     - _OcclusionStrength: 1
-    - _Opacity: 0.584
+    - _Opacity: 0.537
     - _Parallax: 0.005
-    - _Progression: 1
-    - _ProgressionMaximum: 0.55
+    - _Progression: 0
+    - _ProgressionMaximum: 0.6
     - _ProgressionMinimum: 0.18
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _SceneDeformationIntensity: 1
+    - _SceneDeformationScale: 200
+    - _SceneDeformationSpeed: 0.02
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -188,14 +200,14 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.22241008, g: 0.40413505, b: 0.9245283, a: 1}
+    - _BaseColor: {r: 0, g: 0.25698328, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Edges1Color: {r: 1, g: 1, b: 1, a: 1}
     - _Edges2Color: {r: 1, g: 1, b: 1, a: 1}
     - _Edges2Offset: {r: 0, g: 0.002, b: 0, a: 0}
     - _EdgesColor: {r: 0.6839622, g: 0.878447, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainTextureOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _MainTextureOffset: {r: -0.16, g: 0, b: 0, a: 0}
     - _MainTextureTiling: {r: 0.5, g: 1, b: 0, a: 0}
     - _MaskDeformationTiling: {r: 0, g: 5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

@@ -55,7 +55,7 @@ namespace _Project.Scripts.Systems.Save {
 
         public void DeleteAll() {
             foreach (var filePath in Directory.GetFiles(saveFolder)) {
-                Debug.Log(filePath);
+                Debug.Log("Delete All Files " + filePath);
                 File.Delete(filePath);
             }
         }

@@ -1,7 +1,9 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.UI;
+using FMODUnity;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -19,6 +21,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         [SerializeField] private Sprite memorySprite;
         private KeyInteractable key;
+        
+        [Header("Sounds")]
+        [SerializeField] private EventReference associateMemorySound;
         
         private bool initialized = false;
         
@@ -100,7 +105,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = memorySprite
             });
             */
+            
+            AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            AudioManager.Instance.PlayOneShot(associateMemorySound, transform.position);
             MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
+            
             Debug.Log($"[MemoryInteractable] Entering memory");
         }
 
