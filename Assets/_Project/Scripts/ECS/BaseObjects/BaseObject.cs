@@ -149,7 +149,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
-            Debug.Log("Box Collider Set");
         }
         
         public Collider GetCollider() => objectCollider;

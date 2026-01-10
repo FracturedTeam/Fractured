@@ -125,7 +125,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public void Tick(float deltaTime) {
             if (!baseObject.CanBeInteractedWith()) {
-                timer -= deltaTime;
+                //timer -= deltaTime;
                 return;
             }
             
