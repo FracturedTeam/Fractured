@@ -32,7 +32,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private string needFragment = "[E] to interact";
         [SerializeField] private string needKey = "Door locked";
         [SerializeField] private string needSomethingElse = "[E] to interact";
-        [SerializeField] private string dialogueInteraction = "...";
+        [SerializeField] private string dialogueInteraction = "";
         [SerializeField] private string enterPressurePlate = "[E] to interact";
         [SerializeField] private string leavePressurePlate = "[E] to leave";
         [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
@@ -63,6 +63,7 @@ namespace _Project.Scripts.UI
         private void Start() {
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
+            interactionUI.alpha = 0;
         }
         
         void OnEnable() {
@@ -123,8 +124,7 @@ namespace _Project.Scripts.UI
                     Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
-
-                //a vérifier avec les GAs les bons sprites
+                
                 interactionImage.sprite = e.Interaction switch
                 {
                     Interaction.Grab => spriteUp,
@@ -134,7 +134,6 @@ namespace _Project.Scripts.UI
                     Interaction.UseFragment => spriteDown,
                     Interaction.needFragment => spriteGlass,
                     Interaction.needKey => spriteKey,
-                    //Interaction.dialogue => 
                     _ => spriteNormal
                 };
                 
@@ -143,7 +142,7 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionUI.transform.position = position;
+                Instance.interactionUI.transform.position = new Vector3(position.x, position.y + 2f, 0f);
             }
 
             void ShowMemory(MemoryEvent e) {
