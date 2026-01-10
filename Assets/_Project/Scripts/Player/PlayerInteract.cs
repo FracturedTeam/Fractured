@@ -47,6 +47,7 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingLockedDoor;
+        private CountdownTimer usingDoor;
         private CountdownTimer InteractCooldown;
         private float timerToUseDoor = 0.15f;
         
@@ -84,6 +85,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingLockedDoor = new CountdownTimer(timerToUseDoor);
+            usingDoor = new CountdownTimer(timerToUseDoor);
             InteractCooldown = new CountdownTimer(0.5f);
         }
 
@@ -467,11 +469,17 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingLockedDoor() {
             usingLockedDoor.Start();
-            usingLockedDoor.Reset(timerToUseDoor);
         }
         
         public bool UsingLockedDoor() {
             return usingLockedDoor.IsRunning;
+        }
+        public void StartUsingDoor() {
+            usingDoor.Start();
+        }
+        
+        public bool UsingDoor() {
+            return usingDoor.IsRunning;
         }
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
