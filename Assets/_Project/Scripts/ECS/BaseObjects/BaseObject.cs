@@ -36,7 +36,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         private bool initialized = false;
         private bool canBeInteractedWith;
-
+        private bool isOnPressurePlate = false;
+        
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
         
@@ -148,6 +149,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+            Debug.Log("Box Collider Set");
         }
         
         public Collider GetCollider() => objectCollider;
@@ -168,6 +170,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         public Vector3 GetUIPosition() {
             return hudTransformPoint ? hudTransformPoint.position : transform.position;
         }
+
+        public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;
+        public bool IsOnPressurePlate() => isOnPressurePlate;
     }
 
     [Serializable]

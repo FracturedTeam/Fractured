@@ -24,7 +24,7 @@ namespace _Project.Scripts.GameServices {
             scenesToLoad = new List<SceneField>();
             SceneManager.sceneLoaded += OnSceneLoaded;
 
-            if (SceneManager.loadedSceneCount == 1) {
+            if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
         }

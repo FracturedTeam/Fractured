@@ -28,7 +28,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
-        
+
+        private PressurePlate pressurePlateOn;
         private Tweener tween;
         private CountdownTimer colTimer = null;
         
@@ -325,6 +326,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        public void SetPressurePlateOn(PressurePlate plate) => pressurePlateOn = plate;
+        public PressurePlate GetPressurePlateOn() => pressurePlateOn;
+        
         #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
