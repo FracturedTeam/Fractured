@@ -1,6 +1,10 @@
 using System;
+using System.Collections;
+using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
@@ -13,6 +17,7 @@ namespace _Project.Scripts.UI
         private Vector3 scale;
         [SerializeField] private float time = 0.5f;
         [SerializeField] private  float multiplicator = 1.15f;
+        public UnityEvent onClickPostTimer;
         
         Tweener tweener;
         private Image backgroundImage;
@@ -20,19 +25,32 @@ namespace _Project.Scripts.UI
         private void Awake()
         {
             scale = transform.localScale;
-            backgroundImage = GetComponent<Image>();
+            if(TryGetComponent(typeof(Image), out var bgImage))
+                backgroundImage = (Image)bgImage;
         }
 
         public void OnHover(bool hovering)
         {
-            //tweener = transform.DOScale(hovering ? scale * multiplicator : scale, time).SetUpdate(true);
-            backgroundImage.sprite = hoverSprite;
+            tweener = transform.DOScale(hovering ? scale * multiplicator : scale, time).SetUpdate(true);
             
+            if(backgroundImage)
+                backgroundImage.sprite = hovering ? hoverSprite: baseSprite;
+
         }
         public void OnClicked()
         {
-            //tweener = transform.DOScale(hovering ? scale * multiplicator : scale, time).SetUpdate(true);
-            backgroundImage.sprite = clickedSprite;
+            
+            if(backgroundImage)
+                backgroundImage.sprite = clickedSprite;
+            
+            tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
+            StartCoroutine(CallClickPostTimer());
+        }
+        
+        private IEnumerator CallClickPostTimer()
+        { 
+            yield return new WaitForSecondsRealtime(time);
+           onClickPostTimer?.Invoke();
         }
 
         private void OnDestroy() {
