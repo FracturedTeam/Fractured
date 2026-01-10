@@ -264,18 +264,18 @@ namespace _Project.Scripts.Player {
                     potentialInteraction = null;
                     return;
                 case > 1:
-                    var closestDist = 0f;
+                    var closestDist = 10f;
                     BaseObject closest = null;
                     foreach (Collider c in results) {
                         if(c == null) continue;
                         if (!c.TryGetComponent(out BaseObject b)) continue;
                         if(!b.CanBeInteractedWith()) continue;
                         
-                        var t = c.transform.position - transform.position;
-                        var dist = t.x*t.x + t.y*t.y + t.z*t.z;  // Same as "= t.sqrMagnitude;" but faster
-                        if (!(dist < closestDist)) continue;
-                        closest = b;
-                        closestDist = dist;
+                        var dist = Vector3.Distance(c.transform.position, transform.position);
+                        if (dist < closestDist) {
+                            closest = b;
+                            closestDist = dist;
+                        }
                     }
                     potentialInteraction = closest;
                     break;
