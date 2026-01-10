@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 48c558374493d3f47a702154dd85edb8, type: 2}
+  m_LightingDataAsset: {fileID: 112000004, guid: e973773411c7f6b4784dac23ee94b827, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -364,7 +364,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1097464090}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1344453558242621997, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       insertIndex: -1
@@ -451,7 +454,7 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {fileID: 0}
+  hudTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -509,7 +512,7 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {fileID: 0}
+  hudTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -637,7 +640,7 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {fileID: 0}
+  hudTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -918,6 +921,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &754155558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754155559}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &754155559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754155558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1646991701}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &838555482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1044,7 +1078,7 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {fileID: 0}
+  hudTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -1345,6 +1379,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
   m_PrefabInstance: {fileID: 957118640}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1097464089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097464090}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097464090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097464089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85, y: 0, z: -1.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 466756402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1121689270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1779,6 +1844,7 @@ Transform:
   - {fileID: 1510809988}
   - {fileID: 957118641}
   - {fileID: 1899476586}
+  - {fileID: 754155559}
   m_Father: {fileID: 878831092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1671553261 stripped

@@ -28,7 +28,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
-        
+
+        private PressurePlate pressurePlateOn;
         private Tweener tween;
         private CountdownTimer colTimer = null;
         
@@ -325,6 +326,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
         }
 
+        public void SetPressurePlateOn(PressurePlate plate) => pressurePlateOn = plate;
+        public PressurePlate GetPressurePlateOn() => pressurePlateOn;
+        
         #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
@@ -340,7 +344,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
             tween = transform.DOMove(pos, 0.5f);
-            tween = transform.DORotate(rot, 0.5f);
+            tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
         }
         
         private void ActiveCollision() {
@@ -362,7 +366,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 GetGroundPos() {
             var playerPos = PlayerController.Instance.transform.position;
-            var dir = PlayerController.Instance.movement.previousMoveDir;
+            var dir = PlayerController.Instance.movement.mesh.forward;
 
             var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
             var mask = ~(1 << ignoreLayer);

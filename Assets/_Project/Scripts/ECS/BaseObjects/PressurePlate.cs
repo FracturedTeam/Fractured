@@ -53,7 +53,11 @@ namespace _Project.Scripts.ECS.BaseObjects {
             if(other != null && objectOnPressurePlate != null) return;
             if (other != null && objectOnPressurePlate == null) {
                 objectOnPressurePlate = other as MoveableObject;
+                objectOnPressurePlate?.GetBaseObject().SetOnPressurePlate(true);
+                objectOnPressurePlate?.SetPressurePlateOn(this);
+                
                 other.OnInteract(ObjectInteraction.Drop, this);
+                
                 
                 isActive = true;
                 baseObject.GetCompletion = InteractionCompletion.Completed;
@@ -78,6 +82,8 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     
                     objectOnPressurePlate.GetBaseObject().SetInteract(true);
                     PlayerController.Instance.interact.SetGrabbedObject(objectOnPressurePlate.GetBaseObject());
+                    objectOnPressurePlate.GetBaseObject().SetOnPressurePlate(false);
+                    objectOnPressurePlate?.SetPressurePlateOn(null);
                     objectOnPressurePlate = null;
                     
                     isActive = false;
@@ -119,7 +125,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public void Tick(float deltaTime) {
             if (!baseObject.CanBeInteractedWith()) {
-                timer -= deltaTime;
+                //timer -= deltaTime;
                 return;
             }
             
