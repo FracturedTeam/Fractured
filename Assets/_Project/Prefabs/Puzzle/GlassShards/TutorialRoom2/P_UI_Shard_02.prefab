@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 4974438246727398651}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -233, y: 317.01}
-  m_SizeDelta: {x: 150, y: 200}
+  m_SizeDelta: {x: 450, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7545855222119323864
 CanvasRenderer:
@@ -60,15 +60,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.4268117, b: 1, a: 0.31764707}
+  m_Color: {r: 0, g: 0.4268117, b: 1, a: 0.40392157}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -94,7 +94,7 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
   color2D: 0
   canEditAnywhere: 0
-  shard: {fileID: 0}
+  shard: {fileID: 8540724540540974830, guid: e81a2e628de1f9a4797ce7db5c025fa5, type: 3}
 --- !u!60 &60662280742715225
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -141,8 +141,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 75, y: 100}
-      - {x: -75, y: 100}
-      - {x: -75, y: -100}
-      - {x: 75, y: -100}
+    - - {x: 225, y: 150}
+      - {x: -225, y: 150}
+      - {x: -225, y: -150}
+      - {x: 225, y: -150}
   m_UseDelaunayMesh: 0

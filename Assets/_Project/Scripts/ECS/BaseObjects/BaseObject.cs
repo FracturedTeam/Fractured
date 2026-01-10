@@ -29,7 +29,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal int memoryId;
 
         [Header("HUD")] 
-        [SerializeField] private Transform hudTransformPoint;
+        [SerializeField] private Vector2 hudTransformPoint;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -168,7 +168,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public Vector3 GetUIPosition() {
-            return hudTransformPoint ? hudTransformPoint.position : transform.position;
+            return   transform.position + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0);
         }
 
         public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;
