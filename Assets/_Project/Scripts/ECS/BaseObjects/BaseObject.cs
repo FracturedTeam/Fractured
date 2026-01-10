@@ -33,8 +33,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
-        
-        private FMODUnity.StudioEventEmitter emitter;
 
         private bool initialized = false;
         private bool canBeInteractedWith;
@@ -104,9 +102,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
                 
-                if(TryGetComponent(out FMODUnity.StudioEventEmitter e))
-                    emitter = e;
-                
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
         
@@ -168,10 +163,6 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public MeshRenderer GetRendered() {
             return meshRenderer;
-        }
-
-        public FMODUnity.StudioEventEmitter GetEmitter() {
-            return emitter;
         }
 
         public Vector3 GetUIPosition() {

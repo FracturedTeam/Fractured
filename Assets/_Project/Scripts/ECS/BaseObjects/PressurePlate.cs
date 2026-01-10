@@ -26,7 +26,13 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         [HideInInspector] public MoveableObject objectOnPressurePlate;
         [SerializeField] BaseObject[] lockedBehindThis;
-        
+
+        private void Start() {
+            foreach (var locked in lockedBehindThis) {
+                locked.SetInteract(false);
+            }
+        }
+
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
@@ -34,10 +40,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 
                 baseObject.GetInteractionType = ObjectType.PressurePlate;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
-                
-                foreach (var locked in lockedBehindThis) {
-                    locked.SetInteract(false);
-                }
             }
             
             baseObject?.SetInteract(true);
@@ -55,6 +57,9 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 
                 isActive = true;
                 baseObject.GetCompletion = InteractionCompletion.Completed;
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(true);
+                }
             }
             
             if(interaction is not ObjectInteraction.Remove && baseObject.GetCompletion is InteractionCompletion.Completed) return;

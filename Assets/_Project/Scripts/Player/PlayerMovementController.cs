@@ -12,7 +12,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] public PlayerConfiguration playerConfig;
 
     [Header("Mesh")] 
-    [SerializeField] Transform mesh;
+    [SerializeField] public Transform mesh;
     
     [Header("Ground Settings")] 
     [SerializeField] LayerMask groundLayer;
