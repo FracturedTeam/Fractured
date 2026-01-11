@@ -12,15 +12,15 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHATEST_ON
+  - _SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords:
   - _RECEIVE_SHADOWS_OFF
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2991
   stringTagMap:
-    RenderType: TransparentCutout
+    RenderType: Transparent
   disabledShaderPasses:
   - MOTIONVECTORS
   - SHADOWCASTER
@@ -54,8 +54,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
-    - _AlphaToMask: 1
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _Blur_Size: 0.01
@@ -64,21 +64,21 @@ Material:
     - _DebugDisplayMask: 0
     - _DebugDisplayTexture: 0
     - _Deformation_Strength: 1
-    - _DstBlend: 0
-    - _DstBlendAlpha: 0
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _Edge_Correction_Size: 0.05
     - _Opacity: 1
-    - _QueueControl: 1
-    - _QueueOffset: 0
+    - _QueueControl: 0
+    - _QueueOffset: -9
     - _ReceiveShadows: 0
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
-    - _Surface: 0
+    - _Surface: 1
     - _Texture_Balance_Correction: 1
     - _Texture_Pause_Interval: 1
     - _V_Compensation: 1.5
     - _WorkflowMode: 1
-    - _ZTest: 4
+    - _ZTest: 8
     - _ZWrite: 1
     - _ZWriteControl: 1
     m_Colors:
