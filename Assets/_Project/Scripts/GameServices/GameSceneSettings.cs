@@ -1,10 +1,12 @@
 using System;
 using _Project.Scripts.ECS;
+using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneSettings : Singleton<GameSceneSettings> {
@@ -36,6 +38,39 @@ namespace _Project.Scripts.GameServices {
             waitToSpawnShard.Start();
             
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
+            ManageAudio();
+        }
+
+        private void ManageAudio() {
+            //ManageAudio Loop
+            var index = gameObject.scene.buildIndex;
+            if (index == 2) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = true,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 2 && index < 8) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = true,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 7 && index < 12) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = true
+                });
+            }
+            else
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
         }
         
         public void ResetShard() {

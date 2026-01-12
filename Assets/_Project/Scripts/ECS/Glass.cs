@@ -127,6 +127,10 @@ namespace _Project.Scripts.ECS
         }
         internal void ChangeHoldingState(bool isOn) {
             if (!canInteract) return;
+            if (!GameInitializer.Instance.InEditableArea()) {
+                AudioManager.Instance.PlayGrabGlassFailedSound();
+                return;
+            }
 
             isHeld = isOn;
             if (isOn) AudioManager.Instance.PlayGrabGlassSound();

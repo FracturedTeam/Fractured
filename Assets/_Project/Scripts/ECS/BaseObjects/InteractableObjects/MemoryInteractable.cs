@@ -103,7 +103,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             });
             */
             
-            AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            //AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            EventBus<MemorySound>.Raise(new MemorySound {
+                inMemory = true
+            });
             AudioManager.Instance.PlayOneShot(associateMemorySound, transform.position);
             MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
             
@@ -126,6 +129,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 memory = null
             });
             */
+            EventBus<MemorySound>.Raise(new MemorySound {
+                inMemory = false
+            });
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             Debug.Log($"[MemoryInteractable] Leaving memory");
