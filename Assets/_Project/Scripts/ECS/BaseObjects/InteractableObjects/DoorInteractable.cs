@@ -98,6 +98,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
                 if (size > 0) {
                     AudioManager.Instance.PlayOpenSmallSound(transform.position);
+                    PlayerController.Instance.interact.StartUsingDoor();
                     PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
                 }
                 

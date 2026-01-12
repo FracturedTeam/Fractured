@@ -85,7 +85,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingLockedDoor = new CountdownTimer(timerToUseDoor);
-            usingDoor = new CountdownTimer(timerToUseDoor);
+            usingDoor = new CountdownTimer(0.35f);
             InteractCooldown = new CountdownTimer(0.5f);
         }
 
