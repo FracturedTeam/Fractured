@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -21,6 +22,8 @@ public class PlayerMovementController : MonoBehaviour
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
+    
+    private PlayerController player;
     
     public float currentMaxSpeed { get; private set; }
     public float currentSpeed { get; private set; }
@@ -54,6 +57,9 @@ public class PlayerMovementController : MonoBehaviour
         
         if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
         else Debug.LogWarning("[PlayerController] No InputsBrain found");
+        
+        if(TryGetComponent(out PlayerController _player)) player = _player;
+        else Debug.LogWarning("[PlayerController] No PlayerController found");
         
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -98,6 +104,7 @@ public class PlayerMovementController : MonoBehaviour
     
     public void HandleUpdate() {
         if(rb.isKinematic) return;
+        if(player.interact.UsingDoor()) return;
         
         MeshRotation();
         CheckMethods();

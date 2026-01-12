@@ -47,6 +47,7 @@ namespace _Project.Scripts.Player {
 
         private PlayerController player;
         private CountdownTimer usingLockedDoor;
+        private CountdownTimer usingDoor;
         private CountdownTimer InteractCooldown;
         private float timerToUseDoor = 0.15f;
         
@@ -84,6 +85,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingLockedDoor = new CountdownTimer(timerToUseDoor);
+            usingDoor = new CountdownTimer(timerToUseDoor);
             InteractCooldown = new CountdownTimer(0.5f);
         }
 
@@ -264,18 +266,18 @@ namespace _Project.Scripts.Player {
                     potentialInteraction = null;
                     return;
                 case > 1:
-                    var closestDist = 0f;
+                    var closestDist = 10f;
                     BaseObject closest = null;
                     foreach (Collider c in results) {
                         if(c == null) continue;
                         if (!c.TryGetComponent(out BaseObject b)) continue;
                         if(!b.CanBeInteractedWith()) continue;
                         
-                        var t = c.transform.position - transform.position;
-                        var dist = t.x*t.x + t.y*t.y + t.z*t.z;  // Same as "= t.sqrMagnitude;" but faster
-                        if (!(dist < closestDist)) continue;
-                        closest = b;
-                        closestDist = dist;
+                        var dist = Vector3.Distance(c.transform.position, transform.position);
+                        if (dist < closestDist) {
+                            closest = b;
+                            closestDist = dist;
+                        }
                     }
                     potentialInteraction = closest;
                     break;
@@ -467,11 +469,17 @@ namespace _Project.Scripts.Player {
 
         public void StartUsingLockedDoor() {
             usingLockedDoor.Start();
-            usingLockedDoor.Reset(timerToUseDoor);
         }
         
         public bool UsingLockedDoor() {
             return usingLockedDoor.IsRunning;
+        }
+        public void StartUsingDoor() {
+            usingDoor.Start();
+        }
+        
+        public bool UsingDoor() {
+            return usingDoor.IsRunning;
         }
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {

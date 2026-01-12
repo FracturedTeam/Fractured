@@ -33,7 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(baseMat == null)
                     baseMat = Resources.Load<Material>("Materials/M_GlassPicture_01_Base");
                 if(brokenMat == null)
-                    brokenMat = Resources.Load<Material>("Materials/M_GlassPicture_02_Broken");
+                    brokenMat = Resources.Load<Material>("Materials/M_GlassPicture_01_Broken");
                 if(shardParticle == null)
                     shardParticle = Resources.Load<ParticleSystem>("VFX/P_MirrorBreakParticles");
                 if (transform.Find("Glass")) {
