@@ -43,7 +43,7 @@ namespace _Project.Scripts.UI
             if(backgroundImage)
                 backgroundImage.sprite = clickedSprite;
             
-            tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
+            //tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
             StartCoroutine(CallClickPostTimer());
         }
         
