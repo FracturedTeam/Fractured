@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         
         [Header("Pressure Plate Settings")]
         [SerializeField] private float timeToMoveObject;
+        [SerializeField] public Transform objectPosition;
         
         [Header("Moved Object Settings")]
         [SerializeField] private ObjectMoved[] movedObjects;

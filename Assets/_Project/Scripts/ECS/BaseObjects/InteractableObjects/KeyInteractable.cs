@@ -13,6 +13,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyRequired;
         private List<BaseObject> keyUsed;
 
+        [SerializeField] public Transform keyObjectPos;
+
         private bool initialized = false;
         
         public virtual void Initialize() {
@@ -68,7 +70,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             {
                 CheckForResolve(other.GetBaseObject());
                 
-                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) 
+                if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true } || TryGetComponent(out MemoryInteractable _)) 
                     return;
                 
                 HudManager.Instance.SetText(baseObject.successDialogue.dialogue);

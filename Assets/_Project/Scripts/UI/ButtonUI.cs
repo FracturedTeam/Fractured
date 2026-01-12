@@ -43,7 +43,7 @@ namespace _Project.Scripts.UI
             if(backgroundImage)
                 backgroundImage.sprite = clickedSprite;
             
-            tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
+            //tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
             StartCoroutine(CallClickPostTimer());
         }
         
@@ -56,6 +56,14 @@ namespace _Project.Scripts.UI
         private void OnDestroy() {
             tweener.Kill();
             tweener = null;
+        }
+
+        private void OnEnable()
+        {
+            //sometimes the OnHover false of the disable doesn't work, this fixes it 
+            tweener = transform.DOScale(scale, 0).SetUpdate(true);
+            if(backgroundImage)
+                backgroundImage.sprite = baseSprite;
         }
 
         private void OnDisable()
