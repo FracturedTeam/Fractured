@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
@@ -21,6 +22,8 @@ namespace _Project.Scripts.GameServices {
         public Vector3 playerPosition;
         
         bool hasInitializedGame = false;
+
+        private CountdownTimer waitToSpawnShard = new CountdownTimer(0.5f);
         
         protected override void Awake() {
             base.Awake();
@@ -28,9 +31,11 @@ namespace _Project.Scripts.GameServices {
         }
 
         private void Start() {
-            _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
-            GameInitializer.Instance.AddShards(glassShards);
             roomCamera.Priority = 1;
+            waitToSpawnShard.OnTimerStop += ResetShard;
+            waitToSpawnShard.Start();
+            
+            _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
         }
         
         public void ResetShard() {
