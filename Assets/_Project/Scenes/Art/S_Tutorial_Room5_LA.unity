@@ -181,6 +181,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5977948306300319584, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
   m_PrefabInstance: {fileID: 3582511}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &20742349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4432039807765325704, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
+  m_PrefabInstance: {fileID: 721291412}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &28514023
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4037,7 +4042,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.493
 --- !u!114 &651397221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4219,7 +4224,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3300188664500682611, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1782155869}
+    - targetCorrespondingSourceObject: {fileID: 3300188664500682611, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1782155868}
   m_SourcePrefab: {fileID: 100100000, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
 --- !u!4 &701591325 stripped
 Transform:
@@ -4351,13 +4362,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4432039807765325704, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 721291418}
+    - targetCorrespondingSourceObject: {fileID: 4432039807765325704, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 721291417}
   m_SourcePrefab: {fileID: 100100000, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
 --- !u!4 &721291413 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3947990106967538994, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
   m_PrefabInstance: {fileID: 721291412}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &721291417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20742349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &721291418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20742349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  locked: 0
+  memoryId: 0
+  hudTransformPoint: {x: 0, y: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!1001 &736953090
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8775,6 +8845,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5977948306300319584, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
   m_PrefabInstance: {fileID: 1615441611}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1628372711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+  m_PrefabInstance: {fileID: 1845902834}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1643543009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9338,6 +9413,64 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1665843311238988767, guid: e0720d8bfcd29414c915e25bc9069aaf, type: 3}
   m_PrefabInstance: {fileID: 1752617969}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1782155864 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3300188664500682611, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
+  m_PrefabInstance: {fileID: 701591324}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1782155868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782155864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &1782155869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782155864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  locked: 0
+  memoryId: 0
+  hudTransformPoint: {x: 0, y: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!1001 &1787814052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9710,13 +9843,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1845902840}
+    - targetCorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1845902839}
   m_SourcePrefab: {fileID: 100100000, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
 --- !u!4 &1845902835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9188082385023692429, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
   m_PrefabInstance: {fileID: 1845902834}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1845902839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628372711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!114 &1845902840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628372711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  locked: 0
+  memoryId: 0
+  hudTransformPoint: {x: 0, y: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!1001 &1860907119
 PrefabInstance:
   m_ObjectHideFlags: 0
