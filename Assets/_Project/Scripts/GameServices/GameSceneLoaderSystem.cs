@@ -116,6 +116,14 @@ namespace _Project.Scripts.GameServices {
         public void LoadMenu() {
             GameSaveSystem.Instance.SaveGame();
             scenesToLoad.Clear();
+            _ = LoadMenuAsync();
+        }
+
+        private async Task LoadMenuAsync() {
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = true
+            });
+            await Task.Delay(500);
             
             _ = UnloadSceneAsync();
             _ = LoadSceneAsync(menuScene);
@@ -123,6 +131,11 @@ namespace _Project.Scripts.GameServices {
             Destroy(PlayerService.Instance.gameObject);
             Destroy(GameInitializer.Instance.gameObject);
             Destroy(HudManager.Instance.gameObject);
+            
+            await Task.Delay(500);
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = false
+            });
         }
         
         public void NewGame() {
