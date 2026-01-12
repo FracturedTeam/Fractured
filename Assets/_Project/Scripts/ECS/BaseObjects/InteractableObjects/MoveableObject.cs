@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
@@ -27,7 +28,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool canBeGrab = false;
         private bool isGrabbed = false;
-        
+
+        private PressurePlate pressurePlateOn;
         private Tweener tween;
         private CountdownTimer colTimer = null;
         
@@ -93,6 +95,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     else
                         Debug.Log("[MoveableObject] Cannot drop object !");
                     break;
+                case ObjectInteraction.DropNoTimer:
+                    if (isGrabbed)
+                        OnDropNoTimer(other);
+                    else
+                        Debug.Log("[MoveableObject] Cannot drop object !");
+                    break;
                 //Reset Object
                 case ObjectInteraction.Reset:
                     ResetObject();
@@ -141,6 +149,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var pos = GetGroundPos();
             transform.position = pos;
             
+            AudioManager.Instance.PlayDropSound(transform.position);
+            
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
@@ -174,18 +184,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             
-            
             isGrabbed = true;
             
-            transform.SetParent(PlayerController.Instance.transform);
+            transform.SetParent(PlayerController.Instance.interact.objectPos);
             TweenObjectOnPlayer();
 
+            //Call audio
+            if(keyObjectNeeded == null)
+                AudioManager.Instance.PlayPickUpSound(transform.position);
+            else
+                AudioManager.Instance.PlayPickUpKeySound(transform.position);
+            
             var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.ObjectOut
                 ? specialDialogue
                 : baseObject.successDialogue;
             
-            if (dialogue is not{ oneTime: true, alreadyInteracted: true })
-            {
+            if (dialogue is not{ oneTime: true, alreadyInteracted: true }) {
                 HudManager.Instance.SetText(dialogue.dialogue);
                 dialogue.alreadyInteracted = true;
             }
@@ -198,6 +212,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(ObstructedSpace())
                 {
+                    PlayerController.Instance.interact.triggerFailedDrop = true;
                     if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
                     {
                         HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
@@ -214,6 +229,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
+                AudioManager.Instance.PlayDropSound(transform.position);
+                
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
                 {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
@@ -223,6 +240,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 Debug.Log("[MoveableObject] Drop on ground");
             }
             else {
+                if (other.GetBaseObject().GetInteract as PressurePlate) {
+                    transform.SetParent(originalParent);
+                    TweenObjectDrop(other.GetBaseObject().transform);
+                    
+                    baseObject.SetInteract(false);
+                    baseObject.SetCollider(false);
+                    
+                    AudioManager.Instance.PlayDropSound(transform.position);
+                    
+                    isGrabbed = false;
+                    PlayerController.Instance.interact.SetDropObject();
+                    
+                    Debug.Log("[MoveableObject] Pressure Plate Location");
+                    return;
+                }
+                
                 if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
                     Debug.LogError("[MoveableObject] Not a key location !");
                     return;
@@ -237,6 +270,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
                     baseObject.GetCompletion = InteractionCompletion.Completed;
+                    
+                    AudioManager.Instance.PlayDropSound(transform.position);
+                    
                     Debug.Log("[MoveableObject] key location");
                 }
                 else {
@@ -255,10 +291,48 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isGrabbed = false;
             PlayerController.Instance.interact.SetDropObject();
         }
+        
+        private void OnDropNoTimer(IInteractable other) {
+            if (other == null) {
+                if(ObstructedSpace())
+                {
+                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
+                    {
+                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
 
+                var pos = GetGroundPos();
+                
+                transform.SetParent(originalParent);
+                TweenObjectDrop(pos, transform.eulerAngles);
+                
+                baseObject.SetInteract(true);
+                
+                AudioManager.Instance.PlayDropSound(transform.position);
+                
+                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
+                {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.failedDialogue.alreadyInteracted = true;
+                }
+                
+                Debug.Log("[MoveableObject] Drop on ground");
+            }
+            
+            isGrabbed = false;
+            PlayerController.Instance.interact.SetDropObject();
+        }
+
+        public void SetPressurePlateOn(PressurePlate plate) => pressurePlateOn = plate;
+        public PressurePlate GetPressurePlateOn() => pressurePlateOn;
+        
+        #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
-            tween = transform.DOLocalMove(Vector3.zero + new Vector3(0, 2, 0), 0.5f);
+            tween = transform.DOLocalMove(Vector3.zero, 0.5f);
             tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
         }
         
@@ -270,9 +344,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
             tween = transform.DOMove(pos, 0.5f);
-            tween = transform.DORotate(rot, 0.5f);
+            tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
         }
-
+        
         private void ActiveCollision() {
             baseObject.SetCollider(true);
         }
@@ -292,7 +366,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 GetGroundPos() {
             var playerPos = PlayerController.Instance.transform.position;
-            var dir = PlayerController.Instance.movement.previousMoveDir;
+            var dir = PlayerController.Instance.movement.mesh.forward;
 
             var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
             var mask = ~(1 << ignoreLayer);
@@ -308,17 +382,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private static readonly Collider[] _hits = new Collider[16];
         
         private bool IsColliding() {
-            /*var inObjects = new Collider[4];
-            var layer = LayerMask.GetMask("Interactable", "InteractableNoLUT");
-
-            if (!baseObject.GetCollider().enabled) return false;
-            var size = Physics.OverlapBoxNonAlloc(transform.position, boundExtent, inObjects, transform.rotation, layer);
-
-            if (size <= 0) return false;
-            
-            var dir = (inObjects[0].transform.position - transform.position).normalized;
-            transform.position += new Vector3(dir.x, 0, dir.z) * (boundExtent.magnitude * 2.5f);
-            return true;*/
             var myCol = baseObject.GetCollider();
             if (!myCol || !myCol.enabled)
                 return false;
@@ -326,7 +389,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var mask = LayerMask.GetMask(
                 "Interactable",
                 "InteractableNoLUT",
-                "Default",
+                "Wall",
                 "Walkable"
             );
 
@@ -381,5 +444,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.Initialize();
             return baseObject;
         }
+        #endregion
     }
 }

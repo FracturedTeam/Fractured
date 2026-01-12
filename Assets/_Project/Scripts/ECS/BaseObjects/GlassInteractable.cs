@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.UI;
@@ -154,9 +155,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             for(var i = 0; i < baseObject.transform.childCount; i++) {
                 baseObject.transform.GetChild(i).gameObject.SetActive(isUnder);
             }
-            //Check if object is held
+            
             if (baseObject.TryGetComponent(out MoveableObject move)) {
-                if (!move.IsGrabbed()) {
+                if (baseObject.IsOnPressurePlate()) {
+                    baseObject.SetCollider(false);
+                    baseObject.SetInteract(false);
+                    move.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
+                }
+                else if (!move.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
                 }
@@ -168,6 +174,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (objectInside && !ObjectOut)
                 ActivateObjectInside(!isUnder);
+            
+            if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
+            else AudioManager.Instance.PlayRevealObjectSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {
@@ -178,7 +187,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(!InteractableInBoxActive()) return;
             
-            selfMoveable.OnInteract(ObjectInteraction.Drop);
+            selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
             ObjectOut = true;
         }

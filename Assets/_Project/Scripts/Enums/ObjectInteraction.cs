@@ -7,6 +7,9 @@ namespace _Project.Scripts.Enums {
         Contextual,
         EnterMemory,
         LeaveMemory,
-        Remove
+        Remove,
+        EnterPressurePlate,
+        LeavePressurePlate,
+        DropNoTimer,
     }
 }

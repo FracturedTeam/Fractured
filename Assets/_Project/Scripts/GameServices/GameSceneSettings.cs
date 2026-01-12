@@ -20,19 +20,19 @@ namespace _Project.Scripts.GameServices {
         [Header("Debug Settings")]
         public Vector3 playerPosition;
         
+        bool hasInitializedGame = false;
+        
         protected override void Awake() {
             base.Awake();
-            if(!GameInitializer.HasInstance) Instantiate(gameInitializer);
+            if (!GameInitializer.HasInstance) Instantiate(gameInitializer);
         }
 
         private void Start() {
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
-            
             GameInitializer.Instance.AddShards(glassShards);
-            
             roomCamera.Priority = 1;
         }
-
+        
         public void ResetShard() {
             GameInitializer.Instance.AddShards(glassShards);
         }

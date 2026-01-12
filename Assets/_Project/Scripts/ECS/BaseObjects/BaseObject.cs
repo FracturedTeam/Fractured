@@ -1,8 +1,11 @@
 using System;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -24,15 +27,17 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Locked Behind a Memory")]
         [SerializeField] internal bool locked;
         [SerializeField] internal int memoryId;
+
+        [Header("HUD")] 
+        [SerializeField] private Vector2 hudTransformPoint;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
-        
-        private FMODUnity.StudioEventEmitter emitter;
 
         private bool initialized = false;
         private bool canBeInteractedWith;
-
+        private bool isOnPressurePlate = false;
+        
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
         
@@ -50,7 +55,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(GetInteractionType is ObjectType.Moveable)
                 transform.position = data.position;
             GetCompletion = data.completion;
-            if (GetCompletion is InteractionCompletion.Completed) CompleteObject();
+            
+            if (GetCompletion is InteractionCompletion.Completed) {
+                if (GetInteractionType is ObjectType.PressurePlate) {
+                    var p = GetInteract as PressurePlate;
+                    p.objectOnPressurePlate = SaveInstance.Instance.gameData.ObjectDatas[data.objectIndexOnDisplay].baseObject.GetInteract as MoveableObject;
+                }
+                CompleteObject();
+            }
             
             SetInteract(data.canInteract);
         }
@@ -59,7 +71,21 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SaveData() {
             if(GetInteractionType is ObjectType.Moveable)
                 data.position = transform.position;
+                    
             data.completion = GetCompletion;
+            if (GetCompletion is InteractionCompletion.Completed && GetInteractionType is ObjectType.PressurePlate) {
+                var p = GetInteract as PressurePlate;
+                var index = 0;
+                for (var i = 0; i < SaveInstance.Instance.gameData.ObjectDatas.Count; i++) {
+                    if (p.objectOnPressurePlate.GetBaseObject() == SaveInstance.Instance.gameData.ObjectDatas[i].baseObject) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                data.objectIndexOnDisplay = index;
+            }
+            
             data.canInteract = canBeInteractedWith;
             if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
         }
@@ -76,9 +102,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
-                
-                if(TryGetComponent(out FMODUnity.StudioEventEmitter e))
-                    emitter = e;
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
@@ -143,9 +166,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public FMODUnity.StudioEventEmitter GetEmitter() {
-            return emitter;
+        public Vector3 GetUIPosition() {
+            return   transform.position + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0);
         }
+
+        public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;
+        public bool IsOnPressurePlate() => isOnPressurePlate;
     }
 
     [Serializable]
@@ -155,6 +181,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public InteractionCompletion completion;
         public bool canInteract;
         public bool objectOut;
+        public int objectIndexOnDisplay;
     }
 }
 

@@ -176,7 +176,7 @@ namespace _Project.Scripts.GameServices {
         public void AddShards(Glass[] shards) {
             var newShards = new List<Glass>();
             foreach (var shard in shards) {
-                var s = Instantiate(shard, HudManager.Instance.transform);
+                var s = Instantiate(shard, HudManager.Instance.glassHolder);
                 newShards.Add(s);
             }
             

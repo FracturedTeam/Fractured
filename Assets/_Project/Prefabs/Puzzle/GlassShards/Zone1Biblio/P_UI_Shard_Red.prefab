@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -783, y: -291}
-  m_SizeDelta: {x: 150, y: 200}
+  m_AnchoredPosition: {x: -561, y: -318}
+  m_SizeDelta: {x: 195, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3094605529417371041
 CanvasRenderer:
@@ -89,9 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723a75646ece6a34aafaba6fc0290195, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Glass
+  data:
+    glassShards: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
   color2D: 1
   canEditAnywhere: 0
-  shard: {fileID: 0}
+  shard: {fileID: 8540724540540974830, guid: e81a2e628de1f9a4797ce7db5c025fa5, type: 3}
 --- !u!60 &8195506950398294045
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -138,8 +141,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 75, y: 100}
-      - {x: -75, y: 100}
-      - {x: -75, y: -100}
-      - {x: 75, y: -100}
+    - - {x: 98.383484, y: 124.31879}
+      - {x: -97.44815, y: 125.25409}
+      - {x: -96.98047, y: -125.7218}
+      - {x: 96.98047, y: -124.7865}
   m_UseDelaunayMesh: 0

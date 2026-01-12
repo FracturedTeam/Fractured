@@ -25,9 +25,13 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
 
         public override void OnExit() {
+            animationExitTimer.Stop();
+            
             //Exit the grab animation when timer is finished
             animator.SetLayerWeight(FullBodyLayer, 0);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
         }
+        
+        public bool IsClipFinished() => animationExitTimer.IsFinished;
     }
 }
