@@ -117,7 +117,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (!baseObject.GetGlass) return;
 
-            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
+            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
             DropUnderShard();
         }
 
