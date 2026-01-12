@@ -58,6 +58,14 @@ namespace _Project.Scripts.UI
             tweener = null;
         }
 
+        private void OnEnable()
+        {
+            //sometimes the OnHover false of the disable doesn't work, this fixes it 
+            tweener = transform.DOScale(scale, 0).SetUpdate(true);
+            if(backgroundImage)
+                backgroundImage.sprite = baseSprite;
+        }
+
         private void OnDisable()
         {
             OnHover(false);
