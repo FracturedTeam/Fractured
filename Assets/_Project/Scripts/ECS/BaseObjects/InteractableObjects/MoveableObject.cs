@@ -262,12 +262,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 if (keyObject == keyObjectNeeded) {
-                    transform.SetParent(originalParent);
-                    TweenObjectDrop(keyObjectNeeded.transform);
+                    if (keyObject.keyObjectPos == null) {
+                        transform.SetParent(originalParent);
+                        TweenObjectDrop(keyObjectNeeded.transform);
+                    }
+                    else {
+                        transform.SetParent(keyObject.keyObjectPos);
+                        TweenObjectDrop(keyObject.keyObjectPos);
+                    }
                     
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
                     
+                    //Ici pour mettre l'objet sur le bon endroit
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
                     baseObject.GetCompletion = InteractionCompletion.Completed;
                     
