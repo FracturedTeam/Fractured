@@ -241,8 +241,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             else {
                 if (other.GetBaseObject().GetInteract as PressurePlate) {
-                    transform.SetParent(originalParent);
-                    TweenObjectDrop(other.GetBaseObject().transform);
+                    var p = other.GetBaseObject().GetInteract as PressurePlate;
+                    if (p.objectPosition == null) {
+                        transform.SetParent(originalParent);
+                        TweenObjectDrop(p.GetBaseObject().transform);
+                    }
+                    else {
+                        transform.SetParent(p.transform);
+                        TweenObjectDrop(p.objectPosition);
+                    }
                     
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
