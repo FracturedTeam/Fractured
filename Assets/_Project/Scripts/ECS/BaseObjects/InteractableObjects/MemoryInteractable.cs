@@ -72,10 +72,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.EnterMemory:
                 {
                     DisplayMemory();
-                    if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true }) {
-                        HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
-                        baseObject.successDialogue.alreadyInteracted = true;
-                    }
+                    
                 }
                     break;
                 case ObjectInteraction.LeaveMemory:
@@ -110,7 +107,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             AudioManager.Instance.PlayOneShot(associateMemorySound, transform.position);
             MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
             
+            
             Debug.Log($"[MemoryInteractable] Entering memory");
+            
+            if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })
+                return;
+            
+            print("show memory");
+            HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
+            baseObject.successDialogue.alreadyInteracted = true;
         }
 
         private void StopMemoryInteraction() {
@@ -122,6 +127,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             });
             */
             MemoryManager.Instance.SetMemory(false);
+            HudManager.Instance.ResetText();
             Debug.Log($"[MemoryInteractable] Leaving memory");
         }
         
