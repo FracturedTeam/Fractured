@@ -70,13 +70,11 @@ namespace _Project.Scripts.ECS
                 shard = sh;
                 
                shard.SetColor(color2D);
+               Set3DShard();
                 
                 if (shardSprite) 
                     shardSprite.color = Color.clear;
-
-                Set3DShard();
             }
-            
             initialized = true;
         }
 
@@ -134,15 +132,6 @@ namespace _Project.Scripts.ECS
             if (isOn) AudioManager.Instance.PlayGrabGlassSound();
             else AudioManager.Instance.PlayDropGlassSound();
         }
-
-        internal void ChangeStateActivation(bool isOn)
-        {
-            if (!shardSprite)
-                return;
-
-            //Will be replaced by the shader
-            //shardSprite.color = isOn ? new Color(1,1,1,0.7f) : new Color(1,1,1,0.4f);
-        }
         
         
         ///Get if an object is colliding with any the colliders 2D
@@ -170,7 +159,6 @@ namespace _Project.Scripts.ECS
             }
             return true;
         }
-        
 
         private void SetInteract(bool canInteract) {
             this.canInteract = canInteract;

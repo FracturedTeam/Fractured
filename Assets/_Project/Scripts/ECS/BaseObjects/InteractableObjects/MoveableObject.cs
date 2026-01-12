@@ -117,7 +117,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (!baseObject.GetGlass) return;
 
-            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass()) return;
+            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
             DropUnderShard();
         }
 
@@ -241,8 +241,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             else {
                 if (other.GetBaseObject().GetInteract as PressurePlate) {
-                    transform.SetParent(originalParent);
-                    TweenObjectDrop(other.GetBaseObject().transform);
+                    var p = other.GetBaseObject().GetInteract as PressurePlate;
+                    if (p.objectPosition == null) {
+                        transform.SetParent(originalParent);
+                        TweenObjectDrop(p.GetBaseObject().transform);
+                    }
+                    else {
+                        transform.SetParent(p.transform);
+                        TweenObjectDrop(p.objectPosition);
+                    }
                     
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
@@ -262,12 +269,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 if (keyObject == keyObjectNeeded) {
-                    transform.SetParent(originalParent);
-                    TweenObjectDrop(keyObjectNeeded.transform);
+                    if (keyObject.keyObjectPos == null) {
+                        transform.SetParent(originalParent);
+                        TweenObjectDrop(keyObjectNeeded.transform);
+                    }
+                    else {
+                        transform.SetParent(keyObject.keyObjectPos);
+                        TweenObjectDrop(keyObject.keyObjectPos);
+                    }
                     
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
                     
+                    //Ici pour mettre l'objet sur le bon endroit
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
                     baseObject.GetCompletion = InteractionCompletion.Completed;
                     

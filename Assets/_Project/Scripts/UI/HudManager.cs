@@ -95,7 +95,7 @@ namespace _Project.Scripts.UI
             textTimer.Start();
         }
         
-        private void ResetText() {
+        public void ResetText() {
             if(currentDialogue && currentDialogue.next)
                 SetText(currentDialogue.next);
             else
