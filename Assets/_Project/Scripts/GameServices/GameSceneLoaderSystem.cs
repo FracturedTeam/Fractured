@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using UnityEditor;
@@ -53,6 +54,12 @@ namespace _Project.Scripts.GameServices {
         public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
             scenesToLoad.Clear();
             
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = true
+            });
+            await Task.Delay(500);
+
+            
             await LoadSceneAsync(sceneSettings.levelDesign);
             PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
             
@@ -77,6 +84,11 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
             
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+            
+            await Task.Delay(500);
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = false
+            });
         }
         
         private async Task UnloadSceneAsync() {
@@ -104,6 +116,14 @@ namespace _Project.Scripts.GameServices {
         public void LoadMenu() {
             GameSaveSystem.Instance.SaveGame();
             scenesToLoad.Clear();
+            _ = LoadMenuAsync();
+        }
+
+        private async Task LoadMenuAsync() {
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = true
+            });
+            await Task.Delay(500);
             
             _ = UnloadSceneAsync();
             _ = LoadSceneAsync(menuScene);
@@ -111,6 +131,11 @@ namespace _Project.Scripts.GameServices {
             Destroy(PlayerService.Instance.gameObject);
             Destroy(GameInitializer.Instance.gameObject);
             Destroy(HudManager.Instance.gameObject);
+            
+            await Task.Delay(500);
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = false
+            });
         }
         
         public void NewGame() {
@@ -119,8 +144,19 @@ namespace _Project.Scripts.GameServices {
 
         private async Task StartNewGame() {
             scenesToLoad.Clear();
+            
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = true
+            });
+            await Task.Delay(500);
+            
             await LoadSceneAsync(newGameScene);
             _ = UnloadGameplaySceneAsync();
+            
+            await Task.Delay(500);
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = false
+            });
         }
         
         public void LoadGame(string sceneName) {
