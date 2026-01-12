@@ -13,6 +13,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private List<BaseObject> keyRequired;
         private List<BaseObject> keyUsed;
 
+        [SerializeField] public Transform keyObjectPos;
+
         private bool initialized = false;
         
         public virtual void Initialize() {

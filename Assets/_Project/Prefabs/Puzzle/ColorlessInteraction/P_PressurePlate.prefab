@@ -96,6 +96,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5953869752208411117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5278033511265003276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4101712535883556033}
+  m_Layer: 0
+  m_Name: ObjectPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4101712535883556033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278033511265003276}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 0.6666667, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7490049348158790331}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5293464197372038612
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +193,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4101712535883556033}
   m_Father: {fileID: 5527445867229274044}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &142977309989004555
@@ -248,12 +280,14 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
+  hudTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     completion: 0
     canInteract: 0
     objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!114 &5473137435246128761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,10 +301,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.PressurePlate
   timeToMoveObject: 1
+  objectPosition: {fileID: 4101712535883556033}
   movedObjects:
   - objectMoved: {fileID: 1680239980623189626}
     initialPos: {fileID: 7305547877780494093}
     movedPos: {fileID: 6937373451456998431}
+  objectOnPressurePlate: {fileID: 0}
+  lockedBehindThis: []
 --- !u!65 &4501089007471668542
 BoxCollider:
   m_ObjectHideFlags: 0

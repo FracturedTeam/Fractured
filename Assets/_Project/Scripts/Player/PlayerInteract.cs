@@ -484,12 +484,12 @@ namespace _Project.Scripts.Player {
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
             triggerDoor = true;
+            AudioManager.Instance.PlayOpenBigSound(position);
             StartCoroutine(LoadScene(toLoad, position));
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
-            AudioManager.Instance.PlayOpenBigSound(position);
             GameInitializer.Instance.LoadNewLevel(toLoad);
         }
     }
