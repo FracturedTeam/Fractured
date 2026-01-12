@@ -5,7 +5,7 @@
 			<value>ChangeFloorAvatar</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -82,7 +82,11 @@
 			<destination>{8af1f8d9-3097-4d8b-812a-98b8aaedb13a}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{0e9ddaf1-5db9-4ad4-aae3-419ff09a2be7}" />
+	<object class="MultiSound" id="{0e9ddaf1-5db9-4ad4-aae3-419ff09a2be7}">
+		<relationship name="sounds">
+			<destination>{aa09f0ce-28e8-46a0-bf0e-5b532220b781}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{579daa85-15cd-41fd-bf6b-920ef3c39e57}">
 		<relationship name="effects">
 			<destination>{65326fe5-0d7f-458b-9c8b-7b402ec00568}</destination>
@@ -95,6 +99,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8417d810-a5c1-49b6-9805-b6e79ec7b762}" />
+	<object class="SingleSound" id="{aa09f0ce-28e8-46a0-bf0e-5b532220b781}">
+		<relationship name="audioFile">
+			<destination>{dc90bcd9-4036-4300-b968-135f948c9ed6}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{65326fe5-0d7f-458b-9c8b-7b402ec00568}" />
 	<object class="MixerBusFader" id="{67fe5427-b8d7-4029-ac14-64d52ddb67c8}" />
 </objects>
