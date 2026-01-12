@@ -137,7 +137,7 @@ namespace _Project.Scripts.UI
                     interactionText2.text = $"{pickObjectPressurePlate}";
                     interactionImage2.sprite = spriteNormal;
                 }
-                interactionUI2.DOFade(e.Interaction == Interaction.EnterMemory? 1f : 0f, 0.25f);
+                interactionUI2.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionImage.sprite = e.Interaction switch
                 {
