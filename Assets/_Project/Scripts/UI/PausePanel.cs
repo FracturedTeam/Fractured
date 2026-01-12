@@ -46,6 +46,7 @@ public class PausePanel : MonoBehaviour
     }
 
     public void LoadMenu() {
+        Time.timeScale = 1;
         GameSceneLoaderSystem.Instance.LoadMenu();
     }
         

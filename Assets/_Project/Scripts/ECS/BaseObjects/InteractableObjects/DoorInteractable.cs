@@ -41,6 +41,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetInteractionType = ObjectType.Door;
             }
             
+            if(doorType is DoorType.BigDoor)
+                doorAnimator.SetBool("CanBeInteract", false);
+            
             initialized = true;
             baseObject?.SetInteract(true);
         }
@@ -69,6 +72,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if (sceneToLoad == null) return;
                 hasBeenInteracted = true;
                 PlayerController.Instance.interact.TriggerBigDoor(sceneToLoad, transform.position);
+                doorAnimator.SetBool("CanBeInteract", true);
                 return;
             }
             
@@ -98,6 +102,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
                 if (size > 0) {
                     AudioManager.Instance.PlayOpenSmallSound(transform.position);
+                    PlayerController.Instance.interact.StartUsingDoor();
                     PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
                 }
                 

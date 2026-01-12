@@ -9,6 +9,10 @@ namespace _Project.Scripts.ECS {
         [SerializeField] private ColorEnum colorEdition;
         [SerializeField] private Material screenEffectMat;
 
+        private float fadeTime = 1.0f;
+        private float fadeTimer = 0.0f;
+        private bool inZone = false;
+        
         void OnEnable() {
             screenEffectMat.SetFloat("_Progression", 0f);
         }
@@ -20,16 +24,22 @@ namespace _Project.Scripts.ECS {
         private void OnTriggerEnter(Collider other) {
             if (other.CompareTag("Player")) {
                 GameInitializer.Instance.SetEditableArea(true, colorEdition);
-                screenEffectMat.DOFloat(1, "_Progression", 1); //ajout� par paloma
+                inZone = true;
             }
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.CompareTag("Player")) {
                 GameInitializer.Instance.SetEditableArea(false, colorEdition);
-                screenEffectMat.DOFloat(0, "_Progression", 0.5f); //ajout� par paloma
+                inZone = false;
             }
         }
-        
+
+        private void Update() {
+            fadeTimer = inZone ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
+            fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
+            
+            screenEffectMat.SetFloat("_Progression", fadeTimer);
+        }
     }
 }
