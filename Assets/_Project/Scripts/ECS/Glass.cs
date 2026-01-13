@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,6 +26,7 @@ namespace _Project.Scripts.ECS
         
         public void LoadData() {
             transform.position = data.position;
+            Set3DShard();
         }
         
         public ColorEnum GetColor => color2D;
@@ -64,18 +66,21 @@ namespace _Project.Scripts.ECS
             if (TryGetComponent(typeof(PolygonCollider2D), out var col))
                 polygonCollider2D = col as PolygonCollider2D;
             
-            if(shard)
-            {
-                var sh = Instantiate(shard);
-                shard = sh;
-                
-               shard.SetColor(color2D);
-               Set3DShard();
-                
-                if (shardSprite) 
-                    shardSprite.color = Color.clear;
+            if(shard) {
+                if (shardSprite) shardSprite.color = Color.clear;
+                InstantiateShard();
             }
             initialized = true;
+        }
+
+        private void InstantiateShard() {
+            var sh = Instantiate(shard);
+            shard = sh;
+                
+            shard.SetColor(color2D);
+            Set3DShard();
+                
+            HudManager.Instance.SetParticles(mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x, transform.position.y, 10)));
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -114,8 +119,6 @@ namespace _Project.Scripts.ECS
             shard.Setup(cornersPos);
         }
 
-        public Vector3 Get3DPosition => mainCamera.ScreenToWorldPoint(transform.position);
-
         private void OnEnable()
         {
             if (shard) 
@@ -127,7 +130,13 @@ namespace _Project.Scripts.ECS
             if(shard)
                 shard?.gameObject.SetActive(false);
         }
+
+        void OnDestroy() {
+            if(shard) Destroy(shard.gameObject);
+        }
+        
         internal void ChangeHoldingState(bool isOn) {
+            Debug.Log($"[Glass] ChangeHoldingState({isOn})");
             if (!canInteract) return;
             if (!GameInitializer.Instance.InEditableArea()) {
                 AudioManager.Instance.PlayGrabGlassFailedSound();
