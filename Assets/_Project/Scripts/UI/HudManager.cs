@@ -149,6 +149,12 @@ namespace _Project.Scripts.UI
         
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
+
+                if (!e.ShowInteraction) {
+                    interactTween = interactionUI.DOFade(0f, 0.25f);
+                    interactionUI2.DOFade(0f, 0.25f);
+                    return;
+                }
                 
                 interactionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
