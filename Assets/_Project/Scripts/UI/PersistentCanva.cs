@@ -1,5 +1,6 @@
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 namespace _Project.Scripts.UI {
@@ -23,12 +24,26 @@ namespace _Project.Scripts.UI {
         }
 
         void Fade(FadeObject f) {
-            if (f.show) {
-                fadeCanvasGroup.DOFade(1f, 0.5f);
+            StartCoroutine(Fade(f.show));
+        }
+
+        IEnumerator Fade(bool show)
+        {
+            Debug.Log("Fade Canva " + show);
+            if (show) {
+                while(fadeCanvasGroup.alpha != 1){
+                    fadeCanvasGroup.alpha += Time.deltaTime * 2.0f;
+                    yield return null;
+                }
                 fadeCanvasGroup.blocksRaycasts = true;
                 fadeCanvasGroup.interactable = false;
             }
             else {
+                while (fadeCanvasGroup.alpha != 1)
+                {
+                    fadeCanvasGroup.alpha += Time.deltaTime * 2.0f;
+                    yield return null;
+                }
                 fadeCanvasGroup.DOFade(0f, 0.5f);
                 fadeCanvasGroup.blocksRaycasts = false;
                 fadeCanvasGroup.interactable = false;
