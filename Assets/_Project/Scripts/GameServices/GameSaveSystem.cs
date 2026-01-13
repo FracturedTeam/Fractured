@@ -21,10 +21,15 @@ namespace _Project.Scripts.GameServices {
         private IDataService dataService;
         
         [SerializeField] public SaveFile saveFile;
+        public bool deleteSaveOnPlay = true;
         
         protected override void Awake() {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+            
+            if (deleteSaveOnPlay) {
+                dataService.DeleteAll();
+            }
         }
         
         public void SaveGame() {

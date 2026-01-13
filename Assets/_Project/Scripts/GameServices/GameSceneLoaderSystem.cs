@@ -96,7 +96,9 @@ namespace _Project.Scripts.GameServices {
         private async Task UnloadGameplaySceneAsync() {
             await UnloadSceneAsync();
             
+            await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+            GameSaveSystem.Instance.LoadData();
         }
         
         private async Task UnloadSceneAsync() {
@@ -172,23 +174,28 @@ namespace _Project.Scripts.GameServices {
         }
 
         private async Task LoadSave(string sceneName) {
-            scenesToLoad.Clear();
-            
-            var foundScene = false;
-            foreach (var scene in allScenes) {
-                if (scene.SceneName != sceneName) continue;
-                foundScene = true;
-                await LoadSceneAsync(scene);
-                break;
-            }
+            try {
+                scenesToLoad.Clear();
 
-            if (!foundScene) {
-                Debug.LogError($"Failed to find scene {sceneName}");
-                return;
+                var foundScene = false;
+                foreach (var scene in allScenes) {
+                    if (scene.SceneName != sceneName) continue;
+                    foundScene = true;
+                    await LoadSceneAsync(scene);
+                    break;
+                }
+
+                if (!foundScene) {
+                    Debug.LogError($"Failed to find scene {sceneName}");
+                    return;
+                }
+
+                _ = UnloadGameplaySceneAsync();
+                GameSaveSystem.Instance.LoadPlayerData();
             }
-            
-            _ = UnloadGameplaySceneAsync();
-            GameSaveSystem.Instance.LoadPlayerData();
+            catch (Exception e) {
+                Debug.LogError("LoadSaveGame failed: \n" + e);
+            }
         }
 
         public List<SceneField> GetLoadedScenes() {
