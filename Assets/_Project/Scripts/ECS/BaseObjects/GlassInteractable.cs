@@ -42,6 +42,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         private bool initialized = false;
         public bool ObjectOut { get; set; }
         
+        public bool IsVisible { get; private set; }
+        
         public  void Initialize() {
             mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
@@ -69,7 +71,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             underRed = 0;
             underBlue = 0;
             
-            baseObject!.SetRenderer(objectColor != ColorEnum.Both);
+            //baseObject!.SetRenderer(objectColor != ColorEnum.Both);
             baseObject!.SetCollider(objectColor != ColorEnum.Both);
 
             if (objectInside) {
@@ -151,10 +153,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void SetVisibility(bool isUnder) {
-            baseObject.SetRenderer(isUnder);
-            for(var i = 0; i < baseObject.transform.childCount; i++) {
-                baseObject.transform.GetChild(i).gameObject.SetActive(isUnder);
-            }
+            if (objectColor == ColorEnum.Both) IsVisible = isUnder;
+            else IsVisible = !isUnder;
             
             if (baseObject.TryGetComponent(out MoveableObject move)) {
                 if (baseObject.IsOnPressurePlate()) {
@@ -197,7 +197,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             underBlue = 0;
             shardsOnTop.Clear();
             
-            baseObject!.SetRenderer(true);
+            //baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
             if (!objectInside || ObjectOut) return;
@@ -210,7 +210,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             underBlue = 0;
             shardsOnTop.Clear();
             
-            baseObject!.SetRenderer(true);
+            //baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
             if (!objectInside) return;

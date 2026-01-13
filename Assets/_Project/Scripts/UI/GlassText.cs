@@ -63,6 +63,8 @@ public class GlassText : MonoBehaviour
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
+        if(!shard)
+            return;
         if (isUnder) 
             shardsOnTop.Add(shard);
         else if(shardsOnTop.Contains(shard))

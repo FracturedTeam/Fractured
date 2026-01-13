@@ -21,10 +21,15 @@ namespace _Project.Scripts.GameServices {
         private IDataService dataService;
         
         [SerializeField] public SaveFile saveFile;
+        public bool deleteSaveOnPlay = true;
         
         protected override void Awake() {
             base.Awake();
             dataService = new FileDataService(new JsonSerializer());
+            
+            if (deleteSaveOnPlay) {
+                dataService.DeleteAll();
+            }
         }
         
         public void SaveGame() {
@@ -57,7 +62,7 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
-        public void LoadData() { //Data are loaded here
+        public void LoadData() {
             LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
@@ -77,7 +82,6 @@ namespace _Project.Scripts.GameServices {
                 break;
             }
 
-            //if (String.IsNullOrWhiteSpace(saveFile.Name)) {
             if(!foundExisting) {  
                 gameData.SceneName = gameName;
                 SaveGame();

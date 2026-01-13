@@ -85,6 +85,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
 
             GameInitializer.Instance.AddShards(shards);
+            
             if(glassRenderer)
                 glassRenderer.material = brokenMat;
             
