@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
