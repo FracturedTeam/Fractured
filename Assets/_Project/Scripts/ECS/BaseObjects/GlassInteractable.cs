@@ -153,11 +153,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void SetVisibility(bool isUnder) {
-            IsVisible = !isUnder;
-            //baseObject.SetRenderer(isUnder);
-            /*for(var i = 0; i < baseObject.transform.childCount; i++) {
-                baseObject.transform.GetChild(i).gameObject.SetActive(isUnder);
-            }*/
+            if (objectColor == ColorEnum.Both) IsVisible = isUnder;
+            else IsVisible = !isUnder;
             
             if (baseObject.TryGetComponent(out MoveableObject move)) {
                 if (baseObject.IsOnPressurePlate()) {
