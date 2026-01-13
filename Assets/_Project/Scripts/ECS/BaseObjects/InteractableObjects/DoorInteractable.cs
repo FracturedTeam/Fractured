@@ -132,8 +132,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
-            if(key)
-                key.ResetObject();
+            if(key) key.ResetObject();
         }
 
         public BaseObject GetBaseObject() {
