@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -25,6 +26,11 @@ namespace _Project.Scripts.UI
         [SerializeField] private TextMeshProUGUI interactionText2;
         [SerializeField] private Image interactionImage2;
         [field:SerializeField] public Transform glassHolder {get; private set;}
+
+        [SerializeField] private ParticleSystem spawningParticles;  
+        [SerializeField] private int maxShardsOnScreen = 2;
+        private List<ParticleSystem> shardsParticles = new List<ParticleSystem>();
+        
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
@@ -70,6 +76,10 @@ namespace _Project.Scripts.UI
             textTimer.OnTimerStop  += ResetText;
             interactionUI.alpha = 0;
             interactionUI2.alpha = 0;
+
+            //Particles pool
+            for (int i = 0; i < maxShardsOnScreen; i++)
+                shardsParticles.Add(spawningParticles);
         }
         
         void OnEnable() {
@@ -106,6 +116,19 @@ namespace _Project.Scripts.UI
                 SetText(currentDialogue.next);
             else
                 glassText.Setup(null);
+        }
+
+        public void SetParticles(int number, Vector3 newPosition)
+        {
+            if(number > maxShardsOnScreen)
+            {
+                Debug.Log("Max particles on screen exceeded, you can change the max number in the HUD");
+                return;
+            }
+
+            var current = shardsParticles[number];
+            current.gameObject.SetActive(true);
+            current.transform.position = newPosition;
         }
 
         #region InteractionHUD
