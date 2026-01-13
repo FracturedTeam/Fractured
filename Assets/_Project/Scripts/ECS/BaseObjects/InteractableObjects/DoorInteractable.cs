@@ -114,7 +114,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         SetDoor(true);
                 }
                 else { //Pour les portes qui peuvent disparaitre
-                    if(baseObject.GetRendered().enabled && linkedDoor.baseObject.GetRendered().enabled) 
+                    if(baseObject.GetGlassInteract.IsVisible && linkedDoor.baseObject.GetGlassInteract.IsVisible) 
                         SetDoor(true);
                     else
                         SetDoor(false);
