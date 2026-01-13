@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.08325
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.39240932
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 54.1001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50,10 +50,60 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
       propertyPath: m_Name
-      value: SM_Carpet_02
+      value: P_Carpet_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7434113273344222654}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3634359831786901200}
   m_SourcePrefab: {fileID: 100100000, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
+--- !u!1 &7403045649521081669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65674be8f5197f74ca8f1455672541ed, type: 3}
+  m_PrefabInstance: {fileID: 7673446683949744148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7434113273344222654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403045649521081669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde8a6c965aa445db0dc8fad9618765c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.GlassEditionAreaTrigger
+  colorEdition: 2
+  screenEffectMat: {fileID: 2100000, guid: bb06aedb9f4a8ee449f7f33084670683, type: 2}
+--- !u!65 &-3634359831786901200
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403045649521081669}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.0000002, y: 1, z: 2.9968252}
+  m_Center: {x: 0, y: 0.5, z: 0}
