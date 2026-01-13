@@ -9370,6 +9370,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6925251146395608294, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1163392741}
+    - targetCorrespondingSourceObject: {fileID: 6925251146395608294, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1163392743}
   m_SourcePrefab: {fileID: 100100000, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
 --- !u!1 &1163392734 stripped
 GameObject:
@@ -9433,6 +9436,27 @@ MonoBehaviour:
     canInteract: 0
     objectOut: 0
     objectIndexOnDisplay: 0
+--- !u!65 &1163392743
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163392734}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.642305, y: 2.95, z: 1.2}
+  m_Center: {x: 0.00000059604656, y: -0.29, z: 0.36}
 --- !u!1001 &1176315596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15197,6 +15221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236e15ea554d44d2a791b7696f620908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UnlockedDoor
+  keyObjectPos: {fileID: 0}
   unlockedDoorEvent:
     Guid:
       Data1: -1666903394

@@ -5885,6 +5885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c492f1f76554d35a11a43cd11b8cc21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.PedestalInteractable
+  keyObjectPos: {fileID: 0}
 --- !u!114 &465598521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8648,7 +8649,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 1149132375}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
@@ -8692,7 +8693,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[15]'
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[16]'
       value: 
@@ -8732,7 +8733,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[4].baseObject
       value: 
-      objectReference: {fileID: 1149132375}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[5].baseObject
       value: 
@@ -8776,7 +8777,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[15].baseObject
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[16].baseObject
       value: 
@@ -8816,7 +8817,7 @@ PrefabInstance:
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1149132375}
+      objectReference: {fileID: 0}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
@@ -8860,7 +8861,7 @@ PrefabInstance:
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 0}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[12]'
       value: 
@@ -8900,7 +8901,7 @@ PrefabInstance:
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[0].baseObject
       value: 
-      objectReference: {fileID: 1149132375}
+      objectReference: {fileID: 0}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[1].baseObject
       value: 
@@ -8944,7 +8945,7 @@ PrefabInstance:
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[11].baseObject
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 0}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[12].baseObject
       value: 
@@ -11464,17 +11465,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5527445867229274044, guid: 125290bce0058974eae7052fab2758e9, type: 3}
   m_PrefabInstance: {fileID: 841009232}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &841009234 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7914744859639943675, guid: 125290bce0058974eae7052fab2758e9, type: 3}
-  m_PrefabInstance: {fileID: 841009232}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
 --- !u!43 &842721309
 Mesh:
   m_ObjectHideFlags: 0
@@ -16262,6 +16252,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.12213868
       objectReference: {fileID: 0}
+    - target: {fileID: 1783015075717618296, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 1783015075717618296, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.51
+      objectReference: {fileID: 0}
     - target: {fileID: 5293464197372038612, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_Name
       value: P_PressurePlate
@@ -16369,50 +16367,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5527445867229274044, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1621966816}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6168984435731348990, guid: 125290bce0058974eae7052fab2758e9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1149132374}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 125290bce0058974eae7052fab2758e9, type: 3}
 --- !u!4 &1149132372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5527445867229274044, guid: 125290bce0058974eae7052fab2758e9, type: 3}
   m_PrefabInstance: {fileID: 1149132371}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1149132373 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6168984435731348990, guid: 125290bce0058974eae7052fab2758e9, type: 3}
-  m_PrefabInstance: {fileID: 1149132371}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1149132374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149132373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
-  objectColor: 2
-  objectInside: 0
-  interactableInBox: {fileID: 0}
-  radius2D: 0
-  showColliders: 0
-  scaleModificator: 1
---- !u!114 &1149132375 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7914744859639943675, guid: 125290bce0058974eae7052fab2758e9, type: 3}
-  m_PrefabInstance: {fileID: 1149132371}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149132373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
 --- !u!1001 &1150339456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29508,6 +29469,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: cba51915958e43d44bd0206b893fdd3e, type: 2}
+    - target: {fileID: 7228696233793487447, guid: f503867c10b6f3c428e330c76671156d, type: 3}
+      propertyPath: m_Size.x
+      value: 171.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7228696233793487447, guid: f503867c10b6f3c428e330c76671156d, type: 3}
+      propertyPath: m_Size.z
+      value: 141.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 7228696233793487447, guid: f503867c10b6f3c428e330c76671156d, type: 3}
+      propertyPath: m_Center.z
+      value: 12.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
