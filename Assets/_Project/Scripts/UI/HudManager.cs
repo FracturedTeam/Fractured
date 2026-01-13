@@ -29,7 +29,9 @@ namespace _Project.Scripts.UI
 
         [SerializeField] private ParticleSystem spawningParticles;  
         [SerializeField] private int maxShardsOnScreen = 2;
-        private List<ParticleSystem> shardsParticles = new List<ParticleSystem>();
+        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
+        [SerializeField] private int currentShardsSpawning;
         
 
         [Header("Interaction Texts")] 
@@ -79,7 +81,11 @@ namespace _Project.Scripts.UI
 
             //Particles pool
             for (int i = 0; i < maxShardsOnScreen; i++)
-                shardsParticles.Add(spawningParticles);
+            {
+                var particles = Instantiate(spawningParticles);
+                freeParticles.Add(particles);
+                particles.gameObject.SetActive(false);
+            }
         }
         
         void OnEnable() {
@@ -118,17 +124,24 @@ namespace _Project.Scripts.UI
                 glassText.Setup(null);
         }
 
-        public void SetParticles(int number, Vector3 newPosition)
+        public void SetParticles(Transform newParent)
         {
-            if(number > maxShardsOnScreen)
+            if(freeParticles.Count <= 0)
             {
                 Debug.Log("Max particles on screen exceeded, you can change the max number in the HUD");
                 return;
             }
 
-            var current = shardsParticles[number];
+            var current = freeParticles[^1];
+            freeParticles.Remove(current);
             current.gameObject.SetActive(true);
-            current.transform.position = newPosition;
+            current.transform.position = newParent.position;
+            //current.transform.SetParent(newParent); 
+        }
+
+        private void HideParticles()
+        {
+            
         }
 
         #region InteractionHUD
