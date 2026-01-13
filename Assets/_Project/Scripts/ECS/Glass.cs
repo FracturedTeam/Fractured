@@ -75,7 +75,7 @@ namespace _Project.Scripts.ECS
                 if (shardSprite) 
                     shardSprite.color = Color.clear;
                 
-                HudManager.Instance.SetParticles(shard.transform);
+                HudManager.Instance.SetParticles(mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x, transform.position.y, 10)));
             }
             initialized = true;
         }
