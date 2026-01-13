@@ -1,4 +1,5 @@
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -74,6 +75,8 @@ namespace _Project.Scripts.DebugSystems.Services {
             for(var i = 0; i < GameSceneLoaderSystem.Instance.allScenes.Length; i++) {
                 var s =  GameSceneLoaderSystem.Instance.allScenes[i];
                 if (GUILayout.Button($"Load : {s.SceneName}", buttonStyle)) {
+                    if (PlayerController.Instance.interact.HasObject)
+                        PlayerController.Instance.interact.SetDropObjectDebug();
                     _ = GameSceneLoaderSystem.Instance.LoadSceneFromDebug(s);
                 }
             }
