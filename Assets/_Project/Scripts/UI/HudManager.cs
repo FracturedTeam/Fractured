@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -124,7 +125,7 @@ namespace _Project.Scripts.UI
                 glassText.Setup(null);
         }
 
-        public void SetParticles(Transform newParent)
+        public void SetParticles(Vector3 position)
         {
             if(freeParticles.Count <= 0)
             {
@@ -135,7 +136,7 @@ namespace _Project.Scripts.UI
             var current = freeParticles[^1];
             freeParticles.Remove(current);
             current.gameObject.SetActive(true);
-            current.transform.position = newParent.position;
+            current.transform.position = position;
             //current.transform.SetParent(newParent); 
         }
 
