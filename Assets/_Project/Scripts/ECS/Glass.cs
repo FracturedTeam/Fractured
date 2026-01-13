@@ -114,6 +114,8 @@ namespace _Project.Scripts.ECS
             shard.Setup(cornersPos);
         }
 
+        public Vector3 Get3DPosition => mainCamera.ScreenToWorldPoint(transform.position);
+
         private void OnEnable()
         {
             if (shard) 

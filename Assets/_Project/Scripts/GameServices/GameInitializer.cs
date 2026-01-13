@@ -141,6 +141,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void RepopulateInteractableOnLoadLevel() {
+            Debug.Log($"[GameInitializer] Populate interactable");
             shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
             GameSaveSystem.Instance.LoadData();
         }

@@ -85,6 +85,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
 
             GameInitializer.Instance.AddShards(shards);
+            for (int i = 0; i < shards.Length; i++)
+            {
+                HudManager.Instance.SetParticles(i, shards[i].Get3DPosition);
+            }
+            
             if(glassRenderer)
                 glassRenderer.material = brokenMat;
             
