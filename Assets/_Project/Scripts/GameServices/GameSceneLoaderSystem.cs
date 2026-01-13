@@ -31,11 +31,40 @@ namespace _Project.Scripts.GameServices {
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            /*if (scene.name == newGameScene) {
-                var unload = UnloadGameplaySceneAsync();
-            }*/
+            ManageAudio(scene.buildIndex);
         }
 
+        private void ManageAudio(int index) {
+            //ManageAudio Loop
+            if (index == 2) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = true,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 2 && index < 8) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = true,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 7 && index < 12) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = true
+                });
+            }
+            else if(index < 2)
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+        }
+        
         public async Task LoadSceneAsync(SceneField newScene) {
             scenesToLoad.Add(newScene);
             
@@ -52,18 +81,33 @@ namespace _Project.Scripts.GameServices {
         }
         
         public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
-            scenesToLoad.Clear();
-            
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = true
-            });
-            await Task.Delay(500);
+            try {
+                scenesToLoad.Clear();
 
-            
-            await LoadSceneAsync(sceneSettings.levelDesign);
-            PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
-            
-            _ = UnloadGameplaySceneAsync();
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = true
+                });
+                await Task.Delay(600);
+
+                await LoadSceneAsync(sceneSettings.levelDesign);
+
+                PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+
+                await UnloadGameplaySceneAsync();
+
+                await Task.Delay(600);
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = false
+                });
+
+
+            }
+            catch (Exception e) {
+                Debug.LogError("LoadGameplaySceneAsync failed: It most likely is a need to SetInteractable in the P_SceneSettings prefab\n" + e);
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = false
+                });
+            }
         }
 
         public async Task LoadSceneFromDebug(SceneField scene) {
@@ -74,7 +118,7 @@ namespace _Project.Scripts.GameServices {
             scenesToLoad.Clear();
 
             await LoadSceneAsync(scene);
-            await UnloadGameplaySceneAsync();
+            _ = UnloadGameplaySceneAsync();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
             PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
@@ -83,12 +127,10 @@ namespace _Project.Scripts.GameServices {
         private async Task UnloadGameplaySceneAsync() {
             await UnloadSceneAsync();
             
+            await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-            
-            await Task.Delay(500);
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = false
-            });
+            GameSceneSettings.Instance.ResetShard();
+            GameSaveSystem.Instance.LoadData();
         }
         
         private async Task UnloadSceneAsync() {
@@ -123,7 +165,7 @@ namespace _Project.Scripts.GameServices {
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = true
             });
-            await Task.Delay(500);
+            await Task.Delay(600);
             
             _ = UnloadSceneAsync();
             _ = LoadSceneAsync(menuScene);
@@ -132,7 +174,7 @@ namespace _Project.Scripts.GameServices {
             Destroy(GameInitializer.Instance.gameObject);
             Destroy(HudManager.Instance.gameObject);
             
-            await Task.Delay(500);
+            await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = false
             });
@@ -148,12 +190,12 @@ namespace _Project.Scripts.GameServices {
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = true
             });
-            await Task.Delay(500);
+            await Task.Delay(600);
             
             await LoadSceneAsync(newGameScene);
             _ = UnloadGameplaySceneAsync();
             
-            await Task.Delay(500);
+            await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = false
             });
@@ -164,23 +206,28 @@ namespace _Project.Scripts.GameServices {
         }
 
         private async Task LoadSave(string sceneName) {
-            scenesToLoad.Clear();
-            
-            var foundScene = false;
-            foreach (var scene in allScenes) {
-                if (scene.SceneName != sceneName) continue;
-                foundScene = true;
-                await LoadSceneAsync(scene);
-                break;
-            }
+            try {
+                scenesToLoad.Clear();
 
-            if (!foundScene) {
-                Debug.LogError($"Failed to find scene {sceneName}");
-                return;
+                var foundScene = false;
+                foreach (var scene in allScenes) {
+                    if (scene.SceneName != sceneName) continue;
+                    foundScene = true;
+                    await LoadSceneAsync(scene);
+                    break;
+                }
+
+                if (!foundScene) {
+                    Debug.LogError($"Failed to find scene {sceneName}");
+                    return;
+                }
+
+                _ = UnloadGameplaySceneAsync();
+                GameSaveSystem.Instance.LoadPlayerData();
             }
-            
-            _ = UnloadGameplaySceneAsync();
-            GameSaveSystem.Instance.LoadPlayerData();
+            catch (Exception e) {
+                Debug.LogError("LoadSaveGame failed: \n" + e);
+            }
         }
 
         public List<SceneField> GetLoadedScenes() {

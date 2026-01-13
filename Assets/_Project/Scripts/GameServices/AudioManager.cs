@@ -21,7 +21,6 @@ namespace _Project.Scripts.GameServices {
         [Header("One Shot Sounds")]
         [Header("Glass Sounds")]
         [SerializeField] private EventReference grabGlassSound;
-        [SerializeField] private EventReference dropGlassSound;
         [SerializeField] private EventReference grabGlassFailedSound;
         [SerializeField] private EventReference revealSound;
         [SerializeField] private EventReference hideSound;
@@ -42,6 +41,7 @@ namespace _Project.Scripts.GameServices {
         
         [Header("Memory Sounds")]
         [SerializeField] private EventReference reconstructMemorySound;
+        [SerializeField] private EventReference enterMemorySound;
         
         [Header("Pressure Plate Sounds")]
         [SerializeField] private EventReference pressurePlateActiveSound;
@@ -69,7 +69,6 @@ namespace _Project.Scripts.GameServices {
         #region Glass
         public void PlayGrabGlassSound() => RuntimeManager.PlayOneShot(grabGlassSound);
         public void PlayGrabGlassFailedSound() => RuntimeManager.PlayOneShot(grabGlassFailedSound);
-        public void PlayDropGlassSound() => RuntimeManager.PlayOneShot(dropGlassSound);
         public void PlayRevealObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(revealSound, worldPosition);
         public void PlayHideObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(hideSound, worldPosition);
         public void PlayBreakGlassSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(breakGlassSound, worldPosition);
@@ -110,6 +109,10 @@ namespace _Project.Scripts.GameServices {
             RuntimeManager.PlayOneShot(reconstructMemorySound, worldPosition);
         } 
         
+        public void PlayEnterMemorySound(Vector3 worldPosition) {
+            RuntimeManager.PlayOneShot(enterMemorySound, worldPosition);
+        } 
+        
         public void PlayPlateActiveSound(Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(pressurePlateActiveSound, worldPosition);
         } 
@@ -138,7 +141,7 @@ namespace _Project.Scripts.GameServices {
             EventBus<ManageAmbientAudio>.Deregister(ambientEventBinding);
         }
         
-        private EventInstance CreateInstance(EventReference reference) {
+        public EventInstance CreateInstance(EventReference reference) {
             var instance = RuntimeManager.CreateInstance(reference);
             return instance;
         }

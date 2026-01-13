@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
@@ -16,10 +18,22 @@ namespace _Project.Scripts.UI
     public class HudManager : PersistentSingleton<HudManager>
     {
         [Header("HUD")]
+        [SerializeField] private GameObject interactionParent;
         [SerializeField] private CanvasGroup interactionUI;
         [SerializeField] private TextMeshProUGUI interactionText;
         [SerializeField] private Image interactionImage;
+        
+        [SerializeField] private CanvasGroup interactionUI2;
+        [SerializeField] private TextMeshProUGUI interactionText2;
+        [SerializeField] private Image interactionImage2;
         [field:SerializeField] public Transform glassHolder {get; private set;}
+
+        [SerializeField] private ParticleSystem spawningParticles;  
+        [SerializeField] private int maxShardsOnScreen = 2;
+        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
+        [SerializeField] private int currentShardsSpawning;
+        
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
@@ -64,6 +78,15 @@ namespace _Project.Scripts.UI
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
             interactionUI.alpha = 0;
+            interactionUI2.alpha = 0;
+
+            //Particles pool
+            for (int i = 0; i < maxShardsOnScreen; i++)
+            {
+                var particles = Instantiate(spawningParticles);
+                freeParticles.Add(particles);
+                particles.gameObject.SetActive(false);
+            }
         }
         
         void OnEnable() {
@@ -102,10 +125,37 @@ namespace _Project.Scripts.UI
                 glassText.Setup(null);
         }
 
+        public void SetParticles(Vector3 position)
+        {
+            if(freeParticles.Count <= 0)
+            {
+                Debug.Log("Max particles on screen exceeded, you can change the max number in the HUD");
+                return;
+            }
+
+            var current = freeParticles[^1];
+            freeParticles.Remove(current);
+            current.gameObject.SetActive(true);
+            current.transform.position = position;
+            //current.transform.SetParent(newParent); 
+        }
+
+        private void HideParticles()
+        {
+            
+        }
+
         #region InteractionHUD
         
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
+
+                if (!e.ShowInteraction) {
+                    interactTween = interactionUI.DOFade(0f, 0.25f);
+                    interactionUI2.DOFade(0f, 0.25f);
+                    return;
+                }
+                
                 interactionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
                     Interaction.ObtainShard => $"{obtainShard}",
@@ -124,6 +174,13 @@ namespace _Project.Scripts.UI
                     Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
+
+                if (e.Interaction == Interaction.EnterMemory)
+                {
+                    interactionText2.text = $"{pickObjectPressurePlate}";
+                    interactionImage2.sprite = spriteNormal;
+                }
+                interactionUI2.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionImage.sprite = e.Interaction switch
                 {
@@ -142,7 +199,7 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionUI.transform.position = new Vector3(position.x, position.y + 2f, 0f);
+                Instance.interactionParent.transform.position = new Vector3(position.x, position.y + 2f, 0f);
             }
 
             void ShowMemory(MemoryEvent e) {

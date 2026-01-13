@@ -325,7 +325,8 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
-
+            
+            
             if (potentialInteraction == null) return;
             switch (potentialInteraction.GetInteractionType) {
                 case ObjectType.Moveable:
@@ -350,7 +351,10 @@ namespace _Project.Scripts.Player {
                     return;
                 case ObjectType.Memory when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
                     if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
+                    {
                         interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
+                        RaiseInteraction();
+                    }
                     else if (HasObject) {
                         var key = potentialInteraction.GetComponent<KeyInteractable>();
                         interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
@@ -412,6 +416,12 @@ namespace _Project.Scripts.Player {
         
         public void SetDropObject() {
             HasObject = false;
+            currentInteraction = null;
+        }
+        
+        public void SetDropObjectDebug() {
+            HasObject = false;
+            currentInteraction?.OnInteract(ObjectInteraction.DropNoTimer);
             currentInteraction = null;
         }
         

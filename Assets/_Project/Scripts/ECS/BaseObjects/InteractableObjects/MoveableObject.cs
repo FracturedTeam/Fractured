@@ -123,8 +123,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void CompleteObject() {
             if (keyObjectNeeded) {
-                transform.SetParent(originalParent);
-                TweenObjectDrop(keyObjectNeeded.transform);
+                if (keyObjectNeeded.keyObjectPos != null) {
+                    transform.SetParent(keyObjectNeeded.keyObjectPos);
+                    transform.position = keyObjectNeeded.keyObjectPos.position;
+                }
+                else {
+                    transform.SetParent(originalParent);
+                    transform.position = keyObjectNeeded.transform.position;
+                }
                     
                 baseObject.SetInteract(false);
                 baseObject.SetCollider(false);
