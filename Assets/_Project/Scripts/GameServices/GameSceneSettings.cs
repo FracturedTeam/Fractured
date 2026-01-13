@@ -41,6 +41,10 @@ namespace _Project.Scripts.GameServices {
             ManageAudio();
         }
 
+        public void ResetShard() {
+            GameInitializer.Instance.AddShards(glassShards);
+        }
+        
         private void ManageAudio() {
             //ManageAudio Loop
             var index = gameObject.scene.buildIndex;
@@ -71,10 +75,6 @@ namespace _Project.Scripts.GameServices {
                     ambientSoundTuto = false,
                     ambientSoundZone1 = false
                 });
-        }
-        
-        public void ResetShard() {
-            GameInitializer.Instance.AddShards(glassShards);
         }
 
         public void SetPlayerPos(Vector3 pos) {
