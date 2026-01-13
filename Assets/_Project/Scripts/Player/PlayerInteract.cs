@@ -85,7 +85,7 @@ namespace _Project.Scripts.Player {
             size = 0;
 
             usingLockedDoor = new CountdownTimer(timerToUseDoor);
-            usingDoor = new CountdownTimer(timerToUseDoor);
+            usingDoor = new CountdownTimer(0.4f);
             InteractCooldown = new CountdownTimer(0.5f);
         }
 
@@ -325,7 +325,8 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
-
+            
+            
             if (potentialInteraction == null) return;
             switch (potentialInteraction.GetInteractionType) {
                 case ObjectType.Moveable:
@@ -350,7 +351,10 @@ namespace _Project.Scripts.Player {
                     return;
                 case ObjectType.Memory when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
                     if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
+                    {
                         interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
+                        RaiseInteraction();
+                    }
                     else if (HasObject) {
                         var key = potentialInteraction.GetComponent<KeyInteractable>();
                         interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
@@ -484,12 +488,12 @@ namespace _Project.Scripts.Player {
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
             triggerDoor = true;
+            AudioManager.Instance.PlayOpenBigSound(position);
             StartCoroutine(LoadScene(toLoad, position));
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
-            AudioManager.Instance.PlayOpenBigSound(position);
             GameInitializer.Instance.LoadNewLevel(toLoad);
         }
     }

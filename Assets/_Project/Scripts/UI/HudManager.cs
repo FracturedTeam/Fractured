@@ -16,9 +16,14 @@ namespace _Project.Scripts.UI
     public class HudManager : PersistentSingleton<HudManager>
     {
         [Header("HUD")]
+        [SerializeField] private GameObject interactionParent;
         [SerializeField] private CanvasGroup interactionUI;
         [SerializeField] private TextMeshProUGUI interactionText;
         [SerializeField] private Image interactionImage;
+        
+        [SerializeField] private CanvasGroup interactionUI2;
+        [SerializeField] private TextMeshProUGUI interactionText2;
+        [SerializeField] private Image interactionImage2;
         [field:SerializeField] public Transform glassHolder {get; private set;}
 
         [Header("Interaction Texts")] 
@@ -64,6 +69,7 @@ namespace _Project.Scripts.UI
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
             interactionUI.alpha = 0;
+            interactionUI2.alpha = 0;
         }
         
         void OnEnable() {
@@ -95,7 +101,7 @@ namespace _Project.Scripts.UI
             textTimer.Start();
         }
         
-        private void ResetText() {
+        public void ResetText() {
             if(currentDialogue && currentDialogue.next)
                 SetText(currentDialogue.next);
             else
@@ -106,6 +112,7 @@ namespace _Project.Scripts.UI
         
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
+                
                 interactionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
                     Interaction.ObtainShard => $"{obtainShard}",
@@ -124,6 +131,13 @@ namespace _Project.Scripts.UI
                     Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
+
+                if (e.Interaction == Interaction.EnterMemory)
+                {
+                    interactionText2.text = $"{pickObjectPressurePlate}";
+                    interactionImage2.sprite = spriteNormal;
+                }
+                interactionUI2.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionImage.sprite = e.Interaction switch
                 {
@@ -142,7 +156,7 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionUI.transform.position = new Vector3(position.x, position.y + 2f, 0f);
+                Instance.interactionParent.transform.position = new Vector3(position.x, position.y + 2f, 0f);
             }
 
             void ShowMemory(MemoryEvent e) {
