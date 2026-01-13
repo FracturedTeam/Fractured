@@ -24,31 +24,15 @@ namespace _Project.Scripts.UI {
         }
 
         void Fade(FadeObject f) {
-            StartCoroutine(Fade(f.show));
-        }
-
-        IEnumerator Fade(bool show)
-        {
-            Debug.Log("Fade Canva " + show);
-            if (show) {
-                while(fadeCanvasGroup.alpha != 1){
-                    fadeCanvasGroup.alpha += Time.deltaTime * 2.0f;
-                    yield return null;
-                }
+            Debug.Log("Fade canva " + f.show);
+            if (f.show) {
+                fadeCanvasGroup.DOFade(1f, 0.5f);
                 fadeCanvasGroup.blocksRaycasts = true;
-                fadeCanvasGroup.interactable = false;
             }
             else {
-                while (fadeCanvasGroup.alpha != 1)
-                {
-                    fadeCanvasGroup.alpha += Time.deltaTime * 2.0f;
-                    yield return null;
-                }
                 fadeCanvasGroup.DOFade(0f, 0.5f);
                 fadeCanvasGroup.blocksRaycasts = false;
-                fadeCanvasGroup.interactable = false;
             }
         }
-        
     }
 }
