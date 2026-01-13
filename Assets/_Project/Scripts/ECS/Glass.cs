@@ -96,13 +96,9 @@ namespace _Project.Scripts.ECS
 
             transform.position += (Vector3)eventData.delta; 
             
-            /*
-            transform.position = new Vector2(
-                Math.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x / 2,
-                    mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x / 2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y / 2,
-                    mainCamera.pixelHeight - shardSprite.rectTransform.sizeDelta.y / 2));
-                    */
+            transform.position = new UnityEngine.Vector3(
+                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, 1920 - shardSprite.rectTransform.sizeDelta.x/2),
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, 1080 - shardSprite.rectTransform.sizeDelta.y/2));
 
             Set3DShard();
         }
@@ -145,7 +141,6 @@ namespace _Project.Scripts.ECS
 
             isHeld = isOn;
             if (isOn) AudioManager.Instance.PlayGrabGlassSound();
-            else AudioManager.Instance.PlayDropGlassSound();
         }
         
         

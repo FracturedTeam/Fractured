@@ -3,8 +3,10 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.UI;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     
@@ -23,7 +25,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private KeyInteractable key;
         
         [Header("Sounds")]
-        [SerializeField] private EventReference associateMemorySound;
+        [SerializeField] private EventReference associateMemoryLoop;
+        private EventInstance soundInstance;
         
         private bool initialized = false;
         
@@ -37,6 +40,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetInteractionType = ObjectType.Memory;
                 
                 gameObject.layer = LayerMask.NameToLayer("MemoryObject");
+
+                soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
             }
             
             initialized = true;
@@ -96,18 +101,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         void DisplayMemory() {
             baseObject.SetInteract(false);
             
-            /*
-            EventBus<MemoryEvent>.Raise(new MemoryEvent {
-                showMemory = true,
-                memory = memorySprite
-            });
-            */
-            
-            //AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            AudioManager.Instance.PlayEnterMemorySound(transform.position);
             EventBus<MemorySound>.Raise(new MemorySound {
                 inMemory = true
             });
-            AudioManager.Instance.PlayOneShot(associateMemorySound, transform.position);
+            soundInstance.getPlaybackState(out var playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+                soundInstance.start();
+            }
             MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
             
             
@@ -123,12 +124,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
-            /*
-            EventBus<MemoryEvent>.Raise(new MemoryEvent {
-                showMemory = false,
-                memory = null
-            });
-            */
+            
+            soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
             EventBus<MemorySound>.Raise(new MemorySound {
                 inMemory = false
             });
