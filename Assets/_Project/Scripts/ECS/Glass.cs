@@ -74,6 +74,8 @@ namespace _Project.Scripts.ECS
                 
                 if (shardSprite) 
                     shardSprite.color = Color.clear;
+                
+                HudManager.Instance.SetParticles(shard.transform);
             }
             initialized = true;
         }
@@ -113,8 +115,6 @@ namespace _Project.Scripts.ECS
                 
             shard.Setup(cornersPos);
         }
-
-        public Vector3 Get3DPosition => mainCamera.ScreenToWorldPoint(transform.position);
 
         private void OnEnable()
         {
