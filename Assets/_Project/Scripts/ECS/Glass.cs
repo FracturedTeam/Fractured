@@ -141,7 +141,6 @@ namespace _Project.Scripts.ECS
 
             isHeld = isOn;
             if (isOn) AudioManager.Instance.PlayGrabGlassSound();
-            else AudioManager.Instance.PlayDropGlassSound();
         }
         
         
