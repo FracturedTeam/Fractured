@@ -84,31 +84,6 @@ namespace _Project.Scripts.GameServices.Services {
         
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
-            /*foreach (var shard in shards) {
-                if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
-                    if (!shard.IsColliding(Mouse.current.position.ReadValue()))
-                        continue;
-                    
-                    currentGlass = shard;
-                    currentGlass.ChangeHoldingState(true);
-
-                    if (!shards.Contains(currentGlass)) 
-                        return;
-                    
-                    shards.Remove(currentGlass);
-                    shards.Insert(0, currentGlass);
-                    shard.transform.SetAsLastSibling();
-
-                    return;
-                }
-                
-                if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
-                    currentGlass.ChangeHoldingState(false);
-                    currentGlass = null;
-                    return;
-                }
-                
-            }*/
             if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
                 foreach (var shard in shards) {
                     if (!shard.IsColliding(Mouse.current.position.ReadValue()))
