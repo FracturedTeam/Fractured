@@ -31,9 +31,40 @@ namespace _Project.Scripts.GameServices {
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            
+            ManageAudio(scene.buildIndex);
         }
 
+        private void ManageAudio(int index) {
+            //ManageAudio Loop
+            if (index == 2) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = true,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 2 && index < 8) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = true,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 7 && index < 12) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = true
+                });
+            }
+            else if(index < 2)
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+        }
+        
         public async Task LoadSceneAsync(SceneField newScene) {
             scenesToLoad.Add(newScene);
             

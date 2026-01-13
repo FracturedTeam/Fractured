@@ -33,43 +33,10 @@ namespace _Project.Scripts.GameServices {
         private void Start() {
             roomCamera.Priority = 1;
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
-            ManageAudio();
         }
 
         public void ResetShard() {
             GameInitializer.Instance.AddShards(glassShards);
-        }
-        
-        private void ManageAudio() {
-            //ManageAudio Loop
-            var index = gameObject.scene.buildIndex;
-            if (index == 2) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = true,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = false
-                });
-            }
-            else if (index > 2 && index < 8) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = true,
-                    ambientSoundZone1 = false
-                });
-            }
-            else if (index > 7 && index < 12) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = true
-                });
-            }
-            else
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = false
-                });
         }
 
         public void SetPlayerPos(Vector3 pos) {
