@@ -98,6 +98,7 @@ namespace _Project.Scripts.GameServices {
             
             await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+            GameSceneSettings.Instance.ResetShard();
             GameSaveSystem.Instance.LoadData();
         }
         

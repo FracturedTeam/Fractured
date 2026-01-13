@@ -419,6 +419,12 @@ namespace _Project.Scripts.Player {
             currentInteraction = null;
         }
         
+        public void SetDropObjectDebug() {
+            HasObject = false;
+            currentInteraction?.OnInteract(ObjectInteraction.DropNoTimer);
+            currentInteraction = null;
+        }
+        
         private bool CanGrab() {
             if(potentialInteraction == null) return false;
             

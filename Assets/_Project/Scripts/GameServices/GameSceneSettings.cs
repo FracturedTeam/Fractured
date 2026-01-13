@@ -25,8 +25,6 @@ namespace _Project.Scripts.GameServices {
         
         bool hasInitializedGame = false;
 
-        private CountdownTimer waitToSpawnShard = new CountdownTimer(0.5f);
-        
         protected override void Awake() {
             base.Awake();
             if (!GameInitializer.HasInstance) Instantiate(gameInitializer);
@@ -34,9 +32,6 @@ namespace _Project.Scripts.GameServices {
 
         private void Start() {
             roomCamera.Priority = 1;
-            waitToSpawnShard.OnTimerStop += ResetShard;
-            waitToSpawnShard.Start();
-            
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
             ManageAudio();
         }

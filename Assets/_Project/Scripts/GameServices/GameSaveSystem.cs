@@ -62,7 +62,7 @@ namespace _Project.Scripts.GameServices {
             Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
         }
 
-        public void LoadData() { //Data are loaded here
+        public void LoadData() {
             LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
@@ -82,7 +82,6 @@ namespace _Project.Scripts.GameServices {
                 break;
             }
 
-            //if (String.IsNullOrWhiteSpace(saveFile.Name)) {
             if(!foundExisting) {  
                 gameData.SceneName = gameName;
                 SaveGame();
