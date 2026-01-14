@@ -52,6 +52,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(hasBeenInteracted) return;
             
             if (key) {
+                if (!key.GetBaseObject()) {
+                    key.Initialize();
+                }
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
                     if(doorType is DoorType.BigDoor) AudioManager.Instance.PlayLockedBigSound(transform.position);
                     else AudioManager.Instance.PlayLockedSmallSound(transform.position);

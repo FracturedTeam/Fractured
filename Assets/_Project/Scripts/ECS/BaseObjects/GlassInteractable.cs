@@ -66,6 +66,12 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectColor is ColorEnum.Both) {
                 SetVisibility(false);
+                if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
+                    baseObject.SetRenderer(false);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
             }
             
             underRed = 0;
@@ -115,10 +121,18 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
                 baseObject.SetRenderer(false);
+                for (var i = 0; i < transform.childCount; i++) {
+                    transform.GetChild(i).gameObject.SetActive(false);
+                }
                 return;
             }
             if (!baseObject.locked && MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)){
-                if(!baseObject.GetRendered().enabled) baseObject.SetRenderer(true);
+                if (!baseObject.GetRendered().enabled) {
+                    baseObject.SetRenderer(true);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                }
             }
             
             underBlue = 0;
