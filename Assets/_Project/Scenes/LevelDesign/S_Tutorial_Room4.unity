@@ -937,7 +937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 0
   memorySprite: {fileID: 2076194026, guid: 04503644a38d8f643834d834dfeb84cf, type: 3}
-  associateMemorySound:
+  associateMemoryLoop:
     Guid:
       Data1: 0
       Data2: 0
@@ -7516,7 +7516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8312852325468673020, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.86
+      value: -1.445
       objectReference: {fileID: 0}
     - target: {fileID: 8312852325468673020, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7524,7 +7524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8312852325468673020, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.29
+      value: 5.558
       objectReference: {fileID: 0}
     - target: {fileID: 8312852325468673020, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8543,11 +8543,11 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 38826223}
+      objectReference: {fileID: 972769487}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 972769487}
+      objectReference: {fileID: 38826223}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
@@ -8567,11 +8567,11 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[0].baseObject
       value: 
-      objectReference: {fileID: 38826223}
+      objectReference: {fileID: 972769487}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[1].baseObject
       value: 
-      objectReference: {fileID: 972769487}
+      objectReference: {fileID: 38826223}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[2].baseObject
       value: 
@@ -11834,7 +11834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
+  ObjectName: Dining Room
   successDialogue:
     dialogue: {fileID: 0}
     oneTime: 0
@@ -13765,6 +13765,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 350373469}
     m_Modifications:
+    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
+      propertyPath: m_Radius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
+      propertyPath: m_Center.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7609110846498053190, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6163092867083061854, guid: 049c18dd087cab547a8a286543a2530a, type: 3}
       propertyPath: m_Name
       value: P_Table
@@ -13816,26 +13836,6 @@ PrefabInstance:
     - target: {fileID: 6830945664131305700, guid: 049c18dd087cab547a8a286543a2530a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
-      propertyPath: m_Height
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
-      propertyPath: m_Radius
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
-      propertyPath: m_Center.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3619748756388714592, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
-      propertyPath: m_Center.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7609110846498053190, guid: 0d7e586903494674588c24061a31ebb9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
