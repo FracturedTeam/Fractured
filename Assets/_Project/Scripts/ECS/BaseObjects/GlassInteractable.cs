@@ -113,8 +113,13 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         private void UpdateShards() {
 
-            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId))
+            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
+                baseObject.SetRenderer(false);
                 return;
+            }
+            if (!baseObject.locked && MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)){
+                if(!baseObject.GetRendered().enabled) baseObject.SetRenderer(true);
+            }
             
             underBlue = 0;
             underRed = 0;
