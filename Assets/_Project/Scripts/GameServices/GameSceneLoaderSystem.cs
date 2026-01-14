@@ -118,6 +118,9 @@ namespace _Project.Scripts.GameServices {
             scenesToLoad.Clear();
 
             await LoadSceneAsync(scene);
+
+            await Task.Delay(100);
+            
             _ = UnloadGameplaySceneAsync();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle

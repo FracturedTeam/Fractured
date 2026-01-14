@@ -6,6 +6,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngineInternal;
@@ -35,6 +36,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         internal Vector3[] BoundingBox;
         private MoveableObject selfMoveable;
+        private FrequencyTimer updatePos = new FrequencyTimer(1.0f);
         
         private int underRed;
         private int underBlue;
@@ -46,7 +48,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public  void Initialize() {
             mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
-
+            updatePos.OnTick += SetUp;
+            updatePos.Start();
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component))
                     baseObject = component as BaseObject;
@@ -66,6 +69,12 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectColor is ColorEnum.Both) {
                 SetVisibility(false);
+                if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
+                    baseObject.SetRenderer(false);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
             }
             
             underRed = 0;
@@ -113,8 +122,21 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         private void UpdateShards() {
 
-            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId))
+            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
+                baseObject.SetRenderer(false);
+                for (var i = 0; i < transform.childCount; i++) {
+                    transform.GetChild(i).gameObject.SetActive(false);
+                }
                 return;
+            }
+            if (!baseObject.locked && MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)){
+                if (!baseObject.GetRendered().enabled) {
+                    baseObject.SetRenderer(true);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                }
+            }
             
             underBlue = 0;
             underRed = 0;
@@ -259,6 +281,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             
         }
 
+        private void Setup(float f) {
+            SetUp();
+        }
+        
         ///Auto Setup the collision
         private void SetUp() {
             var points = GetComponent<MeshFilter>().sharedMesh.vertices;
