@@ -47,8 +47,7 @@ namespace _Project.Scripts.ECS
 
         private void Start()
         {
-            if (!initialized)
-            {
+            if (!initialized) {
                 Initialize();
             }
         }
@@ -96,7 +95,7 @@ namespace _Project.Scripts.ECS
 
             transform.position += (Vector3)eventData.delta; 
             
-            transform.position = new UnityEngine.Vector3(
+            transform.position = new Vector3(
                 Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, 1920 - shardSprite.rectTransform.sizeDelta.x/2),
                 Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, 1080 - shardSprite.rectTransform.sizeDelta.y/2));
 
@@ -110,7 +109,8 @@ namespace _Project.Scripts.ECS
             
             List<Vector3> cornersPos = new ();
             foreach (var points in polygonCollider2D.points)
-                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x, transform.position.y +points.y, 10)));
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x + polygonCollider2D.offset.x, 
+                    transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
                 
             shard.Setup(cornersPos);
         }
