@@ -22,6 +22,11 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private PlayerService player;
         [SerializeField] private HudManager hudManager;
         
+        [Header("ScreenEffect")]
+        [SerializeField] private Material screenEffectMat;
+        private float fadeTime = 1.0f;
+        private float fadeTimer = 0.0f;
+        
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool InitializeDebugger = true;
@@ -43,6 +48,7 @@ namespace _Project.Scripts.GameServices {
             //Populate the glassShardService
             PopulateShardOnStart();
 
+            screenEffectMat.SetFloat("_Progression", 0f);
         }
 
         private void InitializeGameSystems() {
@@ -88,8 +94,17 @@ namespace _Project.Scripts.GameServices {
         
         private void Update() {
             gameSystems.Tick();
+            
+            UpdateScreenEffect();
         }
 
+        void UpdateScreenEffect() {
+            fadeTimer = InEditableArea() ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
+                fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
+            
+            screenEffectMat.SetFloat("_Progression", fadeTimer);
+        }
+        
         private void OnDestroy() {
             gameSystems.Dispose();
         }
