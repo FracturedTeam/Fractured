@@ -105,7 +105,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else SetInteract(false);
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
-                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain MeshRenderer component");
+                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");

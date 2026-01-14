@@ -120,6 +120,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (interactableInBox.IsGrabbed()) ObjectOut = true;
         }
 
+        void OnDestroy() {
+            updatePos.OnTick -= SetUp;
+            updatePos.Stop();
+            updatePos.Dispose();
+        }
+
         private void UpdateShards() {
 
             if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {

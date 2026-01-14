@@ -66,8 +66,8 @@ namespace _Project.Scripts.GameServices.Services {
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            foreach (var glassText in glassTexts)
-              SetGlassTextState(glassText);
+            /*foreach (var glassText in glassTexts)
+              SetGlassTextState(glassText);*/
         }
         
         private void SetShardState(BaseObject glassBase) {
@@ -76,11 +76,11 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        private void SetGlassTextState(GlassText text) {
+        /*private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
                 text.OnInteract(shard.IsColliding(text.TagPositions), shard);
             }
-        }
+        }*/
         
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
