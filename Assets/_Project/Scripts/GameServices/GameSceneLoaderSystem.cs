@@ -31,9 +31,40 @@ namespace _Project.Scripts.GameServices {
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            
+            ManageAudio(scene.buildIndex);
         }
 
+        private void ManageAudio(int index) {
+            //ManageAudio Loop
+            if (index == 2) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = true,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 2 && index < 8) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = true,
+                    ambientSoundZone1 = false
+                });
+            }
+            else if (index > 7 && index < 12) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = true
+                });
+            }
+            else if(index < 2)
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    ambientSoundCoffin = false,
+                    ambientSoundTuto = false,
+                    ambientSoundZone1 = false
+                });
+        }
+        
         public async Task LoadSceneAsync(SceneField newScene) {
             scenesToLoad.Add(newScene);
             
@@ -96,7 +127,10 @@ namespace _Project.Scripts.GameServices {
         private async Task UnloadGameplaySceneAsync() {
             await UnloadSceneAsync();
             
+            await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+            GameSceneSettings.Instance.ResetShard();
+            GameSaveSystem.Instance.LoadData();
         }
         
         private async Task UnloadSceneAsync() {
@@ -172,23 +206,28 @@ namespace _Project.Scripts.GameServices {
         }
 
         private async Task LoadSave(string sceneName) {
-            scenesToLoad.Clear();
-            
-            var foundScene = false;
-            foreach (var scene in allScenes) {
-                if (scene.SceneName != sceneName) continue;
-                foundScene = true;
-                await LoadSceneAsync(scene);
-                break;
-            }
+            try {
+                scenesToLoad.Clear();
 
-            if (!foundScene) {
-                Debug.LogError($"Failed to find scene {sceneName}");
-                return;
+                var foundScene = false;
+                foreach (var scene in allScenes) {
+                    if (scene.SceneName != sceneName) continue;
+                    foundScene = true;
+                    await LoadSceneAsync(scene);
+                    break;
+                }
+
+                if (!foundScene) {
+                    Debug.LogError($"Failed to find scene {sceneName}");
+                    return;
+                }
+
+                _ = UnloadGameplaySceneAsync();
+                GameSaveSystem.Instance.LoadPlayerData();
             }
-            
-            _ = UnloadGameplaySceneAsync();
-            GameSaveSystem.Instance.LoadPlayerData();
+            catch (Exception e) {
+                Debug.LogError("LoadSaveGame failed: \n" + e);
+            }
         }
 
         public List<SceneField> GetLoadedScenes() {

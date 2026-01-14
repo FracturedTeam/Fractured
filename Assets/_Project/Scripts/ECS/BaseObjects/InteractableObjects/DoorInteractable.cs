@@ -114,10 +114,24 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         SetDoor(true);
                 }
                 else { //Pour les portes qui peuvent disparaitre
-                    if(baseObject.GetRendered().enabled && linkedDoor.baseObject.GetRendered().enabled) 
-                        SetDoor(true);
-                    else
-                        SetDoor(false);
+                    if (baseObject.GetGlass && linkedDoor.baseObject.GetGlass) {
+                        if(baseObject.GetGlassInteract.IsVisible && linkedDoor.baseObject.GetGlassInteract.IsVisible) 
+                            SetDoor(true);
+                        else
+                            SetDoor(false);
+                    }
+                    else if (baseObject.GetGlass && !linkedDoor.baseObject.GetGlass) {
+                        if(baseObject.GetGlassInteract.IsVisible) 
+                            SetDoor(true);
+                        else
+                            SetDoor(false);
+                    }
+                    else if (!baseObject.GetGlass && linkedDoor.baseObject.GetGlass) {
+                        if(linkedDoor.baseObject.GetGlassInteract.IsVisible) 
+                            SetDoor(true);
+                        else
+                            SetDoor(false);
+                    }
                 }
             }
         }
@@ -132,8 +146,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
-            if(key)
-                key.ResetObject();
+            if(key) key.ResetObject();
         }
 
         public BaseObject GetBaseObject() {

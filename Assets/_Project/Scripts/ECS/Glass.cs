@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,6 +26,7 @@ namespace _Project.Scripts.ECS
         
         public void LoadData() {
             transform.position = data.position;
+            Set3DShard();
         }
         
         public ColorEnum GetColor => color2D;
@@ -45,8 +47,7 @@ namespace _Project.Scripts.ECS
 
         private void Start()
         {
-            if (!initialized)
-            {
+            if (!initialized) {
                 Initialize();
             }
         }
@@ -64,18 +65,21 @@ namespace _Project.Scripts.ECS
             if (TryGetComponent(typeof(PolygonCollider2D), out var col))
                 polygonCollider2D = col as PolygonCollider2D;
             
-            if(shard)
-            {
-                var sh = Instantiate(shard);
-                shard = sh;
-                
-               shard.SetColor(color2D);
-               Set3DShard();
-                
-                if (shardSprite) 
-                    shardSprite.color = Color.clear;
+            if(shard) {
+                if (shardSprite) shardSprite.color = Color.clear;
+                InstantiateShard();
             }
             initialized = true;
+        }
+
+        private void InstantiateShard() {
+            var sh = Instantiate(shard);
+            shard = sh;
+                
+            shard.SetColor(color2D);
+            Set3DShard();
+                
+            HudManager.Instance.SetParticles(mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x, transform.position.y, 10)));
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -91,13 +95,9 @@ namespace _Project.Scripts.ECS
 
             transform.position += (Vector3)eventData.delta; 
             
-            /*
-            transform.position = new Vector2(
-                Math.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x / 2,
-                    mainCamera.pixelWidth - shardSprite.rectTransform.sizeDelta.x / 2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y / 2,
-                    mainCamera.pixelHeight - shardSprite.rectTransform.sizeDelta.y / 2));
-                    */
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, 1920 - shardSprite.rectTransform.sizeDelta.x/2),
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, 1080 - shardSprite.rectTransform.sizeDelta.y/2));
 
             Set3DShard();
         }
@@ -109,12 +109,11 @@ namespace _Project.Scripts.ECS
             
             List<Vector3> cornersPos = new ();
             foreach (var points in polygonCollider2D.points)
-                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x, transform.position.y +points.y, 10)));
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x + polygonCollider2D.offset.x, 
+                    transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
                 
             shard.Setup(cornersPos);
         }
-
-        public Vector3 Get3DPosition => mainCamera.ScreenToWorldPoint(transform.position);
 
         private void OnEnable()
         {
@@ -127,7 +126,13 @@ namespace _Project.Scripts.ECS
             if(shard)
                 shard?.gameObject.SetActive(false);
         }
+
+        void OnDestroy() {
+            if(shard) Destroy(shard.gameObject);
+        }
+        
         internal void ChangeHoldingState(bool isOn) {
+            Debug.Log($"[Glass] ChangeHoldingState({isOn})");
             if (!canInteract) return;
             if (!GameInitializer.Instance.InEditableArea()) {
                 AudioManager.Instance.PlayGrabGlassFailedSound();
@@ -136,7 +141,6 @@ namespace _Project.Scripts.ECS
 
             isHeld = isOn;
             if (isOn) AudioManager.Instance.PlayGrabGlassSound();
-            else AudioManager.Instance.PlayDropGlassSound();
         }
         
         

@@ -6,7 +6,6 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
@@ -23,10 +22,14 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private PlayerService player;
         [SerializeField] private HudManager hudManager;
         
+        [Header("ScreenEffect")]
+        [SerializeField] private Material screenEffectMat;
+        private float fadeTime = 1.0f;
+        private float fadeTimer = 0.0f;
+        
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool InitializeDebugger = true;
-        public bool deleteSaveOnPlay = true;
         #endif
         
         protected override void Awake() {
@@ -40,16 +43,12 @@ namespace _Project.Scripts.GameServices {
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             InitializeDebugSystems();
-            
-            if (deleteSaveOnPlay) {
-                var dataService = new FileDataService(new JsonSerializer());
-                dataService.DeleteAll();
-            }
             #endif
             
             //Populate the glassShardService
             PopulateShardOnStart();
 
+            screenEffectMat.SetFloat("_Progression", 0f);
         }
 
         private void InitializeGameSystems() {
@@ -95,8 +94,17 @@ namespace _Project.Scripts.GameServices {
         
         private void Update() {
             gameSystems.Tick();
+            
+            UpdateScreenEffect();
         }
 
+        void UpdateScreenEffect() {
+            fadeTimer = InEditableArea() ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
+                fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
+            
+            screenEffectMat.SetFloat("_Progression", fadeTimer);
+        }
+        
         private void OnDestroy() {
             gameSystems.Dispose();
         }
@@ -143,7 +151,7 @@ namespace _Project.Scripts.GameServices {
         public void RepopulateInteractableOnLoadLevel() {
             Debug.Log($"[GameInitializer] Populate interactable");
             shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
-            GameSaveSystem.Instance.LoadData();
+            
         }
 
         public BaseObject[] GetInteractables() {
