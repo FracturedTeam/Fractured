@@ -326,8 +326,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         baseObject.cantInteractDialogue.alreadyInteracted = true;
                     }
                     
-                    transform.SetParent(originalParent);
+                    tween.Kill();
                     transform.position = originalPosition;
+                    transform.SetParent(originalParent);
                 }
                 else {
                     var pos = GetGroundPos();
