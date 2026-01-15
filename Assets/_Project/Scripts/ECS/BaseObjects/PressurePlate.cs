@@ -59,7 +59,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 
                 other.OnInteract(ObjectInteraction.Drop, this);
                 
-                
                 isActive = true;
                 baseObject.GetCompletion = InteractionCompletion.Completed;
                 foreach (var locked in lockedBehindThis) {
@@ -125,10 +124,9 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void Tick(float deltaTime) {
-            if (!baseObject.CanBeInteractedWith()) {
-                //timer -= deltaTime;
+            /*if (!baseObject.CanBeInteractedWith()) {
                 return;
-            }
+            }*/
             
             timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
@@ -158,6 +156,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public BaseObject GetBaseObject() {
             return baseObject;
+        }
+
+        public void SetActivation(bool activate) {
+            isActive = activate;
         }
     }
 
