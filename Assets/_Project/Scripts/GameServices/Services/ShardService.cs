@@ -104,7 +104,6 @@ namespace _Project.Scripts.GameServices.Services {
             }
                 
             if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
-                Debug.Log("[GlassShardService] Left click released");
                 currentGlass.ChangeHoldingState(false);
                 currentGlass = null;
             }

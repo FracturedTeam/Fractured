@@ -24,7 +24,6 @@ namespace _Project.Scripts.UI {
         }
 
         void Fade(FadeObject f) {
-            Debug.Log("Fade canva " + f.show);
             if (f.show) {
                 fadeCanvasGroup.DOFade(1f, 0.5f);
                 fadeCanvasGroup.blocksRaycasts = true;
