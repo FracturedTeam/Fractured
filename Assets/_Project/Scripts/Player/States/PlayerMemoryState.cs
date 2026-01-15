@@ -22,14 +22,6 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            //Animator
-            animator.CrossFade(LeaveMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
-            
-            animator.SetLayerWeight(FullBodyLayer, 0);
-            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
-            
-            player.interact.SetInteract(true);
-            player.movement.UnfreezeController();
         }
     }
 }

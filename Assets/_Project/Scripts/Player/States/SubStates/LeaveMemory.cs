@@ -3,33 +3,26 @@ using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
-    public class FailedOpeningDoor : PlayerBaseState {
+    public class LeaveMemory : PlayerBaseState {
         private readonly CountdownTimer animationExitTimer;
-
-        public FailedOpeningDoor(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+        
+        public LeaveMemory(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
             animationExitTimer = new CountdownTimer(clip.length - defaultCrossFadeDuration);
         }
-        
+
         public override void OnEnter() {
             animationExitTimer.Start();
             
-            //Set the grab animation when entering holding state
             animator.SetLayerWeight(FullBodyLayer, 1);
-            animator.CrossFade(FailedOpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(LeaveMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
         }
-
-        public override void OnUpdate() {
-        }
-
-        public override void OnFixedUpdate() {
-        }
-
+        
         public override void OnExit() {
-            animationExitTimer.Stop();
-            
-            //Exit the grab animation when timer is finished
             animator.SetLayerWeight(FullBodyLayer, 0);
-            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
+            
+            player.interact.SetInteract(true);
+            player.movement.UnfreezeController();
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;
