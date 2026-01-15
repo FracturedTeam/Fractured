@@ -118,7 +118,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (!baseObject.GetGlass) return;
 
             if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
-            DropUnderShard();
+            //DropUnderShard();
         }
 
         public void Dispose() {
@@ -162,7 +162,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             AudioManager.Instance.PlayDropSound(transform.position);
             
             PlayerController.Instance.interact.SetDropObject();
-            baseObject.GetGlassInteract?.ResetObjectUnderShard();
+            //baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
             Debug.Log("[MoveableObject] Drop under shard");
         }
@@ -325,16 +325,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
                         baseObject.cantInteractDialogue.alreadyInteracted = true;
                     }
-                    return;
+                    
+                    transform.SetParent(originalParent);
+                    transform.position = originalPosition;
                 }
-
-                var pos = GetGroundPos();
+                else {
+                    var pos = GetGroundPos();
+                    transform.SetParent(originalParent);
+                    TweenObjectDrop(pos, transform.eulerAngles);
+                }
                 
-                transform.SetParent(originalParent);
-                TweenObjectDrop(pos, transform.eulerAngles);
                 
                 baseObject.SetInteract(true);
-                
                 AudioManager.Instance.PlayDropSound(transform.position);
                 
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
