@@ -231,6 +231,13 @@ namespace _Project.Scripts.Player {
         }
         
         public void HandleUpdate(Vector3 playerDir) {
+            /*if (HasObject && currentInteraction != null) {
+                if (currentInteraction.TryGetComponent(out MoveableObject m)) {
+                    if(!m.IsGrabbed())
+                        currentInteraction.OnInteract(ObjectInteraction.Grab);
+                }
+            }*/
+            
             HandleInteractRotation(playerDir);
             
             if(interactionHold)

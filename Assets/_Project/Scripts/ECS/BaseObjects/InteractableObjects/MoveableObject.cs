@@ -113,12 +113,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+            if (PlayerController.Instance.interact.GetCurrentInteractable() as MoveableObject == this && !isGrabbed) {
+                OnGrab();
+            }
+            
             IsColliding();
             
             if (!baseObject.GetGlass) return;
 
-            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
-            DropUnderShard();
+            //if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
+            //DropUnderShard();
         }
 
         public void Dispose() {
@@ -162,7 +166,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             AudioManager.Instance.PlayDropSound(transform.position);
             
             PlayerController.Instance.interact.SetDropObject();
-            baseObject.GetGlassInteract?.ResetObjectUnderShard();
+            //baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
             Debug.Log("[MoveableObject] Drop under shard");
         }
@@ -193,6 +197,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnGrab(IInteractable other = null) {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
+            baseObject.SetRenderer(true);
             
             isGrabbed = true;
             
@@ -320,21 +325,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (other == null) {
                 if(ObstructedSpace())
                 {
-                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
-                    {
-                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                        baseObject.cantInteractDialogue.alreadyInteracted = true;
-                    }
+                    ResetObject();
                     return;
                 }
-
-                var pos = GetGroundPos();
                 
                 transform.SetParent(originalParent);
-                TweenObjectDrop(pos, transform.eulerAngles);
+                TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
                 
                 baseObject.SetInteract(true);
-                
                 AudioManager.Instance.PlayDropSound(transform.position);
                 
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
@@ -377,7 +375,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private bool ObstructedSpace() {
             var playerPos = PlayerController.Instance.transform.position;
-            var dir = PlayerController.Instance.movement.previousMoveDir;
+            var dir = PlayerController.Instance.movement.mesh.forward;
             
             Physics.Raycast(playerPos, dir,  out var hit, 2f);
             if (hit.collider) {
