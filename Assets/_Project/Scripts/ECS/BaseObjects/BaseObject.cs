@@ -49,7 +49,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [ContextMenu("Load")]
         public void Load() {
             if (GetGlass) {
-                GetGlassInteract.ObjectOut = data.objectOut;
+                GetGlassInteract.objectOut = data.objectOut;
                 if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
             }
             
@@ -88,7 +88,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             data.canInteract = canBeInteractedWith;
-            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
+            if (GetGlass) data.objectOut = GetGlassInteract.objectOut;
         }
         #endregion
         
