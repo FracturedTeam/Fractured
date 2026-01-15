@@ -113,11 +113,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+            if (PlayerController.Instance.interact.GetCurrentInteractable() as MoveableObject == this && !isGrabbed) {
+                OnGrab();
+            }
+            
             IsColliding();
             
             if (!baseObject.GetGlass) return;
 
-            if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
+            //if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
             //DropUnderShard();
         }
 
@@ -193,6 +197,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnGrab(IInteractable other = null) {
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
+            baseObject.SetRenderer(true);
             
             isGrabbed = true;
             
