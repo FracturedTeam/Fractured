@@ -322,13 +322,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 {
                     ResetObject();
                     return;
-                    
-                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
-                    {
-                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                        baseObject.cantInteractDialogue.alreadyInteracted = true;
-                    }
-
                 }
                 
                 transform.SetParent(originalParent);
@@ -377,7 +370,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private bool ObstructedSpace() {
             var playerPos = PlayerController.Instance.transform.position;
-            var dir = PlayerController.Instance.movement.previousMoveDir;
+            var dir = PlayerController.Instance.movement.mesh.forward;
             
             Physics.Raycast(playerPos, dir,  out var hit, 2f);
             if (hit.collider) {
