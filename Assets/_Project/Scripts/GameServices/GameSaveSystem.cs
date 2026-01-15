@@ -67,9 +67,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void LoadData(string gameName) {
-            Debug.Log($"Loading Scene Save {gameName} from saveFile {saveFile.SaveName}");
-            
-            saveFile = dataService.Load(saveFile.SaveName);
+            saveFile = dataService.Load(saveFile.SaveName); //Fail
             
             var foundExisting = false;
             var index = 0;
@@ -83,6 +81,7 @@ namespace _Project.Scripts.GameServices {
             }
 
             if(!foundExisting) {  
+                Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
                 gameData.SceneName = gameName;
                 SaveGame();
                 return;
@@ -93,6 +92,7 @@ namespace _Project.Scripts.GameServices {
             
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
+            Debug.Log($"[SaveSystem] Save Loaded for scene {saveFile.SceneDatas[index].SceneName}");
         }
 
         public void LoadPlayerData() {

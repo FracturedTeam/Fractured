@@ -6,6 +6,8 @@ namespace _Project.Scripts.UI {
     public class Fragment : MonoBehaviour {
         [SerializeField] private List<Transform> corners;
         [SerializeField] private GameObject frag;
+        [SerializeField] private Material animMat;
+        [SerializeField] private Material finishMat;
 
         public void Setup(List<Vector3> positions) {
             if(positions.Count != corners.Count ){
@@ -24,6 +26,10 @@ namespace _Project.Scripts.UI {
                 return;
             
             frag.layer = color == ColorEnum.Blue ? LayerMask.NameToLayer("Fragment Color A") : color == ColorEnum.Red ? LayerMask.NameToLayer("Fragment Color B") :  LayerMask.NameToLayer("Default");
+        }
+        
+        public void Appear(){
+            
         }
     }
     

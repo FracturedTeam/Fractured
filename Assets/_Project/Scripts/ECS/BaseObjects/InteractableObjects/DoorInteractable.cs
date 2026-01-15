@@ -139,6 +139,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
+        public void Dispose() {
+            
+        }
+
         private void SetDoor(bool canBeUsed) {
             doorAnimator.SetBool("CanBeInteract", canBeUsed);
             baseObject.SetInteract(!canBeUsed);
