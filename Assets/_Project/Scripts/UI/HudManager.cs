@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -30,10 +31,18 @@ namespace _Project.Scripts.UI
 
         [SerializeField] private ParticleSystem spawningParticles;  
         [SerializeField] private int maxShardsOnScreen = 2;
+        
+        
         private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
         private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
-        [SerializeField] private int currentShardsSpawning;
         
+        [SerializeField] private Fragment fragment;
+        private List<Fragment> freeFragment = new List<Fragment>();
+        private List<Fragment> usingFragment = new List<Fragment>();
+        
+        [SerializeField] private int currentShardsSpawning;
+        [SerializeField] private float spawningTime = 1.5f;
+        [SerializeField] private Material transitionMaterial;
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
@@ -73,6 +82,8 @@ namespace _Project.Scripts.UI
         [SerializeField] private GlassText glassText;
         private DialogueScriptableObject currentDialogue;
         private CountdownTimer textTimer;
+        private ParticleSystem current;
+        private Fragment currentF;
 
         private void Start() {
             textTimer = new CountdownTimer(0);
@@ -125,24 +136,61 @@ namespace _Project.Scripts.UI
                 glassText.Setup(null);
         }
 
-        public void SetParticles(Vector3 position)
+        public Fragment ShardSpawn(Glass shard)
         {
             if(freeParticles.Count <= 0)
             {
                 Debug.Log("Max particles on screen exceeded, you can change the max number in the HUD");
-                return;
+                return null;
             }
-
-            var current = freeParticles[^1];
+            
+            if(freeFragment.Count <= 0)
+            {
+                var frag = Instantiate(shard.VisualShard);
+                freeFragment.Add(frag);
+                frag.gameObject.SetActive(false);
+            }
+            
+            current = freeParticles[^1];
             freeParticles.Remove(current);
+            usingParticles.Add(current);
             current.gameObject.SetActive(true);
-            current.transform.position = position;
-            //current.transform.SetParent(newParent); 
+            current.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
+            
+            currentF = freeFragment[^1];
+            shard.VisualShard = currentF;
+            freeFragment.Remove(currentF);
+            usingFragment.Add(currentF);
+            currentF.gameObject.SetActive(true);
+            
+            StartCoroutine(HideParticles(shard));
+            freeFragment.Remove(currentF);
+            currentF.gameObject.SetActive(true);
+            
+            Invoke("HideParticles", spawningTime);
+            return currentF;
         }
 
-        private void HideParticles()
+        private IEnumerator HideParticles(Glass shard)
         {
+            transitionMaterial.DOFloat(1, "_Progression", spawningTime/2);
+            yield return new WaitForSeconds(spawningTime/2);
+            shard.SetUp3dShard();
+            transitionMaterial.DOFloat(2, "_Progression", spawningTime/2);
+            yield return new WaitForSeconds(spawningTime/2);
             
+            currentF.gameObject.SetActive(false);
+            current.gameObject.SetActive(false);
+            shard.VisualShard.gameObject.SetActive(false);
+            
+            usingFragment.Remove(currentF);
+            freeFragment.Add(currentF);
+            
+            usingParticles.Remove(current);
+            freeParticles.Add(current);
+            transitionMaterial.DOFloat(0, "_Progression", 0);
+            currentF.gameObject.SetActive(false);
+            current.gameObject.SetActive(false);
         }
 
         #region InteractionHUD
