@@ -147,7 +147,6 @@ namespace _Project.Scripts.ECS
         }
         
         internal void ChangeHoldingState(bool isOn) {
-            Debug.Log($"[Glass] ChangeHoldingState({isOn})");
             if (!canInteract) return;
             if (!GameInitializer.Instance.InEditableArea()) {
                 AudioManager.Instance.PlayGrabGlassFailedSound();

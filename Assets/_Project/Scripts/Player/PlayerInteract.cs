@@ -411,8 +411,8 @@ namespace _Project.Scripts.Player {
             canPlayerInteract = interact;
         }
 
-        public IInteractable GetCurrentInteractable() {
-            return currentInteraction.GetInteract;
+        public BaseObject GetCurrentInteractable() {
+            return currentInteraction;
         }
 
         public void SetGrabObject(BaseObject grab) {

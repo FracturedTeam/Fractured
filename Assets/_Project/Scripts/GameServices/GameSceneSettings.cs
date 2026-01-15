@@ -39,6 +39,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.AddShards(glassShards);
         }
 
+        #if UNITY_EDITOR
         public void SetPlayerPos(Vector3 pos) {
             playerPosition = pos;
             
@@ -46,6 +47,7 @@ namespace _Project.Scripts.GameServices {
             if (!Application.isPlaying)
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         }
+        #endif
     }
 
     [Serializable]
