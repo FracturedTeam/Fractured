@@ -11,6 +11,8 @@ namespace _Project.Scripts.Interfaces {
 
         public void Tick(float deltaTime);
 
+        public void Dispose();
+
         public void CompleteObject();
         
         public void ResetObject();

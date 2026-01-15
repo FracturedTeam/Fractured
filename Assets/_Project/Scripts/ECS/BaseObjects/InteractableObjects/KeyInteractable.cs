@@ -89,6 +89,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Tick(float deltaTime) {
         }
 
+        public void Dispose() {
+            
+        }
+
         public void CompleteObject() {
         }
 
