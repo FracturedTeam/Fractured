@@ -79,15 +79,13 @@ namespace _Project.Scripts.ECS
                 
             shard.SetColor(color2D);
             shard.gameObject.SetActive(false);
-            VisualShard = HudManager.Instance.ShardSpawn(this);
+            HudManager.Instance.ShardSpawn(this);
             Set3DShard();
         }
 
         public void SetUp3dShard()
         {
             shard.gameObject.SetActive(true);
-            shard.gameObject.SetActive(false);
-            VisualShard = HudManager.Instance.ShardSpawn(this);
         }
 
         public void OnDrag(PointerEventData eventData) {
