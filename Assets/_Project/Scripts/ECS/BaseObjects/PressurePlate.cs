@@ -124,10 +124,9 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void Tick(float deltaTime) {
-            if (!baseObject.CanBeInteractedWith()) {
-                //timer -= deltaTime;
+            /*if (!baseObject.CanBeInteractedWith()) {
                 return;
-            }
+            }*/
             
             timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);

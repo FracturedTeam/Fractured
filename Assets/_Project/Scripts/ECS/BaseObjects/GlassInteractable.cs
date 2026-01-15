@@ -117,7 +117,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectOut) return;
             
             interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
-            if (interactableInBox.IsGrabbed()) objectOut = true;
+            if (interactableInBox.IsGrabbed() && !objectOut) {
+                objectOut = true;
+                UpdateShards();
+            }
         }
 
         void OnDestroy() {
@@ -186,8 +189,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (baseObject.TryGetComponent(out MoveableObject move)) {
                 if (baseObject.IsOnPressurePlate()) {
-                    if (objectInside && !objectOut) move.GetPressurePlateOn().SetActivation(isUnder);
-                    else if(objectInside && objectOut) move.GetPressurePlateOn().SetActivation(!isUnder);
+                    if (objectInside && !objectOut) move.GetPressurePlateOn().SetActivation(!isUnder);
+                    else if(objectInside && objectOut) move.GetPressurePlateOn().SetActivation(isUnder);
                     
                     baseObject.SetCollider(false);
                     baseObject.SetInteract(false);
