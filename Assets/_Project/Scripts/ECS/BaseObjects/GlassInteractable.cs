@@ -218,6 +218,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
             ObjectOut = true;
+            Debug.Log("Activate Object Inside");
         }
 
         public void ResetObjectUnderShard() {
@@ -229,7 +230,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             baseObject!.SetCollider(true);
 
             if (!objectInside || ObjectOut) return;
-            
+            Debug.Log("Reset Object under shard");
             SetInteractableInBox(false);
         }
 
