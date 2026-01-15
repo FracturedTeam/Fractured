@@ -41,7 +41,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 gameObject.layer = LayerMask.NameToLayer("MemoryObject");
 
-                soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
+                if(!associateMemoryLoop.IsNull)
+                    soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
             }
             
             initialized = true;
@@ -93,6 +94,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
+        }
+
+        public void Dispose() {
+            soundInstance.stop(STOP_MODE.IMMEDIATE);
+            soundInstance.release();
+            soundInstance.clearHandle();
         }
 
         public void CompleteObject() {
