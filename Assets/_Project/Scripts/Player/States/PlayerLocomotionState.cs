@@ -18,7 +18,7 @@ namespace _Project.Scripts.Player.States {
             player.movement.HandleUpdate();
             player.interact.HandleUpdate(player.movement.previousMoveDir);
 
-            animator.SetFloat(BlendingHash, player.movement.GetSpeedRatio());
+            animator.SetFloat(BlendingHash, player.movement.SetAnimatorSpeed());
         }
 
         public override void OnFixedUpdate() {

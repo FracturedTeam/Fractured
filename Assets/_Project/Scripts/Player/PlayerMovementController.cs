@@ -49,6 +49,9 @@ public class PlayerMovementController : MonoBehaviour
     
     private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
 
+    private float lerpTime = 1f;
+    private float lerpTimer = 0f;
+
     public void Awake() {
         
         //Get every component needed
@@ -87,9 +90,10 @@ public class PlayerMovementController : MonoBehaviour
         forwardDir.Normalize();
         rightDir.Normalize();
     }
-    
-    private void SetDir(Vector2 moveInput) =>
+
+    private void SetDir(Vector2 moveInput) {
         moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
+    }
 
     public void SetSpeed(PlayerSpeedEnum speed) {
         switch (speed) {
@@ -104,7 +108,6 @@ public class PlayerMovementController : MonoBehaviour
     
     public void HandleUpdate() {
         if(rb.isKinematic) return;
-        if(player.interact.UsingDoor()) return;
         
         MeshRotation();
         CheckMethods();
@@ -115,6 +118,7 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void MeshRotation() {
+        if (player.interact.UsingDoor()) return;
         if(moveDir == Vector3.zero) return;
         
         var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
@@ -211,6 +215,8 @@ public class PlayerMovementController : MonoBehaviour
         if (!IsGrounded())
             rb.AddForce(Vector3.down * currentFallSpeed, ForceMode.Acceleration);
         
+        if (player.interact.UsingDoor()) return;
+        
         PlayerMove();
     }
     
@@ -248,7 +254,15 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     public float GetSpeedRatio() {
+        if (player.interact.UsingDoor()) return 0;
         return currentSpeed / currentMaxSpeed;
+    }
+
+    public float SetAnimatorSpeed() {
+        if (moveDir.magnitude > 0) 
+          return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);
+        
+        return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, lerpTime);
     }
     
     internal bool IsPlayerFrozen() {
