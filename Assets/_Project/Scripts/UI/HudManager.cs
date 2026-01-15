@@ -70,22 +70,19 @@ namespace _Project.Scripts.UI
         private CountdownTimer textTimer;
         
         [Header("Glass Animation")]
-        private ParticleSystem current;
-        private Fragment currentFrag;
-        [SerializeField] private ParticleSystem spawningParticles;  
-        [SerializeField] private int maxShardsOnScreen = 2;
-        
-        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
-        private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
-        
         [SerializeField] private Fragment fragment;
-        private List<Fragment> freeFragment = new List<Fragment>();
+        [SerializeField] private ParticleSystem spawningParticles;  
         
         [SerializeField] private int currentShardsSpawning;
         [SerializeField] private float firstHalfTime = 1.0f;
         [SerializeField] private float secondHalfTime = 0.5f;
         [SerializeField] private Material transitionMaterial;
         
+        private ParticleSystem currentParticle;
+        private Fragment currentFrag;
+        
+        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private List<Fragment> freeFragment = new List<Fragment>();
 
         private void Start() {
             textTimer = new CountdownTimer(0);
@@ -144,12 +141,12 @@ namespace _Project.Scripts.UI
                 freeFragment.Add(frag);
             }
             
-            current = freeParticles[^1];
-            shard.visualParticles = current;
-            freeParticles.Remove(current);
-            current.gameObject.SetActive(true);
+            currentParticle = freeParticles[^1];
+            shard.visualParticles = currentParticle;
+            freeParticles.Remove(currentParticle);
+            currentParticle.gameObject.SetActive(true);
             
-            current.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
+            currentParticle.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
             
             currentFrag = freeFragment[^1];
             shard.visualShard = currentFrag;
