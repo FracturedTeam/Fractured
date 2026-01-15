@@ -124,6 +124,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Tick(Time.deltaTime);
         }
 
+        void OnDestroy() {
+            GetInteract?.Dispose();
+        }
+
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
             GetInteract.OnInteract(interaction, interactable);
         }
