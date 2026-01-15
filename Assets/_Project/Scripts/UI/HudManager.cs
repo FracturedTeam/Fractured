@@ -136,12 +136,12 @@ namespace _Project.Scripts.UI
                 glassText.Setup(null);
         }
 
-        public Fragment ShardSpawn(Glass shard)
+        public void ShardSpawn(Glass shard)
         {
             if(freeParticles.Count <= 0)
             {
                 Debug.Log("Max particles on screen exceeded, you can change the max number in the HUD");
-                return null;
+                return;
             }
             
             if(freeFragment.Count <= 0)
@@ -164,11 +164,6 @@ namespace _Project.Scripts.UI
             currentF.gameObject.SetActive(true);
             
             StartCoroutine(HideParticles(shard));
-            freeFragment.Remove(currentF);
-            currentF.gameObject.SetActive(true);
-            
-            Invoke("HideParticles", spawningTime);
-            return currentF;
         }
 
         private IEnumerator HideParticles(Glass shard)
