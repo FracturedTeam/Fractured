@@ -320,22 +320,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (other == null) {
                 if(ObstructedSpace())
                 {
+                    ResetObject();
+                    return;
+                    
                     if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
                     {
                         HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
                         baseObject.cantInteractDialogue.alreadyInteracted = true;
                     }
-                    
-                    tween.Kill();
-                    transform.position = originalPosition;
-                    transform.SetParent(originalParent);
-                }
-                else {
-                    var pos = GetGroundPos();
-                    transform.SetParent(originalParent);
-                    TweenObjectDrop(pos, transform.eulerAngles);
+
                 }
                 
+                transform.SetParent(originalParent);
+                TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
                 
                 baseObject.SetInteract(true);
                 AudioManager.Instance.PlayDropSound(transform.position);
