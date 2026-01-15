@@ -211,7 +211,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             else
                 AudioManager.Instance.PlayPickUpKeySound(transform.position);
             
-            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.ObjectOut
+            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.objectOut
                 ? specialDialogue
                 : baseObject.successDialogue;
             

@@ -42,7 +42,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private int underBlue;
         
         private bool initialized = false;
-        public bool ObjectOut { get; set; }
+        public bool objectOut { get; set; }
         
         public bool IsVisible { get; private set; }
         
@@ -114,10 +114,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             if (!objectInside) return;
-            if (ObjectOut) return;
+            if (objectOut) return;
             
             interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
-            if (interactableInBox.IsGrabbed()) ObjectOut = true;
+            if (interactableInBox.IsGrabbed()) objectOut = true;
         }
 
         void OnDestroy() {
@@ -186,6 +186,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (baseObject.TryGetComponent(out MoveableObject move)) {
                 if (baseObject.IsOnPressurePlate()) {
+                    if (objectInside && !objectOut) move.GetPressurePlateOn().SetActivation(isUnder);
+                    else if(objectInside && objectOut) move.GetPressurePlateOn().SetActivation(!isUnder);
+                    
                     baseObject.SetCollider(false);
                     baseObject.SetInteract(false);
                     move.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
@@ -200,7 +203,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 baseObject.SetInteract(isUnder);
             }
             
-            if (objectInside && !ObjectOut)
+            if (objectInside && !objectOut)
                 ActivateObjectInside(!isUnder);
             
             if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
@@ -217,7 +220,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
-            ObjectOut = true;
+            objectOut = true;
             Debug.Log("Activate Object Inside");
         }
 
@@ -229,7 +232,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             //baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
-            if (!objectInside || ObjectOut) return;
+            if (!objectInside || objectOut) return;
             Debug.Log("Reset Object under shard");
             SetInteractableInBox(false);
         }
@@ -244,7 +247,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (!objectInside) return;
 
-            ObjectOut = false;
+            objectOut = false;
             SetInteractableInBox(false);
         }
         
