@@ -259,6 +259,8 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     public float SetAnimatorSpeed() {
+        if(rb.isKinematic) return 0;
+        
         if (moveDir.magnitude > 0) 
           return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);
         
