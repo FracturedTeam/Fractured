@@ -174,13 +174,18 @@ namespace _Project.Scripts.GameServices {
                 ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
-            else {
+            else if (m.ambientSoundZone1){
                 ambientSoundZoneInstance.getPlaybackState(out var playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
                     ambientSoundZoneInstance.start();
                 }
                 ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            }
+            else {
+                ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
     }

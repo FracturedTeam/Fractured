@@ -1,6 +1,7 @@
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
 using System.Collections;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.UI {
@@ -24,7 +25,6 @@ namespace _Project.Scripts.UI {
         }
 
         void Fade(FadeObject f) {
-            Debug.Log("Fade canva " + f.show);
             if (f.show) {
                 fadeCanvasGroup.DOFade(1f, 0.5f);
                 fadeCanvasGroup.blocksRaycasts = true;

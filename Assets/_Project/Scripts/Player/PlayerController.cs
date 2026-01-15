@@ -46,6 +46,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] private AnimationClip failedDropClip;
         [SerializeField] private AnimationClip breakObjectClip;
         [SerializeField] private AnimationClip failedDoorClip;
+        [SerializeField] private AnimationClip leaveMemoryClip;
         
 
         private void Start() {
@@ -80,6 +81,7 @@ namespace _Project.Scripts.Player {
             var dropObject = new DropObjectState(this, animator, dropObjectClip);
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
+            var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
             
             //Define all states transitions
             //Locomotion State
@@ -101,8 +103,9 @@ namespace _Project.Scripts.Player {
             
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(memoryState, locomotionState, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
             At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
+            At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
             At(locomotionState, doorState, new FuncPredicate(() => interact.triggerDoor));

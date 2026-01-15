@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Structs;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -49,7 +50,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [ContextMenu("Load")]
         public void Load() {
             if (GetGlass) {
-                GetGlassInteract.ObjectOut = data.objectOut;
+                GetGlassInteract.objectOut = data.objectOut;
                 if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
             }
             
@@ -88,7 +89,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             data.canInteract = canBeInteractedWith;
-            if (GetGlass) data.objectOut = GetGlassInteract.ObjectOut;
+            if (GetGlass) data.objectOut = GetGlassInteract.objectOut;
         }
         #endregion
         
@@ -116,10 +117,19 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
+            
+            if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
+                SetInteract(false);
         }
         
         //Collider[] inObjects = new Collider[4];
         private void Update() {
+            if (locked && MemoryManager.Instance.IsUnlockedMemory(memoryId)) {
+                locked = false;
+                SetInteract(true);
+            }
+            
+            
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
         }

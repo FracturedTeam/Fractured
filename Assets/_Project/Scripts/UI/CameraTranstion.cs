@@ -9,7 +9,6 @@ public class CameraTranstion : MonoBehaviour
 
     public void OnTrigger()
     {
-        print("OnTrigger");
         if(nextCameraPos)
             MenuManager.Instance.ChangeTarget(nextCameraPos);
         if(openPanel)

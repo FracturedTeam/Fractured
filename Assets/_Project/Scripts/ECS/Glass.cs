@@ -33,7 +33,8 @@ namespace _Project.Scripts.ECS
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
-        [SerializeField] private Fragment shard; 
+        [SerializeField] private Fragment shard;
+        public Fragment VisualShard;
 
         private Camera mainCamera;
         private Image shardSprite;
@@ -77,9 +78,14 @@ namespace _Project.Scripts.ECS
             shard = sh;
                 
             shard.SetColor(color2D);
+            shard.gameObject.SetActive(false);
+            HudManager.Instance.ShardSpawn(this);
             Set3DShard();
-                
-            HudManager.Instance.SetParticles(mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x, transform.position.y, 10)));
+        }
+
+        public void SetUp3dShard()
+        {
+            shard.gameObject.SetActive(true);
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -101,7 +107,7 @@ namespace _Project.Scripts.ECS
 
             Set3DShard();
         }
-
+        
         private void Set3DShard() {
             if(polygonCollider2D == null)
                 if (TryGetComponent(typeof(PolygonCollider2D), out var col))
@@ -119,6 +125,9 @@ namespace _Project.Scripts.ECS
                     transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
                 
             shard.Setup(cornersPos);
+            
+            if(VisualShard) 
+                VisualShard.Setup(cornersPos);
         }
 
         private void OnEnable()
@@ -138,9 +147,8 @@ namespace _Project.Scripts.ECS
         }
         
         internal void ChangeHoldingState(bool isOn) {
-            Debug.Log($"[Glass] ChangeHoldingState({isOn})");
             if (!canInteract) return;
-            if (!GameInitializer.Instance.InEditableArea()) {
+            if (!GameInitializer.Instance.InEditableArea() && isOn) {
                 AudioManager.Instance.PlayGrabGlassFailedSound();
                 return;
             }
