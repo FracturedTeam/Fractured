@@ -91,10 +91,10 @@ namespace _Project.Scripts.GameServices.Services {
                         
                     currentGlass = shard;
                     currentGlass.ChangeHoldingState(true);
-
+                    
                     if (!shards.Contains(currentGlass)) 
                         return;
-                        
+                    
                     shards.Remove(currentGlass);
                     shards.Insert(0, currentGlass);
                     shard.transform.SetAsLastSibling();
@@ -102,8 +102,7 @@ namespace _Project.Scripts.GameServices.Services {
                     return;
                 }
             }
-                
-            if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
+            else if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
                 currentGlass.ChangeHoldingState(false);
                 currentGlass = null;
             }

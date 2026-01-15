@@ -43,21 +43,21 @@ namespace _Project.Scripts.GameServices {
                     ambientSoundZone1 = false
                 });
             }
-            else if (index > 2 && index < 8) {
+            else if (index is > 2 and < 8) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
                     ambientSoundCoffin = false,
                     ambientSoundTuto = true,
                     ambientSoundZone1 = false
                 });
             }
-            else if (index > 7 && index < 12) {
+            else if (index is > 7 and < 12) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
                     ambientSoundCoffin = false,
                     ambientSoundTuto = false,
                     ambientSoundZone1 = true
                 });
             }
-            else if(index < 2)
+            else if(index is 0 or 1)
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
                     ambientSoundCoffin = false,
                     ambientSoundTuto = false,
