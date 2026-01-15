@@ -5,6 +5,7 @@ Shader "Custom/SHD_Shadow"
 	Properties
 	{
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
+		[IntRange] _StencilID ("Stencil ID",Range(0,255))=0
 		_AO( "AO", Float ) = 0
 		[HDR] _BaseColor( "BaseColor", Color ) = ( 1, 1, 1, 1 )
 		_EdgeFadeStart( "EdgeFadeStart", Float ) = -4
@@ -190,7 +191,11 @@ Shader "Custom/SHD_Shadow"
 			Offset 0 , 0
 			ColorMask RGBA
 
-			
+			Stencil
+			{
+				Ref [_StencilID]
+				Comp NotEqual
+				}
 
 			HLSLPROGRAM
 
