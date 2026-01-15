@@ -33,7 +33,6 @@ namespace _Project.Scripts.UI
         [SerializeField] private int maxShardsOnScreen = 2;
         
         
-        
         private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
         private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
         
@@ -85,7 +84,7 @@ namespace _Project.Scripts.UI
         private CountdownTimer textTimer;
         private ParticleSystem current;
         private Fragment currentF;
-        
+
         private void Start() {
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
@@ -147,8 +146,9 @@ namespace _Project.Scripts.UI
             
             if(freeFragment.Count <= 0)
             {
-                var frag = Instantiate(fragment);
+                var frag = Instantiate(shard.VisualShard);
                 freeFragment.Add(frag);
+                frag.gameObject.SetActive(false);
             }
             
             current = freeParticles[^1];
@@ -164,6 +164,10 @@ namespace _Project.Scripts.UI
             currentF.gameObject.SetActive(true);
             
             StartCoroutine(HideParticles(shard));
+            freeFragment.Remove(currentF);
+            currentF.gameObject.SetActive(true);
+            
+            Invoke("HideParticles", spawningTime);
             return currentF;
         }
 
@@ -185,6 +189,8 @@ namespace _Project.Scripts.UI
             usingParticles.Remove(current);
             freeParticles.Add(current);
             transitionMaterial.DOFloat(0, "_Progression", 0);
+            currentF.gameObject.SetActive(false);
+            current.gameObject.SetActive(false);
         }
 
         #region InteractionHUD

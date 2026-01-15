@@ -86,6 +86,8 @@ namespace _Project.Scripts.ECS
         public void SetUp3dShard()
         {
             shard.gameObject.SetActive(true);
+            shard.gameObject.SetActive(false);
+            VisualShard = HudManager.Instance.ShardSpawn(this);
         }
 
         public void OnDrag(PointerEventData eventData) {
