@@ -7,7 +7,7 @@ namespace _Project.Scripts.Player.States.SubStates {
         private readonly CountdownTimer animationExitTimer;
 
         public GrabObjectState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
-            animationExitTimer = new CountdownTimer(clip.length - defaultCrossFadeDuration);
+            animationExitTimer = new CountdownTimer(clip.length);
         }
         
         public override void OnEnter() {
