@@ -128,12 +128,17 @@ namespace _Project.Scripts.GameServices {
         }
         
         private async Task UnloadGameplaySceneAsync() {
-            await UnloadSceneAsync();
+            try {
+                await UnloadSceneAsync();
             
-            await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
-            GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-            GameSceneSettings.Instance.ResetShard();
-            GameSaveSystem.Instance.LoadData();
+                await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
+                GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+                GameSceneSettings.Instance.ResetShard();
+                GameSaveSystem.Instance.LoadData();
+            }
+            catch (Exception e) {
+                Debug.LogError("Unload Gameplay failed: \n" + e);
+            }
         }
         
         private async Task UnloadSceneAsync() {
@@ -196,6 +201,9 @@ namespace _Project.Scripts.GameServices {
             await Task.Delay(600);
             
             await LoadSceneAsync(newGameScene);
+            
+            GameSaveSystem.Instance.SaveGame();
+            
             _ = UnloadGameplaySceneAsync();
             
             await Task.Delay(600);

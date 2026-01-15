@@ -121,6 +121,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             DropUnderShard();
         }
 
+        public void Dispose() {
+            
+        }
+
         public void CompleteObject() {
             if (keyObjectNeeded) {
                 if (keyObjectNeeded.keyObjectPos != null) {

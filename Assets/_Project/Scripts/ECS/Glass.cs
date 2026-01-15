@@ -47,27 +47,27 @@ namespace _Project.Scripts.ECS
 
         private void Start()
         {
-            if (!initialized) {
-                Initialize();
-            }
+            Initialize();
         }
 
         private void Initialize()
         {
-            mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
+            if (!initialized) {
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
-            if (mainCamera == null)
-                Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+                if (mainCamera == null)
+                    Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
 
-            if (TryGetComponent(typeof(Image), out var img))
-                shardSprite = img as Image;
+                if (TryGetComponent(typeof(Image), out var img))
+                    shardSprite = img as Image;
 
-            if (TryGetComponent(typeof(PolygonCollider2D), out var col))
-                polygonCollider2D = col as PolygonCollider2D;
-            
-            if(shard) {
-                if (shardSprite) shardSprite.color = Color.clear;
-                InstantiateShard();
+                if (TryGetComponent(typeof(PolygonCollider2D), out var col))
+                    polygonCollider2D = col as PolygonCollider2D;
+                
+                if(shard) {
+                    if (shardSprite) shardSprite.color = Color.clear;
+                    InstantiateShard();
+                }
             }
             initialized = true;
         }
@@ -102,8 +102,14 @@ namespace _Project.Scripts.ECS
             Set3DShard();
         }
 
-        private void Set3DShard()
-        {
+        private void Set3DShard() {
+            if(polygonCollider2D == null)
+                if (TryGetComponent(typeof(PolygonCollider2D), out var col))
+                    polygonCollider2D = col as PolygonCollider2D;
+            
+            if(mainCamera == null)
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
+            
             if (!shard) 
                 return;
             

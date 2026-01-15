@@ -140,6 +140,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
             lerpValue = timer / timeToMoveObject;
         }
 
+        public void Dispose() {
+            
+        }
+
         public void CompleteObject() {
             isActive = true;
             objectOnPressurePlate?.OnInteract(ObjectInteraction.Drop, this);

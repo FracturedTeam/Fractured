@@ -13,6 +13,11 @@ namespace _Project.Scripts.ECS {
                 GameInitializer.Instance.SetEditableArea(true, colorEdition);
         }
 
+        private void OnTriggerStay(Collider other) {
+            if (other.CompareTag("Player"))
+                GameInitializer.Instance.SetEditableArea(true, colorEdition);
+        }
+
         private void OnTriggerExit(Collider other) {
             if (other.CompareTag("Player"))
                 GameInitializer.Instance.SetEditableArea(false, colorEdition);
