@@ -12,7 +12,6 @@ namespace _Project.Scripts.Player.States.SubStates {
         
         public override void OnEnter() {
             animationExitTimer.Start();
-            player.interact.triggerFailedDrop = false;
             
             //Set the grab animation when entering holding state
             animator.SetLayerWeight(UpperBodyLayer, 1);
@@ -31,6 +30,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             //Exit the grab animation when timer is finished
             animator.SetLayerWeight(UpperBodyLayer, 0);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
+            
+            player.interact.triggerFailedDrop = false;
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;
