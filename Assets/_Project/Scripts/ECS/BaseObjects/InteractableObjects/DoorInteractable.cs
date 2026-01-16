@@ -145,7 +145,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void SetDoor(bool canBeUsed) {
             doorAnimator.SetBool("CanBeInteract", canBeUsed);
-            baseObject.SetInteract(!canBeUsed);
+            baseObject.SetInteract(canBeUsed);
             baseObject.SetCollider(!canBeUsed);
         }
         
