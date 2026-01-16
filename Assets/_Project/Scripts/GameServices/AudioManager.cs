@@ -11,10 +11,15 @@ namespace _Project.Scripts.GameServices {
         public bool ambientSoundZone1;
         public bool ambientSoundCoffin;
         public bool ambientSoundTuto;
+        public bool menu;
     }
 
     public struct MemorySound : IEvent {
         public bool inMemory;
+    }
+
+    public struct EditableSound : IEvent {
+        public bool inEditable;
     }
     
     public class AudioManager : PersistentSingleton<AudioManager> {
@@ -42,6 +47,7 @@ namespace _Project.Scripts.GameServices {
         [Header("Memory Sounds")]
         [SerializeField] private EventReference reconstructMemorySound;
         [SerializeField] private EventReference enterMemorySound;
+        [SerializeField] private EventReference leaveMemorySound;
         
         [Header("Pressure Plate Sounds")]
         [SerializeField] private EventReference pressurePlateActiveSound;
@@ -52,14 +58,19 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private EventReference ambientSoundZone;
         [SerializeField] private EventReference ambientSoundTutorial;
         [SerializeField] private EventReference ambientSoundTutorialCoffin;
+        [SerializeField] private EventReference menuLoop;
+        [SerializeField] private EventReference editableLoop;
         
         private EventInstance memorySoundInstance;
         private EventInstance ambientSoundZoneInstance;
         private EventInstance ambientSoundTutorialInstance;
         private EventInstance ambientSoundTutorialCoffinInstance;
+        private EventInstance menuInstance;
+        private EventInstance editableInstance;
 
         private EventBinding<MemorySound> memoryEventBinding;
         private EventBinding<ManageAmbientAudio> ambientEventBinding;
+        private EventBinding<EditableSound> editableEventBinding;
         
         #region OneShot Sounds
         public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
@@ -113,6 +124,10 @@ namespace _Project.Scripts.GameServices {
             RuntimeManager.PlayOneShot(enterMemorySound, worldPosition);
         } 
         
+        public void PlayLeaveMemorySound(Vector3 worldPosition) {
+            RuntimeManager.PlayOneShot(leaveMemorySound, worldPosition);
+        } 
+        
         public void PlayPlateActiveSound(Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(pressurePlateActiveSound, worldPosition);
         } 
@@ -127,6 +142,8 @@ namespace _Project.Scripts.GameServices {
             ambientSoundZoneInstance = CreateInstance(ambientSoundZone);
             ambientSoundTutorialInstance = CreateInstance(ambientSoundTutorial);
             ambientSoundTutorialCoffinInstance = CreateInstance(ambientSoundTutorialCoffin);
+            menuInstance = CreateInstance(menuLoop);
+            editableInstance = CreateInstance(editableLoop);
         }
 
         private void OnEnable() {
@@ -134,11 +151,14 @@ namespace _Project.Scripts.GameServices {
             EventBus<MemorySound>.Register(memoryEventBinding);
             ambientEventBinding = new EventBinding<ManageAmbientAudio>(UpdateAmbient);
             EventBus<ManageAmbientAudio>.Register(ambientEventBinding);
+            editableEventBinding = new EventBinding<EditableSound>(UpdateEditable);
+            EventBus<EditableSound>.Register(editableEventBinding);
         }
 
         private void OnDisable() {
             EventBus<MemorySound>.Deregister(memoryEventBinding);
             EventBus<ManageAmbientAudio>.Deregister(ambientEventBinding);
+            EventBus<EditableSound>.Deregister(editableEventBinding);
         }
         
         public EventInstance CreateInstance(EventReference reference) {
@@ -146,6 +166,17 @@ namespace _Project.Scripts.GameServices {
             return instance;
         }
 
+        private void UpdateEditable(EditableSound e) {
+            if (e.inEditable) {
+                editableInstance.getPlaybackState(out var playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+                    editableInstance.start();
+                }
+            }
+            else
+                editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+        
         private void UpdateMemory(MemorySound m) {
             if (m.inMemory) {
                 memorySoundInstance.getPlaybackState(out var playbackState);
@@ -165,6 +196,7 @@ namespace _Project.Scripts.GameServices {
                 }
                 ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                menuInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
             else if (m.ambientSoundTuto) {
                 ambientSoundTutorialInstance.getPlaybackState(out var playbackState);
@@ -173,6 +205,7 @@ namespace _Project.Scripts.GameServices {
                 }
                 ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                menuInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
             else if (m.ambientSoundZone1){
                 ambientSoundZoneInstance.getPlaybackState(out var playbackState);
@@ -181,11 +214,22 @@ namespace _Project.Scripts.GameServices {
                 }
                 ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                menuInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            }
+            else if (m.menu) {
+                menuInstance.getPlaybackState(out var playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+                    menuInstance.start();
+                }
+                ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
             else {
                 ambientSoundTutorialCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 ambientSoundZoneInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                menuInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
     }
