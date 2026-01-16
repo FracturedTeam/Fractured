@@ -84,6 +84,7 @@ namespace _Project.Scripts.GameServices {
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                PlayerController.Instance.triggerEnterRoom = true;
 
                 await UnloadGameplaySceneAsync();
 
@@ -196,6 +197,8 @@ namespace _Project.Scripts.GameServices {
             GameSaveSystem.Instance.SaveGame();
             
             _ = UnloadGameplaySceneAsync();
+            
+            PlayerController.Instance.triggerEnterRoom = true;
             
             await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {

@@ -17,6 +17,7 @@ namespace _Project.Scripts.Player.States {
             player.interact.SetInteract(false);
             animationExitTimer.Start();
             player.interact.triggerDoor = false;
+            player.movement.FreezeController();
         }
 
         public override void OnUpdate() {
