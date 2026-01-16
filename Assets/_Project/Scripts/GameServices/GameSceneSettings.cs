@@ -54,5 +54,6 @@ namespace _Project.Scripts.GameServices {
     public class FragmentData {
         [SerializeField] public Glass glassShards;
         public Vector3 position;
+        public bool spawned;
     }
 }
