@@ -27,7 +27,7 @@ namespace _Project.Scripts.UI
             
             if(Instance == null) Instance =  this;
             else Destroy(this);
-            //mainCamera.transform.SetPositionAndRotation(splashScreenCameraTransform.position, splashScreenCameraTransform.rotation);
+            mainCamera.transform.SetPositionAndRotation(splashScreenCameraTransform.position, splashScreenCameraTransform.rotation);
         }
 
         public void ChangeTarget(Transform newTarget)

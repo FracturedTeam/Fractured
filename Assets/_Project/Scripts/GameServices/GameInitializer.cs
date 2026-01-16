@@ -6,6 +6,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
@@ -223,6 +224,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInEditableArea });
             return shardService.PlayerInEditableArea;
         }
         
