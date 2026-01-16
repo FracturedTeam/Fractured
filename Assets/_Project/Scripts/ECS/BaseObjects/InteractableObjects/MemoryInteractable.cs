@@ -2,6 +2,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using FMOD.Studio;
 using FMODUnity;
@@ -29,8 +30,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private EventInstance soundInstance;
         
         private bool initialized = false;
+
+        private CountdownTimer displayCountdown = new CountdownTimer(0.5f);
         
         public void Initialize() {
+            displayCountdown.OnTimerStop += DelayDisplay;
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
                 else Debug.LogError($"[MemoryInteractable] Cannot find {nameof(BaseObject)} in {nameof(MemoryInteractable)}");
@@ -107,31 +111,34 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void DisplayMemory() {
             baseObject.SetInteract(false);
-            
             AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            displayCountdown.Start();
+        }
+
+        private void DelayDisplay() {
             EventBus<MemorySound>.Raise(new MemorySound {
                 inMemory = true
             });
+            
             soundInstance.getPlaybackState(out var playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
                 soundInstance.start();
             }
+            
             MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
-            
-            
             Debug.Log($"[MemoryInteractable] Entering memory");
             
             if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })
                 return;
             
-            print("show memory");
             HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
             baseObject.successDialogue.alreadyInteracted = true;
         }
-
+        
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
             
+            AudioManager.Instance.PlayLeaveMemorySound(transform.position);
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
             EventBus<MemorySound>.Raise(new MemorySound {
                 inMemory = false

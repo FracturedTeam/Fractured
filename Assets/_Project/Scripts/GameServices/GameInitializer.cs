@@ -6,6 +6,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using Unity.Cinemachine;
@@ -106,6 +107,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         private void OnDestroy() {
+            screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
@@ -222,6 +224,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInEditableArea });
             return shardService.PlayerInEditableArea;
         }
         
@@ -240,7 +243,7 @@ namespace _Project.Scripts.GameServices {
 
         public void LoadNewLevel(SceneSettings sceneSettings) {
             GameSaveSystem.Instance.SaveGame();
-            EmptyAll();
+            //EmptyAll();
             ResetCameras();
             
             _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);

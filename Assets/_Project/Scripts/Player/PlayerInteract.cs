@@ -100,13 +100,14 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void Interact(InputAction.CallbackContext ctx) {
+            if(triggerFailedDrop) return;
+            
             if (ctx.performed) {
                 interactionHold = true;
                 return;
             }
 
-            if (ctx.canceled) 
-                interactionHold = false;
+            if (ctx.canceled) interactionHold = false;
 
             if (hasRemoved) {
                 hasRemoved = false;
@@ -138,11 +139,11 @@ namespace _Project.Scripts.Player {
             else if (IsPressurePlate())
                 PressurePlateInteraction();
             else if (CanContextualInteract()) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
-                        return;
-                    }
-                }
+                // if (potentialInteraction.GetInteractionType is ObjectType.Door) {
+                //     if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
+                //         return;
+                //     }
+                // }
                 if(potentialInteraction.GetInteractionType is ObjectType.Shard)
                     triggerShard = true;
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
@@ -231,20 +232,13 @@ namespace _Project.Scripts.Player {
         }
         
         public void HandleUpdate(Vector3 playerDir) {
-            /*if (HasObject && currentInteraction != null) {
-                if (currentInteraction.TryGetComponent(out MoveableObject m)) {
-                    if(!m.IsGrabbed())
-                        currentInteraction.OnInteract(ObjectInteraction.Grab);
-                }
-            }*/
-            
             HandleInteractRotation(playerDir);
             
             if(interactionHold)
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory()) {
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
                 }

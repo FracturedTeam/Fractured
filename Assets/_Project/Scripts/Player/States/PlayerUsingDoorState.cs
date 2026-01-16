@@ -6,7 +6,7 @@ namespace _Project.Scripts.Player.States {
     public class PlayerUsingDoorState : PlayerBaseState {
         public readonly CountdownTimer animationExitTimer;
         public PlayerUsingDoorState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
-            animationExitTimer = new CountdownTimer(clip.length);
+            animationExitTimer = new CountdownTimer(clip.length + 1.2f);
         }
 
         public override void OnEnter() {
@@ -17,13 +17,10 @@ namespace _Project.Scripts.Player.States {
             player.interact.SetInteract(false);
             animationExitTimer.Start();
             player.interact.triggerDoor = false;
+            player.movement.FreezeController();
         }
 
         public override void OnUpdate() {
-            //Handle le movement pour déplacer le joueur a un point donner / une direction
-            //2 directions
-            //Une lorsque le joueur rentre dans la porte
-            //Une lorsque le joueur sort de la porte
         }
 
         public override void OnFixedUpdate() {
