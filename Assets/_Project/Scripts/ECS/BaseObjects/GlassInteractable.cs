@@ -189,12 +189,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (selfMoveable) {
                 if (baseObject.IsOnPressurePlate()) {
-                    if (IsVisible) {
-                        if (objectInside && !objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
-                        else if(objectInside && objectOut) selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
+                    if (IsVisible && objectInside) {
+                        if (!objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
+                        else selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
                     }
                     else {
-                        selfMoveable.GetPressurePlateOn().SetActivation(true);
+                        selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
                     }
 
                     baseObject.SetCollider(false);
