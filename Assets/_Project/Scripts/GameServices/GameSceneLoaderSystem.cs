@@ -85,6 +85,7 @@ namespace _Project.Scripts.GameServices {
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                await Task.Yield();
                 PlayerController.Instance.triggerEnterRoom = true;
 
                 await UnloadGameplaySceneAsync();
