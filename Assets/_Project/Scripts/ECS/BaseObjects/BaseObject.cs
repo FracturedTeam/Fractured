@@ -206,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public Vector3 GetUIPosition(bool special = false)
         {
-            return   transform.position +  (special ? 
+            return transform.position + (special ? 
                 new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 3, 0) : 
                 new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0));
         }
