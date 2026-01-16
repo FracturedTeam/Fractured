@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.UI
@@ -12,7 +13,7 @@ namespace _Project.Scripts.UI
         [SerializeField] Transform creditsScreenCameraTransform;
 
         [Range(0, 1), SerializeField] private float speed;
-        [SerializeField] private Camera mainCamera;
+        [SerializeField] private CinemachineCamera mainCamera;
         private Transform target;
         private Vector3 lastPosition;
         private Quaternion lastRotation;
