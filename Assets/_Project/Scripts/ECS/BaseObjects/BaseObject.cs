@@ -31,7 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
-        [SerializeField] private Transform hudTransform;
+        [SerializeField] private Vector2 hudSpecialTransformPoint;
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -181,9 +181,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public Vector3 GetUIPosition()
+        public Vector3 GetUIPosition(bool special = false)
         {
-            return hudTransform ? hudTransform.position : transform.position + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0);
+            return   transform.position +  (special ? 
+                new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 3, 0) : 
+                new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0));
         }
 
         public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;

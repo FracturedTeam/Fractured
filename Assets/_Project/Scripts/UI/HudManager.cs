@@ -20,15 +20,10 @@ namespace _Project.Scripts.UI
     {
         [Header("HUD")]
         [SerializeField] private GameObject interactionParent;
-        [SerializeField] private CanvasGroup interactionUI;
-        [SerializeField] private TextMeshProUGUI interactionText;
-        [SerializeField] private Image interactionImage;
-        
-        [SerializeField] private CanvasGroup interactionUI2;
-        [SerializeField] private TextMeshProUGUI interactionText2;
-        [SerializeField] private Image interactionImage2;
+        [SerializeField] private InteractionPopUp interactionUI;
+        [SerializeField] private InteractionPopUp interactionUI2;
+        [SerializeField] private InteractionPopUp specialUI;
         [field:SerializeField] public Transform glassHolder {get; private set;}
-
 
         [Header("Interaction Texts")] 
         [SerializeField] private string grab = "Pick up";
@@ -87,8 +82,9 @@ namespace _Project.Scripts.UI
         private void Start() {
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop  += ResetText;
-            interactionUI.alpha = 0;
-            interactionUI2.alpha = 0;
+            interactionUI.GetGroup.alpha = 0;
+            interactionUI2.GetGroup.alpha = 0;
+            specialUI.GetGroup.alpha = 0;
         }
         
         void OnEnable() {
@@ -180,12 +176,12 @@ namespace _Project.Scripts.UI
                 interactTween.Kill();
 
                 if (!e.ShowInteraction) {
-                    interactTween = interactionUI.DOFade(0f, 0.25f);
-                    interactionUI2.DOFade(0f, 0.25f);
+                    interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
+                    interactionUI2.GetGroup.DOFade(0f, 0.25f);
                     return;
                 }
                 
-                interactionText.text = e.Interaction switch {
+                interactionUI.GetInteractionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
                     Interaction.ObtainShard => $"{obtainShard}",
                     Interaction.EnterMemory => $"{enterMemory}",
@@ -203,15 +199,16 @@ namespace _Project.Scripts.UI
                     Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
+                
 
                 if (e.Interaction == Interaction.EnterMemory)
                 {
-                    interactionText2.text = $"{pickObjectPressurePlate}";
-                    interactionImage2.sprite = spriteNormal;
+                    interactionUI2.GetInteractionText.text = $"{pickObjectPressurePlate}";
+                    interactionUI2.GetInteractionImage.sprite = spriteNormal;
                 }
-                interactionUI2.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
+                interactionUI2.GetGroup.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
-                interactionImage.sprite = e.Interaction switch
+                interactionUI.GetInteractionImage.sprite = e.Interaction switch
                 {
                     Interaction.Grab => spriteUp,
                     Interaction.ObtainShard => spriteGlass,
@@ -223,7 +220,21 @@ namespace _Project.Scripts.UI
                     _ => spriteNormal
                 };
                 
-                interactTween = interactionUI.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
+                interactTween = interactionUI.GetGroup.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
+            }
+
+
+            public void EventInteraction(Vector3 position, string text, Sprite logo )
+            {
+                specialUI.transform.position =  position;
+                specialUI.GetInteractionText.text = text;
+                specialUI.GetInteractionImage.sprite = logo;
+                specialUI.GetGroup.DOFade( 1f , 0.25f);
+            }
+
+            public void StopEventInteraction()
+            {
+                specialUI.GetGroup.DOFade(0f, 0.25f);
             }
 
             public static void InteractionSetPosition(Vector3 position)
