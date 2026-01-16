@@ -30,6 +30,9 @@ namespace _Project.Scripts.GameServices {
     
     public class AudioManager : PersistentSingleton<AudioManager> {
         [Header("One Shot Sounds")]
+        [Header("Player")]
+        [SerializeField] private EventReference playerFootstepSound;
+        
         [Header("Glass Sounds")]
         [SerializeField] private EventReference grabGlassSound;
         [SerializeField] private EventReference grabGlassFailedSound;
@@ -68,6 +71,9 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private EventReference editableLoop;
         [SerializeField] private EventReference creditsLoop;
         
+        [Header("UI")]
+        [SerializeField] private EventReference uiBttClickedSound;
+        
         private EventInstance memorySoundInstance;
         private EventInstance ambientZone1Instance;
         private EventInstance ambientTutorialInstance;
@@ -84,6 +90,8 @@ namespace _Project.Scripts.GameServices {
         public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(sound, worldPosition);
         }
+        public void PlayFootStepSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(playerFootstepSound, worldPosition);
+        public void PlayBttClikedSound() => RuntimeManager.PlayOneShot(uiBttClickedSound);
 
         #region Glass
         public void PlayGrabGlassSound() => RuntimeManager.PlayOneShot(grabGlassSound);

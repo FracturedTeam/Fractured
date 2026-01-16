@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
@@ -42,6 +43,8 @@ namespace _Project.Scripts.UI
             
             if(backgroundImage)
                 backgroundImage.sprite = clickedSprite;
+            
+            AudioManager.Instance.PlayBttClikedSound();
             
             //tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
             StartCoroutine(CallClickPostTimer());
