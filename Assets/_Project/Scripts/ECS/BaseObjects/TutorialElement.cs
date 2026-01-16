@@ -9,12 +9,13 @@ public class TutorialElement : MonoBehaviour
     [SerializeField] Sprite eventPicto;
     [SerializeField] string eventText;
     
-    protected void TriggerEventStart()
+    internal void TriggerEventStart()
     {
+        print("TriggerEventStart");
         HudManager.Instance.EventInteraction(GetComponent<BaseObject>().GetUIPosition(true), eventText, eventPicto);
     }
     
-    protected void TriggerEventStop()
+    internal void TriggerEventStop()
     {
         HudManager.Instance.StopEventInteraction();
     }
