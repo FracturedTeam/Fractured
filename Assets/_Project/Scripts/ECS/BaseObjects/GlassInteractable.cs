@@ -190,8 +190,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (selfMoveable) {
                 if (baseObject.IsOnPressurePlate()) {
                     if (objectInside && !objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
-                    else if(objectInside && objectOut) selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
-                    
+                    else if((objectInside && objectOut) || !objectInside) selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
+
                     baseObject.SetCollider(false);
                     baseObject.SetInteract(false);
                     selfMoveable.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
@@ -199,7 +199,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else if (!selfMoveable.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
-                }else if (selfMoveable.IsGrabbed() && !objectInside) {
+                }else if (selfMoveable.IsGrabbed() && !objectInside && !isUnder) {
                     selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
                 }
             }

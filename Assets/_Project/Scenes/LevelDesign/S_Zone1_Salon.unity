@@ -712,7 +712,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.6
 --- !u!114 &62799383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +742,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -2296,13 +2298,80 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 207069787}
+    - targetCorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 207069786}
   m_SourcePrefab: {fileID: 100100000, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
 --- !u!4 &207069784 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9188082385023692429, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
   m_PrefabInstance: {fileID: 207069783}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &207069785 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+  m_PrefabInstance: {fileID: 207069783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &207069786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207069785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 0
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 0.6
+--- !u!114 &207069787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207069785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  successDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  cantInteractDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  failedDialogue:
+    dialogue: {fileID: 0}
+    oneTime: 0
+    alreadyInteracted: 0
+  locked: 0
+  memoryId: 0
+  hudTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
+  data:
+    baseObject: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    completion: 0
+    canInteract: 0
+    objectOut: 0
+    objectIndexOnDisplay: 0
 --- !u!43 &229489021
 Mesh:
   m_ObjectHideFlags: 0
@@ -2735,6 +2804,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -6358,71 +6429,95 @@ PrefabInstance:
       objectReference: {fileID: 5111022831278564656, guid: 9510457cf447fa242ab55cd9af102674, type: 3}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: baseObjects.Array.size
-      value: 13
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1909063938}
+      objectReference: {fileID: 1764421474}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1421474924}
+      objectReference: {fileID: 1909063938}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 110338671}
+      objectReference: {fileID: 1224049389}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 1694859468}
+      objectReference: {fileID: 267120453}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 1356815539}
+      objectReference: {fileID: 1573147552}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 1509129795}
+      objectReference: {fileID: 1719788382}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 185746370}
+      objectReference: {fileID: 1474462948}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 1764421474}
+      objectReference: {fileID: 1421474924}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 110338670}
+      objectReference: {fileID: 1597452620}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 1234748368}
+      objectReference: {fileID: 62799383}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 627760698}
+      objectReference: {fileID: 1509129795}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 1573147552}
+      objectReference: {fileID: 1356815539}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 1719788382}
+      objectReference: {fileID: 1234748368}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 1909063938}
+      objectReference: {fileID: 1339157171}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[14]'
       value: 
-      objectReference: {fileID: 1303694489}
+      objectReference: {fileID: 207069787}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[15]'
+      value: 
+      objectReference: {fileID: 110338670}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[16]'
+      value: 
+      objectReference: {fileID: 627760698}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[17]'
+      value: 
+      objectReference: {fileID: 696919933}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[18]'
+      value: 
+      objectReference: {fileID: 110338671}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[19]'
+      value: 
+      objectReference: {fileID: 1694859468}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[20]'
+      value: 
+      objectReference: {fileID: 185746370}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.size
-      value: 13
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.size
@@ -6431,63 +6526,87 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[0].baseObject
       value: 
-      objectReference: {fileID: 1909063938}
+      objectReference: {fileID: 1764421474}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[1].baseObject
       value: 
-      objectReference: {fileID: 1421474924}
+      objectReference: {fileID: 1909063938}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[2].baseObject
       value: 
-      objectReference: {fileID: 110338671}
+      objectReference: {fileID: 1224049389}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[3].baseObject
       value: 
-      objectReference: {fileID: 1694859468}
+      objectReference: {fileID: 267120453}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[4].baseObject
       value: 
-      objectReference: {fileID: 1356815539}
+      objectReference: {fileID: 1573147552}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[5].baseObject
       value: 
-      objectReference: {fileID: 1509129795}
+      objectReference: {fileID: 1719788382}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[6].baseObject
       value: 
-      objectReference: {fileID: 185746370}
+      objectReference: {fileID: 1474462948}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[7].baseObject
       value: 
-      objectReference: {fileID: 1764421474}
+      objectReference: {fileID: 1421474924}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[8].baseObject
       value: 
-      objectReference: {fileID: 110338670}
+      objectReference: {fileID: 1597452620}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[9].baseObject
       value: 
-      objectReference: {fileID: 1234748368}
+      objectReference: {fileID: 62799383}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[10].baseObject
       value: 
-      objectReference: {fileID: 627760698}
+      objectReference: {fileID: 1509129795}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[11].baseObject
       value: 
-      objectReference: {fileID: 1573147552}
+      objectReference: {fileID: 1356815539}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[12].baseObject
       value: 
-      objectReference: {fileID: 1719788382}
+      objectReference: {fileID: 1234748368}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[13].baseObject
       value: 
-      objectReference: {fileID: 1909063938}
+      objectReference: {fileID: 1339157171}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[14].baseObject
       value: 
-      objectReference: {fileID: 1303694489}
+      objectReference: {fileID: 207069787}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[15].baseObject
+      value: 
+      objectReference: {fileID: 110338670}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[16].baseObject
+      value: 
+      objectReference: {fileID: 627760698}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[17].baseObject
+      value: 
+      objectReference: {fileID: 696919933}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[18].baseObject
+      value: 
+      objectReference: {fileID: 110338671}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[19].baseObject
+      value: 
+      objectReference: {fileID: 1694859468}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: gameData.ObjectDatas.Array.data[20].baseObject
+      value: 
+      objectReference: {fileID: 185746370}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.data[0].glassShards
       value: 
@@ -6926,7 +7045,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.6
 --- !u!114 &696919933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6956,6 +7075,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -7143,7 +7264,7 @@ PrefabInstance:
     - target: {fileID: 5179101805839086785, guid: e00481592414c1b4089aa3e066fa589e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a635b698cdd71fd41b8e6eb389869f59, type: 2}
+      objectReference: {fileID: 2100000, guid: d1bf0b447db6ba64590949252d301c50, type: 2}
     - target: {fileID: 6310934491330285486, guid: e00481592414c1b4089aa3e066fa589e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 51.13
@@ -7205,6 +7326,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6692104779506701588, guid: e00481592414c1b4089aa3e066fa589e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1509129796}
+    - targetCorrespondingSourceObject: {fileID: 6692104779506701588, guid: e00481592414c1b4089aa3e066fa589e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1509129797}
   m_SourcePrefab: {fileID: 100100000, guid: e00481592414c1b4089aa3e066fa589e, type: 3}
 --- !u!1001 &732299108
 PrefabInstance:
@@ -12506,7 +12630,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.6
 --- !u!114 &1224049389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12536,6 +12660,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -12681,6 +12807,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -13270,7 +13398,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.6
 --- !u!114 &1339157171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13300,6 +13428,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -13344,7 +13474,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 1509129794}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.7
 --- !u!114 &1356815539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13374,6 +13504,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -13803,6 +13935,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -14153,6 +14287,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -14286,6 +14422,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -14314,6 +14452,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.97539794, y: 0.20432329, z: 0.9753906}
   m_Center: {x: 0, y: 0.9172194, z: 0}
+--- !u!114 &1509129797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203881076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 1
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 0.8
 --- !u!1001 &1510661016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15231,7 +15387,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.6
 --- !u!114 &1597452620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15261,6 +15417,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16650,7 +16808,7 @@ MonoBehaviour:
   interactableInBox: {fileID: 1421474923}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.7
 --- !u!114 &1694859468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16680,6 +16838,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16956,6 +17116,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -19860,6 +20022,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}

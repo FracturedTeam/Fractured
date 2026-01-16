@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -115.00001, y: 41.500034}
-  m_SizeDelta: {x: 270, y: 140}
+  m_SizeDelta: {x: 270, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &686177695230798640
 CanvasRenderer:
@@ -92,10 +92,12 @@ MonoBehaviour:
   data:
     glassShards: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
+    spawned: 0
   color2D: 0
   canEditAnywhere: 0
   shard: {fileID: 8540724540540974830, guid: e81a2e628de1f9a4797ce7db5c025fa5, type: 3}
-  VisualShard: {fileID: 8540724540540974830, guid: 04369defb68fbc44797deac51ebcec8a, type: 3}
+  visualShard: {fileID: 0}
+  visualParticles: {fileID: 0}
 --- !u!60 &6680790162468146393
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -142,8 +144,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -130, y: -170}
+    - - {x: -130, y: -180}
       - {x: 120, y: -150}
-      - {x: 140, y: -30}
+      - {x: 140, y: -20}
       - {x: -40, y: -60}
   m_UseDelaunayMesh: 0
