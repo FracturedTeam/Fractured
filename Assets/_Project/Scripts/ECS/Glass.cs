@@ -9,6 +9,7 @@ using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
@@ -34,7 +35,8 @@ namespace _Project.Scripts.ECS
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
         [SerializeField] private Fragment shard;
-        public Fragment VisualShard;
+        [HideInInspector] public Fragment visualShard;
+        [HideInInspector] public ParticleSystem visualParticles;
 
         private Camera mainCamera;
         private Image shardSprite;
@@ -126,8 +128,8 @@ namespace _Project.Scripts.ECS
                 
             shard.Setup(cornersPos);
             
-            if(VisualShard) 
-                VisualShard.Setup(cornersPos);
+            if(visualShard) 
+                visualShard.Setup(cornersPos);
         }
 
         private void OnEnable()

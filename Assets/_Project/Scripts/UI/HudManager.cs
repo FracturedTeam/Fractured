@@ -70,23 +70,19 @@ namespace _Project.Scripts.UI
         private CountdownTimer textTimer;
         
         [Header("Glass Animation")]
-        private ParticleSystem current;
-        private Fragment currentF;
-        [SerializeField] private ParticleSystem spawningParticles;  
-        [SerializeField] private int maxShardsOnScreen = 2;
-        
-        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
-        private List<ParticleSystem> usingParticles = new List<ParticleSystem>();
-        
         [SerializeField] private Fragment fragment;
-        private List<Fragment> freeFragment = new List<Fragment>();
-        private List<Fragment> usingFragment = new List<Fragment>();
+        [SerializeField] private ParticleSystem spawningParticles;  
         
         [SerializeField] private int currentShardsSpawning;
         [SerializeField] private float firstHalfTime = 1.0f;
         [SerializeField] private float secondHalfTime = 0.5f;
         [SerializeField] private Material transitionMaterial;
         
+        private ParticleSystem currentParticle;
+        private Fragment currentFrag;
+        
+        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private List<Fragment> freeFragment = new List<Fragment>();
 
         private void Start() {
             textTimer = new CountdownTimer(0);
@@ -141,45 +137,41 @@ namespace _Project.Scripts.UI
             
             if(freeFragment.Count <= 0)
             {
-                var frag = Instantiate(shard.VisualShard);
+                var frag = Instantiate(fragment);
                 freeFragment.Add(frag);
             }
             
-            current = freeParticles[^1];
-            freeParticles.Remove(current);
-            usingParticles.Add(current);
-            current.gameObject.SetActive(true);
-            current.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
+            currentParticle = freeParticles[^1];
+            shard.visualParticles = currentParticle;
+            freeParticles.Remove(currentParticle);
+            currentParticle.gameObject.SetActive(true);
             
-            currentF = freeFragment[^1];
-            shard.VisualShard = currentF;
-            freeFragment.Remove(currentF);
-            usingFragment.Add(currentF);
-            currentF.gameObject.SetActive(true);
+            currentParticle.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
+            
+            currentFrag = freeFragment[^1];
+            shard.visualShard = currentFrag;
+            freeFragment.Remove(currentFrag);
+            currentFrag.gameObject.SetActive(true);
             
             StartCoroutine(HideParticles(shard));
         }
 
         private IEnumerator HideParticles(Glass shard)
         {
-            transitionMaterial.DOFloat(1, "_Progression", firstHalfTime/2);
-            yield return new WaitForSeconds(firstHalfTime/2);
+            transitionMaterial.DOFloat(1, "_Progression", firstHalfTime);
+            yield return new WaitForSeconds(firstHalfTime);
             shard.SetUp3dShard();
-            transitionMaterial.DOFloat(2, "_Progression", firstHalfTime/2);
-            yield return new WaitForSeconds(firstHalfTime/2);
+            transitionMaterial.DOFloat(2, "_Progression", secondHalfTime);
+            yield return new WaitForSeconds(secondHalfTime);
             
-            currentF.gameObject.SetActive(false);
-            current.gameObject.SetActive(false);
-            shard.VisualShard.gameObject.SetActive(false);
             
-            usingFragment.Remove(currentF);
-            freeFragment.Add(currentF);
+            shard.visualParticles.gameObject.SetActive(false);
+            shard.visualShard.gameObject.SetActive(false);
             
-            usingParticles.Remove(current);
-            freeParticles.Add(current);
-            transitionMaterial.DOFloat(0, "_Progression", 0);
-            currentF.gameObject.SetActive(false);
-            current.gameObject.SetActive(false);
+            freeFragment.Add(shard.visualShard);
+            freeParticles.Add(shard.visualParticles);
+            
+            transitionMaterial.SetFloat("_Progression",  0);
         }
 
         #region InteractionHUD
