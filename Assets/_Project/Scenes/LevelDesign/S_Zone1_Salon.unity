@@ -639,6 +639,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 6210014616755067974, guid: 27e546d93aac0644788aa8f9f6940e54, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6729987291203962620, guid: 27e546d93aac0644788aa8f9f6940e54, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.605068
@@ -2255,6 +2259,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8415381156403098679, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9188082385023692429, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.360073
@@ -2744,75 +2752,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 267120453}
-    - targetCorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 267120452}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
---- !u!1 &267120451 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-  m_PrefabInstance: {fileID: 267120450}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &267120452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267120451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
-  objectColor: 0
-  objectInside: 0
-  interactableInBox: {fileID: 0}
-  radius2D: 0
-  showColliders: 0
-  scaleModificator: 1
---- !u!114 &267120453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267120451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
-  data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
 --- !u!4 &267120454 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9102970463398493544, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
@@ -6446,7 +6387,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 267120453}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
@@ -6458,7 +6399,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1474462948}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
@@ -6466,7 +6407,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 1597452620}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[9]'
       value: 
@@ -6486,7 +6427,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 1339157171}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[14]'
       value: 
@@ -6538,7 +6479,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[3].baseObject
       value: 
-      objectReference: {fileID: 267120453}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[4].baseObject
       value: 
@@ -6550,7 +6491,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[6].baseObject
       value: 
-      objectReference: {fileID: 1474462948}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[7].baseObject
       value: 
@@ -6558,7 +6499,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[8].baseObject
       value: 
-      objectReference: {fileID: 1597452620}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[9].baseObject
       value: 
@@ -6578,7 +6519,7 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[13].baseObject
       value: 
-      objectReference: {fileID: 1339157171}
+      objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[14].baseObject
       value: 
@@ -7011,6 +6952,10 @@ PrefabInstance:
     - target: {fileID: 8812262897859533889, guid: 9ca17d74d9ee09d428eaba06408583c1, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8812262897859533889, guid: 9ca17d74d9ee09d428eaba06408583c1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12592,6 +12537,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2094856097084181221, guid: 91402a973194581469b694bf42e4e744, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13368,75 +13317,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1101141882998033634, guid: 435082a8acb15104b9989be52447efd6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1339157171}
-    - targetCorrespondingSourceObject: {fileID: 1101141882998033634, guid: 435082a8acb15104b9989be52447efd6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1339157170}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 435082a8acb15104b9989be52447efd6, type: 3}
---- !u!1 &1339157169 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1101141882998033634, guid: 435082a8acb15104b9989be52447efd6, type: 3}
-  m_PrefabInstance: {fileID: 1339157168}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1339157170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339157169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
-  objectColor: 0
-  objectInside: 0
-  interactableInBox: {fileID: 0}
-  radius2D: 0
-  showColliders: 0
-  scaleModificator: 0.6
---- !u!114 &1339157171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339157169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
-  data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
 --- !u!4 &1339157172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 289314605310105176, guid: 435082a8acb15104b9989be52447efd6, type: 3}
@@ -14227,75 +14109,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1474462948}
-    - targetCorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1474462947}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
---- !u!1 &1474462946 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8439727854979983314, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
-  m_PrefabInstance: {fileID: 1474462945}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1474462947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474462946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
-  objectColor: 0
-  objectInside: 0
-  interactableInBox: {fileID: 0}
-  radius2D: 0
-  showColliders: 0
-  scaleModificator: 1
---- !u!114 &1474462948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474462946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
-  data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
 --- !u!4 &1474462949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9102970463398493544, guid: 53535ff3766e45b49aeec5b9544fc922, type: 3}
@@ -15357,75 +15172,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6844255441007402794, guid: 3bb7fdb8678c2594fb07dc9f9a9f44cd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1597452620}
-    - targetCorrespondingSourceObject: {fileID: 6844255441007402794, guid: 3bb7fdb8678c2594fb07dc9f9a9f44cd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1597452619}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bb7fdb8678c2594fb07dc9f9a9f44cd, type: 3}
---- !u!1 &1597452618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6844255441007402794, guid: 3bb7fdb8678c2594fb07dc9f9a9f44cd, type: 3}
-  m_PrefabInstance: {fileID: 1597452617}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1597452619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597452618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
-  objectColor: 0
-  objectInside: 0
-  interactableInBox: {fileID: 0}
-  radius2D: 0
-  showColliders: 0
-  scaleModificator: 0.6
---- !u!114 &1597452620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597452618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
-  data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
 --- !u!4 &1597452621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6174574328541578640, guid: 3bb7fdb8678c2594fb07dc9f9a9f44cd, type: 3}
