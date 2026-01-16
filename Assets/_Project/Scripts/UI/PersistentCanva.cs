@@ -14,6 +14,8 @@ namespace _Project.Scripts.UI {
 
         private EventBinding<FadeObject> fadeEventBinding;
         [SerializeField] private CanvasGroup fadeCanvasGroup;
+        [SerializeField] private float fadeInDuration = 0.5f;
+        [SerializeField] private float fadeOutDuration = 0.5f;
         
         private void OnEnable() {
             fadeEventBinding = new EventBinding<FadeObject>(Fade);
@@ -26,11 +28,11 @@ namespace _Project.Scripts.UI {
 
         void Fade(FadeObject f) {
             if (f.show) {
-                fadeCanvasGroup.DOFade(1f, 0.5f);
+                fadeCanvasGroup.DOFade(1f, fadeInDuration);
                 fadeCanvasGroup.blocksRaycasts = true;
             }
             else {
-                fadeCanvasGroup.DOFade(0f, 0.5f);
+                fadeCanvasGroup.DOFade(0f, fadeOutDuration);
                 fadeCanvasGroup.blocksRaycasts = false;
             }
         }
