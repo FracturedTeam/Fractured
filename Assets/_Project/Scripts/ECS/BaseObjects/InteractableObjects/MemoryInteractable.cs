@@ -132,6 +132,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
             
+            AudioManager.Instance.PlayLeaveMemorySound(transform.position);
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
             EventBus<MemorySound>.Raise(new MemorySound {
                 inMemory = false

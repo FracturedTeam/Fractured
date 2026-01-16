@@ -38,30 +38,22 @@ namespace _Project.Scripts.GameServices {
             //ManageAudio Loop
             if (index == 2) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = true,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = false
+                    loop = Loop.ambientCoffin
                 });
             }
             else if (index is > 2 and < 8) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = true,
-                    ambientSoundZone1 = false
+                    loop = Loop.ambientTuto
                 });
             }
             else if (index is > 7 and < 12) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = true
+                    loop = Loop.ambientZone1
                 });
             }
             else if(index is 0 or 1)
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    ambientSoundCoffin = false,
-                    ambientSoundTuto = false,
-                    ambientSoundZone1 = false
+                    loop = Loop.mainMenu
                 });
         }
         
