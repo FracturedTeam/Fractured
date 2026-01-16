@@ -12,6 +12,7 @@ namespace _Project.Scripts.Player.States.SubStates {
         
         public override void OnEnter() {
             animationExitTimer.Start();
+            animationExitTimer.OnTimerStop += UnSet;
             
             //Set the grab animation when entering holding state
             animator.SetLayerWeight(UpperBodyLayer, 1);
@@ -27,10 +28,11 @@ namespace _Project.Scripts.Player.States.SubStates {
         public override void OnExit() {
             animationExitTimer.Stop();
             
-            //Exit the grab animation when timer is finished
             animator.SetLayerWeight(UpperBodyLayer, 0);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
-            
+        }
+
+        private void UnSet() {
             player.interact.triggerFailedDrop = false;
         }
         
