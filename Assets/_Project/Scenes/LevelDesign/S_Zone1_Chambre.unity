@@ -10687,14 +10687,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1724853103}
     m_Modifications:
-    - target: {fileID: 3883378850984937060, guid: a8ed191d377058c4398410f8f891463e, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3883378850984937060, guid: a8ed191d377058c4398410f8f891463e, type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: cba51915958e43d44bd0206b893fdd3e, type: 2}
     - target: {fileID: 3133383151976124609, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -10751,6 +10743,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3883378850984937060, guid: a8ed191d377058c4398410f8f891463e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883378850984937060, guid: a8ed191d377058c4398410f8f891463e, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cba51915958e43d44bd0206b893fdd3e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11297,6 +11297,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6300798554093924755}
     m_Modifications:
+    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: objectInside
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: interactableInBox
+      value: 
+      objectReference: {fileID: 2727381396479410228}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: successDialogue.oneTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: successDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: de98560f9b6db764fa201b5aebff87c6, type: 2}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: cantInteractDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: aa0df3fe3aa0f794c907b459531bb999, type: 2}
     - target: {fileID: 8055124315286509026, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -11369,26 +11389,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: objectInside
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: interactableInBox
-      value: 
-      objectReference: {fileID: 2727381396479410228}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: successDialogue.oneTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: successDialogue.dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: de98560f9b6db764fa201b5aebff87c6, type: 2}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: cantInteractDialogue.dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: aa0df3fe3aa0f794c907b459531bb999, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23849,7 +23849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 3
-  memorySprite: {fileID: 21300000, guid: 6125479e9a895b24e9df779a28a7172f, type: 3}
+  memorySprite: {fileID: 989680678, guid: 3b1318d011f02d446b7b462330a63791, type: 3}
   associateMemoryLoop:
     Guid:
       Data1: 0
