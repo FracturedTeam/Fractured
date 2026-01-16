@@ -49,6 +49,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (doorType is DoorType.None) {
+                if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.cantInteractDialogue.alreadyInteracted = true;
+                }
+                return;
+            }
+            
             if(hasBeenInteracted) return;
             
             if (key) {

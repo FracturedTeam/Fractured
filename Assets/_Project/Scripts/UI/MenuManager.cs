@@ -7,12 +7,19 @@ namespace _Project.Scripts.UI
 {
     public class MenuManager : MonoBehaviour
     {
+        [Header("Camera Transform Position")]
         [SerializeField] Transform splashScreenCameraTransform;
         [SerializeField] Transform mainScreenCameraTransform;
         [SerializeField] Transform optionsScreenCameraTransform;
         [SerializeField] Transform creditsScreenCameraTransform;
+        
+        [Header("Camera Animation Curve")]
+        [SerializeField] AnimationCurve cameraMovementCurve;
 
+        [Header("Camera Move Speed")]
         [Range(0, 1), SerializeField] private float speed;
+        
+        [Header("Camera Ref")]
         [SerializeField] private CinemachineCamera mainCamera;
         private Transform target;
         private Vector3 lastPosition;
@@ -46,8 +53,8 @@ namespace _Project.Scripts.UI
         private void ChangeCameraTransform()
         {
             moveTime += Time.deltaTime * speed;
-            mainCamera.transform.position = Vector3.Lerp (lastPosition, target.position, moveTime);
-            mainCamera.transform.rotation = Quaternion.Lerp (lastRotation, target.rotation, moveTime);
+            mainCamera.transform.position = Vector3.Lerp (lastPosition, target.position, cameraMovementCurve.Evaluate(moveTime));
+            mainCamera.transform.rotation = Quaternion.Lerp (lastRotation, target.rotation, cameraMovementCurve.Evaluate(moveTime));
 
             if (!((mainCamera.transform.position - target.position).magnitude <= 0.1f)) 
                 return;

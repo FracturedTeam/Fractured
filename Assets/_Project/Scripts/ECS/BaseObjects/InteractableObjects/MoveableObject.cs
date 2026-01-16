@@ -113,10 +113,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
-            if(PlayerController.Instance.interact.GetCurrentInteractable() != null)
-                if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
-                    OnGrab();
+            if (PlayerController.Instance) {
+                if (PlayerController.Instance.interact) {
+                    if(PlayerController.Instance.interact.GetCurrentInteractable() != null)
+                        if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
+                            OnGrab();
+                        }
                 }
+            }
             
             IsColliding();
             

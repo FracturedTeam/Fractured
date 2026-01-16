@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
+        public TutorialElement  GetTutorialElement { get; set; }
         public ObjectType GetInteractionType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
 
@@ -32,6 +33,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
+        
+        [Header("Tutorial")]
+        [SerializeField] protected TutorialTriggerType stopTutorialTriggerType;
+        [SerializeField] protected TutorialElement interactTutorialElement;
+        
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -101,6 +107,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!initialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
+                if(TryGetComponent(typeof(TutorialElement), out var t))
+                    GetTutorialElement = t as TutorialElement;
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -140,10 +148,25 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
             GetInteract.OnInteract(interaction, interactable);
+
+            if (stopTutorialTriggerType != TutorialTriggerType.OnInteract)
+                return;
+            
+            Trigger(false);
+            interactTutorialElement?.TriggerEventStart();
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
             GetGlassInteract.OnInteract(isOn, shard);
+
+            if (!isOn) 
+                return;
+
+            if (stopTutorialTriggerType != TutorialTriggerType.OnHideReveal) 
+                return;
+            
+            Trigger(false);
+            interactTutorialElement?.TriggerEventStart();
         }
 
         private void CompleteObject() {
@@ -183,9 +206,20 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public Vector3 GetUIPosition(bool special = false)
         {
-            return   transform.position +  (special ? 
+            return transform.position + (special ? 
                 new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 3, 0) : 
                 new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0));
+        }
+
+        public void Trigger(bool on)
+        {
+            print("Trigger");
+            if (!GetTutorialElement)
+                return;
+            if(on)
+                GetTutorialElement.TriggerEventStart();
+            else
+                GetTutorialElement.TriggerEventStop();
         }
 
         public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;

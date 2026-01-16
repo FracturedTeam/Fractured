@@ -187,18 +187,20 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectColor == ColorEnum.Both) IsVisible = isUnder;
             else IsVisible = !isUnder;
             
-            if (baseObject.TryGetComponent(out MoveableObject move)) {
+            if (selfMoveable) {
                 if (baseObject.IsOnPressurePlate()) {
-                    if (objectInside && !objectOut) move.GetPressurePlateOn().SetActivation(!isUnder);
-                    else if(objectInside && objectOut) move.GetPressurePlateOn().SetActivation(isUnder);
-                    
+                    if (objectInside && !objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
+                    else if((objectInside && objectOut) || !objectInside) selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
+
                     baseObject.SetCollider(false);
                     baseObject.SetInteract(false);
-                    move.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
+                    selfMoveable.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
                 }
-                else if (!move.IsGrabbed()) {
+                else if (!selfMoveable.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
+                }else if (selfMoveable.IsGrabbed() && !objectInside && !isUnder) {
+                    selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
                 }
             }
             else {
