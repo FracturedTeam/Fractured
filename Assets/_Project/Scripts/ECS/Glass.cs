@@ -23,10 +23,12 @@ namespace _Project.Scripts.ECS
         
         public void SaveData() {
             data.position = transform.position;
+            data.spawned = spawned;
         }
         
         public void LoadData() {
             transform.position = data.position;
+            spawned = data.spawned;
             Set3DShard();
         }
         
@@ -44,6 +46,7 @@ namespace _Project.Scripts.ECS
         private Vector2 mousePosition;
 
         private bool isHeld;
+        private bool spawned;
 
         private bool initialized = false;
         private bool canInteract = true;
@@ -80,8 +83,12 @@ namespace _Project.Scripts.ECS
             shard = sh;
                 
             shard.SetColor(color2D);
-            shard.gameObject.SetActive(false);
-            HudManager.Instance.ShardSpawn(this);
+            if (!spawned)
+            {
+                shard.gameObject.SetActive(false);
+                HudManager.Instance.ShardSpawn(this);
+                spawned = true;
+            }
             Set3DShard();
         }
 
