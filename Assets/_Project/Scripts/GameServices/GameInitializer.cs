@@ -243,7 +243,7 @@ namespace _Project.Scripts.GameServices {
 
         public void LoadNewLevel(SceneSettings sceneSettings) {
             GameSaveSystem.Instance.SaveGame();
-            EmptyAll();
+            //EmptyAll();
             ResetCameras();
             
             _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);

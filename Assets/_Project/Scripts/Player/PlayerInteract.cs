@@ -139,11 +139,11 @@ namespace _Project.Scripts.Player {
             else if (IsPressurePlate())
                 PressurePlateInteraction();
             else if (CanContextualInteract()) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Door) {
-                    if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
-                        return;
-                    }
-                }
+                // if (potentialInteraction.GetInteractionType is ObjectType.Door) {
+                //     if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
+                //         return;
+                //     }
+                // }
                 if(potentialInteraction.GetInteractionType is ObjectType.Shard)
                     triggerShard = true;
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);

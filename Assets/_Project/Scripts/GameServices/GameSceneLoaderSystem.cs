@@ -104,7 +104,6 @@ namespace _Project.Scripts.GameServices {
 
         public async Task LoadSceneFromDebug(SceneField scene) {
             GameSaveSystem.Instance.SaveGame();
-            GameInitializer.Instance.EmptyAll();
             GameInitializer.Instance.ResetCameras();
             
             scenesToLoad.Clear();
@@ -122,7 +121,7 @@ namespace _Project.Scripts.GameServices {
         private async Task UnloadGameplaySceneAsync() {
             try {
                 await UnloadSceneAsync();
-            
+                GameInitializer.Instance.EmptyAll();
                 await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
                 GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
                 GameSceneSettings.Instance.ResetShard();
