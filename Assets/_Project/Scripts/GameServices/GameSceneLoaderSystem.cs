@@ -79,15 +79,17 @@ namespace _Project.Scripts.GameServices {
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = true
                 });
-                await Task.Delay(600);
+                await Task.Delay(500);
+                await Task.Yield();
 
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                PlayerController.Instance.triggerEnterRoom = true;
 
                 await UnloadGameplaySceneAsync();
-
-                await Task.Delay(600);
+                
+                await Task.Delay(500);
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = false
                 });
@@ -196,6 +198,8 @@ namespace _Project.Scripts.GameServices {
             GameSaveSystem.Instance.SaveGame();
             
             _ = UnloadGameplaySceneAsync();
+            
+            PlayerController.Instance.triggerEnterRoom = true;
             
             await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {

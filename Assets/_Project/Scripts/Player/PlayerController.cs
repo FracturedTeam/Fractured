@@ -47,7 +47,9 @@ namespace _Project.Scripts.Player {
         [SerializeField] private AnimationClip breakObjectClip;
         [SerializeField] private AnimationClip failedDoorClip;
         [SerializeField] private AnimationClip leaveMemoryClip;
-        
+
+        private Action enterRoom;
+        [HideInInspector] public bool triggerEnterRoom = false;
 
         private void Start() {
             stateMachine = new StateMachine();
@@ -75,6 +77,7 @@ namespace _Project.Scripts.Player {
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
             var pressurePlateState = new PlayerPressurePlateState(this, animator);
+            var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
             var grabObject = new GrabObjectState(this, animator, grabObjectClip);
@@ -124,6 +127,10 @@ namespace _Project.Scripts.Player {
             //Obtenir un éclat de verre
             At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));
             At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
+            
+            //Entering Room State
+            Any(playerEnterRoomState, new FuncPredicate(() => triggerEnterRoom));
+            At(playerEnterRoomState, locomotionState, new FuncPredicate(() => playerEnterRoomState.IsStateFinished()));
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);

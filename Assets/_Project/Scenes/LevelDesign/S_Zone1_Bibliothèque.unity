@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000002, guid: 057fe1f89c29c7649bd2916fbb4d7576, type: 2}
+  m_LightingDataAsset: {fileID: 112000002, guid: 2bc6bdd1e8e783e469047d5d89c99dcd, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: e06a352f1b7741548b2684ba05d9a9f6, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -1144,8 +1144,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: a635b698cdd71fd41b8e6eb389869f59, type: 2}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.2053363
+      value: 2.35
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1153,7 +1165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.200079
+      value: 10.231
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1182,6 +1194,10 @@ PrefabInstance:
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2081820566747834526, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_Name
@@ -1252,7 +1268,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -3074,7 +3090,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -3306,7 +3322,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -5801,7 +5817,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -6151,7 +6167,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -6863,15 +6879,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 80.16
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
-      value: 11.0469265
+      value: 10.25
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 80.09
+      value: 81.5
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -7301,7 +7317,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -12251,7 +12267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 72.00154
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
@@ -12259,7 +12275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 80.9895
+      value: 82
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -12754,7 +12770,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.102
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12786,7 +12802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.066
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15188,7 +15204,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16558,7 +16574,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16718,7 +16734,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -17149,7 +17165,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -17920,7 +17936,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -18469,7 +18485,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -18544,7 +18560,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -22377,7 +22393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.123
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22413,7 +22429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.117
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22831,7 +22847,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -25501,7 +25517,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -25734,7 +25750,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -27658,15 +27674,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 51.668
+      value: 52.5
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
-      value: 10.34
+      value: 10.25
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 93.959
+      value: 94
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -29266,7 +29282,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -29702,7 +29718,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -30836,7 +30852,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
