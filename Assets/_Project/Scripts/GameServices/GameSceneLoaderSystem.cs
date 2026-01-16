@@ -79,7 +79,8 @@ namespace _Project.Scripts.GameServices {
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = true
                 });
-                await Task.Delay(600);
+                await Task.Delay(500);
+                await Task.Yield();
 
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
@@ -87,8 +88,8 @@ namespace _Project.Scripts.GameServices {
                 PlayerController.Instance.triggerEnterRoom = true;
 
                 await UnloadGameplaySceneAsync();
-
-                await Task.Delay(600);
+                
+                await Task.Delay(500);
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = false
                 });
