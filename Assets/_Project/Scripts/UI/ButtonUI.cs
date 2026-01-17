@@ -52,7 +52,7 @@ namespace _Project.Scripts.UI
         
         private IEnumerator CallClickPostTimer()
         { 
-            yield return null;
+            yield return new WaitForSeconds(time);
            onClickPostTimer?.Invoke();
         }
 
