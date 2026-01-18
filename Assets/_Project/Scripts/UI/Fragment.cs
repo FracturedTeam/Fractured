@@ -23,7 +23,12 @@ namespace _Project.Scripts.UI {
             if (!frag)
                 return;
             
-            frag.layer = color == ColorEnum.Blue ? LayerMask.NameToLayer("Fragment Color A") : color == ColorEnum.Red ? LayerMask.NameToLayer("Fragment Color B") :  LayerMask.NameToLayer("Default");
+            frag.layer = color switch
+            {
+                ColorEnum.Blue => LayerMask.NameToLayer("Fragment Color A"),
+                ColorEnum.Red => LayerMask.NameToLayer("Fragment Color B"),
+                _ => LayerMask.NameToLayer("Default")
+            };
         }
         }
     }

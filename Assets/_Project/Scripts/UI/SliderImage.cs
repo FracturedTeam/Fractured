@@ -19,9 +19,7 @@ namespace _Project.Scripts.UI
         public void NewValue()
         {
             if (imageList.Count > 0 && slider)
-            {
                 image.sprite = imageList[Mathf.CeilToInt(slider.value * (imageList.Count-1))];
-            }
         }
     }
 }
