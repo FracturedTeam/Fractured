@@ -42,7 +42,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
 
-        private bool initialized = false;
+        public bool initialized { get; private set; }
         private bool canBeInteractedWith;
         private bool isOnPressurePlate = false;
         

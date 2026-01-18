@@ -118,10 +118,9 @@ namespace _Project.Scripts.ECS.BaseObjects {
 
         public void Tick(float deltaTime) {
             if (lockedBehindThis.Length > 0) {
-                if(lockedBehindThis[0].CanBeInteractedWith() == isActive)
-                    foreach (var locked in lockedBehindThis) {
-                        locked.SetInteract(!isActive);
-                    }
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(isActive);
+                }
             }
             
             timer += isActive ? deltaTime : -deltaTime;
