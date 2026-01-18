@@ -1,13 +1,15 @@
-using System;
 using UnityEngine;
 
-public class TutorialTrigger : MonoBehaviour
+namespace _Project.Scripts.ECS
 {
-    [SerializeField] private TutorialElement startElement;
-    private bool triggered;
-    private void OnTriggerEnter(Collider other)
+    public class TutorialTrigger : MonoBehaviour
     {
-        if(other.CompareTag("Player") && !triggered)
-            startElement.TriggerEventStart();
+        [SerializeField] private TutorialElement startElement;
+        private bool triggered;
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.CompareTag("Player") && !triggered)
+                startElement.TriggerEventStart();
+        }
     }
 }
