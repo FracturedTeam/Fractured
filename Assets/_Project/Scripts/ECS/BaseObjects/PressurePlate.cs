@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 
@@ -28,11 +29,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         [HideInInspector] public MoveableObject objectOnPressurePlate;
         [SerializeField] BaseObject[] lockedBehindThis;
 
-        private void Start() {
-            foreach (var locked in lockedBehindThis) {
-                locked.SetInteract(false);
-            }
-        }
+        private CountdownTimer deactivateOnInitalization = new CountdownTimer(0.5f);
 
         public void Initialize() {
             if (!initialized) {
@@ -42,11 +39,20 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 baseObject.GetInteractionType = ObjectType.PressurePlate;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             }
+            foreach (var obj in movedObjects) {
+                obj.objectMoved.position = obj.initialPos.position;
+            }
             
             baseObject?.SetInteract(true);
             initialized = true;
-            foreach (var obj in movedObjects) {
-                obj.objectMoved.position = obj.initialPos.position;
+            
+            deactivateOnInitalization.OnTimerStop += DeactivateLinkedObject;
+            deactivateOnInitalization.Start();
+        }
+
+        private void DeactivateLinkedObject() {
+            foreach (var locked in lockedBehindThis) {
+                locked.SetInteract(false);
             }
         }
 

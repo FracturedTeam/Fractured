@@ -116,6 +116,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Tick(float deltaTime) {
             if (doorType is DoorType.SmallDoor) {
+                if (!baseObject.CanBeInteractedWith()) {
+                    SetDoor(false);
+                }
                 if (baseObject.GetGlass) {
                     switch (baseObject.GetGlassInteract.IsVisible) {
                         case false when baseObject.CanBeInteractedWith():

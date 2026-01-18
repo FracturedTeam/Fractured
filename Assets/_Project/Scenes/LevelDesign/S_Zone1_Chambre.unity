@@ -4771,6 +4771,9 @@ MonoBehaviour:
   objectColor: 1
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -7440,6 +7443,10 @@ MonoBehaviour:
   objectColor: 2
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer:
+  - {fileID: 1627536125}
+  visibleWallMat: {fileID: 2100000, guid: 555e682235a240644b730273d4a0b03e, type: 2}
+  invisibleWallMat: {fileID: 2100000, guid: 8b73294a6c6896f4f9759a69c8fd1177, type: 2}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.73
@@ -7920,7 +7927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3372375709649355359, guid: 3be67fe3d3e9d34458f1cfe536feb7c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.04118538
+      value: -0.7756901
       objectReference: {fileID: 0}
     - target: {fileID: 3372375709649355359, guid: 3be67fe3d3e9d34458f1cfe536feb7c3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11362,6 +11369,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6300798554093924755}
     m_Modifications:
+    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: objectInside
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: interactableInBox
+      value: 
+      objectReference: {fileID: 2727381396479410228}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: successDialogue.oneTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: successDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: de98560f9b6db764fa201b5aebff87c6, type: 2}
+    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
+      propertyPath: cantInteractDialogue.dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: aa0df3fe3aa0f794c907b459531bb999, type: 2}
     - target: {fileID: 8055124315286509026, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -11434,26 +11461,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: objectInside
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1472921793919522866, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: interactableInBox
-      value: 
-      objectReference: {fileID: 2727381396479410228}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: successDialogue.oneTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: successDialogue.dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: de98560f9b6db764fa201b5aebff87c6, type: 2}
-    - target: {fileID: 1870653731466958106, guid: 5eaa50a4a9f26de40b493bcf89cbd465, type: 3}
-      propertyPath: cantInteractDialogue.dialogue
-      value: 
-      objectReference: {fileID: 11400000, guid: aa0df3fe3aa0f794c907b459531bb999, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11493,6 +11500,9 @@ MonoBehaviour:
   objectColor: 1
   objectInside: 1
   interactableInBox: {fileID: 2727381396479410228}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.6
@@ -14634,7 +14644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2077317665240724206, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.74
+      value: 6.4745045
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14796,7 +14806,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2077317665240724206, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 790968331}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 272962698995722392, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
@@ -17998,7 +18008,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2141749119}
+    m_TransformParent: {fileID: 1724853103}
     m_Modifications:
     - target: {fileID: 4809523977316879375, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -18073,6 +18083,11 @@ PrefabInstance:
 --- !u!4 &1627536124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5977948306300319584, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
+  m_PrefabInstance: {fileID: 1627536123}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1627536125 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4809523977316879375, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
   m_PrefabInstance: {fileID: 1627536123}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1639976669
@@ -19466,6 +19481,7 @@ Transform:
   - {fileID: 1119643494}
   - {fileID: 6300798554093924755}
   - {fileID: 363897623}
+  - {fileID: 1627536124}
   - {fileID: 1512273657}
   - {fileID: 1136172113}
   - {fileID: 1681595917}
@@ -21553,6 +21569,9 @@ MonoBehaviour:
   objectColor: 1
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -23677,7 +23696,6 @@ Transform:
   - {fileID: 2140287745}
   - {fileID: 350373469}
   - {fileID: 281201730}
-  - {fileID: 1627536124}
   - {fileID: 1724853103}
   m_Father: {fileID: 878831092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23906,13 +23924,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507181588625842431}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.534, y: -3.457, z: 5.755}
-  m_LocalScale: {x: 1.61, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071079}
+  m_LocalPosition: {x: -16.534, y: -3.457, z: 5.72}
+  m_LocalScale: {x: 1, y: 1, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6300798554093924755}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &5842056486451953658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23926,7 +23944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 3
-  memorySprite: {fileID: 989680678, guid: 3b1318d011f02d446b7b462330a63791, type: 3}
+  memorySprite: {fileID: 21300000, guid: ec8f8e95d3f2a3c4c92d63333d030f51, type: 3}
   associateMemoryLoop:
     Guid:
       Data1: 0
