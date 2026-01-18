@@ -9,7 +9,7 @@ public class PausePanel : MonoBehaviour
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private List<GameObject> panels;
-    private bool _gameIsPaused;
+    private bool gameIsPaused;
 
     private void Awake()
     {
@@ -34,15 +34,15 @@ public class PausePanel : MonoBehaviour
 
     public void ChangeState()
     {
-        _gameIsPaused = !_gameIsPaused;
-        Time.timeScale = _gameIsPaused ? 0 : 1;
-        menu.SetActive(_gameIsPaused);
+        gameIsPaused = !gameIsPaused;
+        Time.timeScale = gameIsPaused ? 0 : 1;
+        menu.SetActive(gameIsPaused);
         ReSet();
     }
 
     private void ReSet()
     {
-        mainMenuPanel.SetActive(_gameIsPaused);
+        mainMenuPanel.SetActive(gameIsPaused);
         foreach (var panel in panels)
             panel.SetActive(false);
     }
