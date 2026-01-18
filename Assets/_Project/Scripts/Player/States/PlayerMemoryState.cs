@@ -1,4 +1,5 @@
 using _Project.Scripts.Systems.StateMachine;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -8,7 +9,8 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator
-            animator.SetLayerWeight(FullBodyLayer, 1);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(EnterMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);

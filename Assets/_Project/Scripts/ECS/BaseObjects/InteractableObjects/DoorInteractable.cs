@@ -116,6 +116,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Tick(float deltaTime) {
             if (doorType is DoorType.SmallDoor) {
+                if (!baseObject.CanBeInteractedWith() || !linkedDoor.baseObject.CanBeInteractedWith()) {
+                    SetDoor(false);
+                    return;
+                }
+                
                 if (baseObject.GetGlass) {
                     switch (baseObject.GetGlassInteract.IsVisible) {
                         case false when baseObject.CanBeInteractedWith():
@@ -172,7 +177,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void SetDoor(bool canBeUsed) {
             doorAnimator.SetBool("CanBeInteract", canBeUsed);
-            //baseObject.SetInteract(canBeUsed);
             baseObject.SetCollider(!canBeUsed);
         }
         

@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
-using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
@@ -46,14 +44,13 @@ namespace _Project.Scripts.UI
             
             AudioManager.Instance.PlayBttClikedSound();
             
-            //tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
             StartCoroutine(CallClickPostTimer());
         }
         
         private IEnumerator CallClickPostTimer()
         { 
-            yield return null;
-           onClickPostTimer?.Invoke();
+            yield return new WaitForSecondsRealtime(time);
+            onClickPostTimer?.Invoke();
         }
 
         private void OnDestroy() {
