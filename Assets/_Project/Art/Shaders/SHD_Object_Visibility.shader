@@ -6,7 +6,6 @@ Shader "Custom/SHD_Object_Visibility"
 	{
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[IntRange] _StencilID("Stencil ID", Range(0,255)) = 0
-		[ToggleUI] _Visible("Visible", Float) = 1.0
 		_Tiling( "Tiling", Vector ) = ( 1, 1, 0, 0 )
 		_BaseColor( "BaseColor", 2D ) = "white" {}
 		_Normal( "Normal", 2D ) = "white" {}
@@ -214,13 +213,12 @@ Shader "Custom/SHD_Object_Visibility"
 			#define _NORMAL_DROPOFF_TS 1
 			#pragma shader_feature_local_fragment _RECEIVE_SHADOWS_OFF
 			#pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
-			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+			#pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
 			#pragma multi_compile_fragment _ DEBUG_DISPLAY
-			#pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
 			#define _NORMALMAP 1
 			#define ASE_VERSION 19905
 			#define ASE_SRP_VERSION 170200
@@ -335,7 +333,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -612,7 +609,7 @@ Shader "Custom/SHD_Object_Visibility"
 				float Smoothness = ( 1.0 - saturate( ( tex2DNode16.g * _RoughnessMultiplier ) ) );
 				float Occlusion = saturate( tex2DNode16.r );
 				float3 Emission = 0;
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -947,7 +944,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -1144,7 +1140,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -1539,7 +1535,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -1746,7 +1741,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				float3 BaseColor = lerpResult44;
 				float3 Emission = 0;
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( _ALPHATEST_ON )
@@ -1838,7 +1833,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2030,7 +2024,7 @@ Shader "Custom/SHD_Object_Visibility"
 				
 
 				float3 BaseColor = lerpResult44;
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
 				half4 color = half4(BaseColor, Alpha );
@@ -2139,7 +2133,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2355,7 +2348,7 @@ Shader "Custom/SHD_Object_Visibility"
 				
 
 				float3 Normal = UnpackNormalScale( tex2D( _Normal, texCoord27 ), 1.0f );
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -2422,12 +2415,12 @@ Shader "Custom/SHD_Object_Visibility"
 			#define _NORMAL_DROPOFF_TS 1
 			#pragma shader_feature_local_fragment _RECEIVE_SHADOWS_OFF
 			#pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
+			#pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
 			#pragma multi_compile_instancing
 			#pragma instancing_options renderinglayer
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
 			#pragma multi_compile_fragment _ DEBUG_DISPLAY
-			#pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
 			#define _NORMALMAP 1
 			#define ASE_VERSION 19905
 			#define ASE_SRP_VERSION 170200
@@ -2545,7 +2538,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -2815,7 +2807,7 @@ Shader "Custom/SHD_Object_Visibility"
 				float Smoothness = ( 1.0 - saturate( ( tex2DNode16.g * _RoughnessMultiplier ) ) );
 				float Occlusion = saturate( tex2DNode16.r );
 				float3 Emission = 0;
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -3022,7 +3014,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3203,7 +3194,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				surfaceDescription.Alpha = _Visible;
+				surfaceDescription.Alpha = 1;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -3304,7 +3295,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3485,7 +3475,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				surfaceDescription.Alpha = _Visible;
+				surfaceDescription.Alpha = 1;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -3595,7 +3585,6 @@ Shader "Custom/SHD_Object_Visibility"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float _Visible;
 			float3 _Color1;
 			float3 _Color2;
 			float3 _Color3;
@@ -3708,7 +3697,7 @@ Shader "Custom/SHD_Object_Visibility"
 
 				
 
-				float Alpha = _Visible;
+				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
 				#if defined( ASE_DEPTH_WRITE_ON )
@@ -3797,7 +3786,7 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Versi
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;9;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ScenePickingPass;0;9;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;MotionVectors;0;10;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;False;False;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;11;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;XRMotionVectors;0;11;XRMotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;True;1;False;;255;False;;1;False;;7;False;;3;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;1;LightMode=XRMotionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;1;976,400;Float;False;True;-1;3;UnityEditor.ShaderGraphLitGUI;0;22;SHD_AmplifyTest;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;51;Category;0;0;  Instanced Terrain Normals;1;0;Lighting Model;0;638989903947885947;Workflow;1;638989903958916696;Surface;0;0;  Keep Alpha;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Alpha Clipping;1;0;  Use Shadow Threshold;0;0;Fragment Normal Space;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;Receive Shadows;2;0;Specular Highlights;2;0;Environment Reflections;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;Debug Display;1;0;Clear Coat;0;0;0;12;False;True;True;True;True;True;True;True;True;True;True;False;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;1;976,400;Float;False;True;-1;3;UnityEditor.ShaderGraphLitGUI;0;12;Custom/SHD_Object_Visibility;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;51;Category;0;0;  Instanced Terrain Normals;1;0;Lighting Model;0;638989903947885947;Workflow;1;638989903958916696;Surface;0;0;  Keep Alpha;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Alpha Clipping;1;0;  Use Shadow Threshold;0;0;Fragment Normal Space;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;Receive Shadows;2;0;Specular Highlights;2;0;Environment Reflections;2;0;Receive SSAO;0;639042955400549887;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;Debug Display;1;0;Clear Coat;0;0;0;12;False;True;True;True;True;True;True;True;True;True;True;False;False;;False;0
 WireConnection;16;1;27;0
 WireConnection;18;0;16;2
 WireConnection;18;1;22;0
@@ -3842,4 +3831,4 @@ WireConnection;1;1;15;0
 WireConnection;1;4;25;0
 WireConnection;1;5;26;0
 ASEEND*/
-//CHKSM=FFAB90FE8F873EDA9A5A229CB6DD31475B918C86
+//CHKSM=71124AD90C6D098236E8F732BCB239B72D5A0DA5
