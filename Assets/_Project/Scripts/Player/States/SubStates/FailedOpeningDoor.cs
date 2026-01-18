@@ -1,5 +1,6 @@
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
@@ -14,7 +15,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Start();
             
             //Set the grab animation when entering holding state
-            animator.SetLayerWeight(FullBodyLayer, 1);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(FailedOpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
         }
 
@@ -28,7 +30,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Stop();
             
             //Exit the grab animation when timer is finished
-            animator.SetLayerWeight(FullBodyLayer, 0);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
         }
         

@@ -47,6 +47,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] private AnimationClip breakObjectClip;
         [SerializeField] private AnimationClip failedDoorClip;
         [SerializeField] private AnimationClip leaveMemoryClip;
+        [SerializeField] private AnimationClip usePiedestalClip;
 
         private Action enterRoom;
         [HideInInspector] public bool triggerEnterRoom = false;
@@ -76,7 +77,7 @@ namespace _Project.Scripts.Player {
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
-            var pressurePlateState = new PlayerPressurePlateState(this, animator);
+            var usePiedestal = new PlayerPressurePlateState(this, animator);
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
@@ -85,6 +86,7 @@ namespace _Project.Scripts.Player {
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
             var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
+            var leavePiedestal = new LeavePiedestalState(this, animator, usePiedestalClip);
             
             //Define all states transitions
             //Locomotion State
@@ -120,9 +122,10 @@ namespace _Project.Scripts.Player {
             At(locomotionState, failedDoor, new FuncPredicate(() => interact.UsingLockedDoor()));
             At(failedDoor, locomotionState, new FuncPredicate(() => !interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
             
-            //Use PressurePlate
-            At(locomotionState, pressurePlateState, new FuncPredicate(() => interact.IsInPressurePlate()));
-            At(pressurePlateState, locomotionState, new FuncPredicate(() => !interact.IsInPressurePlate()));
+            //Use Piedestal
+            At(locomotionState, usePiedestal, new FuncPredicate(() => interact.IsInPressurePlate()));
+            At(usePiedestal, leavePiedestal, new FuncPredicate(() => !interact.IsInPressurePlate()));
+            At(leavePiedestal, locomotionState, new FuncPredicate(() => leavePiedestal.IsClipFinished()));
             
             //Obtenir un éclat de verre
             At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));

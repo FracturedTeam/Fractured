@@ -4,22 +4,22 @@ using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
-    public class LeaveMemory : PlayerBaseState {
+    public class LeavePiedestalState : PlayerBaseState {
         private readonly CountdownTimer animationExitTimer;
         
-        public LeaveMemory(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
+        public LeavePiedestalState(PlayerController player, Animator animator, AnimationClip clip) : base(player, animator) {
             animationExitTimer = new CountdownTimer(clip.length);
         }
 
         public override void OnEnter() {
             animationExitTimer.Start();
-            
-            animator.CrossFade(LeaveMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(LeavePiedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
         }
         
         public override void OnExit() {
             animWeightTween?.Kill();
             animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
+            
             animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(true);
