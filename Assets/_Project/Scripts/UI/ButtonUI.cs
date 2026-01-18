@@ -46,14 +46,13 @@ namespace _Project.Scripts.UI
             
             AudioManager.Instance.PlayBttClikedSound();
             
-            //tweener = transform.DOScale(transform.localScale * multiplicator, time).SetUpdate(true);
             StartCoroutine(CallClickPostTimer());
         }
         
         private IEnumerator CallClickPostTimer()
         { 
-            yield return new WaitForSeconds(time);
-           onClickPostTimer?.Invoke();
+            yield return new WaitForSecondsRealtime(time);
+            onClickPostTimer?.Invoke();
         }
 
         private void OnDestroy() {
