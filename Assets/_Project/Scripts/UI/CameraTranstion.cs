@@ -1,20 +1,21 @@
-using System;
-using _Project.Scripts.UI;
 using UnityEngine;
 
-public class CameraTranstion : MonoBehaviour
+namespace _Project.Scripts.UI
 {
-    [SerializeField] Transform nextCameraPos;
-    [SerializeField] Transform previousCameraPos;
-    [SerializeField] GameObject openPanel;
-    private bool returning;
-
-    public void OnTrigger()
+    public class CameraTranstion : MonoBehaviour
     {
-        if(nextCameraPos) 
-            MenuManager.Instance.ChangeTarget(returning ? previousCameraPos ? previousCameraPos: nextCameraPos : nextCameraPos);
-        if(openPanel)
-            openPanel.SetActive(true);
-        returning = !returning;
+        [SerializeField] Transform nextCameraPos;
+        [SerializeField] Transform previousCameraPos;
+        [SerializeField] GameObject openPanel;
+        private bool returning;
+
+        public void OnTrigger()
+        {
+            if(nextCameraPos) 
+                MenuManager.Instance.ChangeTarget(returning ? previousCameraPos ? previousCameraPos: nextCameraPos : nextCameraPos);
+            if(openPanel)
+                openPanel.SetActive(true);
+            returning = !returning;
+        }
     }
 }

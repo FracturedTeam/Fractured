@@ -3576,8 +3576,8 @@ MonoBehaviour:
   shards:
   - {fileID: 2324619412208393665, guid: 98f205e3dcc890d4eaa20a440ed30923, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 0}
-  brokenMat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 9e280cbacb6c18c4cbd0e86882a4783c, type: 2}
+  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
 --- !u!114 &913747545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7288,8 +7288,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 150189186}
     m_Modifications:
+    - target: {fileID: 267710123687776561, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
+    - target: {fileID: 3133383151976124609, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3133383151976124609, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038455048437527518, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4038455048437527518, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
@@ -7299,6 +7311,10 @@ PrefabInstance:
     - target: {fileID: 6925251146395608294, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_Name
       value: P_Picture_ObtainShard
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925251146395608294, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6925251146395608294, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_StaticEditorFlags

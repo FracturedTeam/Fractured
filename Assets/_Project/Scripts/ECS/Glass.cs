@@ -70,8 +70,10 @@ namespace _Project.Scripts.ECS
                 if (TryGetComponent(typeof(PolygonCollider2D), out var col))
                     polygonCollider2D = col as PolygonCollider2D;
                 
-                if(shard) {
-                    if (shardSprite) shardSprite.color = Color.clear;
+                if(shard) 
+                {
+                    if (shardSprite) 
+                        shardSprite.color = Color.clear;
                     InstantiateShard();
                 }
             }
