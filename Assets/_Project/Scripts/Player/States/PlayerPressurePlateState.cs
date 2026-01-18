@@ -1,4 +1,5 @@
 using _Project.Scripts.Systems.StateMachine;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -8,8 +9,9 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator
-            animator.SetLayerWeight(FullBodyLayer, 1);
-            animator.CrossFade(BreakGlassHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
+            animator.CrossFade(UsePiedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);
             player.movement.FreezeController();
@@ -23,12 +25,6 @@ namespace _Project.Scripts.Player.States {
         }
         
         public override void OnExit() {
-            //Animator
-            animator.SetLayerWeight(FullBodyLayer, 0);
-            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
-            
-            player.interact.SetInteract(true);
-            player.movement.UnfreezeController();
         }
     }
 }

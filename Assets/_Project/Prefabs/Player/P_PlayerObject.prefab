@@ -264,7 +264,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Height: 3.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -320,6 +320,7 @@ MonoBehaviour:
   breakObjectClip: {fileID: 5545533017366794915, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
   failedDoorClip: {fileID: -6983255843466406200, guid: 898af435872f12f4c979b7e5851e6967, type: 3}
   leaveMemoryClip: {fileID: 6539261393042782472, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
+  usePiedestalClip: {fileID: 6365244650581584053, guid: e8494df8bfc43c549aa383778431ed72, type: 3}
   triggerEnterRoom: 0
 --- !u!114 &4559356953594915415
 MonoBehaviour:
@@ -624,7 +625,7 @@ Camera:
   m_GameObject: {fileID: 9118735760167049477}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 1
@@ -689,7 +690,7 @@ MonoBehaviour:
     Enabled: 1
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
+    Style: 6
     Time: 0.4
     CustomCurve:
       serializedVersion: 2

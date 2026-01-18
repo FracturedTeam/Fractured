@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 
@@ -28,12 +29,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
         [HideInInspector] public MoveableObject objectOnPressurePlate;
         [SerializeField] BaseObject[] lockedBehindThis;
 
-        private void Start() {
-            foreach (var locked in lockedBehindThis) {
-                locked.SetInteract(false);
-            }
-        }
-
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
@@ -42,12 +37,12 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 baseObject.GetInteractionType = ObjectType.PressurePlate;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             }
-            
-            baseObject?.SetInteract(true);
-            initialized = true;
             foreach (var obj in movedObjects) {
                 obj.objectMoved.position = obj.initialPos.position;
             }
+            
+            baseObject?.SetInteract(true);
+            initialized = true;
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -95,6 +90,11 @@ namespace _Project.Scripts.ECS.BaseObjects {
             }
             
             if (isActive) {
+                // foreach (var locked in lockedBehindThis) {
+                //     locked.SetInteract(true);
+                // }
+                AudioManager.Instance.PlayPlateActiveSound(transform.position);
+                
                 var dia = baseObject.GetCompletion is InteractionCompletion.Completed ? baseObject.successDialogue : baseObject.cantInteractDialogue;
                 if (!dia.oneTime || !dia.alreadyInteracted) {
                     HudManager.Instance.SetText(dia.dialogue);
@@ -102,31 +102,26 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     if (baseObject.GetCompletion is InteractionCompletion.Completed) baseObject.successDialogue.alreadyInteracted = true;
                     else baseObject.cantInteractDialogue.alreadyInteracted = true;
                 }
-
-                foreach (var locked in lockedBehindThis) {
-                    locked.SetInteract(true);
-                }
-                
-                AudioManager.Instance.PlayPlateActiveSound(transform.position);
             }
             else {
+                // foreach (var locked in lockedBehindThis) {
+                //     locked.SetInteract(false);
+                // }
+                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+                
                 if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted) {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                     baseObject.failedDialogue.alreadyInteracted = true;
                 }
-                
-                foreach (var locked in lockedBehindThis) {
-                    locked.SetInteract(false);
-                }
-                
-                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
             }
         }
 
         public void Tick(float deltaTime) {
-            /*if (!baseObject.CanBeInteractedWith()) {
-                return;
-            }*/
+            if (lockedBehindThis.Length > 0) {
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(isActive);
+                }
+            }
             
             timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);
