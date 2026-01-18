@@ -7,6 +7,7 @@ public class PausePanel : MonoBehaviour
 {
     [SerializeField] private InputAction menuAction;
     [SerializeField] private GameObject menu;
+    [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private List<GameObject> panels;
     private bool _gameIsPaused;
 
@@ -41,6 +42,7 @@ public class PausePanel : MonoBehaviour
 
     private void ReSet()
     {
+        mainMenuPanel.SetActive(_gameIsPaused);
         foreach (var panel in panels)
             panel.SetActive(false);
     }
