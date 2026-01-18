@@ -1,5 +1,6 @@
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
@@ -13,12 +14,12 @@ namespace _Project.Scripts.Player.States.SubStates {
         public override void OnEnter() {
             animationExitTimer.Start();
             
-            animator.SetLayerWeight(FullBodyLayer, 1);
             animator.CrossFade(LeaveMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
         }
         
         public override void OnExit() {
-            animator.SetLayerWeight(FullBodyLayer, 0);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(true);

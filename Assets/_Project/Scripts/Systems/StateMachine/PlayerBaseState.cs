@@ -1,4 +1,5 @@
 using _Project.Scripts.Player;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Systems.StateMachine {
@@ -19,6 +20,8 @@ namespace _Project.Scripts.Systems.StateMachine {
         protected static readonly int OpenDoorHash = Animator.StringToHash("OpenDoor");
         protected static readonly int FailedOpenDoorHash = Animator.StringToHash("FailedOpenDoor");
         protected static readonly int BreakGlassHash = Animator.StringToHash("BreakGlass");
+        protected static readonly int UsePiedestalHash = Animator.StringToHash("UsePiedestal");
+        protected static readonly int LeavePiedestalHash = Animator.StringToHash("LeavePiedestal");
         
         //Layer Hash
         protected const int MovementLayer = 0;
@@ -27,6 +30,8 @@ namespace _Project.Scripts.Systems.StateMachine {
 
         //Cross Fade Duration
         protected const float defaultCrossFadeDuration = 0.25f;
+
+        protected Tween animWeightTween;
         
         protected PlayerBaseState(PlayerController player, Animator animator) {
             this.player = player;
@@ -48,5 +53,19 @@ namespace _Project.Scripts.Systems.StateMachine {
         public virtual void OnExit() {
             
         }
-}
+        
+        public Tween FadeLayer(
+            Animator animator,
+            int layer,
+            float target,
+            float duration
+        ) {
+            return DOTween.To(
+                () => animator.GetLayerWeight(layer),
+                x => animator.SetLayerWeight(layer, x),
+                target,
+                duration
+            );
+        }
+    }
 }

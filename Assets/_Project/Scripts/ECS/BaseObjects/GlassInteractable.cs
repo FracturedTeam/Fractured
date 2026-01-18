@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -9,7 +8,6 @@ using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
-using UnityEngineInternal;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -28,6 +26,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
         [SerializeField] private bool objectInside = false;
         [SerializeField] private MoveableObject interactableInBox;
+        
+        [Header("Invisible Walls")]
+        [SerializeField] private MeshRenderer[] wallRenderer;
+        [SerializeField] private Material visibleWallMat;
+        [SerializeField] private Material invisibleWallMat;
         
         [Header("Debug on UI")]
         [SerializeField] private float radius2D;
@@ -74,6 +77,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                     for (var i = 0; i < transform.childCount; i++) {
                         transform.GetChild(i).gameObject.SetActive(false);
                     }
+
+                    if(wallRenderer.Length > 0)
+                        foreach (var wall in wallRenderer) {
+                            wall.material = visibleWallMat;
+                        }
                 }
             }
             
@@ -130,7 +138,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
-
             if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
                 baseObject.SetRenderer(false);
                 for (var i = 0; i < transform.childCount; i++) {
@@ -138,12 +145,18 @@ namespace _Project.Scripts.ECS.BaseObjects
                 }
                 return;
             }
-            if (!baseObject.locked && MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)){
+            
+            if (!baseObject.locked){
                 if (!baseObject.GetRendered().enabled) {
                     baseObject.SetRenderer(true);
                     for (var i = 0; i < transform.childCount; i++) {
                         transform.GetChild(i).gameObject.SetActive(true);
                     }
+                    
+                    if(wallRenderer.Length > 0)
+                        foreach (var wall in wallRenderer) {
+                            wall.material = invisibleWallMat;
+                        }
                 }
             }
             
@@ -187,18 +200,25 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectColor == ColorEnum.Both) IsVisible = isUnder;
             else IsVisible = !isUnder;
             
-            if (baseObject.TryGetComponent(out MoveableObject move)) {
+            if (selfMoveable) {
                 if (baseObject.IsOnPressurePlate()) {
-                    if (objectInside && !objectOut) move.GetPressurePlateOn().SetActivation(!isUnder);
-                    else if(objectInside && objectOut) move.GetPressurePlateOn().SetActivation(isUnder);
-                    
+                    if (IsVisible && objectInside) {
+                        if (!objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
+                        else selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
+                    }
+                    else {
+                        selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
+                    }
+
                     baseObject.SetCollider(false);
                     baseObject.SetInteract(false);
-                    move.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
+                    selfMoveable.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
                 }
-                else if (!move.IsGrabbed()) {
+                else if (!selfMoveable.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
+                }else if (selfMoveable.IsGrabbed() && !objectInside && !isUnder) {
+                    selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
                 }
             }
             else {
@@ -256,7 +276,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
-
+            if(!interactableInBox.GetBaseObject().initialized) interactableInBox.GetBaseObject().Initialize();
+            
             interactableInBox?.GetBaseObject().SetInteract(revealed);
             interactableInBox?.GetBaseObject().SetCollider(revealed);
             interactableInBox?.GetBaseObject().SetRenderer(revealed);

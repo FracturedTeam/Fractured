@@ -1,5 +1,6 @@
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -11,7 +12,8 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator -- Set the hold animation while holding object
-            animator.SetLayerWeight(UpperBodyLayer, 1);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
             animator.CrossFade(CarryHash,  defaultCrossFadeDuration, UpperBodyLayer);
             
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
@@ -31,7 +33,8 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnExit() {
             //Animator
-            animator.SetLayerWeight(UpperBodyLayer, 0);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
         }
     }

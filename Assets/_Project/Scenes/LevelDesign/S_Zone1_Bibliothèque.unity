@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000002, guid: 057fe1f89c29c7649bd2916fbb4d7576, type: 2}
+  m_LightingDataAsset: {fileID: 112000002, guid: 2bc6bdd1e8e783e469047d5d89c99dcd, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: e06a352f1b7741548b2684ba05d9a9f6, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -1018,6 +1018,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -1049,7 +1052,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -1144,8 +1149,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: a635b698cdd71fd41b8e6eb389869f59, type: 2}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.2053363
+      value: 2.35
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1153,7 +1170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.200079
+      value: 10.231
       objectReference: {fileID: 0}
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1182,6 +1199,10 @@ PrefabInstance:
     - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706807539933065764, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2081820566747834526, guid: bbf9d603a0b511847b8434134e26b30a, type: 3}
       propertyPath: m_Name
@@ -1252,7 +1273,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -3043,6 +3066,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -3074,7 +3100,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -3275,6 +3303,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -3306,7 +3337,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -5765,7 +5798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 2
-  memorySprite: {fileID: 21300000, guid: b2447c0eb858f6347902e6f39401bc78, type: 3}
+  memorySprite: {fileID: 21300000, guid: ec8f8e95d3f2a3c4c92d63333d030f51, type: 3}
   associateMemoryLoop:
     Guid:
       Data1: 0
@@ -5801,7 +5834,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -6120,6 +6155,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -6151,7 +6189,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -6863,15 +6903,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 80.16
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
-      value: 11.0469265
+      value: 10.25
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 80.09
+      value: 80.5
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -7270,6 +7310,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -7301,7 +7344,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -8843,19 +8888,19 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1626532849}
+      objectReference: {fileID: 1623585932}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1078613756}
+      objectReference: {fileID: 349960657}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 1149132373}
+      objectReference: {fileID: 841009234}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 465598522}
+      objectReference: {fileID: 1187030382}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
@@ -8863,99 +8908,99 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 481842840}
+      objectReference: {fileID: 1259795497}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1259795497}
+      objectReference: {fileID: 1785244569}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 1789524863}
+      objectReference: {fileID: 465598522}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 906476424}
+      objectReference: {fileID: 152584517}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 1925955063}
+      objectReference: {fileID: 1157931984}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 1157931984}
+      objectReference: {fileID: 2019581333}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 128308339}
+      objectReference: {fileID: 2005777729}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 2081206995}
+      objectReference: {fileID: 1078613756}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 567169092}
+      objectReference: {fileID: 1311588787}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[14]'
       value: 
-      objectReference: {fileID: 349960657}
+      objectReference: {fileID: 1311588784}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[15]'
       value: 
-      objectReference: {fileID: 152584517}
+      objectReference: {fileID: 878703779}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[16]'
       value: 
-      objectReference: {fileID: 2019581333}
+      objectReference: {fileID: 906476425}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[17]'
       value: 
-      objectReference: {fileID: 906476425}
+      objectReference: {fileID: 567169092}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[18]'
       value: 
-      objectReference: {fileID: 1785244569}
+      objectReference: {fileID: 1623585931}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[19]'
       value: 
-      objectReference: {fileID: 1311588787}
+      objectReference: {fileID: 1789524863}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[20]'
       value: 
-      objectReference: {fileID: 2005777729}
+      objectReference: {fileID: 1149132373}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[21]'
       value: 
-      objectReference: {fileID: 1623585931}
+      objectReference: {fileID: 2081206995}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[22]'
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 906476424}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[23]'
       value: 
-      objectReference: {fileID: 1156703134}
+      objectReference: {fileID: 1626532849}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[24]'
       value: 
-      objectReference: {fileID: 1187030382}
+      objectReference: {fileID: 1156703134}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[25]'
       value: 
-      objectReference: {fileID: 1311588784}
+      objectReference: {fileID: 1925955063}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[26]'
       value: 
-      objectReference: {fileID: 324096594}
+      objectReference: {fileID: 481842840}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[27]'
       value: 
-      objectReference: {fileID: 878703779}
+      objectReference: {fileID: 128308339}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[28]'
       value: 
-      objectReference: {fileID: 1623585932}
+      objectReference: {fileID: 324096594}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.size
       value: 29
@@ -8967,19 +9012,19 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[0].baseObject
       value: 
-      objectReference: {fileID: 1626532849}
+      objectReference: {fileID: 1623585932}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[1].baseObject
       value: 
-      objectReference: {fileID: 1078613756}
+      objectReference: {fileID: 349960657}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[2].baseObject
       value: 
-      objectReference: {fileID: 1149132373}
+      objectReference: {fileID: 841009234}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[3].baseObject
       value: 
-      objectReference: {fileID: 465598522}
+      objectReference: {fileID: 1187030382}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[4].baseObject
       value: 
@@ -8987,107 +9032,107 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[5].baseObject
       value: 
-      objectReference: {fileID: 481842840}
+      objectReference: {fileID: 1259795497}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[6].baseObject
       value: 
-      objectReference: {fileID: 1259795497}
+      objectReference: {fileID: 1785244569}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[7].baseObject
       value: 
-      objectReference: {fileID: 1789524863}
+      objectReference: {fileID: 465598522}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[8].baseObject
       value: 
-      objectReference: {fileID: 906476424}
+      objectReference: {fileID: 152584517}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[9].baseObject
       value: 
-      objectReference: {fileID: 1925955063}
+      objectReference: {fileID: 1157931984}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[10].baseObject
       value: 
-      objectReference: {fileID: 1157931984}
+      objectReference: {fileID: 2019581333}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[11].baseObject
       value: 
-      objectReference: {fileID: 128308339}
+      objectReference: {fileID: 2005777729}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[12].baseObject
       value: 
-      objectReference: {fileID: 2081206995}
+      objectReference: {fileID: 1078613756}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[13].baseObject
       value: 
-      objectReference: {fileID: 567169092}
+      objectReference: {fileID: 1311588787}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[14].baseObject
       value: 
-      objectReference: {fileID: 349960657}
+      objectReference: {fileID: 1311588784}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[15].baseObject
       value: 
-      objectReference: {fileID: 152584517}
+      objectReference: {fileID: 878703779}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[16].baseObject
       value: 
-      objectReference: {fileID: 2019581333}
+      objectReference: {fileID: 906476425}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[17].baseObject
       value: 
-      objectReference: {fileID: 906476425}
+      objectReference: {fileID: 567169092}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[18].baseObject
       value: 
-      objectReference: {fileID: 1785244569}
+      objectReference: {fileID: 1623585931}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[19].baseObject
       value: 
-      objectReference: {fileID: 1311588787}
+      objectReference: {fileID: 1789524863}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[20].baseObject
       value: 
-      objectReference: {fileID: 2005777729}
+      objectReference: {fileID: 1149132373}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[21].baseObject
       value: 
-      objectReference: {fileID: 1623585931}
+      objectReference: {fileID: 2081206995}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[22].baseObject
       value: 
-      objectReference: {fileID: 841009234}
+      objectReference: {fileID: 906476424}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[23].baseObject
       value: 
-      objectReference: {fileID: 1156703134}
+      objectReference: {fileID: 1626532849}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[24].baseObject
       value: 
-      objectReference: {fileID: 1187030382}
+      objectReference: {fileID: 1156703134}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[25].baseObject
       value: 
-      objectReference: {fileID: 1311588784}
+      objectReference: {fileID: 1925955063}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[26].baseObject
       value: 
-      objectReference: {fileID: 324096594}
+      objectReference: {fileID: 481842840}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[27].baseObject
       value: 
-      objectReference: {fileID: 878703779}
+      objectReference: {fileID: 128308339}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.data[28].baseObject
       value: 
-      objectReference: {fileID: 1623585932}
+      objectReference: {fileID: 324096594}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.data[0].glassShards
       value: 
-      objectReference: {fileID: 8650437437932951891, guid: 9acbfb03918a49343807156995e10e25, type: 3}
+      objectReference: {fileID: 6997579807808172165, guid: 4f1097350e3b7b345acf955b85417ccd, type: 3}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.data[1].glassShards
       value: 
-      objectReference: {fileID: 6997579807808172165, guid: 4f1097350e3b7b345acf955b85417ccd, type: 3}
+      objectReference: {fileID: 8650437437932951891, guid: 9acbfb03918a49343807156995e10e25, type: 3}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: shards.Array.size
       value: 2
@@ -10147,6 +10192,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8837983696630921283, guid: 9494cc9f199d9244aaebbe3f9f2d9b61, type: 3}
   m_PrefabInstance: {fileID: 701810641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &702985363 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1304597099257803617, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+  m_PrefabInstance: {fileID: 1149132371}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &715657802 stripped
 Transform:
@@ -12251,7 +12301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 72.00154
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
@@ -12259,7 +12309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 80.9895
+      value: 80.5
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -12754,7 +12804,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.102
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12786,7 +12836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.066
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15157,6 +15207,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -15188,7 +15241,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16416,7 +16471,10 @@ PrefabInstance:
     - {fileID: 5660870035908506239, guid: 125290bce0058974eae7052fab2758e9, type: 3}
     - {fileID: 223870539656886990, guid: 125290bce0058974eae7052fab2758e9, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1304597099257803617, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1149132379}
   m_SourcePrefab: {fileID: 100100000, guid: 125290bce0058974eae7052fab2758e9, type: 3}
 --- !u!4 &1149132372 stripped
 Transform:
@@ -16428,12 +16486,33 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
   m_PrefabInstance: {fileID: 1149132371}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 702985363}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!114 &1149132379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702985363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 0.8
 --- !u!1001 &1150339456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16527,6 +16606,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -16558,7 +16640,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -16687,6 +16771,9 @@ MonoBehaviour:
   objectColor: 1
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -16718,7 +16805,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -17056,6 +17145,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -17119,8 +17212,8 @@ MonoBehaviour:
   shards:
   - {fileID: 6997579807808172165, guid: 4f1097350e3b7b345acf955b85417ccd, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 0}
-  brokenMat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 721ab77b849d9934c8957921977410ea, type: 2}
+  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
 --- !u!114 &1187030382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17149,7 +17242,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -17832,6 +17927,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -17890,8 +17989,8 @@ MonoBehaviour:
   shards:
   - {fileID: 8650437437932951891, guid: 9acbfb03918a49343807156995e10e25, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 0}
-  brokenMat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 9e280cbacb6c18c4cbd0e86882a4783c, type: 2}
+  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
 --- !u!114 &1259795497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17920,7 +18019,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -18438,6 +18539,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -18469,7 +18573,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -18513,6 +18619,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -18544,7 +18653,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -22377,7 +22488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.123
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 1101798555831370969, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22413,7 +22524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.117
+      value: -0.1111111
       objectReference: {fileID: 0}
     - target: {fileID: 2521486453271486712, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22800,6 +22911,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -22831,7 +22945,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -25470,6 +25586,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -25501,7 +25620,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -25703,6 +25824,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -25734,7 +25858,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -27658,15 +27784,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.x
-      value: 51.668
+      value: 52.5
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.y
-      value: 10.34
+      value: 10.25
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.playerPosition.z
-      value: 93.959
+      value: 94
       objectReference: {fileID: 0}
     - target: {fileID: 370780959422062069, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: sceneToLoad.levelDesign.m_SceneName
@@ -29235,6 +29361,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.8
@@ -29266,7 +29395,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -29671,6 +29802,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -29702,7 +29836,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -30805,6 +30941,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -30836,7 +30975,9 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}

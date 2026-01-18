@@ -79,15 +79,18 @@ namespace _Project.Scripts.GameServices {
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = true
                 });
-                await Task.Delay(600);
+                await Task.Delay(500);
+                await Task.Yield();
 
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                await Task.Yield();
+                PlayerController.Instance.triggerEnterRoom = true;
 
                 await UnloadGameplaySceneAsync();
-
-                await Task.Delay(600);
+                
+                await Task.Delay(500);
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = false
                 });
@@ -104,7 +107,6 @@ namespace _Project.Scripts.GameServices {
 
         public async Task LoadSceneFromDebug(SceneField scene) {
             GameSaveSystem.Instance.SaveGame();
-            GameInitializer.Instance.EmptyAll();
             GameInitializer.Instance.ResetCameras();
             
             scenesToLoad.Clear();
@@ -122,7 +124,7 @@ namespace _Project.Scripts.GameServices {
         private async Task UnloadGameplaySceneAsync() {
             try {
                 await UnloadSceneAsync();
-            
+                GameInitializer.Instance.EmptyAll();
                 await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
                 GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
                 GameSceneSettings.Instance.ResetShard();
@@ -197,6 +199,8 @@ namespace _Project.Scripts.GameServices {
             GameSaveSystem.Instance.SaveGame();
             
             _ = UnloadGameplaySceneAsync();
+            
+            PlayerController.Instance.triggerEnterRoom = true;
             
             await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {

@@ -1,5 +1,6 @@
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -11,12 +12,14 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator
-            animator.SetLayerWeight(FullBodyLayer, 1);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(OpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);
             animationExitTimer.Start();
             player.interact.triggerDoor = false;
+            player.movement.FreezeController();
         }
 
         public override void OnUpdate() {
@@ -27,7 +30,8 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnExit() {
             //Animator
-            animator.SetLayerWeight(FullBodyLayer, 0);
+            animWeightTween?.Kill();
+            animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
         }
     }

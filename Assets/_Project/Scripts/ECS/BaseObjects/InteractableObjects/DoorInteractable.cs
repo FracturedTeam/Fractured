@@ -49,6 +49,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (doorType is DoorType.None) {
+                if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) {
+                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                    baseObject.cantInteractDialogue.alreadyInteracted = true;
+                }
+                return;
+            }
+            
             if(hasBeenInteracted) return;
             
             if (key) {
@@ -72,6 +80,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             if (doorType is DoorType.BigDoor) {
+                if (PlayerController.Instance.interact.HasObject) {
+                    PlayerController.Instance.interact.triggerFailedDrop = true;
+                    if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) {
+                        HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
+                        baseObject.cantInteractDialogue.alreadyInteracted = true;
+                    }
+                    return;
+                }
                 if (sceneToLoad == null) return;
                 hasBeenInteracted = true;
                 PlayerController.Instance.interact.TriggerBigDoor(sceneToLoad, transform.position);
@@ -100,6 +116,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Tick(float deltaTime) {
             if (doorType is DoorType.SmallDoor) {
+                if (!baseObject.CanBeInteractedWith() || !linkedDoor.baseObject.CanBeInteractedWith()) {
+                    SetDoor(false);
+                    return;
+                }
+                
+                if (baseObject.GetGlass) {
+                    switch (baseObject.GetGlassInteract.IsVisible) {
+                        case false when baseObject.CanBeInteractedWith():
+                            baseObject.SetInteract(false);
+                            break;
+                        case true when !baseObject.CanBeInteractedWith():
+                            baseObject.SetInteract(true);
+                            break;
+                    }
+                }
+                
                 var mask = LayerMask.GetMask("Player");
                 var size = Physics.OverlapBoxNonAlloc(triggerPoint.position, new Vector3(3f,4.5f,1), cols, transform.rotation, mask);
 
@@ -145,7 +177,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void SetDoor(bool canBeUsed) {
             doorAnimator.SetBool("CanBeInteract", canBeUsed);
-            baseObject.SetInteract(canBeUsed);
             baseObject.SetCollider(!canBeUsed);
         }
         
