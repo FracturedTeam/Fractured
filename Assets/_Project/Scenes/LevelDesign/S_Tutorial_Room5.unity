@@ -744,6 +744,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 102900000, guid: e9421d2ed1486e541a583bc1aa03941f, type: 3}
     - target: {fileID: 3057372478877630610, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3057372478877630610, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: caaf20d0806990746b5be2658dbdd4e3, type: 2}
@@ -762,6 +766,10 @@ PrefabInstance:
     - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: ObjectName
       value: Art Gallery
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561507699594174791, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7584083997582856209, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3395,6 +3403,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -4182,6 +4194,10 @@ PrefabInstance:
     - target: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_Name
       value: P_BigDoor (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: ObjectName
@@ -5085,6 +5101,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6276248683780795095, guid: e3547270680de774289e7be3da23e9af, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276248683780795095, guid: e3547270680de774289e7be3da23e9af, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 51f50ef95c813764297767e1a5c5a256, type: 2}
@@ -5727,8 +5747,8 @@ MonoBehaviour:
   shards:
   - {fileID: 3668694956852880153, guid: 4eee5e9edd451ae47975689747b39a65, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 0}
-  brokenMat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 721ab77b849d9934c8957921977410ea, type: 2}
+  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
 --- !u!114 &687244947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5863,6 +5883,10 @@ PrefabInstance:
     - target: {fileID: 3300188664500682611, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3948632587290468006, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3948632587290468006, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -6070,6 +6094,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1757581851}
     m_Modifications:
+    - target: {fileID: 2774561281688045149, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2774561281688045149, guid: 84cfac0c9ae94bb439430483f3649ad4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7782,12 +7810,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 149940328}
     m_Modifications:
     - target: {fileID: 1147512257913803537, guid: a22a2ff18b2269141b36e56ed4b3d34b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1147512257913803537, guid: a22a2ff18b2269141b36e56ed4b3d34b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: bfb1d5a1322eb7e4cabe73a0a9a7be76, type: 2}
     - target: {fileID: 2083183792855990429, guid: a22a2ff18b2269141b36e56ed4b3d34b, type: 3}
       propertyPath: m_Name
       value: P_DoorFrameLarge (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2083183792855990429, guid: a22a2ff18b2269141b36e56ed4b3d34b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3106356902736135249, guid: a22a2ff18b2269141b36e56ed4b3d34b, type: 3}
       propertyPath: m_LocalScale.x
@@ -15759,6 +15795,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1757581851}
     m_Modifications:
     - target: {fileID: 8055124315286509026, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055124315286509026, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: cdd9707602e8e104fb0f6392364d9962, type: 2}
@@ -16659,6 +16699,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -16701,8 +16745,8 @@ MonoBehaviour:
   shards:
   - {fileID: 3668694956852880153, guid: f6c9757e62acf504cbb8cf0d49d6c1d0, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 0}
-  brokenMat: {fileID: 0}
+  baseMat: {fileID: 2100000, guid: 9e280cbacb6c18c4cbd0e86882a4783c, type: 2}
+  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
 --- !u!114 &1890586290
 MonoBehaviour:
   m_ObjectHideFlags: 0

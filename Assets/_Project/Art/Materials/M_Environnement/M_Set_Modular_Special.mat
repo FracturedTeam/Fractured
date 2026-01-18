@@ -28,11 +28,13 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
   disabledShaderPasses:
@@ -154,7 +156,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AOIntensity: 1
+    - _AOIntensity: 0.5
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -247,7 +249,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _RoughnessMultiplier: 2.5
+    - _RoughnessMultiplier: 5
     - _RoughnessTest: 1
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
@@ -298,17 +300,17 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _AOColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+    - _AOColor: {r: 0, g: 0, b: 0, a: 1}
     - _AOLevels: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Color1: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
-    - _Color12Levels: {r: 0, g: 0.13, b: 0, a: 0}
-    - _Color1_2Levels: {r: 0.02, g: 0.13, b: 0, a: 0}
-    - _Color2: {r: 0.77254903, g: 0.77254903, b: 0.77254903, a: 1}
+    - _Color1: {r: 0, g: 0, b: 0, a: 1}
+    - _Color12Levels: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color1_2Levels: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color2: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
     - _Color23Levels: {r: 0.5, g: 1, b: 0, a: 0}
-    - _Color2_3Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
-    - _Color3: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _Color2_3Levels: {r: 0.5, g: 1, b: 0, a: 0}
+    - _Color3: {r: 1, g: 1, b: 1, a: 1}
     - _Colors_1_2_Levels: {r: 0.02, g: 0.08, b: 0, a: 0}
     - _Colors_2_3_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Colors_3_4_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
