@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
-using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
