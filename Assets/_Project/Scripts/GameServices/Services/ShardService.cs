@@ -1,20 +1,37 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.InteractableObjects;
+using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
-        private List<InteractableObject> interactables = new List<InteractableObject>();
-        private List<Glass> shards = new List<Glass>();
+        public List<BaseObject> interactables { get; private set; }
+        public List<GlassText> glassTexts {get; private set;}
+        public List<Glass> shards {get; private set;}
+        private Glass currentGlass;
         
-        private readonly List<InteractableObject> shardsInteractable = new List<InteractableObject>();
+        private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
+
+        public bool PlayerInEditableArea {get; private set;}
+        public bool PlayerInRedEditableArea {get; private set;}
+        public bool PlayerInBlueEditableArea {get; private set;}
         
         public void Initialize() { //Initialize the service
+            interactables = new List<BaseObject>();
+            shards = new List<Glass>();
+            glassTexts = new List<GlassText>();
+            PlayerInEditableArea = false;
             UpdateInteractableObjects();
+            
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
-        void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
+        private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
             if(interactables.Count == 0) return;
 
             foreach (var interactable in interactables) {
@@ -25,40 +42,102 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(InteractableObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
+            glassTexts.Clear();
             
             interactables.AddRange(_interactable);
             shards.AddRange(_shards);
+            glassTexts.AddRange(_texts);
             
-            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable");
-            Debug.Log($"[GlassShardService] Populating {shards.Count} shards");
+            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards | Populating {glassTexts.Count} texts");
             
             UpdateInteractableObjects();
         }
         
+        
         public void Tick() {
-            UpdateGlassInteraction();
+            HandleShardMovement();
+            UpdateGlassInteraction(); //Expensive methods
         }
 
-        private void UpdateGlassInteraction() {
+        private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
-                SetState(glassInteractable);
+                SetShardState(glassInteractable);
+            /*foreach (var glassText in glassTexts)
+              SetGlassTextState(glassText);*/
         }
-
-        private void SetState(InteractableObject glassInteractable) {
+        
+        private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
-                glassInteractable.OnShardInteract(shard.CheckCollision(glassInteractable.GetGlassInteract), shard.GetColor);
+                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
         
+        /*private void SetGlassTextState(GlassText text) {
+            foreach (var shard in shards) {
+                text.OnInteract(shard.IsColliding(text.TagPositions), shard);
+            }
+        }*/
+        
+        ///Handles player input on the shards & grab priority
+        private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
+            if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
+                foreach (var shard in shards) {
+                    if (!shard.IsColliding(Mouse.current.position.ReadValue()))
+                        continue;
+                        
+                    currentGlass = shard;
+                    currentGlass.ChangeHoldingState(true);
+                    
+                    if (!shards.Contains(currentGlass)) 
+                        return;
+                    
+                    shards.Remove(currentGlass);
+                    shards.Insert(0, currentGlass);
+                    shard.transform.SetAsLastSibling();
+
+                    return;
+                }
+            }
+            else if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
+                currentGlass.ChangeHoldingState(false);
+                currentGlass = null;
+            }
+        }
+
+        public void RepopulateBaseObjet(BaseObject[] obj) {
+            interactables.Clear();
+            interactables.AddRange(obj);
+            UpdateInteractableObjects();
+        }
+        
+        public void AddShards(Glass[] newShards) {
+            shards.AddRange(newShards);
+        }
+        
+        public void SetEditableArea(bool inArea) {
+            PlayerInEditableArea = inArea;
+        }
+        
+        public void SetRedEditableArea(bool inArea) {
+            PlayerInRedEditableArea = inArea;
+        }
+
+        public void SetBlueEditableArea(bool inArea) {
+            PlayerInBlueEditableArea = inArea;
+        }
+        
+
         public void Dispose() {
             shardsInteractable.Clear();
         }
         
         public int ShardCount => shards.Count;
         public int InteractableCount => interactables.Count;
+
+        
     }
 }

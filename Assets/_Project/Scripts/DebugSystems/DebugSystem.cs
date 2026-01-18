@@ -1,4 +1,4 @@
-#if UNITY_EDITOR || UNITY_DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 using System.Collections.Generic;
 
 namespace _Project.Scripts.DebugSystems {
@@ -24,6 +24,14 @@ namespace _Project.Scripts.DebugSystems {
             }
         }
 
+        public void DrawDebugGizmos() {
+            foreach (var debugSystem in debugSystems) {
+                if (debugSystem is IDebugGizmos debugGizmos) {
+                    debugGizmos.DrawDebugGizmos();
+                }
+            }
+        }
+        
         public void Dispose() {
             foreach (var debugSystem in debugSystems) {
                 debugSystem.Dispose();

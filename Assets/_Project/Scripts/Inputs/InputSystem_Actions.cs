@@ -1099,6 +1099,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d9cb579-182e-413b-9043-87f81271c52f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleGeneral"",
+                    ""type"": ""Button"",
+                    ""id"": ""48f981bc-4dd3-4237-8a09-aba43e9cf72c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1121,6 +1139,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ToggleShard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""feb18c14-59d1-4b29-84b7-a4d150a28282"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ab80917-5a62-4ec2-a817-4328ac7d6b4d"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ToggleGeneral"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1217,6 +1257,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_TogglePlayer = m_Debug.FindAction("TogglePlayer", throwIfNotFound: true);
         m_Debug_ToggleShard = m_Debug.FindAction("ToggleShard", throwIfNotFound: true);
+        m_Debug_ToggleCamera = m_Debug.FindAction("ToggleCamera", throwIfNotFound: true);
+        m_Debug_ToggleGeneral = m_Debug.FindAction("ToggleGeneral", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1680,6 +1722,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
     private readonly InputAction m_Debug_TogglePlayer;
     private readonly InputAction m_Debug_ToggleShard;
+    private readonly InputAction m_Debug_ToggleCamera;
+    private readonly InputAction m_Debug_ToggleGeneral;
     /// <summary>
     /// Provides access to input actions defined in input action map "Debug".
     /// </summary>
@@ -1699,6 +1743,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Debug/ToggleShard".
         /// </summary>
         public InputAction @ToggleShard => m_Wrapper.m_Debug_ToggleShard;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/ToggleCamera".
+        /// </summary>
+        public InputAction @ToggleCamera => m_Wrapper.m_Debug_ToggleCamera;
+        /// <summary>
+        /// Provides access to the underlying input action "Debug/ToggleGeneral".
+        /// </summary>
+        public InputAction @ToggleGeneral => m_Wrapper.m_Debug_ToggleGeneral;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1731,6 +1783,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleShard.started += instance.OnToggleShard;
             @ToggleShard.performed += instance.OnToggleShard;
             @ToggleShard.canceled += instance.OnToggleShard;
+            @ToggleCamera.started += instance.OnToggleCamera;
+            @ToggleCamera.performed += instance.OnToggleCamera;
+            @ToggleCamera.canceled += instance.OnToggleCamera;
+            @ToggleGeneral.started += instance.OnToggleGeneral;
+            @ToggleGeneral.performed += instance.OnToggleGeneral;
+            @ToggleGeneral.canceled += instance.OnToggleGeneral;
         }
 
         /// <summary>
@@ -1748,6 +1806,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleShard.started -= instance.OnToggleShard;
             @ToggleShard.performed -= instance.OnToggleShard;
             @ToggleShard.canceled -= instance.OnToggleShard;
+            @ToggleCamera.started -= instance.OnToggleCamera;
+            @ToggleCamera.performed -= instance.OnToggleCamera;
+            @ToggleCamera.canceled -= instance.OnToggleCamera;
+            @ToggleGeneral.started -= instance.OnToggleGeneral;
+            @ToggleGeneral.performed -= instance.OnToggleGeneral;
+            @ToggleGeneral.canceled -= instance.OnToggleGeneral;
         }
 
         /// <summary>
@@ -2016,5 +2080,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleShard(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleCamera(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleGeneral" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleGeneral(InputAction.CallbackContext context);
     }
 }

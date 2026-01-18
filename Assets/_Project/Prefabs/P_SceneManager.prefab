@@ -1,0 +1,291 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4988382695392522534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2368546089697211265}
+  - component: {fileID: 106614911072689722}
+  - component: {fileID: 583110423771898799}
+  - component: {fileID: 2659810081231417284}
+  m_Layer: 0
+  m_Name: P_SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2368546089697211265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &106614911072689722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bdbeb2dedb4ecfb0b1fa41fd9a5fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSceneLoaderSystem
+  AutoUnparentOnAwake: 1
+  menuScene:
+    m_SceneAsset: {fileID: 102900000, guid: b727baf2c7a242d4daf54cba31745704, type: 3}
+    m_SceneName: S_MainMenu
+  newGameScene:
+    m_SceneAsset: {fileID: 102900000, guid: b15c61a78979fbf47850be717b0280a0, type: 3}
+    m_SceneName: S_Tutorial_Room1
+  allScenes:
+  - m_SceneAsset: {fileID: 102900000, guid: b15c61a78979fbf47850be717b0280a0, type: 3}
+    m_SceneName: S_Tutorial_Room1
+  - m_SceneAsset: {fileID: 102900000, guid: 04e9b90930f2f314a91cdcd94fc0cbf7, type: 3}
+    m_SceneName: S_Tutorial_Room2
+  - m_SceneAsset: {fileID: 102900000, guid: bf191a1c548887245ab35d668ae7c156, type: 3}
+    m_SceneName: S_Tutorial_Room3
+  - m_SceneAsset: {fileID: 102900000, guid: 7f4dfe8d00cfb304f8a3f9e1b1b0ff41, type: 3}
+    m_SceneName: S_Tutorial_Room4
+  - m_SceneAsset: {fileID: 102900000, guid: 198ca3661ce309f48a5d4d44563c8565, type: 3}
+    m_SceneName: S_Tutorial_Room5
+  - m_SceneAsset: {fileID: 102900000, guid: e9421d2ed1486e541a583bc1aa03941f, type: 3}
+    m_SceneName: S_Tutorial_Room6
+  - m_SceneAsset: {fileID: 102900000, guid: 380408c83063ddb40886e077053496ba, type: 3}
+    m_SceneName: "S_Zone1_Biblioth\xE8que"
+  - m_SceneAsset: {fileID: 102900000, guid: 91284168f775d54469bd64f44941d3b3, type: 3}
+    m_SceneName: S_Zone1_Chambre
+  - m_SceneAsset: {fileID: 102900000, guid: 50b1328c8a02c7e4f90382891f36069c, type: 3}
+    m_SceneName: S_Zone1_Hall
+  - m_SceneAsset: {fileID: 102900000, guid: 6b5b1d25b87f7e24980602522b07d025, type: 3}
+    m_SceneName: S_Zone1_Salon
+--- !u!114 &583110423771898799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbe548193e74785b60bdf980314f609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSaveSystem
+  AutoUnparentOnAwake: 1
+  saveFile:
+    SaveName: SaveFile
+    CurrentScene: 
+    PlayerData:
+      position: {x: 0, y: 0, z: 0}
+    SceneDatas: []
+  deleteSaveOnPlay: 1
+--- !u!114 &2659810081231417284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988382695392522534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d5e344ee254b9c93fe4a7de521bf0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.AudioManager
+  AutoUnparentOnAwake: 1
+  playerFootstepSound:
+    Guid:
+      Data1: 918943603
+      Data2: 1317536730
+      Data3: 1668663222
+      Data4: 926601801
+    Path: event:/Avatar/WalkAvatar
+  grabGlassSound:
+    Guid:
+      Data1: -248614675
+      Data2: 1293750530
+      Data3: 1327389838
+      Data4: 685856562
+    Path: event:/GlassShards/PickGlassShard
+  grabGlassFailedSound:
+    Guid:
+      Data1: -708073355
+      Data2: 1112805501
+      Data3: -1712522835
+      Data4: -1504437574
+    Path: event:/GlassShards/UnmovableShard
+  revealSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  hideSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  breakGlassSound:
+    Guid:
+      Data1: 1398537186
+      Data2: 1251314147
+      Data3: -64145739
+      Data4: -1956768531
+    Path: event:/Interactables/GlassObject/BreakGlassObject
+  lockedSmallDoorSound:
+    Guid:
+      Data1: -776423039
+      Data2: 1100042407
+      Data3: -290305651
+      Data4: -56245413
+    Path: event:/Interactables/Doors/LockedDoor
+  openSmallDoorSound:
+    Guid:
+      Data1: 871481555
+      Data2: 1194654677
+      Data3: -768407163
+      Data4: 405036676
+    Path: event:/Avatar/ChangeFloorAvatar
+  lockedBigDoorSound:
+    Guid:
+      Data1: -1666903394
+      Data2: 1292102135
+      Data3: 381723047
+      Data4: -2125292896
+    Path: event:/Interactables/Doors/Big Doors/UnlockBigDoor
+  openBigDoorSound:
+    Guid:
+      Data1: -2013302614
+      Data2: 1327765046
+      Data3: 1773503126
+      Data4: 1851239746
+    Path: event:/Interactables/Doors/Big Doors/OpenBigDoor
+  pickUpObjectSound:
+    Guid:
+      Data1: -196268784
+      Data2: 1297727202
+      Data3: 307150011
+      Data4: -1649097609
+    Path: event:/Avatar/PickUpObjectAvatar
+  pickUpKeySound:
+    Guid:
+      Data1: -201944710
+      Data2: 1275697712
+      Data3: 854004663
+      Data4: -919705225
+    Path: event:/Avatar/PickUpKeyAvatar
+  dropObjectSound:
+    Guid:
+      Data1: -1287577103
+      Data2: 1274602006
+      Data3: 809866648
+      Data4: -1618555630
+    Path: event:/Avatar/DropObjectAvatar
+  reconstructMemorySound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  enterMemorySound:
+    Guid:
+      Data1: 1130414617
+      Data2: 1089128145
+      Data3: -438888770
+      Data4: -1665942961
+    Path: event:/Interactables/Memories/MemoryEnter
+  leaveMemorySound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  pressurePlateActiveSound:
+    Guid:
+      Data1: 250698333
+      Data2: 1332084648
+      Data3: -2054123901
+      Data4: -1182931219
+    Path: event:/Interactables/Pedestals/ActivatePedestal
+  pressurePlateInactiveSound:
+    Guid:
+      Data1: -787061672
+      Data2: 1310721748
+      Data3: -883429441
+      Data4: 1883033449
+    Path: event:/Interactables/Pedestals/DeactivatePedestal
+  memoryLoopSound:
+    Guid:
+      Data1: -585657607
+      Data2: 1292218366
+      Data3: 441671832
+      Data4: -484434492
+    Path: event:/Ambiance/MemorySeeing
+  ambientSoundZone:
+    Guid:
+      Data1: 2085282745
+      Data2: 1321148667
+      Data3: -1512197191
+      Data4: -514609374
+    Path: event:/Ambiance/AmbianceZone1
+  ambientSoundTutorial:
+    Guid:
+      Data1: 2085282745
+      Data2: 1321148667
+      Data3: -1512197191
+      Data4: -514609374
+    Path: event:/Ambiance/AmbianceZone1
+  ambientSoundTutorialCoffin:
+    Guid:
+      Data1: 2085282745
+      Data2: 1321148667
+      Data3: -1512197191
+      Data4: -514609374
+    Path: event:/Ambiance/AmbianceZone1
+  menuLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  editableLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  creditsLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  uiBttClickedSound:
+    Guid:
+      Data1: 1338886063
+      Data2: 1318756705
+      Data3: 796872356
+      Data4: -117186817
+    Path: event:/UI/PressButtonUI

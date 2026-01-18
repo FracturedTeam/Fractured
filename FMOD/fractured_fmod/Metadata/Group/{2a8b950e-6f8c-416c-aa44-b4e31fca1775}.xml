@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="MixerGroup" id="{2a8b950e-6f8c-416c-aa44-b4e31fca1775}">
+		<property name="name">
+			<value>PhysicSounds</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{3dafb692-36e3-42e6-809c-adeaa3d17d66}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{4319501e-6be5-430d-9675-cf75a22fce52}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{6b15bd4f-e03f-4b96-aed4-776a142337e5}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{3dafb692-36e3-42e6-809c-adeaa3d17d66}">
+		<relationship name="effects">
+			<destination>{a9dd0cd2-a256-4afc-aadf-451a50698d73}</destination>
+			<destination>{d9737f76-27b1-4ccd-b256-a1ad99d37d82}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{4319501e-6be5-430d-9675-cf75a22fce52}" />
+	<object class="MixerBusFader" id="{a9dd0cd2-a256-4afc-aadf-451a50698d73}" />
+	<object class="SFXReverbEffect" id="{d9737f76-27b1-4ccd-b256-a1ad99d37d82}" />
+</objects>

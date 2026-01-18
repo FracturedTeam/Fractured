@@ -1,50 +1,92 @@
 using System;
+using System.Collections;
+using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
-        public bool showInteraction;
+        public bool ShowInteraction;
+        public Interaction Interaction;
+        public string ObjectName;
     }
     
     public class PlayerInteract : MonoBehaviour {
         private InputsBrain inputsBrain;
-        
-        [SerializeField] private Transform interactCenterZone;
-        [SerializeField] private Vector3 interactZoneSize;
+
+        [SerializeField] public Transform objectPos;
+        [SerializeField] public Transform interactCenterZone;
+        [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
         
         //Pre allocate space for collider (10 will be completely sufficient)
-        private Collider[] results = new Collider[10];
-        private InteractableObject potentialInteraction;
-        private InteractableObject currentObject;
+        private readonly Collider[] results = new Collider[10];
+        private BaseObject potentialInteraction;
+        private BaseObject currentInteraction;
+        private BaseObject memoryInteraction;
+        
+        public bool HasObject { get; private set; }
         
         private bool canPlayerInteract = false;
-        public bool hasObject { get; private set; }
-
         private bool canInteract;
+        private bool inMemory = false;
+        private bool inPressurePlate = false;
+        [HideInInspector] public bool triggerShard = false;
+        [HideInInspector] public bool triggerDoor = false;
+        [HideInInspector] public bool triggerFailedDrop = false;
+
+        private PlayerController player;
+        private CountdownTimer usingLockedDoor;
+        private CountdownTimer usingDoor;
+        private CountdownTimer InteractCooldown;
+        private float timerToUseDoor = 0.15f;
+        
+        private Interaction interactionType;
+
+        private float interactDuration = 0;
+        private float holdInteractionNeeded = 0.5f;
+        private bool interactionHold = false;
+        private bool hasRemoved = false;
+        
         public bool CanInteract {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-
-                //canInteract = canPlayerInteract && !hasObject && size > 0;
+                
                 canInteract = value;
                 EventBus<InteractEvent>.Raise(new InteractEvent {
-                    showInteraction = value
+                    ShowInteraction = value,
+                    Interaction = interactionType
                 });
             }
         }
         
-        internal int size = 0;
+        public int size { get; private set; }
+
+        #region Initialization
 
         private void Awake() {
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
+
+            if(TryGetComponent(out PlayerController _player)) player = _player;
+            else Debug.LogWarning("[PlayerController] No PlayerController found");
+            
+            size = 0;
+
+            usingLockedDoor = new CountdownTimer(timerToUseDoor);
+            usingDoor = new CountdownTimer(0.4f);
+            InteractCooldown = new CountdownTimer(0.5f);
         }
 
         private void OnEnable() {
@@ -54,77 +96,412 @@ namespace _Project.Scripts.Player {
         private void OnDisable() {
             inputsBrain.OnInteract -= Interact;
         }
+
+        #endregion
         
-        private void Interact() {
+        private void Interact(InputAction.CallbackContext ctx) {
+            if(triggerFailedDrop) return;
+            
+            if (ctx.performed) {
+                interactionHold = true;
+                return;
+            }
+
+            if (ctx.canceled) interactionHold = false;
+
+            if (hasRemoved) {
+                hasRemoved = false;
+                return;
+            }
+            
+            interactDuration = 0;
+            
+            if(InteractCooldown.IsRunning) return;
+            
+            if (inMemory) {
+                if(memoryInteraction != null) LeaveMemory();
+                else Debug.LogError("[PlayerInteract] Current memory interaction is null");
+                
+                return;
+            }
+
+            if (inPressurePlate) {
+                if(potentialInteraction != null) LeavePressurePlate();
+                return;
+            }
+            
             if(CanGrab())
                 GrabObject();
             else if(CanDrop())
                 DropObject();
-            else if(CanContextualInteract())
-                potentialInteraction.OnInteract(ObjectInteraction.Contextual);
+            else if(IsMemory())
+                MemoryInteraction();
+            else if (IsPressurePlate())
+                PressurePlateInteraction();
+            else if (CanContextualInteract()) {
+                // if (potentialInteraction.GetInteractionType is ObjectType.Door) {
+                //     if(potentialInteraction.GetComponent<DoorInteractable>().doorType is DoorType.BigDoor && HasObject) {
+                //         return;
+                //     }
+                // }
+                if(potentialInteraction.GetInteractionType is ObjectType.Shard)
+                    triggerShard = true;
+                potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
+                potentialInteraction = null;
+            }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
+            
+            InteractCooldown.Start();
         }
 
+        #region InteractionMethods
+
         private void GrabObject() {
-            SetInteract(false);
-            hasObject = true;
-            currentObject = potentialInteraction;
-            potentialInteraction.OnInteract(ObjectInteraction.Grab);
+            HasObject = true;
+            currentInteraction = potentialInteraction;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
+            
+            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
+        }
+
+        public void SetGrabbedObject(BaseObject interaction) {
+            interaction.SetInteract(true);
+            HasObject = true;
+            currentInteraction = interaction;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
+            
+            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
 
         private void DropObject() {
-            SetInteract(true);
-            hasObject = false;
-            currentObject = null;
-            potentialInteraction.OnInteract(ObjectInteraction.Drop);
+            Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
+            
+            if(potentialInteraction != null)
+                currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+            else
+                currentInteraction?.OnInteract(ObjectInteraction.Drop);
+        }
+
+        private void MemoryInteraction() {
+            memoryInteraction = potentialInteraction;
+            memoryInteraction?.OnInteract(ObjectInteraction.EnterMemory);
+            inMemory = true;
+            
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Interact with memory");
+        }
+
+        private void LeaveMemory() {
+            memoryInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
+            memoryInteraction = null;
+            
+            inMemory = false;
+            
+            Debug.Log($"[PlayerInteract] Leave memory");
+        }
+        
+        private void PressurePlateInteraction() {
+            if (currentInteraction != null) {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate, currentInteraction.GetInteract);
+            }
+            else {
+                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate);
+                inPressurePlate = true;
+            }
+            
+            
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Interact with Pressure Plate");
+        }
+
+        private void LeavePressurePlate() {
+            potentialInteraction?.OnInteract(ObjectInteraction.LeavePressurePlate);
+            potentialInteraction = null;
+            
+            inPressurePlate = false;
+            UpdatePossibleInteraction();
+            Debug.Log($"[PlayerInteract] Leave Pressure Plate");
+        }
+
+        #endregion
+
+        private void HandleInteractRotation(Vector3 playerDir) {
+            var newPos = transform.position + player.movement.mesh.forward * interactZoneSize.z;
+            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.movement.playerConfig.rotationSpeed * Time.deltaTime);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
-            interactCenterZone.position = transform.position + playerDir * interactZoneSize.z;
+            HandleInteractRotation(playerDir);
             
-            CanInteract = canPlayerInteract && !hasObject && size > 0;
-
+            if(interactionHold)
+                interactDuration += Time.deltaTime;
+            
+            if (interactDuration >= holdInteractionNeeded && !HasObject) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory()) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
+                }
+                else if (potentialInteraction.GetInteractionType is ObjectType.PressurePlate) {
+                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
+                    hasRemoved = true;
+                }
+                
+                interactDuration = 0;
+                return;
+            }
+            
             HandleInteraction();
+            SetPlayerInteraction();
         }
 
+        #region UpdateInteraction
+
         void HandleInteraction() {
-            if(!canPlayerInteract || hasObject) return;
+            if(!canPlayerInteract) return;
+            
             size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
-            
-            if(size == 0) return;
-            Debug.Log($"[PlayerInteract] Detecting {size} interactable");
-            
-            if (size > 1) { // Sort the closer object from the player or the object the player is looking at
-                
+
+            switch (size) {
+                case 0:
+                    potentialInteraction = null;
+                    return;
+                case > 1:
+                    var closestDist = 10f;
+                    BaseObject closest = null;
+                    foreach (Collider c in results) {
+                        if(c == null) continue;
+                        if (!c.TryGetComponent(out BaseObject b)) continue;
+                        if(!b.CanBeInteractedWith()) continue;
+                        
+                        var dist = Vector3.Distance(c.transform.position, transform.position);
+                        if (dist < closestDist) {
+                            closest = b;
+                            closestDist = dist;
+                        }
+                    }
+                    potentialInteraction = closest;
+                    break;
+                default: // No need for logic, just get the only object we detect
+                    potentialInteraction = results[0].GetComponent<BaseObject>();
+                    break;
             }
-            else { // No need for logic, just get the only object we detect
-                potentialInteraction = results[0].GetComponent<InteractableObject>();
+            
+            if (HasObject) {
+                if (potentialInteraction == currentInteraction) potentialInteraction = null;
             }
+            
+        }
+
+        void SetPlayerInteraction() {
+            if (potentialInteraction is null) {
+                CanInteract = false;
+                return;
+            }
+            
+            UpdatePossibleInteraction();
+            
+            if (potentialInteraction.CanBeInteractedWith())
+                CanInteract = canPlayerInteract && size > 0;
+            else
+            {
+                CanInteract = false;
+                return;
+            }
+            
+            if (potentialInteraction != null && player.cinemachineBrain.OutputCamera)
+                HudManager.InteractionSetPosition(
+                    player.cinemachineBrain.OutputCamera.WorldToScreenPoint(potentialInteraction.GetUIPosition()));
+        }
+
+        private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
+            if (inMemory) {
+                interactionType = Interaction.LeaveMemory;
+                RaiseInteraction();
+                return;
+            }
+
+            if (inPressurePlate) {
+                interactionType = Interaction.LeavePressurePlate;
+                RaiseInteraction();
+                return;
+            }
+            
+            
+            if (potentialInteraction == null) return;
+            switch (potentialInteraction.GetInteractionType) {
+                case ObjectType.Moveable:
+                    interactionType = Interaction.Grab;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Door when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
+                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
+                        interactionType = Interaction.UseDoor;
+                    else if (HasObject) {
+                        var key = potentialInteraction.GetComponent<KeyInteractable>();
+                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.needSomethingElse;
+                    }
+                    else
+                        interactionType = Interaction.needKey;
+                    RaiseInteraction();
+                    return;
+                }
+                case ObjectType.Door:
+                    interactionType = Interaction.UseDoor;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Memory when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
+                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
+                    {
+                        interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
+                        RaiseInteraction();
+                    }
+                    else if (HasObject) {
+                        var key = potentialInteraction.GetComponent<KeyInteractable>();
+                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.needSomethingElse;
+                    }
+                    else
+                        interactionType = Interaction.needFragment;
+                    RaiseInteraction();
+                    return;
+                }
+                case ObjectType.Memory:
+                    interactionType = Interaction.EnterMemory;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Shard:
+                    interactionType = Interaction.ObtainShard;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.Dialogue:
+                    interactionType = Interaction.dialogue;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.PressurePlate:
+                    if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is not null)
+                        interactionType = Interaction.PutObjectOnPressurePlate;
+                    else if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is null)
+                        interactionType = IsInPressurePlate() ? Interaction.LeavePressurePlate : Interaction.EnterPressurePlate;
+                    else interactionType = Interaction.PickObjectOnPressurePlate;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.None:
+                default:
+                    return;
+            }
+        }
+
+        #endregion
+        
+        private void RaiseInteraction() {
+            EventBus<InteractEvent>.Raise(new InteractEvent {
+                ShowInteraction = canInteract,
+                Interaction = interactionType,
+                ObjectName = potentialInteraction.ObjectName
+            });
         }
         
         public void SetInteract(bool interact) {
             canPlayerInteract = interact;
         }
 
+        public BaseObject GetCurrentInteractable() {
+            return currentInteraction;
+        }
+
+        public void SetGrabObject(BaseObject grab) {
+            HasObject = true;
+            currentInteraction = grab;
+            currentInteraction?.OnInteract(ObjectInteraction.Grab);
+        }
+        
+        public void SetDropObject() {
+            HasObject = false;
+            currentInteraction = null;
+        }
+        
+        public void SetDropObjectDebug() {
+            HasObject = false;
+            currentInteraction?.OnInteract(ObjectInteraction.DropNoTimer);
+            currentInteraction = null;
+        }
+        
         private bool CanGrab() {
-            return CanInteract && currentObject == null && potentialInteraction.CanBeInteractedWith;
+            if(potentialInteraction == null) return false;
+            
+            if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
+                return CanInteract && !HasObject && currentInteraction == null && moveable.CanBeGrab();
+            
+            return false;
         }
 
         private bool CanDrop() {
-            return hasObject && currentObject != null;
+            if (potentialInteraction == null) return HasObject && currentInteraction != null;
+            
+            if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
+                return HasObject && currentInteraction != null && drop != null && potentialInteraction.GetCompletion is InteractionCompletion.NotCompleted;
+            
+            return false;
+        }
+
+        private bool IsMemory() {
+            if (potentialInteraction == null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
+                return memory != null && potentialInteraction.GetCompletion is not InteractionCompletion.NotCompleted;
+            
+            return false;
+        }
+
+        private bool IsPressurePlate() {
+            if (potentialInteraction == null) return false;
+            
+            if (potentialInteraction.TryGetComponent(out PressurePlate plate))
+                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.Completed;
+            
+            return false;
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && !potentialInteraction.CanBeInteractedWith;
+            return CanInteract;
+        }
+
+        public bool IsCarrying() {
+            return currentInteraction != null && HasObject;
         }
         
-        private void OnDrawGizmos() {
-            Gizmos.color = Color.gold;
-            Gizmos.matrix = Matrix4x4.TRS(interactCenterZone.position, transform.rotation, interactZoneSize);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
-            //Gizmos.DrawWireCube(interactCenterZone.position, interactZoneSize);
+        public bool IsInMemory() {
+            return inMemory;
         }
         
+        public bool IsInPressurePlate() {
+            return inPressurePlate;
+        }
+
+        public void StartUsingLockedDoor() {
+            usingLockedDoor.Start();
+        }
+        
+        public bool UsingLockedDoor() {
+            return usingLockedDoor.IsRunning;
+        }
+        public void StartUsingDoor() {
+            usingDoor.Start();
+        }
+        
+        public bool UsingDoor() {
+            return usingDoor.IsRunning;
+        }
+
+        public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
+            triggerDoor = true;
+            AudioManager.Instance.PlayOpenBigSound(position);
+            StartCoroutine(LoadScene(toLoad, position));
+        }
+
+        private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
+            yield return new WaitForSeconds(player.useDoorClip.length);
+            GameInitializer.Instance.LoadNewLevel(toLoad);
+        }
     }
 }

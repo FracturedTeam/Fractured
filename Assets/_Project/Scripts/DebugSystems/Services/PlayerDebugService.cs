@@ -2,7 +2,7 @@ using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
-    public class PlayerDebugService : IDebugSystem, IDebugGUI {
+    public class PlayerDebugService : IDebugSystem, IDebugGUI, IDebugGizmos {
 
         private readonly PlayerController player;
         private readonly DebugUIState debugUIState;
@@ -41,6 +41,15 @@ namespace _Project.Scripts.DebugSystems.Services {
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft
             };
+            
+            var buttonStyle = new GUIStyle(GUI.skin.button) {
+                fontStyle = FontStyle.Bold,
+                fontSize = 10,
+                alignment = TextAnchor.MiddleCenter,
+                normal = {
+                    textColor = Color.ghostWhite
+                }
+            };
 
             GUILayout.BeginVertical("box");
             GUILayout.Label("Player Debug Service", headerStyle);
@@ -59,14 +68,35 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label("Interaction", sectionStyle);
             GUILayout.Label($"Can player interact : {player.interact.CanInteract}", debugStyle);
             GUILayout.Label($"{player.interact.size} Object in the interact area", debugStyle);
-            GUILayout.Label($"Is player holding an object : {player.interact.hasObject}", debugStyle);
+            GUILayout.Label($"Is player holding an object : {player.interact.HasObject}", debugStyle);
             
             // -> Est-ce que le joueur est en train d'interagir avec un souvenir ou autre ?
             
             GUILayout.EndVertical();
         }
         
+        public void DrawDebugGizmos() {
+            if(!debugUIState.IsVisible("Player")) return;
+            
+            //Draw player collider
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(player.transform.position + Vector3.down / 2, player.transform.lossyScale.x / 2);
+            Gizmos.DrawSphere(player.transform.position + Vector3.up / 2, player.transform.lossyScale.x / 2);
+            Gizmos.DrawSphere(player.transform.position, player.transform.lossyScale.x / 2);
+            
+            //Draw ground collider
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(player.movement.feetPosition.position, player.movement.feetSize);
+            
+            //Draw interact zone
+            Gizmos.color = Color.gold;
+            Gizmos.matrix = Matrix4x4.TRS(player.interact.interactCenterZone.position, player.transform.rotation, player.interact.interactZoneSize);
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+        }
+        
         public void Dispose() {
         }
+
+        
     }
 }

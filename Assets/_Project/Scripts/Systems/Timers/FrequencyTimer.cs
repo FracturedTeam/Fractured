@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _Project.Scripts.Systems.Timers {
     public class FrequencyTimer : Timer {
         public float TicksPerSecond { get; private set; }
-        public Action OnTick { get; private set; }
+        public Action OnTick { get; set; }
 
         private float timeThreshold;
         

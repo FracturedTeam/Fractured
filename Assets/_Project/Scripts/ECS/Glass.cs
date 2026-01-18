@@ -1,82 +1,206 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.ECS.InteractableObjects;
-using _Project.Scripts.ECS.InteractableObjects.GlassInteractable;
-using UnityEditor;
+using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
 {
-    public class Glass : MonoBehaviour
-    {
+    public class Glass : MonoBehaviour, IDragHandler {
+        [SerializeField, HideInInspector] private FragmentData data;
+        
+        public void Bind(FragmentData data) {
+            this.data = data;
+        }
+        
+        public void SaveData() {
+            data.position = transform.position;
+            data.spawned = spawned;
+        }
+        
+        public void LoadData() {
+            transform.position = data.position;
+            spawned = data.spawned;
+            Set3DShard();
+        }
+        
         public ColorEnum GetColor => color2D;
-    
-        [SerializeField] private ColorEnum color2D;
-        [SerializeField] internal List<InternColliders> colliders = new List<InternColliders>();
-        private Camera cam;
-        private float GetWindowHeight => cam.pixelHeight/1080f ;
+
+        [Header("Settings")] [SerializeField] private ColorEnum color2D;
+        [SerializeField] private bool canEditAnywhere = false;
+        [SerializeField] private Fragment shard;
+        [HideInInspector] public Fragment visualShard;
+        [HideInInspector] public ParticleSystem visualParticles;
+
+        private Camera mainCamera;
+        private Image shardSprite;
+        private PolygonCollider2D polygonCollider2D;
+        private Vector2 mousePosition;
+
+        private bool isHeld;
+        private bool spawned;
+
+        private bool initialized = false;
+        private bool canInteract = true;
 
         private void Start()
         {
-            cam = Camera.main;
+            Initialize();
         }
 
-        private void Update()
+        private void Initialize()
         {
-            transform.position = Mouse.current.position.ReadValue();
-        }
-    
-        public bool CheckCollision(GlassInteractable block)
-        {
-            foreach (var internColliders in colliders)
-            {
-                if (!IsColliding(block, internColliders)) 
-                    continue;
+            if (!initialized) {
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
-                return true;
+                if (mainCamera == null)
+                    Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+
+                if (TryGetComponent(typeof(Image), out var img))
+                    shardSprite = img as Image;
+
+                if (TryGetComponent(typeof(PolygonCollider2D), out var col))
+                    polygonCollider2D = col as PolygonCollider2D;
+                
+                if(shard) 
+                {
+                    if (shardSprite) 
+                        shardSprite.color = Color.clear;
+                    InstantiateShard();
+                }
             }
-            return false;
+            initialized = true;
         }
 
-        ///Get if the 3D object is colliding with any the colliders 2D
-        private bool IsColliding(GlassInteractable block, InternColliders internCollider)
-        {
-            var screenPos = cam.WorldToScreenPoint(block.transform.position);
-            var ab = screenPos - (transform.position + new Vector3(internCollider.pos.x, internCollider.pos.y) * GetWindowHeight);
-        
-            var radiusSum = internCollider.radius * GetWindowHeight + block.GetRadius;
-            var isColliding = ab.magnitude <= radiusSum; 
-        
-            return isColliding;
-        }
-    
-        [Serializable]
-        internal struct InternColliders
-        {
-            public Vector2 pos;
-            public float radius;
-        }
-    }
-
-    ///Show The colliders 2d/3d of the glass shard
-    [CustomEditor(typeof(Glass))]
-    public class ShowColliders : Editor
-    {
-        public void OnSceneGUI()
-        {
-            var element = target as Glass;
-            var color = element!.GetColor == ColorEnum.Blue  ? Color.dodgerBlue : Color.crimson;
-            var size = Camera.main!.pixelHeight / 1080f;
-            Handles.color = color;
-        
-            foreach (var collider in element!.colliders)
+        private void InstantiateShard() {
+            var sh = Instantiate(shard);
+            shard = sh;
+                
+            shard.SetColor(color2D);
+            if (!spawned)
             {
-                var pos = element.transform.position + new Vector3(collider.pos.x, collider.pos.y) * size;
-                Handles.DrawWireDisc(pos, Vector3.forward, collider.radius * size);
-                GUI.color = color;
-                Handles.Label(pos, collider.pos.ToString());
+                shard.gameObject.SetActive(false);
+                HudManager.Instance.ShardSpawn(this);
+                spawned = true;
             }
+            Set3DShard();
+        }
+
+        public void SetUp3dShard()
+        {
+            shard.gameObject.SetActive(true);
+        }
+
+        public void OnDrag(PointerEventData eventData) {
+            if (!canInteract) return;
+            if(!isHeld) return;
+
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea() && !MemoryManager.Instance.isInMemory)
+                    return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea() && !MemoryManager.Instance.isInMemory)
+                    return;
+            }
+
+            transform.position += (Vector3)eventData.delta; 
+            
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, 1920 - shardSprite.rectTransform.sizeDelta.x/2),
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, 1080 - shardSprite.rectTransform.sizeDelta.y/2));
+
+            Set3DShard();
+        }
+        
+        private void Set3DShard() {
+            if(polygonCollider2D == null)
+                if (TryGetComponent(typeof(PolygonCollider2D), out var col))
+                    polygonCollider2D = col as PolygonCollider2D;
+            
+            if(mainCamera == null)
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
+            
+            if (!shard) 
+                return;
+            
+            List<Vector3> cornersPos = new ();
+            foreach (var points in polygonCollider2D.points)
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x + polygonCollider2D.offset.x, 
+                    transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
+                
+            shard.Setup(cornersPos);
+            
+            if(visualShard) 
+                visualShard.Setup(cornersPos);
+        }
+
+        private void OnEnable()
+        {
+            if (shard) 
+                shard.gameObject.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            if(shard)
+                shard?.gameObject.SetActive(false);
+        }
+
+        void OnDestroy() {
+            if(shard) Destroy(shard.gameObject);
+        }
+        
+        internal void ChangeHoldingState(bool isOn) {
+            if (!canInteract) return;
+            if (!GameInitializer.Instance.InEditableArea() && isOn) {
+                AudioManager.Instance.PlayGrabGlassFailedSound();
+                return;
+            }
+
+            isHeld = isOn;
+            if (isOn) AudioManager.Instance.PlayGrabGlassSound();
+        }
+        
+        
+        ///Get if an object is colliding with any the colliders 2D
+        internal bool IsColliding(Vector3 position)
+        {
+            if (!mainCamera)
+                mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
+            if (mainCamera == null)
+                return false;
+
+            Vector3 closest = polygonCollider2D.ClosestPoint(position);
+            return closest == position;
+        }
+
+        internal bool IsColliding(Vector3[] positions)
+        {
+            if (!mainCamera)
+                return false;
+            
+            foreach (var position in positions)
+            {
+                Vector3 closest = polygonCollider2D.ClosestPoint(position);
+                if(closest != position)
+                    return false;
+            }
+            return true;
+        }
+
+        private void SetInteract(bool canInteract) {
+            this.canInteract = canInteract;
+        }
+
+        public void SetEditAnywhere(bool editAnywhere) {
+            canEditAnywhere = editAnywhere;
         }
     }
 }

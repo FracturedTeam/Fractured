@@ -1,5 +1,7 @@
 using System;
+using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -11,17 +13,18 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] public PlayerConfiguration playerConfig;
 
     [Header("Mesh")] 
-    [SerializeField] Transform mesh;
+    [SerializeField] public Transform mesh;
     
     [Header("Ground Settings")] 
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] Transform feetPosition;
-    [SerializeField] Vector3 feetSize;
+    [SerializeField] public Transform feetPosition;
+    [SerializeField] public Vector3 feetSize;
     
     [Header("Camera Settings")]
     [SerializeField] Camera cam;
-
-
+    
+    private PlayerController player;
+    
     public float currentMaxSpeed { get; private set; }
     public float currentSpeed { get; private set; }
     
@@ -42,8 +45,12 @@ public class PlayerMovementController : MonoBehaviour
     
     private Vector3 slopeMoveDir;//Si le joueur est sur une slope
     private Vector3 forwardDir, rightDir;//Par rapport à la caméra
+    private Vector3 previousForwardDir;
     
     private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
+
+    private float lerpTime = 1f;
+    private float lerpTimer = 0f;
 
     public void Awake() {
         
@@ -53,6 +60,9 @@ public class PlayerMovementController : MonoBehaviour
         
         if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
         else Debug.LogWarning("[PlayerController] No InputsBrain found");
+        
+        if(TryGetComponent(out PlayerController _player)) player = _player;
+        else Debug.LogWarning("[PlayerController] No PlayerController found");
         
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -69,18 +79,21 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void UpdateCameraDir() {
-        forwardDir = cam.transform.forward;
-        rightDir = cam.transform.right;
-        
-        forwardDir.y = 0;
-        rightDir.y = 0;
+        forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up);
+        rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up);
+
+        if (forwardDir.sqrMagnitude < 0.0001f)
+            forwardDir = previousForwardDir;
+        else
+            previousForwardDir = forwardDir;
         
         forwardDir.Normalize();
         rightDir.Normalize();
     }
-    
-    private void SetDir(Vector2 moveInput) =>
+
+    private void SetDir(Vector2 moveInput) {
         moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
+    }
 
     public void SetSpeed(PlayerSpeedEnum speed) {
         switch (speed) {
@@ -94,17 +107,20 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     public void HandleUpdate() {
+        if(rb.isKinematic) return;
+        
         MeshRotation();
         CheckMethods();
         UpdateDrag();
         
-        if(forwardDir != cam.transform.forward)
-            UpdateCameraDir();
-        else if(rightDir != cam.transform.right)
+        if(forwardDir != cam.transform.forward || rightDir != cam.transform.right)
             UpdateCameraDir();
     }
 
     private void MeshRotation() {
+        if (player.interact.UsingDoor()) return;
+        if(moveDir == Vector3.zero) return;
+        
         var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
         var targetRotation = Quaternion.Euler(0, angle, 0);
         mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
@@ -199,6 +215,8 @@ public class PlayerMovementController : MonoBehaviour
         if (!IsGrounded())
             rb.AddForce(Vector3.down * currentFallSpeed, ForceMode.Acceleration);
         
+        if (player.interact.UsingDoor()) return;
+        
         PlayerMove();
     }
     
@@ -213,6 +231,20 @@ public class PlayerMovementController : MonoBehaviour
     
     #endregion
 
+    public void SetPosition(Vector3 position, Direction dir) {
+        FreezeController();
+        rb.position = position;
+        Physics.SyncTransforms();
+        mesh.eulerAngles = dir switch {
+            Direction.Right => new Vector3(0, 90, 0),
+            Direction.Left => new Vector3(0, -90, 0),
+            Direction.Up => new Vector3(0, 0, 0),
+            Direction.Down => new Vector3(0, 180, 0),
+            _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+        };
+        UnfreezeController();
+    }
+
     public void FreezeController() {
         rb.isKinematic = true;
     }
@@ -221,6 +253,20 @@ public class PlayerMovementController : MonoBehaviour
         rb.isKinematic = false;
     }
 
+    public float GetSpeedRatio() {
+        if (player.interact.UsingDoor()) return 0;
+        return currentSpeed / currentMaxSpeed;
+    }
+
+    public float SetAnimatorSpeed() {
+        if(rb.isKinematic || player.interact.triggerFailedDrop) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, lerpTime);
+        
+        if (moveDir.magnitude > 0) 
+          return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);
+        
+        return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, lerpTime);
+    }
+    
     internal bool IsPlayerFrozen() {
         return rb.isKinematic;
     }
@@ -258,12 +304,4 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     #endregion
-    
-    private void OnDrawGizmos() {
-        //Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        
-        //Draw la box de détection des pieds
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(feetPosition.position, feetSize);
-    }
 }

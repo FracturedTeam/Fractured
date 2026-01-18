@@ -8,6 +8,8 @@ namespace _Project.Scripts.Player.Camera {
         public CustomInspectorObjects customInspectorObjects;
         
         private void OnTriggerExit(Collider other) {
+            if(!other.CompareTag("Player")) return;
+            
             Vector3 exitDir = (other.transform.position - transform.position).normalized;;
             Vector3 localExitDir = transform.InverseTransformDirection(exitDir);
 
