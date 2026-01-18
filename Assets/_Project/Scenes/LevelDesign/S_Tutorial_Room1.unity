@@ -187,6 +187,67 @@ Transform:
   - {fileID: 878831092}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &201280663
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8654823546588350333, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: startElement
+      value: 
+      objectReference: {fileID: 466756407}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414649979965978113, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043981301853727939, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
+      propertyPath: m_Name
+      value: P_TutorialTrigger
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4f74b8f1180b5254294723bba9ffdc2b, type: 3}
 --- !u!1 &350373468
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +454,7 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: -3.1}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: -3, y: -2}
   stopTutorialTriggerType: 2
   interactTutorialElement: {fileID: 557853680}
   data:
@@ -416,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialElement
   eventPicto: {fileID: 21300000, guid: 7b9b51dae8cdb3644bea92e78a954e94, type: 3}
-  eventText: gg fdp
+  eventText: Break the glass
 --- !u!1 &520218816 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6210014616755067974, guid: 27e546d93aac0644788aa8f9f6940e54, type: 3}
@@ -437,6 +498,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -576,6 +640,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -630,7 +697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialElement
   eventPicto: {fileID: -213739919, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
-  eventText: gg
+  eventText: Move the glass shard over the chairs
 --- !u!1001 &672372685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1016,6 +1083,9 @@ MonoBehaviour:
   objectColor: 0
   objectInside: 0
   interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
@@ -2404,3 +2474,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 171452320}
   - {fileID: 672372685}
+  - {fileID: 201280663}

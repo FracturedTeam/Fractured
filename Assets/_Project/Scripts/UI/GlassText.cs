@@ -7,8 +7,6 @@ using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
