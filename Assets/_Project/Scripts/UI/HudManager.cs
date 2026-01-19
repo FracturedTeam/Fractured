@@ -53,6 +53,7 @@ namespace _Project.Scripts.UI
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
         [SerializeField] private Image memoryImage;
+        [SerializeField] private Image memoryLine;
         
         private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<MemoryEvent> memoryEventBinding;
@@ -246,6 +247,7 @@ namespace _Project.Scripts.UI
                 memoryTween.Kill();
                 
                 memoryImage.sprite = e.memory;
+                memoryImage.sprite = e.memoryLine;
                 
                 memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
             }

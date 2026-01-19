@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public struct MemoryEvent : IEvent {
         public bool showMemory;
         public Sprite memory;
+        public Sprite memoryLine;
     }
     
     [RequireComponent(typeof(BaseObject))]
