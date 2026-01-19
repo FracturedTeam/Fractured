@@ -24,12 +24,12 @@ namespace _Project.Scripts.UI
 
         private void OnEnable()
         {
-            menuTween = canvasGroup.DOFade(1, openingTime);
+            menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
         }
 
         public void Close()
         {
-            menuTween =  canvasGroup.DOFade(0, closingTime);
+            menuTween =  canvasGroup.DOFade(0, closingTime).SetUpdate(true);
             Invoke(nameof(Closed), closingTime);
         }
 

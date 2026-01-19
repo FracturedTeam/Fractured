@@ -8,8 +8,11 @@ namespace _Project.Scripts.ECS
         private bool triggered;
         private void OnTriggerEnter(Collider other)
         {
-            if(other.CompareTag("Player") && !triggered)
-                startElement.TriggerEventStart();
+            if (!other.CompareTag("Player") || triggered) 
+                return;
+            
+            startElement.TriggerEventStart();
+            triggered = true;
         }
     }
 }
