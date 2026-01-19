@@ -33,6 +33,7 @@ namespace _Project.Scripts.Player.States {
             animWeightTween?.Kill();
             animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
+            player.movement.UnfreezeController();
         }
     }
 }

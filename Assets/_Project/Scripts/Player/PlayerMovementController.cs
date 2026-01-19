@@ -270,6 +270,10 @@ public class PlayerMovementController : MonoBehaviour
     internal bool IsPlayerFrozen() {
         return rb.isKinematic;
     }
+
+    public Rigidbody GetRigidbody() {
+        return rb;
+    }
     
     #region Boolean
     
