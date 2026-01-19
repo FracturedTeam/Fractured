@@ -87,8 +87,8 @@ namespace _Project.Scripts.GameServices {
         private EventBinding<ManageAmbientAudio> ambientEventBinding;
         private EventBinding<EditableSound> editableEventBinding;
 
-        readonly CountdownTimer revealObjectTimer = new CountdownTimer(0.4f);
-        readonly CountdownTimer hideObjectTimer = new CountdownTimer(0.4f);
+        readonly CountdownTimer revealObjectTimer = new CountdownTimer(1f);
+        readonly CountdownTimer hideObjectTimer = new CountdownTimer(1f);
             
         #region OneShot Sounds
         public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
