@@ -873,7 +873,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 2100000, guid: 8b73294a6c6896f4f9759a69c8fd1177, type: 2}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 0.34
+  scaleModificator: 0.2
 --- !u!1 &171452319
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,7 +2048,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8979370071671970300, guid: 128d46b7cf5294440a90158af3694d90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1429624311}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8635354515374621510, guid: 128d46b7cf5294440a90158af3694d90, type: 3}
       insertIndex: -1
@@ -3409,7 +3412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5151,7 +5154,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 0.45
+  scaleModificator: 0.65
 --- !u!114 &651397221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5757,8 +5760,8 @@ MonoBehaviour:
   shards:
   - {fileID: 3668694956852880153, guid: 4eee5e9edd451ae47975689747b39a65, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 2100000, guid: 721ab77b849d9934c8957921977410ea, type: 2}
-  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
+  baseMat: {fileID: 0}
+  brokenMat: {fileID: 0}
 --- !u!114 &687244947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6200,7 +6203,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 0.7
+  scaleModificator: 0.65
 --- !u!114 &721291418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12622,6 +12625,68 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &1429624310
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 341036333}
+    m_Modifications:
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04065323
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.63880813
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.109451294
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7255779446411318597, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+      propertyPath: m_Name
+      value: P_Interactible_Sparkle_R5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+--- !u!4 &1429624311 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4862672310931469282, guid: 061fa784f5b33a142b91cae67457f662, type: 3}
+  m_PrefabInstance: {fileID: 1429624310}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1447911432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14310,7 +14375,7 @@ MonoBehaviour:
     oneTime: 0
     alreadyInteracted: 0
   cantInteractDialogue:
-    dialogue: {fileID: 11400000, guid: ad73f7efa42007a4ebced5f5511640ab, type: 2}
+    dialogue: {fileID: 11400000, guid: 35784ea29e24c204bae0ec5ceac57839, type: 2}
     oneTime: 0
     alreadyInteracted: 0
   failedDialogue:
@@ -15397,7 +15462,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 0.7
+  scaleModificator: 0.65
 --- !u!114 &1782155869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16056,7 +16121,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 1
+  scaleModificator: 0.65
 --- !u!114 &1845902840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16869,7 +16934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8666852426456510447, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -16914,8 +16979,8 @@ MonoBehaviour:
   shards:
   - {fileID: 3668694956852880153, guid: f6c9757e62acf504cbb8cf0d49d6c1d0, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 2100000, guid: 9e280cbacb6c18c4cbd0e86882a4783c, type: 2}
-  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
+  baseMat: {fileID: 0}
+  brokenMat: {fileID: 0}
 --- !u!114 &1890586290
 MonoBehaviour:
   m_ObjectHideFlags: 0
