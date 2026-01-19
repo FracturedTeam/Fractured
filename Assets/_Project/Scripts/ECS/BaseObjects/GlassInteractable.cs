@@ -40,6 +40,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         internal Vector3[] BoundingBox;
         private MoveableObject selfMoveable;
         private FrequencyTimer updatePos = new FrequencyTimer(1.0f);
+        private CountdownTimer setObjectInsideTimer = new CountdownTimer(.1f);
         
         private int underRed;
         private int underBlue;
@@ -93,9 +94,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectInside) {
                 if (interactableInBox != null) {
-                    SetInteractableInBox(false);
-                    
-                    interactableInBox.transform.position = transform.position;
+                    setObjectInsideTimer.OnTimerStop += SetObjectInside;
+                    setObjectInsideTimer.Start();
                 }
                 else
                     Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
@@ -106,6 +106,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                 BoundingBox[i] = new Vector3(0, 0, 0);
             }
             SetUp();
+        }
+
+        void SetObjectInside() {
+            SetInteractableInBox(false);
+            interactableInBox.transform.position = transform.position;
         }
 
         internal void OnInteract(bool isUnder, Glass shard) {

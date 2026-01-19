@@ -33,6 +33,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SaveGame() {
+            if(!SaveInstance.HasInstance) return;
             SaveInstance.Instance.Bind(gameData = SaveInstance.Instance.GetGameData());
              
             PlayerController.Instance.SaveData(saveFile.PlayerData);
@@ -63,7 +64,8 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void LoadData() {
-            LoadData(SaveInstance.Instance.gameObject.scene.name);
+            if(SaveInstance.HasInstance)
+                LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
         public void LoadData(string gameName) {
