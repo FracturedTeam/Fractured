@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace _Project.Scripts.UI
 {
-    public class CameraTranstion : MonoBehaviour
+    public class CameraTransition : MonoBehaviour
     {
-        [SerializeField] Transform nextCameraPos;
-        [SerializeField] Transform previousCameraPos;
-        [SerializeField] GameObject openPanel;
+        [SerializeField] private Transform nextCameraPos;
+        [SerializeField] private Transform previousCameraPos;
+        [SerializeField] private GameObject openPanel;
         private bool returning;
 
         public void OnTrigger()
