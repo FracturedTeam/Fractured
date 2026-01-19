@@ -59,9 +59,9 @@ namespace _Project.Scripts.UI
             if (!((mainCamera.transform.position - target.position).magnitude <= 0.1f)) 
                 return;
             
-            if (target.TryGetComponent(typeof(CameraTranstion), out var trans))
+            if (target.TryGetComponent(typeof(CameraTransition), out var trans))
             {
-                var transPos = trans as CameraTranstion;
+                var transPos = trans as CameraTransition;
                 transPos!.OnTrigger();
             }
             else
