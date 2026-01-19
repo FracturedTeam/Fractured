@@ -2258,7 +2258,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 250
+  m_Intensity: 5
   m_Range: 25
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -9956,6 +9956,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8959862124241910123, guid: 45ec1dc8f18e9a443956aaa7263cc87d, type: 3}
   m_PrefabInstance: {fileID: 539075591}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &551845833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 551845834}
+  m_Layer: 0
+  m_Name: fleur
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &551845834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551845833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 335647796}
+  - {fileID: 1463099056}
+  - {fileID: 483304777}
+  - {fileID: 1126921188}
+  - {fileID: 990846736}
+  - {fileID: 1979177195}
+  - {fileID: 18596903}
+  m_Father: {fileID: 942086096}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &552469939
 Mesh:
   m_ObjectHideFlags: 0
@@ -15175,13 +15213,7 @@ Transform:
   - {fileID: 1346362089}
   - {fileID: 1922378945}
   - {fileID: 52141152}
-  - {fileID: 335647796}
-  - {fileID: 1463099056}
-  - {fileID: 483304777}
-  - {fileID: 1126921188}
-  - {fileID: 990846736}
-  - {fileID: 1979177195}
-  - {fileID: 18596903}
+  - {fileID: 551845834}
   - {fileID: 1462107951}
   - {fileID: 1244983031}
   - {fileID: 1603322335}
@@ -17093,7 +17125,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 533729319425032703, guid: eb8c376e2ec7c2e469a80af6cdedaa2a, type: 3}
       propertyPath: m_Name
@@ -19501,7 +19533,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 2776311624261510601, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -21602,7 +21634,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 2776311624261510601, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -23539,7 +23571,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 533729319425032703, guid: eb8c376e2ec7c2e469a80af6cdedaa2a, type: 3}
       propertyPath: m_Name
@@ -24283,7 +24315,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 2776311624261510601, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -24584,7 +24616,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 533729319425032703, guid: eb8c376e2ec7c2e469a80af6cdedaa2a, type: 3}
       propertyPath: m_Name
@@ -25057,7 +25089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4920375646331915666, guid: 435082a8acb15104b9989be52447efd6, type: 3}
       propertyPath: m_Intensity
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4920375646331915666, guid: 435082a8acb15104b9989be52447efd6, type: 3}
       propertyPath: m_Lightmapping
@@ -25305,7 +25337,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 942086096}
+    m_TransformParent: {fileID: 551845834}
     m_Modifications:
     - target: {fileID: 2776311624261510601, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -26584,7 +26616,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5.1
+  m_Intensity: 3
   m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
