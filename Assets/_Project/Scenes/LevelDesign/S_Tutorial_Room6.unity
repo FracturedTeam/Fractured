@@ -2095,6 +2095,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 350373469}
     m_Modifications:
+    - target: {fileID: 7476278674713369306, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a996787c32810f849a05eee5a3cc7d80, type: 2}
     - target: {fileID: 8613766555186078133, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.1519966
@@ -9796,7 +9800,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3133383151976124609, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_Layer
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3133383151976124609, guid: 0a968e33af2ae6c4f9989ed79718337f, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -9893,8 +9897,8 @@ MonoBehaviour:
   shards:
   - {fileID: 6282969817189507598, guid: a72438263a61bd74ab159f95b163c97a, type: 3}
   shardParticle: {fileID: 0}
-  baseMat: {fileID: 2100000, guid: 721ab77b849d9934c8957921977410ea, type: 2}
-  brokenMat: {fileID: 2100000, guid: 062d0e5c6163bcc418b652cdea64b2dd, type: 2}
+  baseMat: {fileID: 0}
+  brokenMat: {fileID: 0}
 --- !u!114 &1163392742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11234,6 +11238,9 @@ MonoBehaviour:
   objectColor: 1
   objectInside: 1
   interactableInBox: {fileID: 389350996}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
