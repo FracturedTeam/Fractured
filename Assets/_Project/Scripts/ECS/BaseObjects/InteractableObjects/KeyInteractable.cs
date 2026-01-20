@@ -34,6 +34,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
             if (HasOneKey() && interaction is ObjectInteraction.Remove) {
                 Debug.Log("[KeyInteractable] Removing");
+                
+                if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                    baseObject.Trigger(true);
+                else if (baseObject.stopTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                {
+                    baseObject.Trigger(false);
+                    baseObject.interactTutorialElement?.TriggerEventStart();
+                }
+                
                 RemoveObject();
                 return;
             }
@@ -116,6 +125,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(true);
             objectRemoved.GetCompletion = InteractionCompletion.NotCompleted;
             PlayerController.Instance.interact.SetGrabbedObject(objectRemoved);
+            
+            if (objectRemoved.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                objectRemoved.Trigger(true);
+            else if (objectRemoved.stopTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+            {
+                objectRemoved.Trigger(false);
+                objectRemoved.interactTutorialElement?.TriggerEventStart();
+            }
         }
 
         protected virtual void ResolvePuzzle() {
