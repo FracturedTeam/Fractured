@@ -2385,6 +2385,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1403866124361398303, guid: 4521df29d4d118e4c88b818de440b624, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1971702337}
+    - targetCorrespondingSourceObject: {fileID: 1403866124361398303, guid: 4521df29d4d118e4c88b818de440b624, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1971702338}
   m_SourcePrefab: {fileID: 100100000, guid: 4521df29d4d118e4c88b818de440b624, type: 3}
 --- !u!1 &620529417 stripped
 GameObject:
@@ -3622,8 +3625,8 @@ MonoBehaviour:
   memoryId: 0
   hudTransformPoint: {x: 0, y: -2.3}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
+  stopTutorialTriggerType: 2
+  interactTutorialElement: {fileID: 1971702338}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -7743,8 +7746,8 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
+  hudSpecialTransformPoint: {x: -6, y: -3}
+  stopTutorialTriggerType: 3
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -7774,6 +7777,20 @@ MonoBehaviour:
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
+--- !u!114 &1971702338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620529417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762a6af0ff044d04082fb56e4c8ba482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialElement
+  eventPicto: {fileID: 1700800701, guid: 2f4ed0ac825647f4fbc86e324b978690, type: 3}
+  eventText: You must be on a carpet to move the glass shards
 --- !u!1001 &1979922583
 PrefabInstance:
   m_ObjectHideFlags: 0
