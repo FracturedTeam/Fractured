@@ -82,10 +82,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
-                {
                     DisplayMemory();
-                    
-                }
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();

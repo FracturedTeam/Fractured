@@ -25,8 +25,8 @@ namespace _Project.Scripts.UI
          
          if(sprite) {
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
-             memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
-             brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
+             brokenScreenMat.SetTexture("_MemoryTextureLINE", TextureFromSprite(sprite2));
+             brokenScreenMat.SetTexture("_MemoryTextureCOLOR", TextureFromSprite(sprite));
          }
          
          animator.SetBool(ActiveMemory, isOn);
