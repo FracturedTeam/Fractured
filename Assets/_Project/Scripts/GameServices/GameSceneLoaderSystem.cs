@@ -234,6 +234,11 @@ namespace _Project.Scripts.GameServices {
             try {
                 scenesToLoad.Clear();
 
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = true
+                });
+                await Task.Delay(600);
+                
                 var foundScene = false;
                 foreach (var scene in allScenes) {
                     if (scene.SceneName != sceneName) continue;
@@ -249,6 +254,11 @@ namespace _Project.Scripts.GameServices {
 
                 _ = UnloadGameplaySceneAsync();
                 GameSaveSystem.Instance.LoadPlayerData();
+                
+                await Task.Delay(600);
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = false
+                });
             }
             catch (Exception e) {
                 Debug.LogError("LoadSaveGame failed: \n" + e);

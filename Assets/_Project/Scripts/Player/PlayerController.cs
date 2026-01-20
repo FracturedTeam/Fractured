@@ -14,13 +14,11 @@ namespace _Project.Scripts.Player {
     public class PlayerController : Singleton<PlayerController>{
         [SerializeField, HideInInspector] private PlayerData data;
         
-        [ContextMenu("Load")]
         public void Load(PlayerData data) {
             this.data = data;
             movement.SetPosition(data.position, Direction.Up);
         }
         
-        [ContextMenu("Save")]
         public void SaveData(PlayerData data) {
             this.data = data;
             data.position = transform.position;

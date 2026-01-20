@@ -205,8 +205,12 @@ namespace _Project.Scripts.GameServices {
                     editableInstance.start();
                 }
             }
-            else
-                editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            else {
+                editableInstance.getPlaybackState(out var playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.PLAYING)) {
+                    editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                }
+            }
         }
         
         private void UpdateMemory(MemorySound m) {
