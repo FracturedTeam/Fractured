@@ -82,10 +82,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
-                {
                     DisplayMemory();
-                    
-                }
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();
@@ -135,14 +132,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
             baseObject.successDialogue.alreadyInteracted = true;
-
-            if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnViewMemory)
-                baseObject.Trigger(true);
-            else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnViewMemory)
-            {
-                baseObject.Trigger(false);
-                baseObject.interactTutorialElement?.TriggerEventStart();
-            }
+            
         }
         
         private void StopMemoryInteraction() {
@@ -156,6 +146,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             Debug.Log($"[MemoryInteractable] Leaving memory");
+            if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)
+                baseObject.Trigger(true);
+            else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)
+            {
+                baseObject.Trigger(false);
+                baseObject.interactTutorialElement?.TriggerEventStart();
+            }
         }
         
         public void ResetObject() {
