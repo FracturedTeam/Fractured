@@ -6,13 +6,21 @@ namespace _Project.Scripts.ECS
     {
         [SerializeField] private TutorialElement startElement;
         private bool triggered;
+
+
+        [ContextMenu("Force Event Start")]
+        void TriggerEventStart()
+        {
+            startElement.TriggerEventStart();
+            triggered = true;
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player") || triggered) 
                 return;
-            
-            startElement.TriggerEventStart();
-            triggered = true;
+
+            TriggerEventStart();
         }
     }
 }
