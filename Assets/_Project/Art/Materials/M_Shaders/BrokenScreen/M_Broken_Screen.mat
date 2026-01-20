@@ -58,7 +58,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MemoryTexture:
-        m_Texture: {fileID: 2800000, guid: 04503644a38d8f643834d834dfeb84cf, type: 3}
+        m_Texture: {fileID: 2800000, guid: ec8f8e95d3f2a3c4c92d63333d030f51, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MemoryTextureCOLOR:
+        m_Texture: {fileID: 2800000, guid: 45a45ce4fc06b0d44b611dfaa00c0e5f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MemoryTextureLINE:
+        m_Texture: {fileID: 2800000, guid: 518037b4f5160f940b7ccc4cf42ee7a7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MemoryTextureLine:
+        m_Texture: {fileID: 2800000, guid: 623dcd486aef15b40aa375fb6669a1ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -147,45 +159,53 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _BackMaxOpacity: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 0
     - _BordersIntensity: 0.168
     - _BumpScale: 1
     - _CastShadows: 0
-    - _CellsOpacity: 0.167
+    - _CellsAdd: 0.002
+    - _CellsOpacity: 0.372
     - _ChromaticAberrationIntensity: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorVariationIntensity: 1
+    - _ColorVariationIntensity: 0.697
     - _ColoredNoiseContrast: 4
-    - _ColoredNoiseIntensity: 0.02
-    - _Cull: 2
+    - _ColoredNoiseIntensity: 0.021
+    - _Cull: 0
     - _Cutoff: 0.5
+    - _DEBUG_EffectProgression: 1
+    - _DEBUG_Opacity: 1
     - _DeformationIntensity: 0.09
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _Edges2Intensity: 1
-    - _EdgesColoredNoiseContrast: 3
-    - _EdgesColoredNoiseIntensity: 0.5
-    - _EdgesIntensity: 1
+    - _EdgesColoredNoiseContrast: 2
+    - _EdgesColoredNoiseIntensity: 0
+    - _EdgesIntensity: 0.053
+    - _EdgesNoiseIntensity: 0.447
     - _EffectIntensity: 1
     - _EffectProgression: 0
     - _EnvironmentReflections: 1
     - _Float: 0.004
     - _Float_1: 0.002
+    - _FrontMaxOpacity: 0.245
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HighlightsNoiseAmount: 0.267
-    - _HighlightsNoiseIntensity: 0.346
+    - _HighlightsNoiseAmount: 0.244
+    - _HighlightsNoiseIntensity: 0.734
     - _HighlightsNoiseScale: 300
+    - _IllustrationDeformationIntensity: 1
+    - _MaxOpacity: 0.5
     - _MemoryIllustrationOpacity: 0
     - _MemoryTextureDisplay: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Opacity: 1
+    - _Opacity: 0.516
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -193,8 +213,10 @@ Material:
     - _Roughness: 0
     - _RoughnessBool: 1
     - _SceneColorDeformationIntensity: 0
+    - _SceneColorDeformationIntensity_1: 1.5
     - _SceneColorOffset: 0.44
     - _SidesColorIntensity: 1
+    - _SidesOpacity: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -207,20 +229,25 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0.53095114, g: 0.6517883, b: 1.3077617, a: 1}
+    - _BaseColor: {r: 0.28746888, g: 0.35189575, b: 0.7169812, a: 1}
     - _BordersColor: {r: 0.8632076, g: 0.927329, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorVariation: {r: 0, g: 0.17721939, b: 1, a: 1}
-    - _ColoredNoiseTiling: {r: 1.5, g: 1, b: 0, a: 0}
+    - _ColoredNoiseTiling: {r: 4, g: 2, b: 0, a: 0}
     - _DeformationTiling: {r: 0, g: 2, b: 0, a: 0}
     - _Edges2Offset: {r: 0.03, g: 0.002, b: 0, a: 0}
-    - _EdgesColor: {r: 2, g: 2, b: 2, a: 1}
+    - _EdgesColor: {r: 0.4219918, g: 0.4923618, b: 0.8207547, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FlashColor: {r: 0, g: 0, b: 0, a: 0}
     - _HighlightsNoiseTiling: {r: 1.5, g: 1, b: 0, a: 0}
+    - _IllustrationOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _NormalDot: {r: -10.82, g: 0, b: 47.02, a: 0}
     - _SceneColorLUTCorrectionDark: {r: 0, g: 0.004199976, b: 0.084, a: 1}
     - _SceneColorLUTCorrectionLight: {r: 0.768, g: 0.942, b: 1, a: 1}
     - _SceneColorLutCorrection: {r: 0.671, g: 0.76421666, b: 1, a: 0}
-    - _SidesColor: {r: 10.64151, g: 13.529966, b: 16, a: 1}
+    - _SidesColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SidesColorB: {r: 0.11547702, g: 0.12849322, b: 0.14150941, a: 1}
+    - _SidesColor_1: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.Systems.Timers;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -85,7 +86,10 @@ namespace _Project.Scripts.GameServices {
         private EventBinding<MemorySound> memoryEventBinding;
         private EventBinding<ManageAmbientAudio> ambientEventBinding;
         private EventBinding<EditableSound> editableEventBinding;
-        
+
+        readonly CountdownTimer revealObjectTimer = new CountdownTimer(0.4f);
+        readonly CountdownTimer hideObjectTimer = new CountdownTimer(0.4f);
+            
         #region OneShot Sounds
         public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(sound, worldPosition);
@@ -96,8 +100,19 @@ namespace _Project.Scripts.GameServices {
         #region Glass
         public void PlayGrabGlassSound() => RuntimeManager.PlayOneShot(grabGlassSound);
         public void PlayGrabGlassFailedSound() => RuntimeManager.PlayOneShot(grabGlassFailedSound);
-        public void PlayRevealObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(revealSound, worldPosition);
-        public void PlayHideObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(hideSound, worldPosition);
+
+        public void PlayRevealObjectSound(Vector3 worldPosition) {
+            if(revealObjectTimer.IsRunning) return;
+            RuntimeManager.PlayOneShot(revealSound, worldPosition);
+            revealObjectTimer.Start();
+        }
+
+        public void PlayHideObjectSound(Vector3 worldPosition) {
+            if(hideObjectTimer.IsRunning) return;
+            RuntimeManager.PlayOneShot(hideSound, worldPosition);
+            hideObjectTimer.Start();
+        }
+
         public void PlayBreakGlassSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(breakGlassSound, worldPosition);
 
         #endregion

@@ -20,6 +20,8 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private SceneField newGameScene;
 
         [SerializeField] public SceneField[] allScenes;
+
+        private bool loadCredits = false;
         
         private void Start() {
             scenesToLoad = new List<SceneField>();
@@ -32,6 +34,10 @@ namespace _Project.Scripts.GameServices {
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             ManageAudio(scene.buildIndex);
+
+            if (scene.buildIndex == 12) {
+                loadCredits = true;
+            }
         }
 
         private void ManageAudio(int index) {
@@ -49,6 +55,11 @@ namespace _Project.Scripts.GameServices {
             else if (index is > 7 and < 12) {
                 EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
                     loop = Loop.ambientZone1
+                });
+            }
+            else if (index is 12) {
+                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
+                    loop = Loop.credits
                 });
             }
             else if(index is 0 or 1)
@@ -90,12 +101,19 @@ namespace _Project.Scripts.GameServices {
 
                 await UnloadGameplaySceneAsync();
                 
+                if (loadCredits) {
+                    await UnloadSceneAsync();
+                    
+                    Destroy(PlayerService.Instance.gameObject);
+                    Destroy(GameInitializer.Instance.gameObject);
+                    Destroy(HudManager.Instance.gameObject);
+                    loadCredits = false;
+                }
+                
                 await Task.Delay(500);
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = false
                 });
-
-
             }
             catch (Exception e) {
                 Debug.LogError("LoadGameplaySceneAsync failed: It most likely is a need to SetInteractable in the P_SceneSettings prefab\n" + e);
@@ -125,9 +143,9 @@ namespace _Project.Scripts.GameServices {
             try {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
-                await Task.Delay(500); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
+                await Task.Delay(100); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
                 GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-                GameSceneSettings.Instance.ResetShard();
+                if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
                 GameSaveSystem.Instance.LoadData();
             }
             catch (Exception e) {
@@ -172,9 +190,9 @@ namespace _Project.Scripts.GameServices {
             _ = UnloadSceneAsync();
             _ = LoadSceneAsync(menuScene);
             
-            Destroy(PlayerService.Instance.gameObject);
-            Destroy(GameInitializer.Instance.gameObject);
-            Destroy(HudManager.Instance.gameObject);
+            if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
+            if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
+            if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
             
             await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {
