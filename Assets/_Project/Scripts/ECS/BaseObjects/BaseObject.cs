@@ -3,6 +3,7 @@ using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEngine;
@@ -38,7 +39,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
         [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
         [SerializeField] internal TutorialElement interactTutorialElement;
-        
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -228,7 +228,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public Vector2 GetUIPosition(bool special = false)
         {
-            return Camera.main.WorldToScreenPoint(transform.position) + (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
+            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + 
+                   (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
         }
 
         public void Trigger(bool on)
