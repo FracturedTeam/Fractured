@@ -383,8 +383,12 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+      propertyPath: hudTransformPoint.x
+      value: 41
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: hudTransformPoint.y
-      value: 0
+      value: -65.75
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: successDialogue.dialogue
@@ -767,6 +771,14 @@ PrefabInstance:
       propertyPath: ObjectName
       value: Art Gallery
       objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: hudTransformPoint.x
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: hudTransformPoint.y
+      value: 21.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3561507699594174791, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -829,6 +841,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 149940331}
+    - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 149940332}
   m_SourcePrefab: {fileID: 100100000, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
 --- !u!4 &149940328 stripped
 Transform:
@@ -874,6 +889,20 @@ MonoBehaviour:
   radius2D: 0
   showColliders: 0
   scaleModificator: 0.2
+--- !u!114 &149940332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149940330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762a6af0ff044d04082fb56e4c8ba482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.TutorialElement
+  eventPicto: {fileID: 0}
+  eventText: 
 --- !u!1 &171452319
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,6 +2638,10 @@ PrefabInstance:
     - target: {fileID: 599130196579983476, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: hudTransformPoint.y
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: successDialogue.oneTime
@@ -5185,6 +5218,7 @@ MonoBehaviour:
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -5792,6 +5826,7 @@ MonoBehaviour:
   hudTransformPoint: {x: -5.3, y: 3.5}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -6234,6 +6269,7 @@ MonoBehaviour:
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -7083,6 +7119,14 @@ PrefabInstance:
     - target: {fileID: 1824253114378906075, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: hudTransformPoint.x
+      value: 28.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
+      propertyPath: hudTransformPoint.y
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 2649996573736194569, guid: 125290bce0058974eae7052fab2758e9, type: 3}
       propertyPath: successDialogue.dialogue
@@ -14353,6 +14397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 8
   memorySprite: {fileID: 21300000, guid: 17577901e8cd0764fabc856188fb12fc, type: 3}
+  memoryLineSprite: {fileID: 0}
   associateMemoryLoop:
     Guid:
       Data1: 0
@@ -14387,10 +14432,11 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  hudTransformPoint: {x: 43, y: 98}
+  hudSpecialTransformPoint: {x: 100, y: 80}
   stopTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
+  startTutorialTriggerType: 1
+  interactTutorialElement: {fileID: 149940332}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -15510,6 +15556,7 @@ MonoBehaviour:
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -15589,9 +15636,10 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {x: 0, y: 0}
+  hudTransformPoint: {x: 56, y: 13}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -16169,6 +16217,7 @@ MonoBehaviour:
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -17025,9 +17074,10 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {x: 0, y: -1.75}
+  hudTransformPoint: {x: 0, y: 24.5}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -18207,11 +18257,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: hudTransformPoint.x
-      value: 0.5
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: hudTransformPoint.y
-      value: -1.5
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: successDialogue.dialogue
