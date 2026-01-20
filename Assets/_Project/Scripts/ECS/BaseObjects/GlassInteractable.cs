@@ -94,6 +94,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             if (objectInside) {
                 if (interactableInBox != null) {
+                    SetObjectInside();
+                    
                     setObjectInsideTimer.OnTimerStop += SetObjectInside;
                     setObjectInsideTimer.Start();
                 }

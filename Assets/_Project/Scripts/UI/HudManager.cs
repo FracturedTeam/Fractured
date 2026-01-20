@@ -53,6 +53,7 @@ namespace _Project.Scripts.UI
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
         [SerializeField] private Image memoryImage;
+        [SerializeField] private Image memoryLine;
         
         private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<MemoryEvent> memoryEventBinding;
@@ -239,13 +240,14 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionParent.transform.position = new Vector3(position.x, position.y + 2f, 0f);
+                Instance.interactionParent.transform.position = position;
             }
 
             void ShowMemory(MemoryEvent e) {
                 memoryTween.Kill();
                 
                 memoryImage.sprite = e.memory;
+                memoryImage.sprite = e.memoryLine;
                 
                 memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
             }

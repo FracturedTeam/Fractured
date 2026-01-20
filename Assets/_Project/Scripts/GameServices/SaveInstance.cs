@@ -4,6 +4,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
 

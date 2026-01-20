@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="MixerGroup" id="{4984ea9b-df64-4280-9143-622f0d192009}">
+		<property name="name">
+			<value>MainMenu</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{2cff9059-09c8-4920-ac62-f5a0b911e517}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{e761c825-b52c-4484-9873-647e8d026106}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{15df2018-bd6f-4102-954b-c65e630e302d}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{2cff9059-09c8-4920-ac62-f5a0b911e517}">
+		<relationship name="effects">
+			<destination>{d700b21f-3204-496b-b5db-df5cae9688d5}</destination>
+			<destination>{a5c7e116-f433-44c1-b883-6995af6bc50f}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{e761c825-b52c-4484-9873-647e8d026106}" />
+	<object class="MixerBusFader" id="{d700b21f-3204-496b-b5db-df5cae9688d5}" />
+	<object class="SFXReverbEffect" id="{a5c7e116-f433-44c1-b883-6995af6bc50f}">
+		<property name="decayTime">
+			<value>1000</value>
+		</property>
+		<property name="lowShelfFrequency">
+			<value>700</value>
+		</property>
+		<property name="lowShelfGain">
+			<value>-14</value>
+		</property>
+		<property name="wetLevel">
+			<value>-5.5</value>
+		</property>
+	</object>
+</objects>

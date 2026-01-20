@@ -81,6 +81,14 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     objectOnPressurePlate?.SetPressurePlateOn(null);
                     objectOnPressurePlate = null;
                     
+                    if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                        baseObject.Trigger(true);
+                    else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                    {
+                        baseObject.Trigger(false);
+                        baseObject.interactTutorialElement?.TriggerEventStart();
+                    }
+                    
                     isActive = false;
                     baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                     break;

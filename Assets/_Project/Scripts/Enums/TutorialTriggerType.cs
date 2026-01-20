@@ -4,6 +4,8 @@ namespace _Project.Scripts.Enums {
         OnSuccess,
         OnInteract,
         OnHideReveal,
-        OnFail,
+        OnLeavingMemory,
+        OnUnsolved,
+        OnCanBeSeen,
     }
 }

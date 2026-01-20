@@ -146,6 +146,7 @@ namespace _Project.Scripts.GameServices {
                 await Task.Delay(100); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
                 GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
                 if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
+                await Task.Delay(100);
                 GameSaveSystem.Instance.LoadData();
             }
             catch (Exception e) {
@@ -234,6 +235,11 @@ namespace _Project.Scripts.GameServices {
             try {
                 scenesToLoad.Clear();
 
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = true
+                });
+                await Task.Delay(600);
+                
                 var foundScene = false;
                 foreach (var scene in allScenes) {
                     if (scene.SceneName != sceneName) continue;
@@ -249,6 +255,11 @@ namespace _Project.Scripts.GameServices {
 
                 _ = UnloadGameplaySceneAsync();
                 GameSaveSystem.Instance.LoadPlayerData();
+                
+                await Task.Delay(600);
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = false
+                });
             }
             catch (Exception e) {
                 Debug.LogError("LoadSaveGame failed: \n" + e);

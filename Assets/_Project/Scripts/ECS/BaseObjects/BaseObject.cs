@@ -35,8 +35,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private Vector2 hudSpecialTransformPoint;
         
         [Header("Tutorial")]
-        [SerializeField] protected TutorialTriggerType stopTutorialTriggerType;
-        [SerializeField] protected TutorialElement interactTutorialElement;
+        [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
+        [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
+        [SerializeField] internal TutorialElement interactTutorialElement;
         
         
         private MeshRenderer meshRenderer;
@@ -128,6 +129,15 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
                 SetInteract(false);
+            
+            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
+                Trigger(true);
+            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+                
         }
         
         //Collider[] inObjects = new Collider[4];
@@ -149,11 +159,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
             GetInteract.OnInteract(interaction, interactable);
 
-            if (stopTutorialTriggerType != TutorialTriggerType.OnInteract)
-                return;
-            
-            Trigger(false);
-            interactTutorialElement?.TriggerEventStart();
+            if (stopTutorialTriggerType == TutorialTriggerType.OnInteract)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnInteract)
+                Trigger(true);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
@@ -162,16 +174,26 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!isOn) 
                 return;
 
-            if (stopTutorialTriggerType != TutorialTriggerType.OnHideReveal) 
-                return;
-            
-            Trigger(false);
-            interactTutorialElement?.TriggerEventStart();
+            if (stopTutorialTriggerType == TutorialTriggerType.OnHideReveal)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnHideReveal)
+                Trigger(true);
         }
 
         private void CompleteObject() {
             Debug.Log("[BaseObject] Complete Object");
             GetInteract.CompleteObject();
+            
+            if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnSuccess)
+                Trigger(true);
         }
 
         public void ResetInteract() {
@@ -204,11 +226,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public Vector3 GetUIPosition(bool special = false)
+        public Vector2 GetUIPosition(bool special = false)
         {
-            return transform.position + (special ? 
-                new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 3, 0) : 
-                new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0));
+            return Camera.main.WorldToScreenPoint(transform.position) + (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
         }
 
         public void Trigger(bool on)
