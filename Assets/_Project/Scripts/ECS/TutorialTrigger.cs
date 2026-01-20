@@ -1,3 +1,4 @@
+using _Project.Scripts.ECS.BaseObjects;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS
