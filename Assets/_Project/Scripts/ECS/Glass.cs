@@ -132,8 +132,8 @@ namespace _Project.Scripts.ECS
             
             List<Vector3> cornersPos = new ();
             foreach (var points in polygonCollider2D.points)
-                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x + polygonCollider2D.offset.x, 
-                    transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x * Screen.height/1080 + polygonCollider2D.offset.x, 
+                    transform.position.y + points.y  * Screen.height/1080+ polygonCollider2D.offset.y, 10)));
                 
             shard.Setup(cornersPos);
             
