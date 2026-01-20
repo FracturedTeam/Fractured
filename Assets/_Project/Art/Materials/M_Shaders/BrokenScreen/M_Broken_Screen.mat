@@ -58,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MemoryTexture:
-        m_Texture: {fileID: 2800000, guid: ec8f8e95d3f2a3c4c92d63333d030f51, type: 3}
+        m_Texture: {fileID: 2800000, guid: 04503644a38d8f643834d834dfeb84cf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MemoryTextureCOLOR:
@@ -97,6 +97,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 0734896afc501904b95543816f5a51b4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_2a0b8f4b14db4a9288e18ea056cc3baf_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 668bdf6e57bce9b4da2664e57e3a5b74, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_507f646262554222a4b04dd861a34482_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: d850a2f3bc82b29479630842c6dd3e18, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -107,6 +111,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_8b86e69fa8234dae83f5c28d6e762179_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 6d49293b8054a4844acf3ba8154f15c6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_a4a661259e884d87959d9d5c15e099fa_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 668bdf6e57bce9b4da2664e57e3a5b74, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_aa9704beca144a1ba20e55f69c4e0ed1_Texture_1_Texture2D:
@@ -166,13 +174,14 @@ Material:
     - _BumpScale: 1
     - _CastShadows: 0
     - _CellsAdd: 0.002
+    - _CellsAdditive: 0.005
     - _CellsOpacity: 0.372
     - _ChromaticAberrationIntensity: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ColorVariationIntensity: 0.697
     - _ColoredNoiseContrast: 4
-    - _ColoredNoiseIntensity: 0.021
+    - _ColoredNoiseIntensity: 0.012
     - _Cull: 0
     - _Cutoff: 0.5
     - _DEBUG_EffectProgression: 1
@@ -212,11 +221,27 @@ Material:
     - _ReceiveShadows: 0
     - _Roughness: 0
     - _RoughnessBool: 1
-    - _SceneColorDeformationIntensity: 0
+    - _SceneColorDeformationIntensity: 1.5
     - _SceneColorDeformationIntensity_1: 1.5
     - _SceneColorOffset: 0.44
+    - _ScratchesAIntensity: 0.62
+    - _ScratchesBIntensity: 0.8
+    - _ScratchesIntensity: 0.138
     - _SidesColorIntensity: 1
+    - _SidesColoredNoiseContrast: 4
+    - _SidesColoredNoiseIntensity: 0.005
+    - _SidesColoredNoiseIntensityA: 0.006
+    - _SidesColoredNoiseIntensityB: 0.223
+    - _SidesMaxOpacity: 1
+    - _SidesNoiseAmount: 0.511
+    - _SidesNoiseIntensity: 0.33
+    - _SidesNoiseScale: 1000
     - _SidesOpacity: 1
+    - _SidesScratchesAmount: 0.553
+    - _SidesScratchesIntensity: 0.867
+    - _SidesScratchesIntensityA: 0.309
+    - _SidesScratchesIntensityB: 1
+    - _SidesScratchesScale: 1000
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -231,6 +256,9 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.28746888, g: 0.35189575, b: 0.7169812, a: 1}
     - _BordersColor: {r: 0.8632076, g: 0.927329, b: 1, a: 0}
+    - _CellsColor: {r: 0.2862745, g: 0.3529412, b: 0.7176471, a: 1}
+    - _CellsColorVariation: {r: 0, g: 0.1764706, b: 1, a: 1}
+    - _CellsSecondaryColor: {r: 0.2862745, g: 0.3529412, b: 0.7176471, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorVariation: {r: 0, g: 0.17721939, b: 1, a: 1}
     - _ColoredNoiseTiling: {r: 4, g: 2, b: 0, a: 0}
@@ -245,9 +273,24 @@ Material:
     - _SceneColorLUTCorrectionDark: {r: 0, g: 0.004199976, b: 0.084, a: 1}
     - _SceneColorLUTCorrectionLight: {r: 0.768, g: 0.942, b: 1, a: 1}
     - _SceneColorLutCorrection: {r: 0.671, g: 0.76421666, b: 1, a: 0}
+    - _ScratchesAColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ScratchesAOffset: {r: 0, g: 0.2, b: 0, a: 0}
+    - _ScratchesATiling: {r: 1, g: 1, b: 0, a: 0}
+    - _ScratchesBColor: {r: 0.8915094, g: 0.94194627, b: 1, a: 1}
+    - _ScratchesBOffset: {r: 0.32, g: -0.92, b: 0, a: 0}
+    - _ScratchesBTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _ScratchesColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ScratchesTiling: {r: 1, g: 1, b: 0, a: 0}
     - _SidesColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SidesColorB: {r: 0.11547702, g: 0.12849322, b: 0.14150941, a: 1}
+    - _SidesColorB: {r: 1, g: 1, b: 1, a: 1}
     - _SidesColor_1: {r: 0, g: 0, b: 0, a: 1}
+    - _SidesColoredNoiseTiling: {r: 0.34, g: 2, b: 0, a: 0}
+    - _SidesNoiseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SidesNoiseTiling: {r: 0.01, g: 1, b: 0, a: 0}
+    - _SidesScratchesColor: {r: 0.8160377, g: 0.9482094, b: 1, a: 1}
+    - _SidesScratchesColorA: {r: 0.8066038, g: 0.96768343, b: 1, a: 1}
+    - _SidesScratchesColorB: {r: 0, g: 0, b: 0, a: 1}
+    - _SidesScratchesTiling: {r: 0.01, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
