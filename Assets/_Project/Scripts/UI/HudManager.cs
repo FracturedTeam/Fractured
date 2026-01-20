@@ -240,7 +240,7 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionParent.transform.position = new Vector3(position.x, position.y + 2f, 0f);
+                Instance.interactionParent.transform.position = position;
             }
 
             void ShowMemory(MemoryEvent e) {
