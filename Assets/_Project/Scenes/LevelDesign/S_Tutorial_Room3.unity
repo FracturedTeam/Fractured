@@ -13533,6 +13533,10 @@ PrefabInstance:
       propertyPath: hudTransformPoint.y
       value: -3
       objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: stopTutorialTriggerType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3541673832539283909, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -13635,6 +13639,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 716077565}
+    - targetCorrespondingSourceObject: {fileID: 3237234374872565918, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 716077567}
   m_SourcePrefab: {fileID: 100100000, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
 --- !u!4 &716077563 stripped
 Transform:
@@ -13680,6 +13687,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!114 &716077567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716077564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762a6af0ff044d04082fb56e4c8ba482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialElement
+  eventPicto: {fileID: 1700800701, guid: 2f4ed0ac825647f4fbc86e324b978690, type: 3}
+  eventText: Put both glass shards over the door you saw in the memory
 --- !u!43 &728143635
 Mesh:
   m_ObjectHideFlags: 0
