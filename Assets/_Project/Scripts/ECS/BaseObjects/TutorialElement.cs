@@ -12,7 +12,7 @@ public class TutorialElement : MonoBehaviour
     internal void TriggerEventStart()
     {
         print("TriggerEventStart");
-        HudManager.Instance.EventInteraction(Camera.main.WorldToScreenPoint(GetComponent<BaseObject>().GetUIPosition(true)), eventText, eventPicto);
+        HudManager.Instance.EventInteraction(GetComponent<BaseObject>().GetUIPosition(true), eventText, eventPicto);
     }
     
     internal void TriggerEventStop()

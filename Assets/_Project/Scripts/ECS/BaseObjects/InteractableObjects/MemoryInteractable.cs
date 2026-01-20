@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public struct MemoryEvent : IEvent {
         public bool showMemory;
         public Sprite memory;
+        public Sprite memoryLine;
     }
     
     [RequireComponent(typeof(BaseObject))]
@@ -23,6 +24,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private int unlockedMemoryId;
         
         [SerializeField] private Sprite memorySprite;
+        [SerializeField] private Sprite memoryLineSprite;
         private KeyInteractable key;
         
         [Header("Sounds")]
@@ -124,8 +126,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
                 soundInstance.start();
             }
-            
-            MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
+
+            MemoryManager.Instance.SetMemory(true, unlockedMemoryId, memorySprite, memoryLineSprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
             
             if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })

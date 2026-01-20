@@ -14,7 +14,7 @@ namespace _Project.Scripts.UI
       Dictionary<int, bool> memories = new Dictionary<int, bool>();
       public bool isInMemory { get; private set; }
 
-      public void SetMemory(bool isOn, int id = 0, Sprite sprite = null) {
+      public void SetMemory(bool isOn, int id = 0, Sprite sprite = null, Sprite sprite2 = null) {
          if (!memoryMat)
               return;
          
@@ -24,6 +24,7 @@ namespace _Project.Scripts.UI
          isInMemory = isOn;
          
          if(sprite) {
+             memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
              memoryMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
              brokenScreenMat.SetTexture("_MemoryTexture", TextureFromSprite(sprite));
          }
