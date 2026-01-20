@@ -35,9 +35,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private Vector2 hudSpecialTransformPoint;
         
         [Header("Tutorial")]
-        [SerializeField] protected TutorialTriggerType stopTutorialTriggerType;
-        [SerializeField] protected TutorialTriggerType startTutorialTriggerType;
-        [SerializeField] protected TutorialElement interactTutorialElement;
+        [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
+        [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
+        [SerializeField] internal TutorialElement interactTutorialElement;
         
         
         private MeshRenderer meshRenderer;

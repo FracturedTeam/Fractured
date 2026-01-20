@@ -135,6 +135,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
             baseObject.successDialogue.alreadyInteracted = true;
+
+            if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnViewMemory)
+                baseObject.Trigger(true);
+            else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnViewMemory)
+            {
+                baseObject.Trigger(false);
+                baseObject.interactTutorialElement?.TriggerEventStart();
+            }
         }
         
         private void StopMemoryInteraction() {
