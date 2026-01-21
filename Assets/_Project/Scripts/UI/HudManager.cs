@@ -128,7 +128,8 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles);
+                var particle =  Instantiate(spawningParticles, Camera.main.transform);
+                particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
             
@@ -143,7 +144,6 @@ namespace _Project.Scripts.UI
             freeParticles.Remove(currentParticle);
             currentParticle.gameObject.SetActive(true);
             
-            //currentParticle.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
             
             currentFrag = freeFragment[^1];
             shard.visualShard = currentFrag;
