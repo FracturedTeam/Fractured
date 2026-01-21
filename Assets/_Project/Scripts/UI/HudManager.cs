@@ -205,13 +205,14 @@ namespace _Project.Scripts.UI
                 if (e.Interaction == Interaction.EnterMemory)
                 {
                     interactionUI2.GetInteractionText.text = $"{pickObjectPressurePlate}";
-                    interactionUI2.GetInteractionImage.sprite = spriteNormal;
+                    interactionUI2.GetInteractionImage.sprite = spriteUp;
                 }
                 interactionUI2.GetGroup.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionUI.GetInteractionImage.sprite = e.Interaction switch
                 {
-                    Interaction.Grab => spriteUp,
+                    Interaction.Grab => spriteNormal,
+                    Interaction.PickObjectOnPressurePlate => spriteUp,
                     Interaction.ObtainShard => spriteGlass,
                     Interaction.UseDoor => spriteUseDoor,
                     Interaction.UseKey => spriteKey,
