@@ -46,6 +46,7 @@ namespace _Project.Scripts.ECS
         private Vector2 mousePosition;
 
         private bool isHeld;
+        private bool isOnTop;
         private bool spawned;
 
         private bool initialized = false;
@@ -195,12 +196,18 @@ namespace _Project.Scripts.ECS
             return true;
         }
 
-        private void SetInteract(bool canInteract) {
-            this.canInteract = canInteract;
-        }
-
         public void SetEditAnywhere(bool editAnywhere) {
             canEditAnywhere = editAnywhere;
+        }
+
+        public void SetInFront(bool setOnTop)
+        {
+            if(!GameInitializer.Instance.InEditableArea())
+                return;
+                
+            var vector3 = shard.transform.position;
+            vector3.z = setOnTop ? 0 : -0.0001f;
+            shard.transform.position = vector3;
         }
     }
 }

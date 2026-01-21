@@ -14,6 +14,7 @@ namespace _Project.Scripts.GameServices.Services {
         public List<GlassText> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
+        private Glass onTopGlass;
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
@@ -53,7 +54,6 @@ namespace _Project.Scripts.GameServices.Services {
             glassTexts.AddRange(_texts);
             
             Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards | Populating {glassTexts.Count} texts");
-            
             UpdateInteractableObjects();
         }
         
@@ -83,22 +83,35 @@ namespace _Project.Scripts.GameServices.Services {
         }*/
         
         ///Handles player input on the shards & grab priority
-        private void HandleShardMovement() { //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
+        private void HandleShardMovement()
+        {
+            if(shards.Count>0 && onTopGlass==null)
+                onTopGlass = shards.Last();
+            
+            //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
             if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
-                foreach (var shard in shards) {
-                    if (!shard.IsColliding(Mouse.current.position.ReadValue()))
+                foreach (var shard in shards)
+                {
+                    if (!shard.IsColliding(Mouse.current.position.ReadValue())) 
                         continue;
-                        
+                    
                     currentGlass = shard;
                     currentGlass.ChangeHoldingState(true);
-                    
-                    if (!shards.Contains(currentGlass)) 
+
+                    if (!shards.Contains(currentGlass))
                         return;
-                    
+
                     shards.Remove(currentGlass);
                     shards.Insert(0, currentGlass);
-                    shard.transform.SetAsLastSibling();
 
+                    shard.transform.SetAsLastSibling();
+                        
+                    if(onTopGlass != null)
+                    {
+                        onTopGlass.SetInFront(false);
+                        onTopGlass = shard;
+                        onTopGlass.SetInFront(true);
+                    }
                     return;
                 }
             }
