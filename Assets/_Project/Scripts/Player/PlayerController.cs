@@ -52,6 +52,8 @@ namespace _Project.Scripts.Player {
 
         private void Start() {
             stateMachine = new StateMachine();
+            //quick fix for that art part, need rework for the steam version
+            cinemachineBrain.gameObject.SetActive(false);
             
             //Get every component needed
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
@@ -65,6 +67,7 @@ namespace _Project.Scripts.Player {
             
             //Define state machine
             DefineState();
+            
         }
 
         void DefineState() {
@@ -135,6 +138,8 @@ namespace _Project.Scripts.Player {
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);
+            
+            cinemachineBrain.gameObject.SetActive(true);
         }
 
         private void Update() {
