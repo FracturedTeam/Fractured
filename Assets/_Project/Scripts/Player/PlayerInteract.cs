@@ -308,8 +308,8 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
                 return;
             }
-            
-            if (potentialInteraction != null && player.cinemachineBrain.OutputCamera)
+
+            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
                 HudManager.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
 
