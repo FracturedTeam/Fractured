@@ -36,6 +36,7 @@ namespace _Project.Scripts.ECS
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
+        [SerializeField] private bool spawned = false;
         [SerializeField] private Fragment shard;
         [HideInInspector] public Fragment visualShard;
         [HideInInspector] public ParticleSystem visualParticles;
@@ -47,7 +48,7 @@ namespace _Project.Scripts.ECS
 
         private bool isHeld;
         private bool isOnTop;
-        private bool spawned;
+
 
         private bool initialized = false;
         private bool canInteract = true;
@@ -91,6 +92,7 @@ namespace _Project.Scripts.ECS
                 shard.gameObject.SetActive(false);
                 HudManager.Instance.ShardSpawn(this);
                 spawned = true;
+                SaveData();
             }
             Set3DShard();
         }
