@@ -5,7 +5,7 @@
 			<value>AmbianceTutorialPeople</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{d9245b2d-bb40-4304-b02c-d42a256c2ebe}</destination>
@@ -39,7 +39,7 @@
 	</object>
 	<object class="MasterTrack" id="{d8012619-d38e-4804-8793-2a6fa7c2b598}">
 		<relationship name="modules">
-			<destination>{0b4534d1-be08-4060-8f8a-88e1c4acca5d}</destination>
+			<destination>{2d512f0f-0cbd-4399-81d5-ffc2dd94155f}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{4c426ba6-cd32-494a-b1c0-318bb0432dda}</destination>
@@ -56,11 +56,27 @@
 			<destination>{8e56c09d-1ebd-4ee8-8e8c-12b8492554a5}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{d437fb9b-9223-4d2b-aab5-fc009205063c}" />
+	<object class="EventAutomatableProperties" id="{d437fb9b-9223-4d2b-aab5-fc009205063c}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+		<property name="dopplerScale">
+			<value>320</value>
+		</property>
+		<property name="maximumDistance">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{fbf2a1e2-41bd-46a1-8b8b-d10482284807}" />
 	<object class="Timeline" id="{bf15ede4-36a0-4081-9acc-0bc46a299c30}">
 		<relationship name="modules">
-			<destination>{0b4534d1-be08-4060-8f8a-88e1c4acca5d}</destination>
+			<destination>{2d512f0f-0cbd-4399-81d5-ffc2dd94155f}</destination>
+		</relationship>
+		<relationship name="markers">
+			<destination>{309bfe38-2655-47a2-8096-4df2ae5c9d3a}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{4c426ba6-cd32-494a-b1c0-318bb0432dda}">
@@ -74,12 +90,12 @@
 			<destination>{601e916b-9504-414e-af47-be5189819bce}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{0b4534d1-be08-4060-8f8a-88e1c4acca5d}">
+	<object class="SingleSound" id="{2d512f0f-0cbd-4399-81d5-ffc2dd94155f}">
 		<property name="length">
-			<value>19.793809523809525</value>
+			<value>9.2307709750566893</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{17607910-b13a-40a9-a61b-a3b0cb66827d}</destination>
+			<destination>{45ed1198-123a-42e4-8dad-167ab337c1b7}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{bdf78115-fd32-415f-9c9c-870d2629af1f}">
@@ -88,24 +104,69 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8785a9f1-0ea7-474d-9aca-789ddf9d8c2f}" />
+	<object class="LoopRegion" id="{309bfe38-2655-47a2-8096-4df2ae5c9d3a}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="length">
+			<value>9.2307709750566893</value>
+		</property>
+		<relationship name="timeline">
+			<destination>{bf15ede4-36a0-4081-9acc-0bc46a299c30}</destination>
+		</relationship>
+		<relationship name="markerTrack">
+			<destination>{fbf2a1e2-41bd-46a1-8b8b-d10482284807}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{e0eab27a-764d-4443-9304-f0321de07d64}">
 		<relationship name="effects">
 			<destination>{dcf541e8-246e-49c4-9021-d01bc94dd7a6}</destination>
 			<destination>{0a0a4bc5-5226-40f3-83bb-a8e876288938}</destination>
+			<destination>{215aad7b-a4f0-4e6a-82ec-0131c9263388}</destination>
+			<destination>{492a4ac1-2791-4182-8171-f36339e8145e}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{9fc92fb3-4453-4299-b4dd-bcffd93c4b78}" />
+	<object class="MixerBusPanner" id="{9fc92fb3-4453-4299-b4dd-bcffd93c4b78}">
+		<property name="surroundPanDirection">
+			<value>-179.969559</value>
+		</property>
+		<property name="surroundPanExtent">
+			<value>25.3086758</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{03b033c2-1bcb-47e3-81cb-73af5aed5663}" />
 	<object class="MixerBusFader" id="{dcf541e8-246e-49c4-9021-d01bc94dd7a6}" />
 	<object class="ThreeEQEffect" id="{0a0a4bc5-5226-40f3-83bb-a8e876288938}">
 		<property name="lowGain">
-			<value>-13</value>
+			<value>4</value>
 		</property>
 		<property name="midGain">
-			<value>3.5</value>
+			<value>-8</value>
 		</property>
 		<property name="highGain">
-			<value>2.5</value>
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{215aad7b-a4f0-4e6a-82ec-0131c9263388}">
+		<property name="decayTime">
+			<value>3200</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>73</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{492a4ac1-2791-4182-8171-f36339e8145e}">
+		<property name="distanceRolloffType">
+			<value>1</value>
+		</property>
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>18.5</value>
+		</property>
+		<property name="minimumExtent">
+			<value>160</value>
 		</property>
 	</object>
 </objects>
