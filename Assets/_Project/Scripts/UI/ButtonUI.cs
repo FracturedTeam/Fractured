@@ -4,6 +4,7 @@ using _Project.Scripts.GameServices;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
@@ -17,6 +18,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private float time = 0.5f;
         [SerializeField] private  float multiplicator = 1.15f;
         public UnityEvent onClickPostTimer;
+        private EventTrigger button;
         
         Tweener tweener;
         private Image backgroundImage;
@@ -26,6 +28,8 @@ namespace _Project.Scripts.UI
             scale = transform.localScale;
             if(TryGetComponent(typeof(Image), out var bgImage))
                 backgroundImage = (Image)bgImage;
+            if(TryGetComponent(typeof(EventTrigger), out var btn))
+                button = (EventTrigger)btn;
         }
 
         public void OnHover(bool hovering)
@@ -44,7 +48,10 @@ namespace _Project.Scripts.UI
             
             AudioManager.Instance.PlayBttClikedSound();
             
+            button.enabled = false;
+            
             StartCoroutine(CallClickPostTimer());
+            
         }
         
         private IEnumerator CallClickPostTimer()
@@ -64,6 +71,8 @@ namespace _Project.Scripts.UI
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
             if(backgroundImage)
                 backgroundImage.sprite = baseSprite;
+            
+            button.enabled = true;
         }
 
         private void OnDisable()

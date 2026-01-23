@@ -128,7 +128,8 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles);
+                var particle =  Instantiate(spawningParticles, Camera.main.transform);
+                particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
             
@@ -143,7 +144,6 @@ namespace _Project.Scripts.UI
             freeParticles.Remove(currentParticle);
             currentParticle.gameObject.SetActive(true);
             
-            currentParticle.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
             
             currentFrag = freeFragment[^1];
             shard.visualShard = currentFrag;
@@ -205,13 +205,14 @@ namespace _Project.Scripts.UI
                 if (e.Interaction == Interaction.EnterMemory)
                 {
                     interactionUI2.GetInteractionText.text = $"{pickObjectPressurePlate}";
-                    interactionUI2.GetInteractionImage.sprite = spriteNormal;
+                    interactionUI2.GetInteractionImage.sprite = spriteUp;
                 }
                 interactionUI2.GetGroup.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionUI.GetInteractionImage.sprite = e.Interaction switch
                 {
-                    Interaction.Grab => spriteUp,
+                    Interaction.Grab => spriteNormal,
+                    Interaction.PickObjectOnPressurePlate => spriteUp,
                     Interaction.ObtainShard => spriteGlass,
                     Interaction.UseDoor => spriteUseDoor,
                     Interaction.UseKey => spriteKey,
