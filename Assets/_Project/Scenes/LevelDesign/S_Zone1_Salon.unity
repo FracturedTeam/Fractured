@@ -9240,6 +9240,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2141749119}
+  - {fileID: 1594329493}
   m_Father: {fileID: 171452320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &882591783
@@ -15495,6 +15496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!4 &1594329493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+  m_PrefabInstance: {fileID: 8894431455592000494}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1597452617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17236,11 +17242,11 @@ MonoBehaviour:
   memoryLineSprite: {fileID: 21300000, guid: 8bb42aae5042a4b4f9b260428d28c24c, type: 3}
   associateMemoryLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1975516474
+      Data2: 1082209615
+      Data3: -1696333420
+      Data4: 1794929591
+    Path: event:/Ambiance/MemoryGramaphone
 --- !u!114 &1719788382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23389,6 +23395,91 @@ Transform:
   - {fileID: 281201730}
   m_Father: {fileID: 878831092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8894431455592000494
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 878831092}
+    m_Modifications:
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.084999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551019624626185324, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602195851969621164, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: m_Name
+      value: SoundEmitter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: EventReference.Path
+      value: event:/Ambiance/AmbianceCrows&WindRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: OverrideMaxDistance
+      value: 7.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: OverrideMinDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -179434076
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1126210623
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: 167421361
+      objectReference: {fileID: 0}
+    - target: {fileID: 6711590099327163686, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 2060830116
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af1a1d4f5eea02d40bd2159a000c9200, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
