@@ -132,6 +132,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
             baseObject.successDialogue.alreadyInteracted = true;
+            HudManager.InteractionSetPosition(new Vector3(Screen.width -100, Screen.height -100, 0));
             
         }
         
