@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
@@ -37,6 +36,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private PressurePlate pressurePlateOn;
         private Tweener tween;
+        private Tweener matTween;
         private CountdownTimer colTimer = null;
         
         private bool initialized = false;
@@ -132,7 +132,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Dispose() {
-            
+            tween?.Kill();
+            matTween?.Kill();
         }
 
         public void CompleteObject() {
@@ -152,7 +153,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
                 
                 if(particles) particles.Stop();
-                if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
+                if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
             }
         }
         
@@ -185,7 +186,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             tween?.Pause();
             tween?.Kill();
-            DOTween.Kill(transform);
             
             colTimer.Pause();
             
@@ -311,7 +311,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     AudioManager.Instance.PlayDropSound(transform.position);
                     if(particles) particles.Stop();
-                    if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
+                    if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
                     
                     Debug.Log("[MoveableObject] key location");
                 }

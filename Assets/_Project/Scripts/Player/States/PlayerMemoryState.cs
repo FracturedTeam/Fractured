@@ -9,9 +9,9 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
-            animator.CrossFade(EnterMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
+            animator.CrossFade(EnterMemoryHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(false);
             player.movement.FreezeController();

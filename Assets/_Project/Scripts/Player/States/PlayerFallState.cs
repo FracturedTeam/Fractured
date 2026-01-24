@@ -8,7 +8,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnEnter() {
-            animator.CrossFade(FallHash,  defaultCrossFadeDuration);
+            animator.CrossFade(FallHash,  DefaultCrossFadeDuration);
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(false);
         }

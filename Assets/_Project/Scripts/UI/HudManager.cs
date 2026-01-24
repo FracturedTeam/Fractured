@@ -9,9 +9,7 @@ using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
@@ -98,6 +96,9 @@ namespace _Project.Scripts.UI
         void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
             EventBus<MemoryEvent>.Deregister(memoryEventBinding);
+            
+            interactTween?.Kill();
+            memoryTween?.Kill();
             
             textTimer.OnTimerStop  -= ResetText;
         }

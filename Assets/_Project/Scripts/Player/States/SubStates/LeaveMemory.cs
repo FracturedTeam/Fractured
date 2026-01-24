@@ -14,13 +14,13 @@ namespace _Project.Scripts.Player.States.SubStates {
         public override void OnEnter() {
             animationExitTimer.Start();
             
-            animator.CrossFade(LeaveMemoryHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(LeaveMemoryHash,  DefaultCrossFadeDuration, FullBodyLayer);
         }
         
         public override void OnExit() {
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
-            animator.CrossFade(EmptyHash,  defaultCrossFadeDuration, FullBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
+            animator.CrossFade(EmptyHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
             player.interact.SetInteract(true);
             player.movement.UnfreezeController();

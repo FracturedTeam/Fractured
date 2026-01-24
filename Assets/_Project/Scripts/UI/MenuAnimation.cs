@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using DG.Tweening;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
 {
@@ -36,13 +31,11 @@ namespace _Project.Scripts.UI
         private void Closed() => gameObject.SetActive(false);
 
         private void OnDisable() {
-            menuTween.Kill();
-            menuTween = null;
+            menuTween?.Kill();
         }
 
         private void OnDestroy() {
-            menuTween.Kill();
-            menuTween = null;
+            menuTween?.Kill();
         }
     }
 }

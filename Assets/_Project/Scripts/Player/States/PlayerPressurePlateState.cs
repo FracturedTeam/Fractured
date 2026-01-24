@@ -14,9 +14,9 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
-            animator.CrossFade(UsePedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
+            animator.CrossFade(UsePedestalHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
             animationFinished.Start();
             
@@ -25,7 +25,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         private void IdlePiedestal() {
-            animator.CrossFade(IdlePedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(IdlePedestalHash,  DefaultCrossFadeDuration, FullBodyLayer);
         }
         
         public override void OnUpdate() {
