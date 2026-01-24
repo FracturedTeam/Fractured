@@ -24,7 +24,6 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnUpdate() {
-            
         }
 
         public override void OnFixedUpdate() {
