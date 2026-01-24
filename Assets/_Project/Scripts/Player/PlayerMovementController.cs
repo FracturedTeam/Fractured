@@ -233,8 +233,12 @@ public class PlayerMovementController : MonoBehaviour
 
     public void SetPosition(Vector3 position, Direction dir) {
         FreezeController();
-        rb.position = position;
-        Physics.SyncTransforms();
+        
+        while (rb.position != position) {
+            rb.position = position;
+            Physics.SyncTransforms();
+        }
+        
         mesh.eulerAngles = dir switch {
             Direction.Right => new Vector3(0, 90, 0),
             Direction.Left => new Vector3(0, -90, 0),
@@ -242,6 +246,7 @@ public class PlayerMovementController : MonoBehaviour
             Direction.Down => new Vector3(0, 180, 0),
             _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
         };
+        
         UnfreezeController();
     }
 
