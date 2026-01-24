@@ -7,13 +7,14 @@ namespace _Project.Scripts.Enums {
         ObtainShard,
         EnterMemory,
         LeaveMemory,
-        needKey,
-        needFragment,
-        needSomethingElse,
-        dialogue,
+        NeedKey,
+        NeedFragment,
+        NeedSomethingElse,
+        Dialogue,
         EnterPressurePlate,
         LeavePressurePlate,
         PutObjectOnPressurePlate,
         PickObjectOnPressurePlate,
+        None
     }
 }

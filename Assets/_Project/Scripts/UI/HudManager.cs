@@ -82,7 +82,7 @@ namespace _Project.Scripts.UI
 
         private void Start() {
             textTimer = new CountdownTimer(0);
-            textTimer.OnTimerStop  += ResetText;
+            textTimer.OnTimerStop += ResetText;
             interactionUI.GetGroup.alpha = 0;
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
@@ -176,7 +176,7 @@ namespace _Project.Scripts.UI
             void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
 
-                if (!e.ShowInteraction) {
+                if (!e.ShowInteraction || e.Interaction == Interaction.None) {
                     interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
                     interactionUI2.GetGroup.DOFade(0f, 0.25f);
                     return;
@@ -190,10 +190,10 @@ namespace _Project.Scripts.UI
                     Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
                     Interaction.UseKey =>  $"{useKey}",
                     Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
-                    Interaction.needFragment => $"{needFragment}",
-                    Interaction.needKey  => $"{needKey}",
-                    Interaction.needSomethingElse => $"{needSomethingElse}",
-                    Interaction.dialogue => $"{dialogueInteraction}",
+                    Interaction.NeedFragment => $"{needFragment}",
+                    Interaction.NeedKey  => $"{needKey}",
+                    Interaction.NeedSomethingElse => $"{needSomethingElse}",
+                    Interaction.Dialogue => $"{dialogueInteraction}",
                     Interaction.EnterPressurePlate => $"{enterPressurePlate}",
                     Interaction.LeavePressurePlate => $"{leavePressurePlate}",
                     Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
@@ -217,8 +217,8 @@ namespace _Project.Scripts.UI
                     Interaction.UseDoor => spriteUseDoor,
                     Interaction.UseKey => spriteKey,
                     Interaction.UseFragment => spriteDown,
-                    Interaction.needFragment => spriteGlass,
-                    Interaction.needKey => spriteKey,
+                    Interaction.NeedFragment => spriteGlass,
+                    Interaction.NeedKey => spriteKey,
                     _ => spriteNormal
                 };
                 
