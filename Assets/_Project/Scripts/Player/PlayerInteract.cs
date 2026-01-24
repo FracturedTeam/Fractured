@@ -48,7 +48,7 @@ namespace _Project.Scripts.Player {
         private PlayerController player;
         private CountdownTimer usingLockedDoor;
         private CountdownTimer usingDoor;
-        private CountdownTimer InteractCooldown;
+        private CountdownTimer interactCooldown;
         private float timerToUseDoor = 0.15f;
         
         private Interaction interactionType;
@@ -86,7 +86,7 @@ namespace _Project.Scripts.Player {
 
             usingLockedDoor = new CountdownTimer(timerToUseDoor);
             usingDoor = new CountdownTimer(0.4f);
-            InteractCooldown = new CountdownTimer(0.5f);
+            interactCooldown = new CountdownTimer(0.5f);
         }
 
         private void OnEnable() {
@@ -116,7 +116,7 @@ namespace _Project.Scripts.Player {
             
             interactDuration = 0;
             
-            if(InteractCooldown.IsRunning) return;
+            if(interactCooldown.IsRunning) return;
             
             if (inMemory) {
                 if(memoryInteraction != null) LeaveMemory();
@@ -152,7 +152,7 @@ namespace _Project.Scripts.Player {
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
             
-            InteractCooldown.Start();
+            interactCooldown.Start();
         }
 
         #region InteractionMethods
@@ -303,8 +303,7 @@ namespace _Project.Scripts.Player {
             
             if (potentialInteraction.CanBeInteractedWith())
                 CanInteract = canPlayerInteract && size > 0;
-            else
-            {
+            else {
                 CanInteract = false;
                 return;
             }
@@ -325,9 +324,13 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
-            
-            
-            if (potentialInteraction == null) return;
+
+
+            if (potentialInteraction == null || interactCooldown.IsRunning) {
+                canInteract = false;
+                RaiseInteraction();
+                return;
+            }
             switch (potentialInteraction.GetInteractionType) {
                 case ObjectType.Moveable:
                     interactionType = Interaction.Grab;

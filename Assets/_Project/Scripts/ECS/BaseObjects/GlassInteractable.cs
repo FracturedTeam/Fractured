@@ -39,8 +39,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         internal Vector3[] BoundingBox;
         private MoveableObject selfMoveable;
-        private FrequencyTimer updatePos = new FrequencyTimer(1.0f);
-        private CountdownTimer setObjectInsideTimer = new CountdownTimer(.1f);
+        private FrequencyTimer updatePos = new (1.0f);
+        private CountdownTimer setObjectInsideTimer = new (.1f);
         
         private int underRed;
         private int underBlue;
@@ -52,8 +52,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public  void Initialize() {
             mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
-            updatePos.OnTick += SetUp;
-            updatePos.Start();
+            
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component))
                     baseObject = component as BaseObject;
@@ -66,48 +65,50 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
+                updatePos.OnTick += Set2DPoints;
+                updatePos.Start();
+                
                 gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
-            }
-            
-            initialized = true;
-
-            if (objectColor is ColorEnum.Both) {
-                SetVisibility(false);
-                if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
-                    baseObject.SetRenderer(false);
-                    for (var i = 0; i < transform.childCount; i++) {
-                        transform.GetChild(i).gameObject.SetActive(false);
-                    }
-
-                    if(wallRenderer.Length > 0)
-                        foreach (var wall in wallRenderer) {
-                            wall.material = visibleWallMat;
+                
+                if (objectColor is ColorEnum.Both) {
+                    SetVisibility(false);
+                    if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
+                        baseObject.SetRenderer(false);
+                        for (var i = 0; i < transform.childCount; i++) {
+                            transform.GetChild(i).gameObject.SetActive(false);
                         }
-                }
-            }
-            
-            underRed = 0;
-            underBlue = 0;
-            
-            //baseObject!.SetRenderer(objectColor != ColorEnum.Both);
-            baseObject!.SetCollider(objectColor != ColorEnum.Both);
 
-            if (objectInside) {
-                if (interactableInBox != null) {
-                    SetObjectInside();
-                    
-                    setObjectInsideTimer.OnTimerStop += SetObjectInside;
-                    setObjectInsideTimer.Start();
+                        if(wallRenderer.Length > 0)
+                            foreach (var wall in wallRenderer) {
+                                wall.material = visibleWallMat;
+                            }
+                    }
                 }
-                else
-                    Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
+                
+                underRed = 0;
+                underBlue = 0;
+                
+                baseObject!.SetCollider(objectColor != ColorEnum.Both);
+                
+                if (objectInside) {
+                    if (interactableInBox != null) {
+                        SetObjectInside();
+                    
+                        //setObjectInsideTimer.OnTimerStop += SetObjectInside;
+                        //setObjectInsideTimer.Start();
+                    }
+                    else
+                        Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
+                }
             }
             
             BoundingBox = new Vector3[4];
             for (int i = 0; i < BoundingBox.Length; i++) {
                 BoundingBox[i] = new Vector3(0, 0, 0);
             }
-            SetUp();
+            Set2DPoints();
+            
+            initialized = true;
         }
 
         void SetObjectInside() {
@@ -116,10 +117,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         internal void OnInteract(bool isUnder, Glass shard) {
-            if(!baseObject)
-                return;
+            if(!baseObject) return;
 
-            SetUp();
+            Set2DPoints();
 
             if (isUnder) 
                 shardsOnTop.Add(shard);
@@ -139,7 +139,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         void OnDestroy() {
-            updatePos.OnTick -= SetUp;
+            updatePos.OnTick -= Set2DPoints;
             updatePos.Stop();
             updatePos.Dispose();
         }
@@ -254,25 +254,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             Debug.Log("Activate Object Inside");
         }
 
-        public void ResetObjectUnderShard() {
-            underRed = 0;
-            underBlue = 0;
-            shardsOnTop.Clear();
-            
-            //baseObject!.SetRenderer(true);
-            baseObject!.SetCollider(true);
-
-            if (!objectInside || objectOut) return;
-            Debug.Log("Reset Object under shard");
-            SetInteractableInBox(false);
-        }
-
         public void ResetObject() {
             underRed = 0;
             underBlue = 0;
             shardsOnTop.Clear();
             
-            //baseObject!.SetRenderer(true);
             baseObject!.SetCollider(true);
 
             if (!objectInside) return;
@@ -295,15 +281,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                    interactableInBox.GetBaseObject().CanBeInteractedWith() &&
                    interactableInBox.GetBaseObject().GetRendered().enabled;
         }
-        
-        public bool UnderGlass() {
-            return objectColor switch {
-                ColorEnum.Red => underRed != 0 && underBlue < 1,
-                ColorEnum.Blue => underBlue != 0 && underRed < 1,
-                ColorEnum.Both => underRed != 0 && underBlue > 0,
-                _ => false
-            };
-        }
 
         ///Draw The Gizmos of the collider, only in Editor
         private void OnDrawGizmos() {
@@ -319,15 +296,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             foreach (var pos in BoundingBox) {
                 Gizmos.DrawSphere(pos, 10);
             }
-            
         }
 
         private void Setup(float f) {
-            SetUp();
+            Set2DPoints();
         }
         
         ///Auto Setup the collision
-        private void SetUp() {
+        private void Set2DPoints() {
             var points = GetComponent<MeshFilter>().sharedMesh.vertices;
             HashSet<Vector3> pointsHashSet = points.ToHashSet();
             
