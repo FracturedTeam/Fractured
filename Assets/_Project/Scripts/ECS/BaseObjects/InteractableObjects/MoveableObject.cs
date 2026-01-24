@@ -29,6 +29,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Header("Particles")]
         [SerializeField] private ParticleSystem particles;
         
+        [Header("Dissolve")]
+        [SerializeField] private MeshRenderer dissolve;
+        
         private bool canBeGrab = false;
         private bool isGrabbed = false;
 
@@ -149,6 +152,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
                 
                 if(particles) particles.Stop();
+                if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
             }
         }
         
@@ -307,6 +311,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     
                     AudioManager.Instance.PlayDropSound(transform.position);
                     if(particles) particles.Stop();
+                    if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
                     
                     Debug.Log("[MoveableObject] key location");
                 }

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Player.States.SubStates {
 
         public override void OnEnter() {
             animationExitTimer.Start();
-            animator.CrossFade(LeavePiedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
+            animator.CrossFade(LeavePedestalHash,  defaultCrossFadeDuration, FullBodyLayer);
         }
         
         public override void OnExit() {

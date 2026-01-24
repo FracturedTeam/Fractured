@@ -97,6 +97,7 @@ namespace _Project.Scripts.Player {
             //Carrying State
             At(locomotionState, grabObject, new FuncPredicate(() => interact.IsCarrying()));
             At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.IsClipFinished()));
+            At(grabObject, locomotionState, new  FuncPredicate(() => !interact.IsCarrying() && grabObject.IsClipFinished()));
             
             At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
             At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.IsClipFinished()));
