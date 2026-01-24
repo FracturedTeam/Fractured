@@ -26,6 +26,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private MoveableType moveableType;
         [SerializeField] internal Dialogue specialDialogue;
         
+        [Header("Particles")]
+        [SerializeField] private ParticleSystem particles;
+        
+        [Header("Dissolve")]
+        [SerializeField] private MeshRenderer dissolve;
+        
         private bool canBeGrab = false;
         private bool isGrabbed = false;
 
@@ -113,7 +119,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
-            if (PlayerController.HasInstance) {
+            if (PlayerController.HasInstance) { //C'est infame mais je sais pas ce qui cause une null ref
                 if (PlayerController.Instance.interact) {
                     if(PlayerController.Instance.interact.GetCurrentInteractable() != null)
                         if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
@@ -123,11 +129,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             IsColliding();
-            
-            if (!baseObject.GetGlass) return;
-
-            //if (!isGrabbed || !baseObject.GetGlassInteract.UnderGlass() || PlayerController.Instance.interact.UsingDoor()) return;
-            //DropUnderShard();
         }
 
         public void Dispose() {
@@ -149,10 +150,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetCollider(false);
                     
                 keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
+                
+                if(particles) particles.Stop();
+                if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
             }
         }
         
-        private void DropUnderShard() {
+       /*private void DropUnderShard() {
             tween?.Pause();
             tween?.Kill();
             DOTween.Kill(transform);
@@ -174,7 +178,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             //baseObject.GetGlassInteract?.ResetObjectUnderShard();
             
             Debug.Log("[MoveableObject] Drop under shard");
-        }
+        }*/
 
         public void ResetObject() {
             baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
@@ -306,6 +310,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject.GetCompletion = InteractionCompletion.Completed;
                     
                     AudioManager.Instance.PlayDropSound(transform.position);
+                    if(particles) particles.Stop();
+                    if(dissolve) dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
                     
                     Debug.Log("[MoveableObject] key location");
                 }
