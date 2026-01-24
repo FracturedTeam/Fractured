@@ -30,6 +30,16 @@ namespace _Project.Scripts.GameServices {
     }
     
     public class AudioManager : PersistentSingleton<AudioManager> {
+        [Header("Volumes")] 
+        [Range(0, 1)] public float masterVolume = 1;
+        [Range(0, 1)] public float sfxVolume = 1;
+        [Range(0, 1)] public float musicVolume = 1;
+
+        private Bus masterBus;
+        private Bus sfxBus;
+        private Bus musicBus;
+        
+        
         [Header("One Shot Sounds")]
         [Header("Player")]
         [SerializeField] private EventReference playerFootstepSound;
@@ -168,6 +178,13 @@ namespace _Project.Scripts.GameServices {
         }
 #endregion
 
+        protected override void Awake() {
+            base.Awake();
+            masterBus = RuntimeManager.GetBus("bus:/");
+            musicBus = RuntimeManager.GetBus("bus:/Ambiance");
+            sfxBus = RuntimeManager.GetBus("bus:/SFX");
+        }
+
         private void Start() {
             memorySoundInstance = CreateInstance(memoryLoopSound);
             ambientZone1Instance = CreateInstance(ambientSoundZone);
@@ -176,6 +193,12 @@ namespace _Project.Scripts.GameServices {
             menuInstance = CreateInstance(menuLoop);
             editableInstance = CreateInstance(editableLoop);
             creditsInstance = CreateInstance(creditsLoop);
+        }
+
+        private void Update() {
+            masterBus.setVolume(masterVolume);
+            musicBus.setVolume(musicVolume);
+            sfxBus.setVolume(sfxVolume);
         }
 
         private void OnEnable() {

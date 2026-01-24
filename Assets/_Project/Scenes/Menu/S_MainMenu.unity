@@ -8914,6 +8914,7 @@ MonoBehaviour:
   hudTransformPoint: {x: 0, y: -3.1}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -11960,7 +11961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4917183039816308885, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.283
       objectReference: {fileID: 0}
     - target: {fileID: 4917183039816308885, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -11968,7 +11969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4917183039816308885, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.283
       objectReference: {fileID: 0}
     - target: {fileID: 5766057260335834573, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -11978,9 +11979,13 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6573783970982728733, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: volumeType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 0.283
       objectReference: {fileID: 0}
     - target: {fileID: 7595269378575796839, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_Pivot.x
@@ -14450,9 +14455,9 @@ GameObject:
   m_Component:
   - component: {fileID: 905018588}
   - component: {fileID: 905018585}
-  - component: {fileID: 905018587}
   - component: {fileID: 905018586}
   - component: {fileID: 905018589}
+  - component: {fileID: 905018590}
   m_Layer: 0
   m_Name: CameraMainMenu
   m_TagString: MainCamera
@@ -14555,14 +14560,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &905018587
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905018584}
-  m_Enabled: 1
 --- !u!4 &905018588
 Transform:
   m_ObjectHideFlags: 0
@@ -14610,6 +14607,20 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &905018590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905018584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!4 &914472140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1885058526782806060, guid: 16af00b08bc382d4f9fee8e298b0b172, type: 3}
@@ -18436,6 +18447,34 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1289771432}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnSliderValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.VolumeSlider, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7595269378575796839, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -18530,6 +18569,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7595269378575796839, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
   m_PrefabInstance: {fileID: 1289771430}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1289771432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6573783970982728733, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+  m_PrefabInstance: {fileID: 1289771430}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bdaaaf2fc14d2fb35960934e39e9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.VolumeSlider
 --- !u!1 &1300491563
 GameObject:
   m_ObjectHideFlags: 0
@@ -21142,6 +21192,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6411147016814446024, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6573783970982728733, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}
+      propertyPath: volumeType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7517994521159850933, guid: 173c8d6397aae3449a22db97e2d0e9d0, type: 3}

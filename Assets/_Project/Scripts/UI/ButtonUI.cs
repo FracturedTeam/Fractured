@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -61,12 +60,10 @@ namespace _Project.Scripts.UI
         }
 
         private void OnDestroy() {
-            tweener.Kill();
-            tweener = null;
+            tweener?.Kill();
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             //sometimes the OnHover false of the disable doesn't work, this fixes it 
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
             if(backgroundImage)
@@ -78,8 +75,7 @@ namespace _Project.Scripts.UI
         private void OnDisable()
         {
             OnHover(false);
-            tweener.Kill();
-            tweener = null;
+            tweener?.Kill();
         }
     }
 }

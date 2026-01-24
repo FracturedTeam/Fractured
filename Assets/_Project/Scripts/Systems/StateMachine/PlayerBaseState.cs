@@ -30,9 +30,9 @@ namespace _Project.Scripts.Systems.StateMachine {
         protected const int FullBodyLayer = 2;
 
         //Cross Fade Duration
-        protected const float defaultCrossFadeDuration = 0.25f;
+        protected const float DefaultCrossFadeDuration = 0.25f;
 
-        protected Tween animWeightTween;
+        protected Tween AnimWeightTween;
         
         protected PlayerBaseState(PlayerController player, Animator animator) {
             this.player = player;

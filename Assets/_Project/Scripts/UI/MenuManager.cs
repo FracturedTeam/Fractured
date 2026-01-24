@@ -1,5 +1,3 @@
-using System;
-using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
 
