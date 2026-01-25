@@ -11,8 +11,7 @@ namespace _Project.Scripts.UI
 
         public void OnTrigger()
         {
-            if(nextCameraPos) 
-                MenuManager.Instance.ChangeTarget(returning ? previousCameraPos ? previousCameraPos: nextCameraPos : nextCameraPos);
+           
             if(openPanel)
                 openPanel.SetActive(true);
             returning = !returning;
