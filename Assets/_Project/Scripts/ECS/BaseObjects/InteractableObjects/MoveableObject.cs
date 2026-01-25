@@ -81,7 +81,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 boundCenter = baseObject.GetCollider().bounds.center - baseObject.transform.position;
             }
             
-            
             canBeGrab = true;
         }
 
@@ -139,9 +138,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if (keyObjectNeeded.keyObjectPos != null) {
                     transform.SetParent(keyObjectNeeded.keyObjectPos);
                     transform.position = keyObjectNeeded.keyObjectPos.position;
+                    transform.rotation = keyObjectNeeded.keyObjectPos.rotation;
                 }
                 else {
-                    transform.SetParent(originalParent);
+                    transform.SetParent(keyObjectNeeded.transform);
                     transform.position = keyObjectNeeded.transform.position;
                 }
                     
@@ -151,7 +151,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
                 
                 if(particles) particles.Stop();
-                if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
+                if(dissolve) dissolve.material.SetFloat("_Progression", 0f);
             }
         }
 
@@ -388,12 +388,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return pos;
         }
 
-        private static readonly Collider[] _hits = new Collider[16];
+        private static readonly Collider[] Hits = new Collider[16];
         
-        private bool IsColliding() {
+        private void IsColliding() {
             var myCol = baseObject.GetCollider();
             if (!myCol || !myCol.enabled)
-                return false;
+                return;
 
             var mask = LayerMask.GetMask(
                 "Interactable",
@@ -405,17 +405,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var count = Physics.OverlapBoxNonAlloc(
                 myCol.bounds.center,
                 myCol.bounds.extents,
-                _hits,
+                Hits,
                 myCol.transform.rotation,
                 mask,
                 QueryTriggerInteraction.Ignore
             );
 
-            var resolved = false;
-
             for (var i = 0; i < count; i++)
             {
-                var other = _hits[i];
+                var other = Hits[i];
                 if (!other || other == myCol)
                     continue;
 
@@ -423,15 +421,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         myCol, myCol.transform.position, myCol.transform.rotation,
                         other, other.transform.position, other.transform.rotation,
                         out Vector3 dir,
-                        out float distance))
-                {
-                    // Push OUT of collision
+                        out float distance)) {
                     transform.position += dir * (distance + 0.001f);
-                    resolved = true;
                 }
             }
-
-            return resolved;
         }
         
 		public MoveableType GetObjectType(){

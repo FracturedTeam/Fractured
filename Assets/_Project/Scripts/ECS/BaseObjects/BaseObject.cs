@@ -40,6 +40,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
+        public MeshFilter meshFilter { get; private set; }
         private Collider objectCollider;
 
         public bool initialized { get; private set; }
@@ -105,6 +106,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void Initialize() {
             if(!initialized) {
+                //Premier set pour éviter des erreurs (ils sont set a nouveau par le GetInteract)
+                GetInteractionType = ObjectType.None;
+                GetCompletion = InteractionCompletion.None;
+                
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
@@ -115,6 +120,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
+                
+                if(TryGetComponent(typeof(MeshFilter), out var mf)) meshFilter = mf as MeshFilter;
+                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
