@@ -107,10 +107,10 @@ namespace _Project.Scripts.ECS
             if(!isHeld) return;
             if(MemoryManager.Instance.isInMemory) return;
 
-            // if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-            //     if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
-            //     if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
-            // }
+            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
+            }
 
             transform.position += (Vector3)eventData.delta; 
             

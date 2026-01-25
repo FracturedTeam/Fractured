@@ -119,14 +119,14 @@ namespace _Project.Scripts.ECS.BaseObjects {
             if (previousActivation != isActive) {
                 previousActivation = isActive;
                 
-                if (lockedBehindThis.Length > 0) {
-                    foreach (var locked in lockedBehindThis) {
-                        locked.SetInteract(isActive);
-                    }
-                }
-                
                 if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
                 else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+            }
+            
+            if (lockedBehindThis.Length > 0) {
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(isActive);
+                }
             }
             
             timer += isActive ? deltaTime : -deltaTime;
