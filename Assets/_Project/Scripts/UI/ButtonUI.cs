@@ -41,7 +41,6 @@ namespace _Project.Scripts.UI
         }
         public void OnClicked()
         {
-            
             if(backgroundImage)
                 backgroundImage.sprite = clickedSprite;
             
@@ -55,7 +54,8 @@ namespace _Project.Scripts.UI
         
         private IEnumerator CallClickPostTimer()
         { 
-            yield return new WaitForSecondsRealtime(time);
+            //yield return new WaitForSecondsRealtime(time);
+            yield return null;
             onClickPostTimer?.Invoke();
         }
 
@@ -72,9 +72,7 @@ namespace _Project.Scripts.UI
             button.enabled = true;
         }
 
-        private void OnDisable()
-        {
-            OnHover(false);
+        private void OnDisable() {
             tweener?.Kill();
         }
     }
