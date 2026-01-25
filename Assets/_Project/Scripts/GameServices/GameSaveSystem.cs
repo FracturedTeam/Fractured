@@ -132,5 +132,9 @@ namespace _Project.Scripts.GameServices {
                 SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
             }
         }
+
+        public bool ExistingSave() {
+            return dataService.FileDoesExist(saveFile.SaveName);
+        }
     }
 }

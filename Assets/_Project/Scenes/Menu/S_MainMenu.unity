@@ -1909,6 +1909,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadBtt
       objectReference: {fileID: 0}
+    - target: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: baseSprite
       value: 
@@ -1976,13 +1980,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 210275460}
   m_SourcePrefab: {fileID: 100100000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
 --- !u!224 &210275458 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 113742088573330987, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
   m_PrefabInstance: {fileID: 210275457}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &210275459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6780057227029692000, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+  m_PrefabInstance: {fileID: 210275457}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &210275460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210275459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd9e39d077bb46c7bc1f98c99e174789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.LoadingGameBtt
 --- !u!1001 &214311190
 PrefabInstance:
   m_ObjectHideFlags: 0
