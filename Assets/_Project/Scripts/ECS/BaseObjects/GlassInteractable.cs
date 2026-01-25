@@ -129,6 +129,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             if (!objectInside) return;
+            if (!objectOut) {
+                if(objectColor == ColorEnum.Blue && underBlue <= 0 || objectColor == ColorEnum.Red && underRed <= 0)
+                    ActivateObjectInside(false);
+            }
             if (objectOut) return;
             
             interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
@@ -282,7 +286,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                    interactableInBox.GetBaseObject().GetRendered().enabled;
         }
 
-        ///Draw The Gizmos of the collider, only in Editor
+        #if UNITY_EDITOR
         private void OnDrawGizmos() {
             Gizmos.color = objectColor switch {
                 ColorEnum.Blue => Color.dodgerBlue,
@@ -297,18 +301,14 @@ namespace _Project.Scripts.ECS.BaseObjects
                 Gizmos.DrawSphere(pos, 10);
             }
         }
-
-        private void Setup(float f) {
-            Set2DPoints();
-        }
+        #endif
         
         ///Auto Setup the collision
         private void Set2DPoints() {
-            var points = GetComponent<MeshFilter>().sharedMesh.vertices;
-            HashSet<Vector3> pointsHashSet = points.ToHashSet();
+            var points = baseObject.meshFilter.sharedMesh.vertices;
+            var pointsHashSet = points.ToHashSet();
             
-
-            Vector3 pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);
 
             foreach (var point in pointsHashSet) {
@@ -325,14 +325,12 @@ namespace _Project.Scripts.ECS.BaseObjects
                     pMax.y = current.y;
             }
 
-            Vector3 middle = new Vector3((pMin.x + pMax.x)/ 2, (pMin.y + pMax.y)/ 2);
+            var middle = new Vector3((pMin.x + pMax.x)/ 2, (pMin.y + pMax.y)/ 2);
 
             BoundingBox[0] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMin.y), scaleModificator );
             BoundingBox[1] = Vector3.LerpUnclamped(middle, new Vector3(pMin.x, pMax.y), scaleModificator );  
             BoundingBox[2] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMax.y), scaleModificator ); 
             BoundingBox[3] = Vector3.LerpUnclamped(middle, new Vector3(pMax.x, pMin.y), scaleModificator ); 
-            
-            
         }
     }
 }

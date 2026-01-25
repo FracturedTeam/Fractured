@@ -143,16 +143,12 @@ namespace _Project.Scripts.ECS
                 visualShard.Setup(cornersPos);
         }
 
-        private void OnEnable()
-        {
-            if (shard) 
-                shard.gameObject.SetActive(true);
+        private void OnEnable() {
+            shard.gameObject.SetActive(true);
         }
 
-        private void OnDisable()
-        {
-            if(shard)
-                shard?.gameObject.SetActive(false);
+        private void OnDisable() {
+            shard?.gameObject.SetActive(false);
         }
 
         void OnDestroy() {

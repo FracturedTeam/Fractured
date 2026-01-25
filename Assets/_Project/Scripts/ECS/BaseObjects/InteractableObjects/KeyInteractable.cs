@@ -117,6 +117,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void RemoveObject() {
             var index = keyUsed.Count - 1;
+            if(index < 0) return;
             var objectRemoved = keyUsed[index];
             
             keyUsed.RemoveAt(index);

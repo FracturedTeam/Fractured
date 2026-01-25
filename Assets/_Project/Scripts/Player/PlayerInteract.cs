@@ -238,7 +238,10 @@ namespace _Project.Scripts.Player {
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory()) {
+                if (potentialInteraction.GetInteractionType is ObjectType.Memory 
+                    && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory()) { 
+                    //Le if provoque un null ref
+                    
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
                 }
