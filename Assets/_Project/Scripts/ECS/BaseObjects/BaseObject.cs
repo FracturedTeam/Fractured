@@ -197,7 +197,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void ResetInteract() {
             GetInteract?.ResetObject();
-            GetGlassInteract?.ResetObject();
+            if(GetInteractionType is not ObjectType.Moveable)
+                GetGlassInteract?.ResetObject();
         }
         
         public void SetInteract(bool canInteract) {

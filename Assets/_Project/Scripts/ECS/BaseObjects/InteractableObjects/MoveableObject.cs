@@ -127,8 +127,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         }
                 }
             }
-            
-            IsColliding();
         }
 
         public void Dispose() {
@@ -156,30 +154,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
             }
         }
-        
-       /*private void DropUnderShard() {
-            tween?.Pause();
-            tween?.Kill();
-            DOTween.Kill(transform);
-            
-            colTimer.Pause();
-            
-            baseObject.SetInteract(true);
-            baseObject.SetCollider(true);
-            
-            isGrabbed = false;
-            
-            transform.SetParent(originalParent);
-            var pos = GetGroundPos();
-            transform.position = pos;
-            
-            AudioManager.Instance.PlayDropSound(transform.position);
-            
-            PlayerController.Instance.interact.SetDropObject();
-            //baseObject.GetGlassInteract?.ResetObjectUnderShard();
-            
-            Debug.Log("[MoveableObject] Drop under shard");
-        }*/
 
         public void ResetObject() {
             baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
@@ -189,6 +163,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             colTimer.Pause();
             
+            pressurePlateOn = null;
             baseObject.SetInteract(true);
             baseObject.SetCollider(true);
             
@@ -249,6 +224,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
+                IsColliding();
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
@@ -342,7 +318,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
-                
+                IsColliding();
                 baseObject.SetInteract(true);
                 AudioManager.Instance.PlayDropSound(transform.position);
                 

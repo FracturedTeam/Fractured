@@ -229,10 +229,12 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InBlueEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInBlueEditableArea });
             return shardService.PlayerInBlueEditableArea;
         }
         
         public bool InRedEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInRedEditableArea });
             return shardService.PlayerInRedEditableArea;
         }
         
