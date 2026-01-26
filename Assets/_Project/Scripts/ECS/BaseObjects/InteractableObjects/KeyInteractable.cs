@@ -117,7 +117,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void RemoveObject() {
             var index = keyUsed.Count - 1;
-            if(index < 0) return;
+            
+            if(index < 0) 
+                return;
+            
             var objectRemoved = keyUsed[index];
             
             keyUsed.RemoveAt(index);
@@ -156,12 +159,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public bool GetKeyObject(BaseObject currentInteraction) {
             foreach (var key in keyRequired) {
-                if (key == currentInteraction) return true;
+                if (key == currentInteraction) 
+                    return true;
             }
             return false;
         }
 
-        public bool HasOneKey() {
+        private bool HasOneKey() {
             return keyRequired.Count > 0;
         }
         

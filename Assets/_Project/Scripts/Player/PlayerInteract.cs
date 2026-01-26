@@ -238,18 +238,11 @@ namespace _Project.Scripts.Player {
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                if (potentialInteraction.GetInteractionType is ObjectType.Memory 
-                    && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory()) { 
-                    //Le if provoque un null ref
-                    
+                if (potentialInteraction &&  potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory() || potentialInteraction.GetInteractionType is ObjectType.PressurePlate) { 
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
                 }
-                else if (potentialInteraction.GetInteractionType is ObjectType.PressurePlate) {
-                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
-                    hasRemoved = true;
-                }
-                
+
                 interactDuration = 0;
                 return;
             }
@@ -289,11 +282,12 @@ namespace _Project.Scripts.Player {
                     potentialInteraction = results[0].GetComponent<BaseObject>();
                     break;
             }
+
+            if (!HasObject) 
+                return;
             
-            if (HasObject) {
-                if (potentialInteraction == currentInteraction) potentialInteraction = null;
-            }
-            
+            if (potentialInteraction == currentInteraction) potentialInteraction = null;
+
         }
 
         void SetPlayerInteraction() {

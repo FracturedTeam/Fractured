@@ -106,10 +106,6 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void Initialize() {
             if(!initialized) {
-                //Premier set pour éviter des erreurs (ils sont set a nouveau par le GetInteract)
-                GetInteractionType = ObjectType.None;
-                GetCompletion = InteractionCompletion.None;
-                
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
