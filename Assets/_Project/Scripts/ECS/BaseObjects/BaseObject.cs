@@ -7,7 +7,6 @@ using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -41,6 +40,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
+        public MeshFilter meshFilter { get; private set; }
         private Collider objectCollider;
 
         public bool initialized { get; private set; }
@@ -116,6 +116,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
+                
+                if(TryGetComponent(typeof(MeshFilter), out var mf)) meshFilter = mf as MeshFilter;
+                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
@@ -198,7 +201,8 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void ResetInteract() {
             GetInteract?.ResetObject();
-            GetGlassInteract?.ResetObject();
+            if(GetInteractionType is not ObjectType.Moveable)
+                GetGlassInteract?.ResetObject();
         }
         
         public void SetInteract(bool canInteract) {
@@ -226,21 +230,15 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public Vector2 GetUIPosition(bool special = false)
-        {
+        public Vector2 GetUIPosition(bool special = false) {
             return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + 
                    (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
         }
 
-        public void Trigger(bool on)
-        {
-            print("Trigger");
-            if (!GetTutorialElement)
-                return;
-            if(on)
-                GetTutorialElement.TriggerEventStart();
-            else
-                GetTutorialElement.TriggerEventStop();
+        public void Trigger(bool on) {
+            if (!GetTutorialElement) return;
+            if(on) GetTutorialElement.TriggerEventStart();
+            else GetTutorialElement.TriggerEventStop();
         }
 
         public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;

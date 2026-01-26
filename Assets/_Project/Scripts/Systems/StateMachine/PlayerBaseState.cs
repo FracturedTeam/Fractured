@@ -20,8 +20,9 @@ namespace _Project.Scripts.Systems.StateMachine {
         protected static readonly int OpenDoorHash = Animator.StringToHash("OpenDoor");
         protected static readonly int FailedOpenDoorHash = Animator.StringToHash("FailedOpenDoor");
         protected static readonly int BreakGlassHash = Animator.StringToHash("BreakGlass");
-        protected static readonly int UsePiedestalHash = Animator.StringToHash("UsePiedestal");
-        protected static readonly int LeavePiedestalHash = Animator.StringToHash("LeavePiedestal");
+        protected static readonly int UsePedestalHash = Animator.StringToHash("UsePedestal");
+        protected static readonly int IdlePedestalHash = Animator.StringToHash("IdlePedestal");
+        protected static readonly int LeavePedestalHash = Animator.StringToHash("LeavePedestal");
         
         //Layer Hash
         protected const int MovementLayer = 0;
@@ -29,9 +30,9 @@ namespace _Project.Scripts.Systems.StateMachine {
         protected const int FullBodyLayer = 2;
 
         //Cross Fade Duration
-        protected const float defaultCrossFadeDuration = 0.25f;
+        protected const float DefaultCrossFadeDuration = 0.25f;
 
-        protected Tween animWeightTween;
+        protected Tween AnimWeightTween;
         
         protected PlayerBaseState(PlayerController player, Animator animator) {
             this.player = player;

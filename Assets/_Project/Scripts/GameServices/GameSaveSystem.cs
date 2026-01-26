@@ -48,7 +48,8 @@ namespace _Project.Scripts.GameServices {
             saveFile.CurrentScene = gameData.SceneName;
             
             bool foundExisting = false;
-            for (int i = 0; i < saveFile.SceneDatas.Count; i++)  {
+            for (int i = 0; i < saveFile.SceneDatas.Count; i++)
+            {
                 if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
                     saveFile.SceneDatas[i] = gameData;
                     foundExisting = true;
@@ -131,6 +132,10 @@ namespace _Project.Scripts.GameServices {
                 SaveInstance.Instance.GetShards()[i] = shards[i];
                 SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
             }
+        }
+
+        public bool ExistingSave() {
+            return dataService.FileDoesExist(saveFile.SaveName);
         }
     }
 }

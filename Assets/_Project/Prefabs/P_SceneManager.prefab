@@ -88,14 +88,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSaveSystem
   AutoUnparentOnAwake: 1
   saveFile:
-    SaveName: SaveFile
+    SaveName: New Game
     CurrentScene: 
     PlayerData:
       position: {x: 0, y: 0, z: 0}
     memory:
       unlocked: []
     SceneDatas: []
-  deleteSaveOnPlay: 1
+  deleteSaveOnPlay: 0
 --- !u!114 &2659810081231417284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.AudioManager
   AutoUnparentOnAwake: 1
+  masterVolume: 1
+  sfxVolume: 1
+  musicVolume: 1
   playerFootstepSound:
     Guid:
       Data1: 918943603
@@ -202,11 +205,11 @@ MonoBehaviour:
     Path: event:/Avatar/DropObjectAvatar
   reconstructMemorySound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1404006921
+      Data2: 1077536647
+      Data3: -135973474
+      Data4: -1509290500
+    Path: event:/Interactables/Memories/MemoryConnected
   enterMemorySound:
     Guid:
       Data1: 1130414617

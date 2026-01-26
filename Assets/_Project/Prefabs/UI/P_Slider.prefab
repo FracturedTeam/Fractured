@@ -438,6 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2472963059450864302}
   - component: {fileID: 7517994521159850933}
+  - component: {fileID: 6573783970982728733}
   m_Layer: 5
   m_Name: P_Slider 1
   m_TagString: Untagged
@@ -530,3 +531,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6573783970982728733}
+        m_TargetAssemblyTypeName: _Project.Scripts.UI.VolumeSlider, Assembly-CSharp
+        m_MethodName: OnSliderValueChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6573783970982728733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755046065788111193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bdaaaf2fc14d2fb35960934e39e9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.VolumeSlider
+  volumeType: 0

@@ -25,6 +25,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
         
         private bool isActive;
         private bool initialized = false;
+        private bool previousActivation = false;
 
         [HideInInspector] public MoveableObject objectOnPressurePlate;
         [SerializeField] BaseObject[] lockedBehindThis;
@@ -98,11 +99,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
             }
             
             if (isActive) {
-                // foreach (var locked in lockedBehindThis) {
-                //     locked.SetInteract(true);
-                // }
-                AudioManager.Instance.PlayPlateActiveSound(transform.position);
-                
                 var dia = baseObject.GetCompletion is InteractionCompletion.Completed ? baseObject.successDialogue : baseObject.cantInteractDialogue;
                 if (!dia.oneTime || !dia.alreadyInteracted) {
                     HudManager.Instance.SetText(dia.dialogue);
@@ -112,11 +108,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 }
             }
             else {
-                // foreach (var locked in lockedBehindThis) {
-                //     locked.SetInteract(false);
-                // }
-                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
-                
                 if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted) {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                     baseObject.failedDialogue.alreadyInteracted = true;
@@ -125,6 +116,13 @@ namespace _Project.Scripts.ECS.BaseObjects {
         }
 
         public void Tick(float deltaTime) {
+            if (previousActivation != isActive) {
+                previousActivation = isActive;
+                
+                if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
+                else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+            }
+            
             if (lockedBehindThis.Length > 0) {
                 foreach (var locked in lockedBehindThis) {
                     locked.SetInteract(isActive);

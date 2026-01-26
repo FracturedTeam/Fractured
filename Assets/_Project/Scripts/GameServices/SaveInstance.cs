@@ -4,7 +4,6 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Systems.Singletons;
-using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ namespace _Project.Scripts.GameServices {
     
     public class SaveInstance : Singleton<SaveInstance> {
         [SerializeField] public GameData gameData;
-        [SerializeField] private List<BaseObject> baseObjects;
+        [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] private List<Glass> shards;
         
         public void Bind(GameData saveFile) {

@@ -15,9 +15,9 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Start();
             
             //Set the grab animation when entering holding state
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
-            animator.CrossFade(FailedOpenDoorHash, defaultCrossFadeDuration, FullBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
+            animator.CrossFade(FailedOpenDoorHash, DefaultCrossFadeDuration, FullBodyLayer);
         }
 
         public override void OnUpdate() {
@@ -30,9 +30,9 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Stop();
             
             //Exit the grab animation when timer is finished
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
-            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, FullBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
+            animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, FullBodyLayer);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;

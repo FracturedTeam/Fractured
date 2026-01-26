@@ -33,7 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool initialized = false;
 
-        private CountdownTimer displayCountdown = new CountdownTimer(0.5f);
+        private CountdownTimer displayCountdown = new CountdownTimer(1.25f);
         
         public void Initialize() {
             displayCountdown.OnTimerStop += DelayDisplay;
