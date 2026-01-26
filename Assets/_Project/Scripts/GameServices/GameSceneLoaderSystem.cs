@@ -148,9 +148,10 @@ namespace _Project.Scripts.GameServices {
             try {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
-                GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-                if(GameSceneSettings.HasInstance) 
+                if (GameSceneSettings.HasInstance) {
+                    GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
                     GameSceneSettings.Instance.ResetShard();
+                }
                 
                 await Task.Delay(100);
                 GameSaveSystem.Instance.LoadData();
