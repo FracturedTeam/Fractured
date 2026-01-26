@@ -117,8 +117,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public void Tick(float deltaTime)
-        {
+        public void Tick(float deltaTime) {
             if (!PlayerController.HasInstance || !PlayerController.Instance.interact || PlayerController.Instance.interact.GetCurrentInteractable() == null) 
                 return;  //C'est infame mais je sais pas ce qui cause une null ref
 
@@ -132,8 +131,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             matTween?.Kill();
         }
 
-        public void CompleteObject()
-        {
+        public void CompleteObject() {
             if (!keyObjectNeeded) 
                 return;
             
@@ -153,7 +151,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
                 
             if(particles) particles.Stop();
-            if(dissolve) dissolve.material.SetFloat("_Progression", 0f);
+            if(dissolve) dissolve.material.SetFloat("_Progression", 1f);
+            Debug.LogWarning("[MoveableObject] Complete object");
         }
 
         public void ResetObject() {
