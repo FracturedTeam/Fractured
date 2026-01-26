@@ -421,7 +421,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         myCol, myCol.transform.position, myCol.transform.rotation,
                         other, other.transform.position, other.transform.rotation,
                         out Vector3 dir,
-                        out float distance)) {
+                        out var distance)) {
                     transform.position += dir * (distance + 0.001f);
                 }
             }
