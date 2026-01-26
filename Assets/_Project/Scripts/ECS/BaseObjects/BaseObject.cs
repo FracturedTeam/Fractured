@@ -100,9 +100,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         #endregion
         
-        private void Awake() {
+        /*private void Awake() {
             Initialize();
-        }
+        }*/
 
         public void Initialize() {
             if(!initialized) {
@@ -187,7 +187,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void CompleteObject() {
-            Debug.Log("[BaseObject] Complete Object");
+            if (GetGlass) GetGlassInteract.CompleteObject();
             GetInteract?.CompleteObject();
             
             if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)

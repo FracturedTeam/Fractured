@@ -248,6 +248,10 @@ namespace _Project.Scripts.Player {
                 }
 
                 interactDuration = 0;
+                
+                canInteract = false;
+                interactionType = Interaction.None;
+                RaiseInteraction();
                 return;
             }
             
