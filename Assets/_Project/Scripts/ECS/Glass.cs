@@ -144,12 +144,12 @@ namespace _Project.Scripts.ECS
         }
 
         private void OnEnable() {
-            shard.gameObject.SetActive(true);
+            shard?.gameObject.SetActive(true);
         }
 
-        private void OnDisable() {
+        /*private void OnDisable() {
             shard?.gameObject.SetActive(false);
-        }
+        }*/
 
         void OnDestroy() {
             if(shard) Destroy(shard.gameObject);

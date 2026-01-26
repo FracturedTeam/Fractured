@@ -66,8 +66,8 @@ namespace _Project.Scripts.DebugSystems.Services {
                 GameSaveSystem.Instance.SaveGame();
             if(GUILayout.Button("Load save", buttonStyle))
                 GameSaveSystem.Instance.LoadGame();
-            if(GUILayout.Button("Start New Game", buttonStyle))
-                GameSceneLoaderSystem.Instance.NewGame();
+            /*if(GUILayout.Button("Start New Game", buttonStyle))
+                GameSceneLoaderSystem.Instance.NewGame();*/
             
             GUILayout.Label("Scenes", sectionStyle);
             for(var i = 0; i < GameSceneLoaderSystem.Instance.allScenes.Length; i++) {

@@ -188,7 +188,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void CompleteObject() {
             Debug.Log("[BaseObject] Complete Object");
-            GetInteract.CompleteObject();
+            GetInteract?.CompleteObject();
             
             if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)
             {
