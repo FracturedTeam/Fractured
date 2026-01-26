@@ -40525,7 +40525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1233622942}
-  - component: {fileID: 1233622941}
+  - component: {fileID: 1233622943}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -40533,19 +40533,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1233622941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233622940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 797b4ea2389c32f4899db7b0b25f4297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
-  animatedCamera: {fileID: 0}
 --- !u!4 &1233622942
 Transform:
   m_ObjectHideFlags: 0
@@ -40561,6 +40548,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1233622943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233622940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df2a826d77b0ac4ab38c5f04b82d26b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  speedUpKey:
+    m_Name: Speed Up Key
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5163d05a-4131-4081-8a5b-e8c03897fd6d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: f3de69bf-beb1-4d87-9c01-cf75fae3bd80
+      m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Speed Up Key
+      m_Flags: 0
+    m_Flags: 0
+  animatorScene: {fileID: 638854464}
+  animatorCredits: {fileID: 1797771623}
+  maxSpeed: 3
 --- !u!1 &1238409467
 GameObject:
   m_ObjectHideFlags: 0
