@@ -50,13 +50,12 @@ namespace _Project.Scripts.GameServices {
             bool foundExisting = false;
             for (int i = 0; i < saveFile.SceneDatas.Count; i++)
             {
-                if (saveFile.SceneDatas[i].SceneName != gameData.SceneName) 
-                    continue;
-                
-                saveFile.SceneDatas[i] = gameData;
-                foundExisting = true;
-                Debug.Log($"[SaveSystem] Has found existing Scene Save");
-                break;
+                if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
+                    saveFile.SceneDatas[i] = gameData;
+                    foundExisting = true;
+                    Debug.Log($"[SaveSystem] Has found existing Scene Save");
+                    break;
+                }
             }
 
             if (!foundExisting) {

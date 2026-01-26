@@ -129,7 +129,7 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles, Camera.main.transform);
+                var particle =  Instantiate(spawningParticles, PlayerController.Instance.cinemachineBrain.OutputCamera.transform);
                 particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
