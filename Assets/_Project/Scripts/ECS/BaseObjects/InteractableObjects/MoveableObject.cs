@@ -117,14 +117,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public void Tick(float deltaTime) {
-            if (PlayerController.HasInstance) { //C'est infame mais je sais pas ce qui cause une null ref
-                if (PlayerController.Instance.interact) {
-                    if(PlayerController.Instance.interact.GetCurrentInteractable() != null)
-                        if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
-                            OnGrab();
-                        }
-                }
+        public void Tick(float deltaTime)
+        {
+            if (!PlayerController.HasInstance || !PlayerController.Instance.interact || PlayerController.Instance.interact.GetCurrentInteractable() == null) 
+                return;  //C'est infame mais je sais pas ce qui cause une null ref
+
+            if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
+                OnGrab();
             }
         }
 
@@ -133,26 +132,28 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             matTween?.Kill();
         }
 
-        public void CompleteObject() {
-            if (keyObjectNeeded) {
-                if (keyObjectNeeded.keyObjectPos != null) {
-                    transform.SetParent(keyObjectNeeded.keyObjectPos);
-                    transform.position = keyObjectNeeded.keyObjectPos.position;
-                    transform.rotation = keyObjectNeeded.keyObjectPos.rotation;
-                }
-                else {
-                    transform.SetParent(keyObjectNeeded.transform);
-                    transform.position = keyObjectNeeded.transform.position;
-                }
-                    
-                baseObject.SetInteract(false);
-                baseObject.SetCollider(false);
-                    
-                keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
-                
-                if(particles) particles.Stop();
-                if(dissolve) dissolve.material.SetFloat("_Progression", 0f);
+        public void CompleteObject()
+        {
+            if (!keyObjectNeeded) 
+                return;
+            
+            if (keyObjectNeeded.keyObjectPos != null) {
+                transform.SetParent(keyObjectNeeded.keyObjectPos);
+                transform.position = keyObjectNeeded.keyObjectPos.position;
+                transform.rotation = keyObjectNeeded.keyObjectPos.rotation;
             }
+            else {
+                transform.SetParent(keyObjectNeeded.transform);
+                transform.position = keyObjectNeeded.transform.position;
+            }
+                    
+            baseObject.SetInteract(false);
+            baseObject.SetCollider(false);
+                    
+            keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
+                
+            if(particles) particles.Stop();
+            if(dissolve) dissolve.material.SetFloat("_Progression", 0f);
         }
 
         public void ResetObject() {
@@ -224,6 +225,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
+                transform.localScale = Vector3.one;
                 IsColliding();
                 
                 baseObject.SetInteract(true);
