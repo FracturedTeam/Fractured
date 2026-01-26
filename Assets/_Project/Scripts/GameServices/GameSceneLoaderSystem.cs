@@ -201,6 +201,8 @@ namespace _Project.Scripts.GameServices {
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
+
+            Time.timeScale = 1;
             
             await Task.Delay(600);
             EventBus<FadeObject>.Raise(new FadeObject {

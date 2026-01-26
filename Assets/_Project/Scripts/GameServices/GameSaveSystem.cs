@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
@@ -128,9 +129,16 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            for (int i = 0; i < shards.Count; i++) {
-                SaveInstance.Instance.GetShards()[i] = shards[i];
-                SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+            if (SaveInstance.Instance.GetShards().Count < shards.Count) {
+                shards = shards.Distinct().ToList();
+            }
+            foreach (var s in shards) {
+                for (int i = 0; i < SaveInstance.Instance.GetShards().Count; i++) {
+                    if (s.gameObject.name == SaveInstance.Instance.GetShards()[i].gameObject.name) {
+                        SaveInstance.Instance.GetShards()[i] = shards[i];
+                        SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+                    }
+                }
             }
         }
 
