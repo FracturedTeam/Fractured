@@ -238,6 +238,7 @@ namespace _Project.Scripts.Player {
                 interactDuration += Time.deltaTime;
             
             if (interactDuration >= holdInteractionNeeded && !HasObject) {
+                //If causes a null ref (tried to fix it)
                 if (potentialInteraction &&  potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory() || potentialInteraction.GetInteractionType is ObjectType.PressurePlate) { 
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;

@@ -77,7 +77,6 @@ namespace _Project.Scripts.UI
         
         private readonly List<ParticleSystem> freeParticles = new List<ParticleSystem>();
         private readonly List<Fragment> freeFragment = new List<Fragment>();
-        private Camera mainCamera;
 
         private void Start() {
             textTimer = new CountdownTimer(0);
@@ -85,7 +84,6 @@ namespace _Project.Scripts.UI
             interactionUI.GetGroup.alpha = 0;
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
-            mainCamera = Camera.main;
         }
 
         private void OnEnable() {
@@ -131,7 +129,7 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles, mainCamera.transform);
+                var particle =  Instantiate(spawningParticles, Camera.main.transform);
                 particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
