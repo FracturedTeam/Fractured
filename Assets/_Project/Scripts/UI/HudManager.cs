@@ -75,8 +75,8 @@ namespace _Project.Scripts.UI
         private ParticleSystem currentParticle;
         private Fragment currentFrag;
         
-        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
-        private List<Fragment> freeFragment = new List<Fragment>();
+        private readonly List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private readonly List<Fragment> freeFragment = new List<Fragment>();
 
         private void Start() {
             textTimer = new CountdownTimer(0);
@@ -85,15 +85,15 @@ namespace _Project.Scripts.UI
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
         }
-        
-        void OnEnable() {
+
+        private void OnEnable() {
             interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
             EventBus<InteractEvent>.Register(interactEventBinding);
             memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
             EventBus<MemoryEvent>.Register(memoryEventBinding);
         }
 
-        void OnDisable() {
+        private void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
             EventBus<MemoryEvent>.Deregister(memoryEventBinding);
             
@@ -129,7 +129,7 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles, Camera.main.transform);
+                var particle =  Instantiate(spawningParticles, PlayerController.Instance.cinemachineBrain.OutputCamera.transform);
                 particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
@@ -173,8 +173,8 @@ namespace _Project.Scripts.UI
         }
 
         #region InteractionHUD
-        
-            void ShowInteraction(InteractEvent e) {
+
+        private void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
 
                 if (!e.ShowInteraction || e.Interaction == Interaction.None) {
@@ -245,7 +245,7 @@ namespace _Project.Scripts.UI
                 Instance.interactionParent.transform.position = position;
             }
 
-            void ShowMemory(MemoryEvent e) {
+            private void ShowMemory(MemoryEvent e) {
                 memoryTween.Kill();
                 
                 memoryImage.sprite = e.memory;

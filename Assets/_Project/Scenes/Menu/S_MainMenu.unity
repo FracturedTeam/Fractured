@@ -3205,162 +3205,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
---- !u!1 &387158286
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 387158287}
-  - component: {fileID: 387158290}
-  - component: {fileID: 387158289}
-  - component: {fileID: 387158288}
-  m_Layer: 5
-  m_Name: StartButton
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &387158287
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387158286}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 570371122}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &387158288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387158286}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 0
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 387158289}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1233622941}
-        m_TargetAssemblyTypeName: _Project.Scripts.UI.MenuManager, Assembly-CSharp
-        m_MethodName: ChangeTarget
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1651381451}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 387158286}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 624703793}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
---- !u!114 &387158289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387158286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &387158290
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387158286}
-  m_CullTransparentMesh: 1
 --- !u!4 &403291220 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2343294101528712492, guid: 41d583d0f1a4d4c4fba98df2535f6708, type: 3}
@@ -10430,11 +10274,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 387158287}
   - {fileID: 624703798}
   - {fileID: 1369334477}
   - {fileID: 1189005253}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 638854463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11069,7 +10912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -11110,14 +10953,18 @@ PrefabInstance:
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1080114308}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MenuCamera-GoToOption
+      objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -11157,53 +11004,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 113742088573330987, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
   m_PrefabInstance: {fileID: 634214666}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &638669265
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 638669266}
-  - component: {fileID: 638669267}
-  m_Layer: 0
-  m_Name: CameraPos2_Option
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &638669266
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638669265}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.08220176, y: 0.93974954, z: -0.1081243, w: -0.31372422}
-  m_LocalPosition: {x: -4.919, y: 1.5810001, z: -57.028}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 808722551}
-  m_LocalEulerAnglesHint: {x: 14.762, y: -143.744, z: -5.141}
---- !u!114 &638669267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638669265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 455c290e7abdf6e40a69e2d693e19ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTranstion
-  nextCameraPos: {fileID: 638669266}
-  previousCameraPos: {fileID: 0}
-  openPanel: {fileID: 1369334476}
 --- !u!1 &638854461
 GameObject:
   m_ObjectHideFlags: 0
@@ -11214,6 +11014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 638854463}
   - component: {fileID: 638854462}
+  - component: {fileID: 638854464}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -11272,14 +11073,35 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638854461}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07700108, y: 0.29740974, z: -0.037199028, w: -0.9509125}
-  m_LocalPosition: {x: 2.167, y: 3.869, z: 0.459}
+  m_LocalRotation: {x: -0.07700108, y: 0.2974097, z: -0.03719903, w: -0.9509125}
+  m_LocalPosition: {x: 1.147, y: 3.869, z: 0.459}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 570371122}
   - {fileID: 905018588}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 8.616839, y: -39.608852, z: 1.3671371}
+--- !u!111 &638854464
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638854461}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: cd89363cae7f318498f6dff3c5deb877, type: 2}
+  - {fileID: 7400000, guid: 7eb9bcecb5035cd4c8c2c13edb6ffc19, type: 2}
+  - {fileID: 7400000, guid: 1674557c1c7f56f46a0a8e5946f68d90, type: 2}
+  - {fileID: 7400000, guid: 75ce97548829b3b44a892f03a6133139, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1001 &642564380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11406,10 +11228,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
@@ -11421,11 +11247,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1189005254}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1189005254}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
@@ -11437,6 +11271,10 @@ PrefabInstance:
       value: Close
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -11445,15 +11283,27 @@ PrefabInstance:
       value: _Project.Scripts.UI.MenuAnimation, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuAnimation, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1651381451}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MenuCamera-GoFromCredits
+      objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7291969285294723151, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
@@ -13501,39 +13351,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5977948306300319584, guid: 3eaa5757ddc40cb4bb0d4818165bd355, type: 3}
   m_PrefabInstance: {fileID: 806869410}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &808722550
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 808722551}
-  m_Layer: 0
-  m_Name: Camera_Option
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &808722551
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 808722550}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 638669266}
-  - {fileID: 1080114308}
-  m_Father: {fileID: 1046548618}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &811844572
 GameObject:
   m_ObjectHideFlags: 0
@@ -14598,7 +14415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 638854463}
-  m_LocalEulerAnglesHint: {x: 9.705, y: -34.612, z: 1.45}
+  m_LocalEulerAnglesHint: {x: 0, y: -92, z: 0}
 --- !u!114 &905018589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15963,40 +15780,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1039406825}
   m_CullTransparentMesh: 1
---- !u!1 &1046548617
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1046548618}
-  m_Layer: 0
-  m_Name: Cameras Positions
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1046548618
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046548617}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.29147, y: 1.87766, z: 59.7836}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 808722551}
-  - {fileID: 1651381451}
-  - {fileID: 1848980499}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1049309014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16261,53 +16044,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076018524}
   m_CullTransparentMesh: 1
---- !u!1 &1080114307
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1080114308}
-  - component: {fileID: 1080114309}
-  m_Layer: 0
-  m_Name: CameraPos2_transition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1080114308
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080114307}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.72269547, z: -0, w: 0.6911666}
-  m_LocalPosition: {x: -1.02, y: 2.8349998, z: -56.63}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 808722551}
-  m_LocalEulerAnglesHint: {x: 0, y: -92.555, z: 0}
---- !u!114 &1080114309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080114307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 455c290e7abdf6e40a69e2d693e19ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTranstion
-  nextCameraPos: {fileID: 638669266}
-  previousCameraPos: {fileID: 1651381451}
-  openPanel: {fileID: 0}
 --- !u!43 &1100427046
 Mesh:
   m_ObjectHideFlags: 0
@@ -17486,7 +17222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19820b9accdd71a4b8424a9e7bcba799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  openingTime: 2
+  openingTime: 3.5
   closingTime: 1
 --- !u!114 &1189005255
 MonoBehaviour:
@@ -17926,36 +17662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797b4ea2389c32f4899db7b0b25f4297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuManager
-  splashScreenCameraTransform: {fileID: 905018588}
-  mainScreenCameraTransform: {fileID: 1651381451}
-  optionsScreenCameraTransform: {fileID: 638669266}
-  creditsScreenCameraTransform: {fileID: 1848980499}
-  cameraMovementCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speed: 1
-  mainCamera: {fileID: 638854462}
+  animatedCamera: {fileID: 638854464}
 --- !u!4 &1233622942
 Transform:
   m_ObjectHideFlags: 0
@@ -20297,7 +20004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19820b9accdd71a4b8424a9e7bcba799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  openingTime: 2
+  openingTime: 3.5
   closingTime: 1
 --- !u!114 &1369334480
 MonoBehaviour:
@@ -20941,7 +20648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -20982,10 +20689,14 @@ PrefabInstance:
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1080114308}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MenuCamera-GoFromOption
+      objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -23314,53 +23025,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!1 &1651381450
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1651381451}
-  - component: {fileID: 1651381452}
-  m_Layer: 0
-  m_Name: CameraPos1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1651381451
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651381450}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.07700108, y: 0.29740974, z: -0.037199028, w: -0.9509125}
-  m_LocalPosition: {x: 1.4425299, y: 1.86134, z: -58.6976}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1046548618}
-  m_LocalEulerAnglesHint: {x: 50.403, y: 38.083, z: 9.483}
---- !u!114 &1651381452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651381450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 455c290e7abdf6e40a69e2d693e19ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTranstion
-  nextCameraPos: {fileID: 1651381451}
-  previousCameraPos: {fileID: 0}
-  openPanel: {fileID: 624703793}
 --- !u!1001 &1662443527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25482,53 +25146,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21697e54e0ea9ba4584e484b923fa8b6, type: 3}
---- !u!1 &1848980498
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1848980499}
-  - component: {fileID: 1848980500}
-  m_Layer: 0
-  m_Name: CameraPos3_Credits
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1848980499
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848980498}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.006923606, y: 0.7063651, z: 0.0069097662, w: 0.7077801}
-  m_LocalPosition: {x: 3.91, y: 3.8, z: -58.78}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1046548618}
-  m_LocalEulerAnglesHint: {x: -1.121, y: 89.885, z: 0}
---- !u!114 &1848980500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848980498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 455c290e7abdf6e40a69e2d693e19ea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTranstion
-  nextCameraPos: {fileID: 1848980499}
-  previousCameraPos: {fileID: 0}
-  openPanel: {fileID: 1189005252}
 --- !u!1001 &1871444376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26882,7 +26499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -26923,10 +26540,14 @@ PrefabInstance:
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1848980499}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MenuCamera-GoToCredits
+      objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7188750939460714042, guid: 1be0197623cba4c41afcdad6651bf626, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -28017,9 +27638,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1046548618}
   - {fileID: 638854463}
   - {fileID: 1798112358}
   - {fileID: 1233622942}
-  - {fileID: 570371122}
   - {fileID: 275275178}
