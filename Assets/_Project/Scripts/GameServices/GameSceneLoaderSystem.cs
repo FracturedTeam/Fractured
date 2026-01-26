@@ -153,7 +153,7 @@ namespace _Project.Scripts.GameServices {
                     GameSceneSettings.Instance.ResetShard();
                 }
                 
-                await Task.Delay(100);
+                await Task.Delay(200);
                 GameSaveSystem.Instance.LoadData();
             }
             catch (Exception e) {

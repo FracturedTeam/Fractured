@@ -142,6 +142,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
 
+        public void CompleteObject() {
+            if (objectInside && interactableInBox) {
+                objectOut = true;
+                SetInteractableInBox(true);
+            }
+        }
+        
         void OnDestroy() {
             updatePos.OnTick -= Set2DPoints;
             updatePos.Stop();
