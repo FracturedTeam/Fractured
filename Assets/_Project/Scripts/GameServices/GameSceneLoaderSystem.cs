@@ -92,7 +92,8 @@ namespace _Project.Scripts.GameServices {
                 });
                 await Task.Delay(500);
                 await Task.Yield();
-
+                HudManager.Instance.StopEventInteraction();
+                
                 await LoadSceneAsync(sceneSettings.levelDesign);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
@@ -129,11 +130,15 @@ namespace _Project.Scripts.GameServices {
             
             scenesToLoad.Clear();
 
+            await UnloadSceneAsync();
+            GameInitializer.Instance.EmptyAll();
+            HudManager.Instance.StopEventInteraction();
             await LoadSceneAsync(scene);
 
+            GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
+            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
             await Task.Delay(100);
-            
-            _ = UnloadGameplaySceneAsync();
+            GameSaveSystem.Instance.LoadData();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
             PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
@@ -143,7 +148,7 @@ namespace _Project.Scripts.GameServices {
             try {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
-                await Task.Delay(100); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
+                //await Task.Delay(100); //Delay d'attente pour repopulate object and save data, mainly due to the wait of the glass shard to respawn
                 GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
                 if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
                 await Task.Delay(100);
