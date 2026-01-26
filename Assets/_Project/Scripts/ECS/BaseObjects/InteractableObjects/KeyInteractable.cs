@@ -144,6 +144,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             baseObject.GetCompletion = InteractionCompletion.Completed;
             baseObject.SetInteract(false);
+
+            foreach (var key in keyRequired) {
+                key.SetInteract(false);
+                key.SetCollider(false);
+            }
         }
 
         public virtual void ResetObject() {

@@ -11,5 +11,6 @@ namespace _Project.Scripts.Enums {
         EnterPressurePlate,
         LeavePressurePlate,
         DropNoTimer,
+        Complete
     }
 }
