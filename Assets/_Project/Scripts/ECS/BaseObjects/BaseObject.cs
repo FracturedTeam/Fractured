@@ -208,6 +208,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteract(bool canInteract) {
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
+            if(GetInteractionType is ObjectType.Moveable)
+                Debug.Log($"Can be Interacted {canInteract} : {gameObject.name}");
         }
         
         public void SetCollider(bool isOn) {

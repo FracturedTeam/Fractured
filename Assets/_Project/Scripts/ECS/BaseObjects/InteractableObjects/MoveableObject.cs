@@ -95,10 +95,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     break;
                 //Drop case
                 case ObjectInteraction.Drop:
-                    if (isGrabbed)
+                    //if (isGrabbed)
                         OnDrop(other);
-                    else
-                        Debug.Log("[MoveableObject] Cannot drop object !");
+                    /*else
+                        Debug.Log("[MoveableObject] Cannot drop object !");*/
                     break;
                 case ObjectInteraction.DropNoTimer:
                     if (isGrabbed)
