@@ -177,7 +177,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void LoadShards() {
-            /*foreach (var shard in shardService.shards) {
+            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
                 shard.LoadData();
             }*/
             foreach (var shard in SaveInstance.Instance.GetShards()) {

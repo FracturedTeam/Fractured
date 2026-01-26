@@ -72,17 +72,18 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (objectColor is ColorEnum.Both) {
                     SetVisibility(false);
+                    baseObject?.SetRenderer(false);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(false);
+                    }
                     if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
-                        baseObject.SetRenderer(false);
-                        for (var i = 0; i < transform.childCount; i++) {
-                            transform.GetChild(i).gameObject.SetActive(false);
-                        }
-
                         if(wallRenderer.Length > 0)
                             foreach (var wall in wallRenderer) {
                                 wall.material = visibleWallMat;
                             }
+                        Debug.Log("Executed lock");
                     }
+                    Debug.Log("Set visibility to false");
                 }
                 
                 underRed = 0;
@@ -93,9 +94,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (objectInside) {
                     if (interactableInBox != null) {
                         SetObjectInside();
-                    
-                        //setObjectInsideTimer.OnTimerStop += SetObjectInside;
-                        //setObjectInsideTimer.Start();
                     }
                     else
                         Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
@@ -216,6 +214,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private void SetVisibility(bool isUnder) {
             if (objectColor == ColorEnum.Both) IsVisible = isUnder;
+            
             else IsVisible = !isUnder;
             
             if (selfMoveable) {
