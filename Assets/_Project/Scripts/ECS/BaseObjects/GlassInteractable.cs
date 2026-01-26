@@ -142,6 +142,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
         }
 
+        public void CompleteObject() {
+            if (objectInside && interactableInBox) {
+                objectOut = true;
+                SetInteractableInBox(true);
+            }
+        }
+        
         void OnDestroy() {
             updatePos.OnTick -= Set2DPoints;
             updatePos.Stop();
@@ -274,8 +281,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
             if(!interactableInBox.GetBaseObject().initialized) interactableInBox.GetBaseObject().Initialize();
-            
-            interactableInBox?.GetBaseObject().SetInteract(revealed);
+            if(interactableInBox.GetBaseObject().GetCompletion is InteractionCompletion.NotCompleted)
+                interactableInBox?.GetBaseObject().SetInteract(revealed);
             interactableInBox?.GetBaseObject().SetCollider(revealed);
             interactableInBox?.GetBaseObject().SetRenderer(revealed);
         }

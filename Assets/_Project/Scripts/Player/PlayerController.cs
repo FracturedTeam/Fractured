@@ -111,7 +111,7 @@ namespace _Project.Scripts.Player {
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
             At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
+            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory()));
             At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
