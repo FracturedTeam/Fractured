@@ -186,7 +186,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 Trigger(true);
         }
 
-        private void CompleteObject() {
+        public void CompleteObject() {
             Debug.Log("[BaseObject] Complete Object");
             GetInteract.CompleteObject();
             
