@@ -192,7 +192,7 @@ namespace _Project.Scripts.Player {
             Debug.Log($"[PlayerInteract] Interact with memory");
         }
 
-        private void LeaveMemory() {
+        public void LeaveMemory() {
             memoryInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
             memoryInteraction = null;
             
@@ -215,7 +215,7 @@ namespace _Project.Scripts.Player {
             Debug.Log($"[PlayerInteract] Interact with Pressure Plate");
         }
 
-        private void LeavePressurePlate() {
+        public void LeavePressurePlate() {
             potentialInteraction?.OnInteract(ObjectInteraction.LeavePressurePlate);
             potentialInteraction = null;
             

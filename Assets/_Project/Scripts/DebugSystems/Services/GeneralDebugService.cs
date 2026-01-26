@@ -1,7 +1,6 @@
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.DebugSystems.Services {
     public class GeneralDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
@@ -67,11 +66,10 @@ namespace _Project.Scripts.DebugSystems.Services {
                 GameSaveSystem.Instance.SaveGame();
             if(GUILayout.Button("Load save", buttonStyle))
                 GameSaveSystem.Instance.LoadGame();
-            if(GUILayout.Button("Delete save", buttonStyle))
-                GameSaveSystem.Instance.DeleteGame(GameSaveSystem.Instance.saveFile.SaveName);
+            /*if(GUILayout.Button("Start New Game", buttonStyle))
+                GameSceneLoaderSystem.Instance.NewGame();*/
             
             GUILayout.Label("Scenes", sectionStyle);
-            //GUILayout.Label($"Current loaded scene {GameSceneLoaderSystem.Instance.GetLoadedScenes()[0]}", debugStyle);
             for(var i = 0; i < GameSceneLoaderSystem.Instance.allScenes.Length; i++) {
                 var s =  GameSceneLoaderSystem.Instance.allScenes[i];
                 if (GUILayout.Button($"Load : {s.SceneName}", buttonStyle)) {

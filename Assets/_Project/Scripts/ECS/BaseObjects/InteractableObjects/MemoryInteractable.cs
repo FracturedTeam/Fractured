@@ -110,7 +110,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void DisplayMemory() {
             baseObject.SetInteract(false);
-            AudioManager.Instance.PlayEnterMemorySound(transform.position);
             displayCountdown.Start();
         }
 
@@ -119,6 +118,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 inMemory = true
             });
             
+            AudioManager.Instance.PlayEnterMemorySound(transform.position);
             soundInstance.getPlaybackState(out var playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
                 soundInstance.start();
