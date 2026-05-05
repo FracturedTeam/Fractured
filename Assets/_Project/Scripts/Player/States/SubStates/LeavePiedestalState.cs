@@ -22,8 +22,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             
             animator.CrossFade(EmptyHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(true);
-            player.movement.UnfreezeController();
+            player.SetInteraction(true);
+            player.FreezeController(false);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;

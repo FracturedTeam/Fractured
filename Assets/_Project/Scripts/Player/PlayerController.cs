@@ -170,6 +170,36 @@ namespace _Project.Scripts.Player {
         public IState GetCurrentState() {
             return stateMachine.CurrentState;
         }
+        
+        #region Movement Helper/Setter
+
+        public void UpdateMovement() => movement.HandleUpdate();
+        public void FixedUpdateMovement() => movement.HandleMovement();
+        
+        public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
+        
+        public void FreezeController(bool doFreeze) {
+            if(doFreeze) movement.FreezeController();
+            else movement.UnfreezeController();
+        }
+        
+        public Vector3 GetForwardDir() => movement.mesh.forward;
+        public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
+        public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
+        public Rigidbody GetRigidbody() => movement.GetRigidbody();
+        #endregion
+        
+        #region Interaction Helper/Setter
+        
+        public void UpdateInteraction() => interact.HandleUpdate(movement.previousMoveDir);
+        
+        public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
+        public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
+        public bool IsUsingDoor() => interact.IsUsingDoor();
+        public bool GetFailedDrop() => interact.triggerFailedDrop;
+        public bool SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
+        public void SetShardTriggered(bool triggeredShard) => interact.triggerShard = triggeredShard;
+        #endregion
     }
 
     [Serializable]

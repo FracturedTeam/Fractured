@@ -118,7 +118,7 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void MeshRotation() {
-        if (player.interact.UsingDoor()) return;
+        if (player.IsUsingDoor()) return;
         if(moveDir == Vector3.zero) return;
         
         var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
@@ -215,7 +215,7 @@ public class PlayerMovementController : MonoBehaviour
         if (!IsGrounded())
             rb.AddForce(Vector3.down * currentFallSpeed, ForceMode.Acceleration);
         
-        if (player.interact.UsingDoor()) return;
+        if (player.IsUsingDoor()) return;
         
         PlayerMove();
     }
@@ -260,12 +260,12 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     public float GetSpeedRatio() {
-        if (player.interact.UsingDoor()) return 0;
+        if (player.IsUsingDoor()) return 0;
         return currentSpeed / currentMaxSpeed;
     }
 
     public float SetAnimatorSpeed() {
-        if(rb.isKinematic || player.interact.triggerFailedDrop) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, lerpTime);
+        if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, lerpTime);
         
         if (moveDir.magnitude > 0) 
           return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);

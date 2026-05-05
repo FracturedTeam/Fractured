@@ -16,10 +16,10 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(OpenDoorHash, DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(false);
+            player.SetInteraction(false);
             animationExitTimer.Start();
-            player.interact.triggerDoor = false;
-            player.movement.FreezeController();
+            player.SetDoorTriggered(false);
+            player.FreezeController(true);
         }
 
         public override void OnUpdate() {
@@ -33,7 +33,8 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, FullBodyLayer);
-            player.movement.UnfreezeController();
+            
+            player.FreezeController(false);
         }
     }
 }

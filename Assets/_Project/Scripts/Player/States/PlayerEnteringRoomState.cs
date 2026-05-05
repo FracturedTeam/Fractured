@@ -19,13 +19,13 @@ namespace _Project.Scripts.Player.States {
         public override void OnEnter() {
             player.triggerEnterRoom = false;
             startPos = player.transform.position;
-            endPos = startPos + player.movement.mesh.forward * 2f;
+            endPos = startPos + player.GetForwardDir() * 2f;
             
             exitStateTimer.Start();
         }
 
         public override void OnUpdate() {
-            player.movement.GetRigidbody().MovePosition(Vector3.Lerp(endPos, startPos, Mathf.Clamp(exitStateTimer.Progress, 0.2f, 1f)));
+            player.GetRigidbody().MovePosition(Vector3.Lerp(endPos, startPos, Mathf.Clamp(exitStateTimer.Progress, 0.2f, 1f)));
             //player.movement.GetRigidbody().DOMove(endPos, 1.8f).SetEase(Ease.OutSine).SetUpdate(UpdateType.Fixed);
 
             animator.SetFloat(BlendingHash,
@@ -35,7 +35,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            player.movement.UnfreezeController();
+            player.FreezeController(false);
         }
 
         public bool IsStateFinished() {

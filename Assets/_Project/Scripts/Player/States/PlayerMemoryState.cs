@@ -13,8 +13,8 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(EnterMemoryHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(false);
-            player.movement.FreezeController();
+            player.SetInteraction(false);
+            player.FreezeController(true);
         }
 
         public override void OnUpdate() {

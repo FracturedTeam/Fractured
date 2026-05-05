@@ -227,8 +227,8 @@ namespace _Project.Scripts.Player {
         #endregion
 
         private void HandleInteractRotation(Vector3 playerDir) {
-            var newPos = transform.position + player.movement.mesh.forward * interactZoneSize.z;
-            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.movement.playerConfig.rotationSpeed * Time.deltaTime);
+            var newPos = transform.position + player.GetForwardDir() * interactZoneSize.z;
+            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.GetRotationSpeed() * Time.deltaTime);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
@@ -499,7 +499,7 @@ namespace _Project.Scripts.Player {
             usingDoor.Start();
         }
         
-        public bool UsingDoor() {
+        public bool IsUsingDoor() {
             return usingDoor.IsRunning;
         }
 

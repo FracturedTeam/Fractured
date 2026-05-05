@@ -20,8 +20,8 @@ namespace _Project.Scripts.Player.States {
             
             animationFinished.Start();
             
-            player.interact.SetInteract(false);
-            player.movement.FreezeController();
+            player.SetInteraction(false);
+            player.FreezeController(true);
         }
 
         private void IdlePiedestal() {

@@ -36,7 +36,7 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
 
         private void UnSet() {
-            player.interact.triggerFailedDrop = false;
+            player.SetFailedDrop(false);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;
