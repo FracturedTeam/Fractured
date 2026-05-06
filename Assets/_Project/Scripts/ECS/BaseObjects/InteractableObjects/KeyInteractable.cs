@@ -151,14 +151,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public virtual void ResetObject() {
+        public void ResetObject() {
             Debug.Log("[KeyInteractable] Reset Object");
             keyUsed.Clear();
             baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             baseObject.SetInteract(true);
         }
 
-        public virtual BaseObject GetBaseObject() {
+        public BaseObject GetBaseObject() {
             return baseObject;
         }
 

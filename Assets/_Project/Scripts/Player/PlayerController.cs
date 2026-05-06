@@ -45,7 +45,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] private AnimationClip breakObjectClip;
         [SerializeField] private AnimationClip failedDoorClip;
         [SerializeField] private AnimationClip leaveMemoryClip;
-        [SerializeField] private AnimationClip usePiedestalClip;
+        [SerializeField] private AnimationClip usePedestalClip;
 
         private Action enterRoom;
         [HideInInspector] public bool triggerEnterRoom = false;
@@ -78,7 +78,7 @@ namespace _Project.Scripts.Player {
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
-            var usePiedestal = new PlayerPressurePlateState(this, animator);
+            var usePedestal = new PlayerPressurePlateState(this, animator);
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
@@ -87,7 +87,7 @@ namespace _Project.Scripts.Player {
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
             var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
-            var leavePiedestal = new LeavePiedestalState(this, animator, usePiedestalClip);
+            var leavePedestal = new LeavePiedestalState(this, animator, usePedestalClip);
             
             //Define all states transitions
             //Locomotion State
@@ -125,9 +125,9 @@ namespace _Project.Scripts.Player {
             At(failedDoor, locomotionState, new FuncPredicate(() => !interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
             
             //Use Piedestal
-            At(locomotionState, usePiedestal, new FuncPredicate(() => interact.IsInPressurePlate()));
-            At(usePiedestal, leavePiedestal, new FuncPredicate(() => !interact.IsInPressurePlate()));
-            At(leavePiedestal, locomotionState, new FuncPredicate(() => leavePiedestal.IsClipFinished()));
+            At(locomotionState, usePedestal, new FuncPredicate(() => interact.IsInPressurePlate()));
+            At(usePedestal, leavePedestal, new FuncPredicate(() => !interact.IsInPressurePlate()));
+            At(leavePedestal, locomotionState, new FuncPredicate(() => leavePedestal.IsClipFinished()));
             
             //Obtenir un éclat de verre
             At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));
@@ -182,23 +182,20 @@ namespace _Project.Scripts.Player {
             if(doFreeze) movement.FreezeController();
             else movement.UnfreezeController();
         }
-        
-        public Vector3 GetForwardDir() => movement.mesh.forward;
-        public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
         public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
+        public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
+        public Vector3 GetForwardDir() => movement.mesh.forward;
         public Rigidbody GetRigidbody() => movement.GetRigidbody();
         #endregion
         
         #region Interaction Helper/Setter
-        
         public void UpdateInteraction() => interact.HandleUpdate(movement.previousMoveDir);
-        
         public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
         public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
+        public void SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
+        public void SetShardTriggered(bool triggeredShard) => interact.triggerShard = triggeredShard;
         public bool IsUsingDoor() => interact.IsUsingDoor();
         public bool GetFailedDrop() => interact.triggerFailedDrop;
-        public bool SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
-        public void SetShardTriggered(bool triggeredShard) => interact.triggerShard = triggeredShard;
         #endregion
     }
 

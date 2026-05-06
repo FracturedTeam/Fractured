@@ -11,7 +11,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [ContextMenu("Force Event Start")]
         internal void TriggerEventStart()
         {
-            print("TriggerEventStart");
+            //print("TriggerEventStart");
             HudManager.Instance.EventInteraction(GetComponent<BaseObject>().GetUIPosition(true), eventText, eventPicto);
         }
     

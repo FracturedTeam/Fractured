@@ -100,9 +100,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         #endregion
         
-        /*private void Awake() {
-            Initialize();
-        }*/
 
         public void Initialize() {
             if(!initialized) {
