@@ -128,6 +128,10 @@ namespace _Project.Scripts.GameServices.Services {
         public void AddShards(Glass[] newShards) {
             shards.AddRange(newShards);
         }
+
+        public void AddSingleShard(Glass newGlass) {
+            shards.Add(newGlass);
+        }
         
         public void SetEditableArea(bool inArea) {
             PlayerInEditableArea = inArea;

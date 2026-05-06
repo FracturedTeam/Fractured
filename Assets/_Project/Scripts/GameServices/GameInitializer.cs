@@ -136,7 +136,7 @@ namespace _Project.Scripts.GameServices {
 
         public void EmptyAll() {
             EmptyInteractable();
-            EmptyShards();
+            //EmptyShards();
         }
         
         private void EmptyInteractable() {
@@ -183,6 +183,11 @@ namespace _Project.Scripts.GameServices {
             foreach (var shard in SaveInstance.Instance.GetShards()) {
                 shard.LoadData();
             }
+        }
+
+        public void AddSingleShard(Glass glass) {
+            var s = Instantiate(glass, HudManager.Instance.glassHolder);
+            shardService.AddSingleShard(s);
         }
         
         public void AddShards(Glass[] shards) {

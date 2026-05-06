@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 4559356953594915415}
   - component: {fileID: 4324979311647542952}
   - component: {fileID: 8176287884244408161}
+  - component: {fileID: 1248837252022429155}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -375,6 +376,21 @@ MonoBehaviour:
   triggerShard: 0
   triggerDoor: 0
   triggerFailedDrop: 0
+--- !u!114 &1248837252022429155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831234619962423155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eea067f09ea4d8dbdbf1591fd92cc88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.PlayerShardsCollection
+  glassShards:
+  - {fileID: 6997579807808172165, guid: 4f1097350e3b7b345acf955b85417ccd, type: 3}
+  - {fileID: 3668694956852880153, guid: da4ba6a284c69954e90634605386b896, type: 3}
 --- !u!1 &6852810347288631100
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,8 +623,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9118735760167049477}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.57864046, y: 0, z: 0, w: 0.81558275}
-  m_LocalPosition: {x: 0, y: 22.25, z: -14}
+  m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
+  m_LocalPosition: {x: 0, y: 23.89, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -647,11 +663,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 60.000004
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
