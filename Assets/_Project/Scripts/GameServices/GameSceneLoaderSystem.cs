@@ -155,6 +155,7 @@ namespace _Project.Scripts.GameServices {
                 
                 await Task.Delay(200);
                 GameSaveSystem.Instance.LoadData();
+                GameInitializer.Instance.UpdateShardPos();
             }
             catch (Exception e) {
                 Debug.LogError("Unload Gameplay failed: \n" + e);

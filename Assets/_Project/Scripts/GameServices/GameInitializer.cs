@@ -185,6 +185,12 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
+        public void UpdateShardPos() {
+            foreach (var shard in shardService.shards) {
+                shard.Set3DShard();
+            }
+        }
+        
         public void AddSingleShard(Glass glass) {
             var s = Instantiate(glass, HudManager.Instance.glassHolder);
             shardService.AddSingleShard(s);

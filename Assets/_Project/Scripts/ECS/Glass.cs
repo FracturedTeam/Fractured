@@ -121,7 +121,7 @@ namespace _Project.Scripts.ECS
             Set3DShard();
         }
         
-        private void Set3DShard() {
+        public void Set3DShard() {
             if(polygonCollider2D == null)
                 if (TryGetComponent(typeof(PolygonCollider2D), out var col))
                     polygonCollider2D = col as PolygonCollider2D;
