@@ -511,7 +511,7 @@ namespace _Project.Scripts.Player {
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
-            GameInitializer.Instance.LoadNewLevel(toLoad);
+            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(toLoad);
         }
     }
 }

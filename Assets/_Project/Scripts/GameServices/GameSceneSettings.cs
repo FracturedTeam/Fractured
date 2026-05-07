@@ -1,12 +1,11 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.ECS;
-using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Systems.Singletons;
-using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneSettings : Singleton<GameSceneSettings> {
@@ -15,27 +14,30 @@ namespace _Project.Scripts.GameServices {
         
         [Header("Scene Settings")]
         [SerializeField] private CinemachineCamera roomCamera;
-        [SerializeField] public Glass[] glassShards;
         
-        [Header("Game Service")]
-        [SerializeField] private GameInitializer gameInitializer;
+        [Header("Puzzle Objects")]
+        [SerializeField] private Glass[] glassShards;
+        [SerializeField] public List<BaseObject> baseObjects;
 
         [Header("Debug Settings")]
         public Vector3 playerPosition;
         
-        protected override void Awake() {
-            base.Awake();
-            if (!GameInitializer.HasInstance) Instantiate(gameInitializer);
-        }
+        private SaveInstance saveInstance;
 
         private void Start() {
             roomCamera.Priority = 1;
             _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
         }
 
-        public void ResetShard() {
+        public void PopulateLevel() {
+            GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
             GameInitializer.Instance.AddShards(glassShards);
         }
+
+        public void BindData() => saveInstance.Bind();
+        public GameData GetGameData() => saveInstance.GetGameData();
+        public void SetGameData(GameData gameData) => saveInstance.SetGameData(gameData);
+        public List<Glass> GetAllShards() => saveInstance.GetShards();
 
         #if UNITY_EDITOR
         public void SetPlayerPos(Vector3 pos) {
@@ -44,6 +46,20 @@ namespace _Project.Scripts.GameServices {
             EditorUtility.SetDirty(this);
             if (!Application.isPlaying)
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        }
+        
+        public void SetInteractable() {
+            baseObjects = new List<BaseObject>();
+            
+            //Set interactable
+            baseObjects.AddRange(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
+            
+            EditorUtility.SetDirty(this);
+            if (!Application.isPlaying)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            
+            if(saveInstance == null) saveInstance = GetComponent<SaveInstance>();
+            saveInstance.SetObjectData(baseObjects.ToArray(), glassShards);
         }
         #endif
     }

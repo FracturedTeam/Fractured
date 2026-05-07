@@ -14,6 +14,10 @@ namespace _Project.Scripts.Editor {
             if (GUILayout.Button("Set Player Pos")) {
                 sceneSettings.SetPlayerPos(FindAnyObjectByType<PlayerController>().transform.position);
             }
+            
+            if (GUILayout.Button("Set Interactable Objects")) {
+                sceneSettings.SetInteractable();
+            }
         }
     }
 }

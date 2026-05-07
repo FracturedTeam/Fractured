@@ -16,7 +16,7 @@ namespace _Project.Scripts.GameServices {
         public List<FragmentData> FragmentDatas;
     }
     
-    public class SaveInstance : Singleton<SaveInstance> {
+    public class SaveInstance : MonoBehaviour {
         [SerializeField] public GameData gameData;
         [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] private List<Glass> shards;
@@ -46,25 +46,23 @@ namespace _Project.Scripts.GameServices {
         }
         
 #if UNITY_EDITOR
-        [ContextMenu("Set Interactables")]
-        public void SetInteractables() {
+        public void SetObjectData(BaseObject[] _baseObjects, Glass[] _shards) {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
             gameData.ObjectDatas = new List<ObjectData>();
             gameData.FragmentDatas = new List<FragmentData>();
             
             //Set Shards
-            shards.AddRange(GameSceneSettings.Instance.glassShards);
+            shards.AddRange(_shards); 
             
-            foreach (var shard in GameSceneSettings.Instance.glassShards) {
+            foreach (var shard in shards) {
                 gameData.FragmentDatas.Add(new FragmentData{glassShards = shard});
             }
             
             //Set interactable
-            var interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            baseObjects.AddRange(interactables);
+            baseObjects.AddRange(_baseObjects);
             
-            foreach (var interactable in interactables) {
+            foreach (var interactable in baseObjects) {
                 gameData.ObjectDatas.Add(new ObjectData{baseObject = interactable});
                 
                 //Set shard in interactable

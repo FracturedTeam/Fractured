@@ -49,9 +49,9 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         public void SaveData() {
-            if (SaveInstance.HasInstance) { //Update SaveInstance to no longer be a singleton
-                SaveInstance.Instance.Bind();
-                gameData = SaveInstance.Instance.GetGameData();
+            if (GameSceneSettings.HasInstance) { //Update SaveInstance to no longer be a singleton
+                GameSceneSettings.Instance.BindData();
+                gameData = GameSceneSettings.Instance.GetGameData();
                 
                 //Regarder pour bind plus efficacement les datas
                 if(MemoryManager.HasInstance)  
@@ -68,7 +68,7 @@ namespace _Project.Scripts.GameServices.Services {
                     shard.SaveData();
                 }
                 
-                gameData.SceneName = SaveInstance.Instance.gameObject.scene.name; //Répétition ici
+                gameData.SceneName = GameSceneSettings.Instance.gameObject.scene.name; //Répétition ici
                 saveFile.CurrentScene = gameData.SceneName;
 
                 bool foundExistingSave = false;
@@ -93,8 +93,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void LoadData() {
-            if(SaveInstance.HasInstance)
-                LoadData(SaveInstance.Instance.gameObject.scene.name);
+            if(GameSceneSettings.HasInstance)
+                LoadData(GameSceneSettings.Instance.gameObject.scene.name);
         }
         
         private void LoadData(string gameName) {
@@ -118,8 +118,8 @@ namespace _Project.Scripts.GameServices.Services {
                 return;
             }
             
-            SaveInstance.Instance.SetGameData(saveFile.SceneDatas[index]);
-            SaveInstance.Instance.Bind();
+            GameSceneSettings.Instance.SetGameData(saveFile.SceneDatas[index]);
+            GameSceneSettings.Instance.BindData();
             if(MemoryManager.HasInstance)
                 MemoryManager.Instance.Load(saveFile.memory);
             
@@ -130,7 +130,7 @@ namespace _Project.Scripts.GameServices.Services {
             /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
                 shard.LoadData();
             }*/
-            foreach (var shard in SaveInstance.Instance.GetShards()) {
+            foreach (var shard in GameSceneSettings.Instance.GetAllShards()) {
                 shard.LoadData();
             }
             Debug.Log($"[SaveSystem] Save Loaded for scene {saveFile.SceneDatas[index].SceneName}");
@@ -160,14 +160,14 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            if (SaveInstance.Instance.GetShards().Count < shards.Count) {
+            if (GameSceneSettings.Instance.GetAllShards().Count < shards.Count) {
                 shards = shards.Distinct().ToList();
             }
             foreach (var s in shards) {
-                for (int i = 0; i < SaveInstance.Instance.GetShards().Count; i++) {
-                    if (s.gameObject.name == SaveInstance.Instance.GetShards()[i].gameObject.name) {
-                        SaveInstance.Instance.GetShards()[i] = shards[i];
-                        SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+                for (int i = 0; i < GameSceneSettings.Instance.GetAllShards().Count; i++) {
+                    if (s.gameObject.name == GameSceneSettings.Instance.GetAllShards()[i].gameObject.name) {
+                        GameSceneSettings.Instance.GetAllShards()[i] = shards[i];
+                        GameSceneSettings.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
                     }
                 }
             }

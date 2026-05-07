@@ -164,7 +164,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void RepopulateInteractableOnLoadLevel() {
-            shardService.RepopulateBaseObjet(SaveInstance.Instance.baseObjects.ToArray());
+            shardService.RepopulateBaseObjet(GameSceneSettings.Instance.baseObjects.ToArray());
         }
 
         public BaseObject[] GetInteractables() {
@@ -187,7 +187,7 @@ namespace _Project.Scripts.GameServices {
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
             
-            GameSceneSettings.Instance.ResetShard();
+            GameSceneSettings.Instance.PopulateLevel();
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
@@ -225,18 +225,6 @@ namespace _Project.Scripts.GameServices {
             return shardService.PlayerInRedEditableArea;
         }
         
-
-        #endregion
-
-        #region LoadScene
-
-        public void LoadNewLevel(SceneSettings sceneSettings) {
-            saveService.SaveData();
-            //EmptyAll();
-            ResetCameras();
-            
-            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);
-        }
 
         #endregion
        

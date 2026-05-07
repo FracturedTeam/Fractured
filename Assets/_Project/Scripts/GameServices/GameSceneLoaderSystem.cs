@@ -89,7 +89,7 @@ namespace _Project.Scripts.GameServices {
         public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
             try {
                 scenesToLoad.Clear();
-
+                GameInitializer.Instance.SaveData();
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = true
                 });
@@ -138,9 +138,8 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.EmptyAll();
             HudManager.Instance.StopEventInteraction();
             await LoadSceneAsync(scene);
-
-            GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
+            
+            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.PopulateLevel();
             await Task.Delay(100);
             GameInitializer.Instance.LoadData();
             
@@ -153,8 +152,7 @@ namespace _Project.Scripts.GameServices {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
                 if (GameSceneSettings.HasInstance) {
-                    GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-                    GameSceneSettings.Instance.ResetShard();
+                    GameSceneSettings.Instance.PopulateLevel();
                 }
                 
                 await Task.Delay(200);
