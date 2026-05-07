@@ -98,7 +98,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void LoadData(string gameName) {
-            saveFile = dataService.Load(saveFile.SaveName); //Fail
+            saveFile = dataService.Load(saveFile.SaveName); //Fail - Faut que je regarde pourquoi j'ai mis Fail
             
             var foundExisting = false;
             var index = 0;
@@ -140,7 +140,7 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerController.Instance.Load(saveFile.PlayerData);
         }
         
-        public void NewGame(string gameName) {
+        public void NewGame(string gameName = "") {
             if (gameName == "") gameName = saveFileName;
             
             saveFile = new SaveFile {
