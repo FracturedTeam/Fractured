@@ -99,6 +99,7 @@ namespace _Project.Scripts.GameServices {
                 HudManager.Instance.StopEventInteraction();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
+                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
                 PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
                 await Task.Yield();
@@ -139,7 +140,9 @@ namespace _Project.Scripts.GameServices {
             HudManager.Instance.StopEventInteraction();
             await LoadSceneAsync(scene);
             
-            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.PopulateLevel();
+            if(GameSceneSettings.HasInstance)
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+            
             await Task.Delay(100);
             GameInitializer.Instance.LoadData();
             
@@ -152,7 +155,7 @@ namespace _Project.Scripts.GameServices {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
                 if (GameSceneSettings.HasInstance) {
-                    GameSceneSettings.Instance.PopulateLevel();
+                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
                 }
                 
                 await Task.Delay(200);
@@ -247,7 +250,13 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void LoadGame(string sceneName) {
+            GameInitializer.Instance.LoadGame();
             _ = LoadSave(sceneName);
+        }
+        
+        public void LoadGame() {
+            GameInitializer.Instance.LoadGame();
+            _ = LoadSave(GameInitializer.Instance.GetLastScene());
         }
 
         private async Task LoadSave(string sceneName) {

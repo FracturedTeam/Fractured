@@ -125,19 +125,9 @@ namespace _Project.Scripts.GameServices {
         public void SaveData() => saveService.SaveData();
         public void LoadData() => saveService.LoadData();
         public void LoadPlayerData() => saveService.LoadPlayerData();
-
-        public void LoadGame() {
-            saveService.LoadGame();
-            GameSceneLoaderSystem.Instance.LoadGame(saveService.saveFile.CurrentScene);
-        }
-
-        public void NewGame() {
-            saveService.NewGame();
-            GameSceneLoaderSystem.Instance.NewGame();
-        }
-            
+        public void LoadGame() => saveService.LoadGame();
+        public string GetLastScene() => saveService.saveFile.CurrentScene;
         public bool ExistingSave() => saveService.ExistingSave();
-        
 
         #endregion
 
@@ -163,10 +153,15 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void RepopulateInteractableOnLoadLevel() {
-            shardService.RepopulateBaseObjet(GameSceneSettings.Instance.baseObjects.ToArray());
-        }
+        // public void RepopulateInteractableOnLoadLevel() {
+        //     shardService.RepopulateBaseObjet(GameSceneSettings.Instance.baseObjects.ToArray());
+        // }
 
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
+            shardService.RepopulateBaseObjet(_baseObjects);
+            AddShards(_shards);
+        }
+        
         public BaseObject[] GetInteractables() {
             return shardService.interactables.ToArray();
         }
@@ -187,7 +182,8 @@ namespace _Project.Scripts.GameServices {
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
             
-            GameSceneSettings.Instance.PopulateLevel();
+            //GameSceneSettings.Instance.PopulateLevel();
+            //PopulateLevel();
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>

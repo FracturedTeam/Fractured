@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneSettings : Singleton<GameSceneSettings> {
-        [Header("Level Art Scene")] [SerializeField]
-        private SceneField levelArt;
+        [Header("Level Art Scene")] 
+        [SerializeField] public SceneField levelArt;
         
         [Header("Scene Settings")]
         [SerializeField] private CinemachineCamera roomCamera;
         
         [Header("Puzzle Objects")]
-        [SerializeField] private Glass[] glassShards;
+        [SerializeField] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
 
         [Header("Debug Settings")]
@@ -26,12 +26,6 @@ namespace _Project.Scripts.GameServices {
 
         private void Start() {
             roomCamera.Priority = 1;
-            _ = GameSceneLoaderSystem.Instance.LoadSceneAsync(levelArt);
-        }
-
-        public void PopulateLevel() {
-            GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
-            GameInitializer.Instance.AddShards(glassShards);
         }
 
         public void BindData() => saveInstance.Bind();
