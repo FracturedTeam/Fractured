@@ -128,6 +128,7 @@ namespace _Project.Scripts.GameServices {
         public void LoadGame() => saveService.LoadGame();
         public string GetLastScene() => saveService.saveFile.CurrentScene;
         public bool ExistingSave() => saveService.ExistingSave();
+        public void CreateNewSave() => saveService.NewGame();
 
         #endregion
 
@@ -159,7 +160,8 @@ namespace _Project.Scripts.GameServices {
 
         public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
             shardService.RepopulateBaseObjet(_baseObjects);
-            AddShards(_shards);
+            if(_shards.Length > 0)
+                AddShards(_shards);
         }
         
         public BaseObject[] GetInteractables() {

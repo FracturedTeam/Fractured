@@ -98,6 +98,10 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void LoadData(string gameName) {
+            if (!dataService.FileDoesExist(saveFileName)) {
+                dataService.Save(saveFile);
+                return;
+            }
             saveFile = dataService.Load(saveFile.SaveName); //Fail - Faut que je regarde pourquoi j'ai mis Fail
             
             var foundExisting = false;

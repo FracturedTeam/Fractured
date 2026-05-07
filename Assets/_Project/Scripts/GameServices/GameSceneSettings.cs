@@ -25,6 +25,8 @@ namespace _Project.Scripts.GameServices {
         private SaveInstance saveInstance;
 
         private void Start() {
+            if(saveInstance == null)
+                saveInstance = GetComponent<SaveInstance>();
             roomCamera.Priority = 1;
         }
 

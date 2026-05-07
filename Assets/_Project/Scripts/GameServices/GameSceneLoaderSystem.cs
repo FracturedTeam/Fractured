@@ -138,7 +138,9 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
             GameInitializer.Instance.EmptyAll();
             HudManager.Instance.StopEventInteraction();
+            
             await LoadSceneAsync(scene);
+            await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
             
             if(GameSceneSettings.HasInstance)
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
@@ -154,11 +156,12 @@ namespace _Project.Scripts.GameServices {
             try {
                 await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
+                
+                await Task.Delay(200);
+                
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
                 }
-                
-                await Task.Delay(200);
                 GameInitializer.Instance.LoadData();
             }
             catch (Exception e) {
@@ -218,6 +221,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void NewGame() {
+            GameInitializer.Instance.CreateNewSave();
             _ = StartNewGame();
         }
 
@@ -230,6 +234,7 @@ namespace _Project.Scripts.GameServices {
             await Task.Delay(600);
             
             await LoadSceneAsync(newGameScene);
+            await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
             
             _ = UnloadGameplaySceneAsync();
             
@@ -280,7 +285,8 @@ namespace _Project.Scripts.GameServices {
                     Debug.LogError($"Failed to find scene {sceneName}");
                     return;
                 }
-
+                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                
                 _ = UnloadGameplaySceneAsync();
                 
                 if (!PlayerService.HasInstance) Instantiate(player);
