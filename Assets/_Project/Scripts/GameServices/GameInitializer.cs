@@ -22,10 +22,12 @@ namespace _Project.Scripts.GameServices {
         private SaveService saveService;
 
         [Header("External Services")]
-        //[SerializeField] private GameSaveSystem gameSaveSystem;
-        [SerializeField] private GameSceneLoaderSystem gameSceneLoaderSystem;
-        [SerializeField] private PlayerService player;
-        [SerializeField] private HudManager hudManager;
+        //[SerializeField] private GameSceneLoaderSystem gameSceneLoaderSystem;
+        // [SerializeField] private PlayerService player;
+        // [SerializeField] private HudManager hudManager;
+
+        [Header("Save service")] 
+        [SerializeField] private bool deleteSaveOnPay;
         
         [Header("ScreenEffect")]
         [SerializeField] private Material screenEffectMat;
@@ -39,19 +41,8 @@ namespace _Project.Scripts.GameServices {
         
         protected override void Awake() {
             base.Awake();
-            // if (!GameSaveSystem.HasInstance) Instantiate(gameSaveSystem);
-            // if (!GameSceneLoaderSystem.HasInstance) Instantiate(gameSceneLoaderSystem);
-            // if (!PlayerService.HasInstance) Instantiate(player);
-            // if (!HudManager.HasInstance) Instantiate(hudManager);
             
             InitializeGameSystems();
-            
-            #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            //InitializeDebugSystems();
-            #endif
-            
-            //Populate the glassShardService
-            //PopulateShardOnStart();
             
             //Shard Edition area Screen Effect
             screenEffectMat.SetFloat("_Progression", 0f);
@@ -61,7 +52,7 @@ namespace _Project.Scripts.GameServices {
             //Create all the game systems
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();
-            saveService = new SaveService();
+            saveService = new SaveService(shardService, deleteSaveOnPay);
             
             //Then register the game systems
             gameSystems.Register(shardService);
@@ -134,8 +125,17 @@ namespace _Project.Scripts.GameServices {
         public void SaveData() => saveService.SaveData();
         public void LoadData() => saveService.LoadData();
         public void LoadPlayerData() => saveService.LoadPlayerData();
-        public void LoadGame() => saveService.LoadGame();
-        public void NewGame() => saveService.NewGame();
+
+        public void LoadGame() {
+            saveService.LoadGame();
+            GameSceneLoaderSystem.Instance.LoadGame(saveService.saveFile.CurrentScene);
+        }
+
+        public void NewGame() {
+            saveService.NewGame();
+            GameSceneLoaderSystem.Instance.NewGame();
+        }
+            
         public bool ExistingSave() => saveService.ExistingSave();
         
 
@@ -145,16 +145,6 @@ namespace _Project.Scripts.GameServices {
 
         public void DisposeShards() {
             shardService.ClearAll();
-        }
-        
-        private void PopulateShardOnStart() {
-            //gameObject.AddComponent<EventSystem>();
-            //gameObject.AddComponent<InputSystemUIInputModule>();
-            
-            var interactable = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            var shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
-            var text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);
-            shardService.PopulateService(interactable, shards, text);
         }
 
         public void EmptyAll() {
@@ -179,33 +169,6 @@ namespace _Project.Scripts.GameServices {
 
         public BaseObject[] GetInteractables() {
             return shardService.interactables.ToArray();
-        }
-
-        public void SaveInteractable() {
-            foreach (var interactable in shardService.interactables) {
-                interactable.SaveData();
-            }
-        }
-        
-        public void SaveShards() {
-            foreach (var shard in shardService.shards) {
-                shard.SaveData();
-            }
-        }
-        
-        public void LoadInteractable() {
-            foreach (var interactable in shardService.interactables) {
-                interactable.Load();
-            }
-        }
-        
-        public void LoadShards() {
-            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
-                shard.LoadData();
-            }*/
-            foreach (var shard in SaveInstance.Instance.GetShards()) {
-                shard.LoadData();
-            }
         }
         
         public void AddShards(Glass[] shards) {

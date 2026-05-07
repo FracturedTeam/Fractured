@@ -19,14 +19,24 @@ namespace _Project.Scripts.GameServices.Services {
     }
     
     public class SaveService : IGameSystem {
-
+        private string saveFileName = "New Game";
+        
         private GameData gameData;
         private IDataService dataService;
-        private SaveFile saveFile;
+        public SaveFile saveFile;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         private bool deleteSaveOnPlay = false;
         #endif
+
+        private ShardService shardService;
+        
+        public SaveService(ShardService shard, bool deleteOnPlay) {
+            shardService = shard;
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+            deleteSaveOnPlay = deleteOnPlay;
+            #endif
+        }
         
         public void Initialize() {
             dataService = new FileDataService(new JsonSerializer());
@@ -35,7 +45,7 @@ namespace _Project.Scripts.GameServices.Services {
             if(deleteSaveOnPlay) dataService.DeleteAll();
             #endif
 
-            saveFile.SaveName = "New Game";
+            saveFile.SaveName = saveFileName;
         }
 
         public void SaveData() {
@@ -47,9 +57,16 @@ namespace _Project.Scripts.GameServices.Services {
                 if(MemoryManager.HasInstance)  
                     MemoryManager.Instance.SaveData(saveFile.memory);
                 
-                PlayerController.Instance.SaveData(saveFile.PlayerData);
-                GameInitializer.Instance.SaveInteractable();
-                GameInitializer.Instance.SaveShards();
+                PlayerController.Instance.SaveData(saveFile.PlayerData);//Lui donner accès au shard Service
+                
+                //Save Interactable
+                foreach (var interactable in shardService.interactables) {
+                    interactable.SaveData();
+                }
+                //Save Shard
+                foreach (var shard in shardService.shards) {
+                    shard.SaveData();
+                }
                 
                 gameData.SceneName = SaveInstance.Instance.gameObject.scene.name; //Répétition ici
                 saveFile.CurrentScene = gameData.SceneName;
@@ -80,7 +97,7 @@ namespace _Project.Scripts.GameServices.Services {
                 LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
-        public void LoadData(string gameName) {
+        private void LoadData(string gameName) {
             saveFile = dataService.Load(saveFile.SaveName); //Fail
             
             var foundExisting = false;
@@ -106,8 +123,16 @@ namespace _Project.Scripts.GameServices.Services {
             if(MemoryManager.HasInstance)
                 MemoryManager.Instance.Load(saveFile.memory);
             
-            GameInitializer.Instance.LoadInteractable();
-            GameInitializer.Instance.LoadShards();
+            foreach (var interactable in shardService.interactables) {
+                interactable.Load();
+            }
+            
+            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
+                shard.LoadData();
+            }*/
+            foreach (var shard in SaveInstance.Instance.GetShards()) {
+                shard.LoadData();
+            }
             Debug.Log($"[SaveSystem] Save Loaded for scene {saveFile.SceneDatas[index].SceneName}");
         }
 
@@ -115,19 +140,19 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerController.Instance.Load(saveFile.PlayerData);
         }
         
-        public void NewGame(string gameName = "New Game") {
+        public void NewGame(string gameName) {
+            if (gameName == "") gameName = saveFileName;
+            
             saveFile = new SaveFile {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
                 SceneDatas = new List<GameData>(),
                 memory = new SavedMemory ()
             };
-            GameSceneLoaderSystem.Instance.NewGame();
         }
         
         public void LoadGame() {
             saveFile = dataService.Load(saveFile.SaveName);
-            GameSceneLoaderSystem.Instance.LoadGame(saveFile.CurrentScene);
         }
         
         public void DeleteGame(string gameName) {
