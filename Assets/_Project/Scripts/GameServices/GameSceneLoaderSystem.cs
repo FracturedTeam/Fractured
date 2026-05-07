@@ -16,6 +16,9 @@ namespace _Project.Scripts.GameServices {
     public class GameSceneLoaderSystem : PersistentSingleton<GameSceneLoaderSystem> {
         private List<SceneField> scenesToLoad;
         
+        [SerializeField] private PlayerService player;
+        [SerializeField] private HudManager hudManager;
+        
         [SerializeField] private SceneField menuScene;
         [SerializeField] private SceneField newGameScene;
 
@@ -92,6 +95,7 @@ namespace _Project.Scripts.GameServices {
                 });
                 await Task.Delay(500);
                 await Task.Yield();
+                
                 HudManager.Instance.StopEventInteraction();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
@@ -125,7 +129,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public async Task LoadSceneFromDebug(SceneField scene) {
-            GameSaveSystem.Instance.SaveGame();
+            GameInitializer.Instance.SaveData();
             GameInitializer.Instance.ResetCameras();
             
             scenesToLoad.Clear();
@@ -138,7 +142,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.RepopulateInteractableOnLoadLevel();
             if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ResetShard();
             await Task.Delay(100);
-            GameSaveSystem.Instance.LoadData();
+            GameInitializer.Instance.LoadData();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
             PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
@@ -154,7 +158,7 @@ namespace _Project.Scripts.GameServices {
                 }
                 
                 await Task.Delay(200);
-                GameSaveSystem.Instance.LoadData();
+                GameInitializer.Instance.LoadData();
             }
             catch (Exception e) {
                 Debug.LogError("Unload Gameplay failed: \n" + e);
@@ -184,7 +188,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void LoadMenu() {
-            GameSaveSystem.Instance.SaveGame();
+            GameInitializer.Instance.SaveData();
             scenesToLoad.Clear();
             _ = LoadMenuAsync();
         }
@@ -198,8 +202,10 @@ namespace _Project.Scripts.GameServices {
             _ = UnloadSceneAsync();
             _ = LoadSceneAsync(menuScene);
             
+            GameInitializer.Instance.DisposeShards();
+            
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
-            if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
+            //if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
 
             Time.timeScale = 1;
@@ -224,10 +230,16 @@ namespace _Project.Scripts.GameServices {
             
             await LoadSceneAsync(newGameScene);
             
-            GameSaveSystem.Instance.SaveGame();
-            
             _ = UnloadGameplaySceneAsync();
             
+            if (!PlayerService.HasInstance) Instantiate(player);
+            if (!HudManager.HasInstance) Instantiate(hudManager);
+            
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+            GameInitializer.Instance.InitializeDebugSystems();
+            #endif
+            
+            GameInitializer.Instance.SaveData();
             PlayerController.Instance.triggerEnterRoom = true;
             
             await Task.Delay(600);
@@ -263,9 +275,17 @@ namespace _Project.Scripts.GameServices {
                 }
 
                 _ = UnloadGameplaySceneAsync();
-                GameSaveSystem.Instance.LoadPlayerData();
+                
+                if (!PlayerService.HasInstance) Instantiate(player);
+                if (!HudManager.HasInstance) Instantiate(hudManager);
+                
+                #if UNITY_EDITOR || DEVELOPMENT_BUILD
+                GameInitializer.Instance.InitializeDebugSystems();
+                #endif
                 
                 await Task.Delay(600);
+                
+                GameInitializer.Instance.LoadPlayerData();
                 EventBus<FadeObject>.Raise(new FadeObject {
                     show = false
                 });

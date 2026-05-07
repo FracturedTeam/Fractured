@@ -4,11 +4,10 @@ using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
-using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
 using UnityEngine;
 
-namespace _Project.Scripts.GameServices {
+namespace _Project.Scripts.GameServices.Services {
 
     [Serializable]
     public struct SaveFile {
@@ -19,56 +18,63 @@ namespace _Project.Scripts.GameServices {
         public List<GameData> SceneDatas;
     }
     
-    public class GameSaveSystem : PersistentSingleton<GameSaveSystem> {
+    public class SaveService : IGameSystem {
+
         private GameData gameData;
         private IDataService dataService;
+        private SaveFile saveFile;
         
-        [SerializeField] public SaveFile saveFile;
-        public bool deleteSaveOnPlay = true;
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private bool deleteSaveOnPlay = false;
+        #endif
         
-        protected override void Awake() {
-            base.Awake();
+        public void Initialize() {
             dataService = new FileDataService(new JsonSerializer());
             
-            if (deleteSaveOnPlay) {
-                dataService.DeleteAll();
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if(deleteSaveOnPlay) dataService.DeleteAll();
+            #endif
+
+            saveFile.SaveName = "New Game";
+        }
+
+        public void SaveData() {
+            if (SaveInstance.HasInstance) { //Update SaveInstance to no longer be a singleton
+                SaveInstance.Instance.Bind();
+                gameData = SaveInstance.Instance.GetGameData();
+                
+                //Regarder pour bind plus efficacement les datas
+                if(MemoryManager.HasInstance)  
+                    MemoryManager.Instance.SaveData(saveFile.memory);
+                
+                PlayerController.Instance.SaveData(saveFile.PlayerData);
+                GameInitializer.Instance.SaveInteractable();
+                GameInitializer.Instance.SaveShards();
+                
+                gameData.SceneName = SaveInstance.Instance.gameObject.scene.name; //Répétition ici
+                saveFile.CurrentScene = gameData.SceneName;
+
+                bool foundExistingSave = false;
+                for (int i = 0; i < saveFile.SceneDatas.Count; i++) {
+                    if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
+                        saveFile.SceneDatas[i] = gameData;
+                        foundExistingSave = true;
+                        Debug.Log($"[SaveSystem] Has found existing Scene Save");
+                        break;
+                    }
+                }
+
+                if (!foundExistingSave) {
+                    Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
+                    saveFile.SceneDatas.Add(gameData);
+                }
+            
+                dataService.Save(saveFile);
+            
+                Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
             }
         }
         
-        public void SaveGame() {
-            if(!SaveInstance.HasInstance) return;
-            SaveInstance.Instance.Bind(gameData = SaveInstance.Instance.GetGameData());
-            if(MemoryManager.HasInstance)
-                MemoryManager.Instance.SaveData(saveFile.memory);
-            
-            PlayerController.Instance.SaveData(saveFile.PlayerData);
-            GameInitializer.Instance.SaveInteractable();
-            GameInitializer.Instance.SaveShards();
-
-            gameData.SceneName = SaveInstance.Instance.gameObject.scene.name;
-            saveFile.CurrentScene = gameData.SceneName;
-            
-            bool foundExisting = false;
-            for (int i = 0; i < saveFile.SceneDatas.Count; i++)
-            {
-                if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
-                    saveFile.SceneDatas[i] = gameData;
-                    foundExisting = true;
-                    Debug.Log($"[SaveSystem] Has found existing Scene Save");
-                    break;
-                }
-            }
-
-            if (!foundExisting) {
-                Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
-                saveFile.SceneDatas.Add(gameData);
-            }
-            
-            dataService.Save(saveFile);
-            
-            Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
-        }
-
         public void LoadData() {
             if(SaveInstance.HasInstance)
                 LoadData(SaveInstance.Instance.gameObject.scene.name);
@@ -91,12 +97,12 @@ namespace _Project.Scripts.GameServices {
             if(!foundExisting) {  
                 Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
                 gameData.SceneName = gameName;
-                SaveGame();
+                SaveData();
                 return;
             }
             
             SaveInstance.Instance.SetGameData(saveFile.SceneDatas[index]);
-            SaveInstance.Instance.Bind(saveFile.SceneDatas[index]);
+            SaveInstance.Instance.Bind();
             if(MemoryManager.HasInstance)
                 MemoryManager.Instance.Load(saveFile.memory);
             
@@ -144,6 +150,14 @@ namespace _Project.Scripts.GameServices {
 
         public bool ExistingSave() {
             return dataService.FileDoesExist(saveFile.SaveName);
+        }
+        
+        public void Tick() {
+            //throw new System.NotImplementedException();
+        }
+        
+        public void Dispose() {
+            //throw new System.NotImplementedException();
         }
     }
 }

@@ -1,13 +1,16 @@
 using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.DebugSystems.Services {
     public class GeneralDebugService : IDebugSystem, IDebugGUI, IDebugGizmos{
         private readonly DebugUIState debugUIState;
+        private readonly SaveService saveService;
         
-        public GeneralDebugService(DebugUIState debugUI) {
+        public GeneralDebugService(DebugUIState debugUI, SaveService saveService) {
             debugUIState = debugUI;
+            this.saveService = saveService;
         }
         
         public void Dispose() {
@@ -63,9 +66,9 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Save System", sectionStyle);
             if(GUILayout.Button("Save game", buttonStyle))
-                GameSaveSystem.Instance.SaveGame();
+                saveService.SaveData();
             if(GUILayout.Button("Load save", buttonStyle))
-                GameSaveSystem.Instance.LoadGame();
+                saveService.LoadGame();
             /*if(GUILayout.Button("Start New Game", buttonStyle))
                 GameSceneLoaderSystem.Instance.NewGame();*/
             
