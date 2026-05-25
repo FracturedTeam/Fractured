@@ -61,10 +61,26 @@ namespace _Project.Scripts.GameServices.Services {
         public void Dispose() {
         }
         
-        public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
+        public void PlayOneShot3D(EventReference sound, Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(sound, worldPosition);
         }
 
+        public void PlayOneShot2D(EventReference sound) {
+            RuntimeManager.PlayOneShot(sound);
+        }
+
+        public void PlayRevealObjectSound(Vector3 worldPosition) {
+             if(revealObjectTimer.IsRunning) return;
+             RuntimeManager.PlayOneShot(bank.revealSound, worldPosition);
+             revealObjectTimer.Start();
+        }
+
+        public void PlayHideObjectSound(Vector3 worldPosition) {
+             if(hideObjectTimer.IsRunning) return;
+             RuntimeManager.PlayOneShot(bank.hideSound, worldPosition);
+             hideObjectTimer.Start();
+        }
+        
         public void PlayEditableSoundLoop(bool doPlay) {
             if (doPlay) {
                 editableInstance.getPlaybackState(out var playbackState);
@@ -110,18 +126,18 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        // private void UpdateMemory(MemorySound m) {
-        //     if (m.inMemory) {
-        //         memorySoundInstance.getPlaybackState(out var playbackState);
-        //         if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
-        //             memorySoundInstance.start();
-        //         }
-        //     }
-        //     else
-        //         memorySoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        // }
+        public void UpdateMemory(bool inMemory) {
+            if (inMemory) {
+                memorySoundInstance.getPlaybackState(out var playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+                    memorySoundInstance.start();
+                }
+            }
+            else
+                memorySoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
         
-        private EventInstance CreateInstance(EventReference reference) {
+        public EventInstance CreateInstance(EventReference reference) {
             if (reference.IsNull) {
                 Debug.LogError($"[AudioService] Instance Creation Failed : Missing event reference {reference}, Please verify Audio Bank References");
                 return new EventInstance();

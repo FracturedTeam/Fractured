@@ -3,7 +3,6 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.UI;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -68,7 +67,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
-                //AudioManager.Instance.PlayBreakGlassSound(transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().breakGlassSound, transform.position);
                 Instantiate(shardParticle, transform);
             }
         }

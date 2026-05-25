@@ -9,6 +9,7 @@ using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
+using FMOD.Studio;
 using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -227,15 +228,35 @@ namespace _Project.Scripts.GameServices {
         public AudioBank GetBank() {
             return audioBank;
         }
+
+        public EventInstance CreateInstance(EventReference reference) {
+            return audioService.CreateInstance(reference);
+        }
         
-        public void PlaySound(EventReference audioClip, Vector3 position) {
-            audioService.PlayOneShot(audioClip, position);
+        public void PlaySound3D(EventReference audioClip, Vector3 position) {
+            audioService.PlayOneShot3D(audioClip, position);
+        }
+        
+        public void PlaySound2D(EventReference audioClip) {
+            audioService.PlayOneShot2D(audioClip);
         }
 
+        public void PlayRevealSound(Vector3 position) {
+            audioService.PlayRevealObjectSound(position);
+        }
+
+        public void PlayHideSound(Vector3 position) {
+            audioService.PlayHideObjectSound(position);
+        }
+        
         public void UpdateAmbientLoop(int sceneIndex) {
             audioService.UpdateAmbientLoop(sceneIndex);
         }
 
+        public void SetMemoryLoop(bool inMemory) {
+            audioService.UpdateMemory(inMemory);
+        }
+        
         public float GetMasterVolume() {
             return audioService.masterVolume;
         }

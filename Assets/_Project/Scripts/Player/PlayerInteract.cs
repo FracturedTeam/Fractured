@@ -505,7 +505,6 @@ namespace _Project.Scripts.Player {
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
             triggerDoor = true;
-            //AudioManager.Instance.PlayOpenBigSound(position);
             StartCoroutine(LoadScene(toLoad, position));
         }
 

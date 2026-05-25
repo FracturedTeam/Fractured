@@ -44,7 +44,7 @@ namespace _Project.Scripts.UI
             if(backgroundImage)
                 backgroundImage.sprite = clickedSprite;
             
-            //AudioManager.Instance.PlayBttClikedSound();
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
             
             button.enabled = false;
             
