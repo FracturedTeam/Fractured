@@ -6,9 +6,10 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
+using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -20,14 +21,13 @@ namespace _Project.Scripts.GameServices {
         //INTERNAL SERVICES
         private ShardService shardService;
         private SaveService saveService;
-
-        [Header("External Services")]
-        //[SerializeField] private GameSceneLoaderSystem gameSceneLoaderSystem;
-        // [SerializeField] private PlayerService player;
-        // [SerializeField] private HudManager hudManager;
+        private AudioService audioService;
 
         [Header("Save service")] 
         [SerializeField] private bool deleteSaveOnPay;
+        
+        [Header("Audio Bank")]
+        [SerializeField] private AudioBank audioBank;
         
         [Header("ScreenEffect")]
         [SerializeField] private Material screenEffectMat;
@@ -53,14 +53,17 @@ namespace _Project.Scripts.GameServices {
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();
             saveService = new SaveService(shardService, deleteSaveOnPay);
+            audioService = new AudioService(audioBank);
             
             //Then register the game systems
             gameSystems.Register(shardService);
             gameSystems.Register(saveService);
+            gameSystems.Register(audioService);
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
             saveService.Initialize();
+            audioService.Initialize();
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -109,7 +112,7 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Dispose();
         }
 
-        public CinemachineCamera[] GetCameras() {
+        private CinemachineCamera[] GetCameras() {
             return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
         }
 
@@ -154,10 +157,6 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        // public void RepopulateInteractableOnLoadLevel() {
-        //     shardService.RepopulateBaseObjet(GameSceneSettings.Instance.baseObjects.ToArray());
-        // }
-
         public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
             shardService.RepopulateBaseObjet(_baseObjects);
             if(_shards.Length > 0)
@@ -183,9 +182,6 @@ namespace _Project.Scripts.GameServices {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
-            
-            //GameSceneSettings.Instance.PopulateLevel();
-            //PopulateLevel();
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
@@ -209,20 +205,60 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInEditableArea;
         }
         
         public bool InBlueEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInBlueEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInBlueEditableArea;
         }
         
         public bool InRedEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInRedEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInRedEditableArea;
         }
         
+
+        #endregion
+
+        #region AudioService
+
+        public AudioBank GetBank() {
+            return audioBank;
+        }
+        
+        public void PlaySound(EventReference audioClip, Vector3 position) {
+            audioService.PlayOneShot(audioClip, position);
+        }
+
+        public void UpdateAmbientLoop(int sceneIndex) {
+            audioService.UpdateAmbientLoop(sceneIndex);
+        }
+
+        public float GetMasterVolume() {
+            return audioService.masterVolume;
+        }
+
+        public void SetMasterVolume(float volume) {
+            audioService.masterVolume = volume;
+        }
+        
+        public float GetSFXVolume() {
+            return audioService.sfxVolume;
+        }
+
+        public void SetSFXVolume(float volume) {
+            audioService.sfxVolume = volume;
+        }
+        
+        public float GetMusicVolume() {
+            return audioService.musicVolume;
+        }
+
+        public void SetMusicVolume(float volume) {
+            audioService.musicVolume = volume;
+        }
 
         #endregion
        

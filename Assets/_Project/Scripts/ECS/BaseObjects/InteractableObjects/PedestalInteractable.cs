@@ -6,7 +6,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             base.ResolvePuzzle();
             
             GetBaseObject().SetInteract(true);
-            AudioManager.Instance.PlayReconstructMemorySound(transform.position);
+            //AudioManager.Instance.PlayReconstructMemorySound(transform.position);
         }
     }
 }

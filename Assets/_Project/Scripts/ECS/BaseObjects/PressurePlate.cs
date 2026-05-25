@@ -119,8 +119,8 @@ namespace _Project.Scripts.ECS.BaseObjects {
             if (previousActivation != isActive) {
                 previousActivation = isActive;
                 
-                if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
-                else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+                // if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
+                // else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
             }
             
             if (lockedBehindThis.Length > 0) {

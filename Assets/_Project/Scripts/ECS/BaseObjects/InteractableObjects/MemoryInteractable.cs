@@ -47,8 +47,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 gameObject.layer = LayerMask.NameToLayer("MemoryObject");
 
-                if(!associateMemoryLoop.IsNull)
-                    soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
+                // if(!associateMemoryLoop.IsNull)
+                //     soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
             }
             
             initialized = true;
@@ -110,14 +110,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void DisplayMemory() {
             baseObject.SetInteract(false);
-            AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            //AudioManager.Instance.PlayEnterMemorySound(transform.position);
             displayCountdown.Start();
         }
 
         private void DelayDisplay() {
-            EventBus<MemorySound>.Raise(new MemorySound {
-                inMemory = true
-            });
+            // EventBus<MemorySound>.Raise(new MemorySound {
+            //     inMemory = true
+            // });
             
             soundInstance.getPlaybackState(out var playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
@@ -139,11 +139,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
             
-            AudioManager.Instance.PlayLeaveMemorySound(transform.position);
+            //AudioManager.Instance.PlayLeaveMemorySound(transform.position);
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            EventBus<MemorySound>.Raise(new MemorySound {
-                inMemory = false
-            });
+            // EventBus<MemorySound>.Raise(new MemorySound {
+            //     inMemory = false
+            // });
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             Debug.Log($"[MemoryInteractable] Leaving memory");

@@ -246,8 +246,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectInside && !objectOut)
                 ActivateObjectInside(!isUnder);
             
-            if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
-            else AudioManager.Instance.PlayRevealObjectSound(transform.position);
+            // if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
+            // else AudioManager.Instance.PlayRevealObjectSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {

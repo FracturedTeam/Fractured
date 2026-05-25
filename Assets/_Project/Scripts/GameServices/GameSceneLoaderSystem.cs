@@ -36,42 +36,14 @@ namespace _Project.Scripts.GameServices {
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            ManageAudio(scene.buildIndex);
-
             if (scene.buildIndex == 12) {
                 loadCredits = true;
             }
-        }
-
-        private void ManageAudio(int index) {
-            //ManageAudio Loop
-            if (index == 2) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    loop = Loop.ambientCoffin
-                });
-            }
-            else if (index is > 2 and < 8) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    loop = Loop.ambientTuto
-                });
-            }
-            else if (index is > 7 and < 12) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    loop = Loop.ambientZone1
-                });
-            }
-            else if (index is 12) {
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    loop = Loop.credits
-                });
-            }
-            else if(index is 0 or 1)
-                EventBus<ManageAmbientAudio>.Raise(new ManageAmbientAudio {
-                    loop = Loop.mainMenu
-                });
+            
+            GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
         
-        public async Task LoadSceneAsync(SceneField newScene) {
+        private async Task LoadSceneAsync(SceneField newScene) {
             scenesToLoad.Add(newScene);
             
             var loading = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);

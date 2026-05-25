@@ -68,7 +68,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (interaction is ObjectInteraction.Contextual) {
                 ObtainShard();
-                AudioManager.Instance.PlayBreakGlassSound(transform.position);
+                //AudioManager.Instance.PlayBreakGlassSound(transform.position);
                 Instantiate(shardParticle, transform);
             }
         }

@@ -159,13 +159,13 @@ namespace _Project.Scripts.ECS
             if (!canInteract) return;
             if (!canEditAnywhere) {
                 if (!GameInitializer.Instance.InEditableArea() && isOn) {
-                    AudioManager.Instance.PlayGrabGlassFailedSound();
+                    //AudioManager.Instance.PlayGrabGlassFailedSound();
                     return;
                 }
             }
 
             isHeld = isOn;
-            if (isOn) AudioManager.Instance.PlayGrabGlassSound();
+            //if (isOn) AudioManager.Instance.PlayGrabGlassSound();
         }
         
         

@@ -10,7 +10,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             base.ResolvePuzzle();
             
             GetBaseObject().SetInteract(true);
-            AudioManager.Instance.PlayOneShot(unlockedDoorEvent, transform.position);
+            //AudioManager.Instance.PlayOneShot(unlockedDoorEvent, transform.position);
         }
     }
 }
