@@ -5,7 +5,7 @@
 			<value>ClockTickTock</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{d9245b2d-bb40-4304-b02c-d42a256c2ebe}</destination>
@@ -56,7 +56,14 @@
 			<destination>{d175d872-d747-4d9f-9fb1-a339de3068d8}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{9e24d50b-09a7-4ceb-b0f3-c2d255167b1d}" />
+	<object class="EventAutomatableProperties" id="{9e24d50b-09a7-4ceb-b0f3-c2d255167b1d}">
+		<property name="dopplerScale">
+			<value>500</value>
+		</property>
+		<property name="maximumDistance">
+			<value>7</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{15aee49e-20eb-4517-8718-fce65790d230}" />
 	<object class="Timeline" id="{52dca899-4c53-426f-8710-60f70a4c6312}">
 		<relationship name="modules">
@@ -67,6 +74,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{7a074f10-0259-43d3-851c-bcb2427d0c09}">
+		<property name="volume">
+			<value>-16</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{fccfab90-76b2-4715-9458-a9948284da7a}</destination>
 		</relationship>
@@ -108,9 +118,37 @@
 	<object class="MixerBusEffectChain" id="{fccfab90-76b2-4715-9458-a9948284da7a}">
 		<relationship name="effects">
 			<destination>{ea18509c-19fb-4560-a590-6121f69d5289}</destination>
+			<destination>{f8b98581-590e-4d6d-904c-00b2c642c32f}</destination>
+			<destination>{4fb38e37-f7bc-45ed-9c99-8f51179829f6}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{2fb4c1eb-7eb5-4282-af4c-175a0e6fdea1}" />
+	<object class="MixerBusPanner" id="{2fb4c1eb-7eb5-4282-af4c-175a0e6fdea1}">
+		<property name="surroundLFELevel">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{96cb1655-898e-4701-a3c1-19ed1c27f3cb}" />
 	<object class="MixerBusFader" id="{ea18509c-19fb-4560-a590-6121f69d5289}" />
+	<object class="SFXReverbEffect" id="{f8b98581-590e-4d6d-904c-00b2c642c32f}">
+		<property name="decayTime">
+			<value>3400</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>45</value>
+		</property>
+		<property name="lowShelfGain">
+			<value>-13</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{4fb38e37-f7bc-45ed-9c99-8f51179829f6}">
+		<property name="distanceRolloffType">
+			<value>2</value>
+		</property>
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>36</value>
+		</property>
+	</object>
 </objects>

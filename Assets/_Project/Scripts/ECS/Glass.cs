@@ -36,6 +36,7 @@ namespace _Project.Scripts.ECS
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
         [SerializeField] private bool canEditAnywhere = false;
+        [SerializeField] private bool spawned = false;
         [SerializeField] private Fragment shard;
         [HideInInspector] public Fragment visualShard;
         [HideInInspector] public ParticleSystem visualParticles;
@@ -46,7 +47,8 @@ namespace _Project.Scripts.ECS
         private Vector2 mousePosition;
 
         private bool isHeld;
-        private bool spawned;
+        private bool isOnTop;
+
 
         private bool initialized = false;
         private bool canInteract = true;
@@ -90,6 +92,7 @@ namespace _Project.Scripts.ECS
                 shard.gameObject.SetActive(false);
                 HudManager.Instance.ShardSpawn(this);
                 spawned = true;
+                SaveData();
             }
             Set3DShard();
         }
@@ -100,21 +103,20 @@ namespace _Project.Scripts.ECS
         }
 
         public void OnDrag(PointerEventData eventData) {
-            if (!canInteract) return;
+            if(!canInteract) return;
             if(!isHeld) return;
+            if(MemoryManager.Instance.isInMemory) return;
 
             if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea() && !MemoryManager.Instance.isInMemory)
-                    return;
-                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea() && !MemoryManager.Instance.isInMemory)
-                    return;
+                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
+                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
             }
 
             transform.position += (Vector3)eventData.delta; 
             
             transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, 1920 - shardSprite.rectTransform.sizeDelta.x/2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, 1080 - shardSprite.rectTransform.sizeDelta.y/2));
+                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, Screen.width - shardSprite.rectTransform.sizeDelta.x/2),
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, Screen.height  - shardSprite.rectTransform.sizeDelta.y/2));
 
             Set3DShard();
         }
@@ -132,8 +134,8 @@ namespace _Project.Scripts.ECS
             
             List<Vector3> cornersPos = new ();
             foreach (var points in polygonCollider2D.points)
-                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x + polygonCollider2D.offset.x, 
-                    transform.position.y + points.y + polygonCollider2D.offset.y, 10)));
+                cornersPos.Add( mainCamera.ScreenToWorldPoint(new Vector3(transform.position.x + points.x * Screen.height/1080 + polygonCollider2D.offset.x, 
+                    transform.position.y + points.y  * Screen.height/1080+ polygonCollider2D.offset.y, 10)));
                 
             shard.Setup(cornersPos);
             
@@ -141,17 +143,13 @@ namespace _Project.Scripts.ECS
                 visualShard.Setup(cornersPos);
         }
 
-        private void OnEnable()
-        {
-            if (shard) 
-                shard.gameObject.SetActive(true);
+        private void OnEnable() {
+            shard?.gameObject.SetActive(true);
         }
 
-        private void OnDisable()
-        {
-            if(shard)
-                shard?.gameObject.SetActive(false);
-        }
+        /*private void OnDisable() {
+            shard?.gameObject.SetActive(false);
+        }*/
 
         void OnDestroy() {
             if(shard) Destroy(shard.gameObject);
@@ -159,9 +157,11 @@ namespace _Project.Scripts.ECS
         
         internal void ChangeHoldingState(bool isOn) {
             if (!canInteract) return;
-            if (!GameInitializer.Instance.InEditableArea() && isOn) {
-                AudioManager.Instance.PlayGrabGlassFailedSound();
-                return;
+            if (!canEditAnywhere) {
+                if (!GameInitializer.Instance.InEditableArea() && isOn) {
+                    AudioManager.Instance.PlayGrabGlassFailedSound();
+                    return;
+                }
             }
 
             isHeld = isOn;
@@ -195,12 +195,18 @@ namespace _Project.Scripts.ECS
             return true;
         }
 
-        private void SetInteract(bool canInteract) {
-            this.canInteract = canInteract;
-        }
-
         public void SetEditAnywhere(bool editAnywhere) {
             canEditAnywhere = editAnywhere;
+        }
+
+        public void SetInFront(bool setOnTop)
+        {
+            if(!GameInitializer.Instance.InEditableArea())
+                return;
+                
+            var vector3 = shard.transform.position;
+            vector3.z = setOnTop ? 0 : -0.0001f;
+            shard.transform.position = vector3;
         }
     }
 }

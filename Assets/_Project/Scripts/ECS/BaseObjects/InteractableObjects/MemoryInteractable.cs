@@ -14,6 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public struct MemoryEvent : IEvent {
         public bool showMemory;
         public Sprite memory;
+        public Sprite memoryLine;
     }
     
     [RequireComponent(typeof(BaseObject))]
@@ -23,6 +24,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private int unlockedMemoryId;
         
         [SerializeField] private Sprite memorySprite;
+        [SerializeField] private Sprite memoryLineSprite;
         private KeyInteractable key;
         
         [Header("Sounds")]
@@ -31,7 +33,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool initialized = false;
 
-        private CountdownTimer displayCountdown = new CountdownTimer(0.5f);
+        private CountdownTimer displayCountdown = new CountdownTimer(1.25f);
         
         public void Initialize() {
             displayCountdown.OnTimerStop += DelayDisplay;
@@ -80,10 +82,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             switch (interaction) {
                 case ObjectInteraction.EnterMemory:
-                {
                     DisplayMemory();
-                    
-                }
                     break;
                 case ObjectInteraction.LeaveMemory:
                     StopMemoryInteraction();
@@ -124,8 +123,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
                 soundInstance.start();
             }
-            
-            MemoryManager.Instance.SetMemory(true, unlockedMemoryId,  memorySprite);
+
+            MemoryManager.Instance.SetMemory(true, unlockedMemoryId, memorySprite, memoryLineSprite);
             Debug.Log($"[MemoryInteractable] Entering memory");
             
             if (baseObject.successDialogue is { oneTime: true, alreadyInteracted: true })
@@ -133,6 +132,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             HudManager.Instance.SetText(baseObject.successDialogue.dialogue);
             baseObject.successDialogue.alreadyInteracted = true;
+            HudManager.InteractionSetPosition(new Vector3(Screen.width -100, Screen.height -100, 0));
+            
         }
         
         private void StopMemoryInteraction() {
@@ -146,6 +147,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             Debug.Log($"[MemoryInteractable] Leaving memory");
+            if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)
+                baseObject.Trigger(true);
+            else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)
+            {
+                baseObject.Trigger(false);
+                baseObject.interactTutorialElement?.TriggerEventStart();
+            }
         }
         
         public void ResetObject() {

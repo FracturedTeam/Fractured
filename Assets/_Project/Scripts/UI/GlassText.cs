@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
@@ -7,8 +6,6 @@ using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GlassText : MonoBehaviour
@@ -36,7 +33,7 @@ public class GlassText : MonoBehaviour
     
 
     public void Setup(DialogueScriptableObject scriptableObject) {
-        tween.Kill();
+        tween?.Kill();
         
         if (scriptableObject == null) {
             tween = textCanva.DOFade(0, 0.5f);
@@ -102,6 +99,7 @@ public class GlassText : MonoBehaviour
     private void OnDisable() {
         if(shardsOnTop != null)
             shardsOnTop.onUpdate -= UpdateShards;
+        tween?.Kill();
     }
     
     private void SetText()

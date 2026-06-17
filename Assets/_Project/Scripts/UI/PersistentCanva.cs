@@ -1,7 +1,5 @@
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
-using System.Collections;
-using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.UI {
@@ -16,6 +14,8 @@ namespace _Project.Scripts.UI {
         [SerializeField] private CanvasGroup fadeCanvasGroup;
         [SerializeField] private float fadeInDuration = 0.5f;
         [SerializeField] private float fadeOutDuration = 0.5f;
+
+        private Tweener tween;
         
         private void OnEnable() {
             fadeEventBinding = new EventBinding<FadeObject>(Fade);
@@ -24,15 +24,18 @@ namespace _Project.Scripts.UI {
 
         private void OnDisable() {
             EventBus<FadeObject>.Deregister(fadeEventBinding);
+            
+            tween?.Kill();
         }
 
         void Fade(FadeObject f) {
+            tween?.Kill();
             if (f.show) {
-                fadeCanvasGroup.DOFade(1f, fadeInDuration);
+                tween = fadeCanvasGroup.DOFade(1f, fadeInDuration);
                 fadeCanvasGroup.blocksRaycasts = true;
             }
             else {
-                fadeCanvasGroup.DOFade(0f, fadeOutDuration);
+                tween = fadeCanvasGroup.DOFade(0f, fadeOutDuration);
                 fadeCanvasGroup.blocksRaycasts = false;
             }
         }

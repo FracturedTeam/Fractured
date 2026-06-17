@@ -18,7 +18,7 @@ namespace _Project.Scripts.GameServices {
     
     public class SaveInstance : Singleton<SaveInstance> {
         [SerializeField] public GameData gameData;
-        [SerializeField] private List<BaseObject> baseObjects;
+        [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] private List<Glass> shards;
         
         public void Bind(GameData saveFile) {

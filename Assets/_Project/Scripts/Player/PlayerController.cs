@@ -14,13 +14,11 @@ namespace _Project.Scripts.Player {
     public class PlayerController : Singleton<PlayerController>{
         [SerializeField, HideInInspector] private PlayerData data;
         
-        [ContextMenu("Load")]
         public void Load(PlayerData data) {
             this.data = data;
             movement.SetPosition(data.position, Direction.Up);
         }
         
-        [ContextMenu("Save")]
         public void SaveData(PlayerData data) {
             this.data = data;
             data.position = transform.position;
@@ -54,6 +52,8 @@ namespace _Project.Scripts.Player {
 
         private void Start() {
             stateMachine = new StateMachine();
+            //quick fix for that art part, need rework for the steam version
+            cinemachineBrain.gameObject.SetActive(false);
             
             //Get every component needed
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
@@ -67,6 +67,7 @@ namespace _Project.Scripts.Player {
             
             //Define state machine
             DefineState();
+            
         }
 
         void DefineState() {
@@ -96,6 +97,7 @@ namespace _Project.Scripts.Player {
             //Carrying State
             At(locomotionState, grabObject, new FuncPredicate(() => interact.IsCarrying()));
             At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.IsClipFinished()));
+            At(grabObject, locomotionState, new  FuncPredicate(() => !interact.IsCarrying() && grabObject.IsClipFinished()));
             
             At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
             At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.IsClipFinished()));
@@ -109,7 +111,7 @@ namespace _Project.Scripts.Player {
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
             At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory() && !interact.IsCarrying()));
+            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory()));
             At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
@@ -137,6 +139,8 @@ namespace _Project.Scripts.Player {
             
             //Set the initial player State
             stateMachine.SetState(locomotionState);
+            
+            cinemachineBrain.gameObject.SetActive(true);
         }
 
         private void Update() {

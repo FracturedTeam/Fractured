@@ -25,11 +25,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
         
         private bool isActive;
         private bool initialized = false;
+        private bool previousActivation = false;
 
         [HideInInspector] public MoveableObject objectOnPressurePlate;
         [SerializeField] BaseObject[] lockedBehindThis;
-
-        private CountdownTimer deactivateOnInitalization = new CountdownTimer(0.5f);
 
         public void Initialize() {
             if (!initialized) {
@@ -45,15 +44,6 @@ namespace _Project.Scripts.ECS.BaseObjects {
             
             baseObject?.SetInteract(true);
             initialized = true;
-            
-            deactivateOnInitalization.OnTimerStop += DeactivateLinkedObject;
-            deactivateOnInitalization.Start();
-        }
-
-        private void DeactivateLinkedObject() {
-            foreach (var locked in lockedBehindThis) {
-                locked.SetInteract(false);
-            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -92,6 +82,14 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     objectOnPressurePlate?.SetPressurePlateOn(null);
                     objectOnPressurePlate = null;
                     
+                    if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                        baseObject.Trigger(true);
+                    else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                    {
+                        baseObject.Trigger(false);
+                        baseObject.interactTutorialElement?.TriggerEventStart();
+                    }
+                    
                     isActive = false;
                     baseObject.GetCompletion = InteractionCompletion.NotCompleted;
                     break;
@@ -108,31 +106,28 @@ namespace _Project.Scripts.ECS.BaseObjects {
                     if (baseObject.GetCompletion is InteractionCompletion.Completed) baseObject.successDialogue.alreadyInteracted = true;
                     else baseObject.cantInteractDialogue.alreadyInteracted = true;
                 }
-
-                foreach (var locked in lockedBehindThis) {
-                    locked.SetInteract(true);
-                }
-                
-                AudioManager.Instance.PlayPlateActiveSound(transform.position);
             }
             else {
                 if (!baseObject.failedDialogue.oneTime || !baseObject.failedDialogue.alreadyInteracted) {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
                     baseObject.failedDialogue.alreadyInteracted = true;
                 }
-                
-                foreach (var locked in lockedBehindThis) {
-                    locked.SetInteract(false);
-                }
-                
-                AudioManager.Instance.PlayPlateInactiveSound(transform.position);
             }
         }
 
         public void Tick(float deltaTime) {
-            /*if (!baseObject.CanBeInteractedWith()) {
-                return;
-            }*/
+            if (previousActivation != isActive) {
+                previousActivation = isActive;
+                
+                if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
+                else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+            }
+            
+            if (lockedBehindThis.Length > 0) {
+                foreach (var locked in lockedBehindThis) {
+                    locked.SetInteract(isActive);
+                }
+            }
             
             timer += isActive ? deltaTime : -deltaTime;
             timer = Mathf.Clamp(timer, 0, timeToMoveObject);

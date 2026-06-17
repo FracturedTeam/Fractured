@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.Systems.Timers;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -29,6 +30,16 @@ namespace _Project.Scripts.GameServices {
     }
     
     public class AudioManager : PersistentSingleton<AudioManager> {
+        [Header("Volumes")] 
+        [Range(0, 1)] public float masterVolume = 1;
+        [Range(0, 1)] public float sfxVolume = 1;
+        [Range(0, 1)] public float musicVolume = 1;
+
+        private Bus masterBus;
+        private Bus sfxBus;
+        private Bus musicBus;
+        
+        
         [Header("One Shot Sounds")]
         [Header("Player")]
         [SerializeField] private EventReference playerFootstepSound;
@@ -85,7 +96,10 @@ namespace _Project.Scripts.GameServices {
         private EventBinding<MemorySound> memoryEventBinding;
         private EventBinding<ManageAmbientAudio> ambientEventBinding;
         private EventBinding<EditableSound> editableEventBinding;
-        
+
+        readonly CountdownTimer revealObjectTimer = new CountdownTimer(1f);
+        readonly CountdownTimer hideObjectTimer = new CountdownTimer(1f);
+            
         #region OneShot Sounds
         public void PlayOneShot(EventReference sound, Vector3 worldPosition) {
             RuntimeManager.PlayOneShot(sound, worldPosition);
@@ -96,8 +110,19 @@ namespace _Project.Scripts.GameServices {
         #region Glass
         public void PlayGrabGlassSound() => RuntimeManager.PlayOneShot(grabGlassSound);
         public void PlayGrabGlassFailedSound() => RuntimeManager.PlayOneShot(grabGlassFailedSound);
-        public void PlayRevealObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(revealSound, worldPosition);
-        public void PlayHideObjectSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(hideSound, worldPosition);
+
+        public void PlayRevealObjectSound(Vector3 worldPosition) {
+            if(revealObjectTimer.IsRunning) return;
+            RuntimeManager.PlayOneShot(revealSound, worldPosition);
+            revealObjectTimer.Start();
+        }
+
+        public void PlayHideObjectSound(Vector3 worldPosition) {
+            if(hideObjectTimer.IsRunning) return;
+            RuntimeManager.PlayOneShot(hideSound, worldPosition);
+            hideObjectTimer.Start();
+        }
+
         public void PlayBreakGlassSound(Vector3 worldPosition) => RuntimeManager.PlayOneShot(breakGlassSound, worldPosition);
 
         #endregion
@@ -153,6 +178,13 @@ namespace _Project.Scripts.GameServices {
         }
 #endregion
 
+        protected override void Awake() {
+            base.Awake();
+            masterBus = RuntimeManager.GetBus("bus:/");
+            musicBus = RuntimeManager.GetBus("bus:/Ambiance");
+            sfxBus = RuntimeManager.GetBus("bus:/SFX");
+        }
+
         private void Start() {
             memorySoundInstance = CreateInstance(memoryLoopSound);
             ambientZone1Instance = CreateInstance(ambientSoundZone);
@@ -161,6 +193,12 @@ namespace _Project.Scripts.GameServices {
             menuInstance = CreateInstance(menuLoop);
             editableInstance = CreateInstance(editableLoop);
             creditsInstance = CreateInstance(creditsLoop);
+        }
+
+        private void Update() {
+            masterBus.setVolume(masterVolume);
+            musicBus.setVolume(musicVolume);
+            sfxBus.setVolume(sfxVolume);
         }
 
         private void OnEnable() {
@@ -190,8 +228,12 @@ namespace _Project.Scripts.GameServices {
                     editableInstance.start();
                 }
             }
-            else
-                editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            else {
+                editableInstance.getPlaybackState(out var playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.PLAYING)) {
+                    editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                }
+            }
         }
         
         private void UpdateMemory(MemorySound m) {

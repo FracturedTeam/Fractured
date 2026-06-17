@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.Systems.Singletons;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
@@ -13,6 +15,7 @@ namespace _Project.Scripts.GameServices {
         public string SaveName;
         public string CurrentScene;
         public PlayerData PlayerData;
+        public SavedMemory memory;
         public List<GameData> SceneDatas;
     }
     
@@ -33,8 +36,11 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SaveGame() {
+            if(!SaveInstance.HasInstance) return;
             SaveInstance.Instance.Bind(gameData = SaveInstance.Instance.GetGameData());
-             
+            if(MemoryManager.HasInstance)
+                MemoryManager.Instance.SaveData(saveFile.memory);
+            
             PlayerController.Instance.SaveData(saveFile.PlayerData);
             GameInitializer.Instance.SaveInteractable();
             GameInitializer.Instance.SaveShards();
@@ -43,7 +49,8 @@ namespace _Project.Scripts.GameServices {
             saveFile.CurrentScene = gameData.SceneName;
             
             bool foundExisting = false;
-            for (int i = 0; i < saveFile.SceneDatas.Count; i++)  {
+            for (int i = 0; i < saveFile.SceneDatas.Count; i++)
+            {
                 if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
                     saveFile.SceneDatas[i] = gameData;
                     foundExisting = true;
@@ -63,7 +70,8 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void LoadData() {
-            LoadData(SaveInstance.Instance.gameObject.scene.name);
+            if(SaveInstance.HasInstance)
+                LoadData(SaveInstance.Instance.gameObject.scene.name);
         }
         
         public void LoadData(string gameName) {
@@ -89,6 +97,8 @@ namespace _Project.Scripts.GameServices {
             
             SaveInstance.Instance.SetGameData(saveFile.SceneDatas[index]);
             SaveInstance.Instance.Bind(saveFile.SceneDatas[index]);
+            if(MemoryManager.HasInstance)
+                MemoryManager.Instance.Load(saveFile.memory);
             
             GameInitializer.Instance.LoadInteractable();
             GameInitializer.Instance.LoadShards();
@@ -103,7 +113,8 @@ namespace _Project.Scripts.GameServices {
             saveFile = new SaveFile {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
-                SceneDatas = new List<GameData>()
+                SceneDatas = new List<GameData>(),
+                memory = new SavedMemory ()
             };
             GameSceneLoaderSystem.Instance.NewGame();
         }
@@ -118,10 +129,21 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            for (int i = 0; i < shards.Count; i++) {
-                SaveInstance.Instance.GetShards()[i] = shards[i];
-                SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+            if (SaveInstance.Instance.GetShards().Count < shards.Count) {
+                shards = shards.Distinct().ToList();
             }
+            foreach (var s in shards) {
+                for (int i = 0; i < SaveInstance.Instance.GetShards().Count; i++) {
+                    if (s.gameObject.name == SaveInstance.Instance.GetShards()[i].gameObject.name) {
+                        SaveInstance.Instance.GetShards()[i] = shards[i];
+                        SaveInstance.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+                    }
+                }
+            }
+        }
+
+        public bool ExistingSave() {
+            return dataService.FileDoesExist(saveFile.SaveName);
         }
     }
 }

@@ -9,9 +9,7 @@ using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
@@ -53,6 +51,7 @@ namespace _Project.Scripts.UI
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
         [SerializeField] private Image memoryImage;
+        [SerializeField] private Image memoryLine;
         
         private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<MemoryEvent> memoryEventBinding;
@@ -76,27 +75,30 @@ namespace _Project.Scripts.UI
         private ParticleSystem currentParticle;
         private Fragment currentFrag;
         
-        private List<ParticleSystem> freeParticles = new List<ParticleSystem>();
-        private List<Fragment> freeFragment = new List<Fragment>();
+        private readonly List<ParticleSystem> freeParticles = new List<ParticleSystem>();
+        private readonly List<Fragment> freeFragment = new List<Fragment>();
 
         private void Start() {
             textTimer = new CountdownTimer(0);
-            textTimer.OnTimerStop  += ResetText;
+            textTimer.OnTimerStop += ResetText;
             interactionUI.GetGroup.alpha = 0;
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
         }
-        
-        void OnEnable() {
+
+        private void OnEnable() {
             interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
             EventBus<InteractEvent>.Register(interactEventBinding);
             memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
             EventBus<MemoryEvent>.Register(memoryEventBinding);
         }
 
-        void OnDisable() {
+        private void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
             EventBus<MemoryEvent>.Deregister(memoryEventBinding);
+            
+            interactTween?.Kill();
+            memoryTween?.Kill();
             
             textTimer.OnTimerStop  -= ResetText;
         }
@@ -127,7 +129,8 @@ namespace _Project.Scripts.UI
         {
             if(freeParticles.Count <= 0)
             {
-                var particle =  Instantiate(spawningParticles);
+                var particle =  Instantiate(spawningParticles, PlayerController.Instance.cinemachineBrain.OutputCamera.transform);
+                particle.transform.localPosition = new Vector3(0, 5, 15);
                 freeParticles.Add(particle);
             }
             
@@ -142,7 +145,6 @@ namespace _Project.Scripts.UI
             freeParticles.Remove(currentParticle);
             currentParticle.gameObject.SetActive(true);
             
-            currentParticle.transform.position = Camera.main!.ScreenToWorldPoint(new Vector3(shard.transform.position.x, shard.transform.position.y, 10));
             
             currentFrag = freeFragment[^1];
             shard.visualShard = currentFrag;
@@ -171,11 +173,11 @@ namespace _Project.Scripts.UI
         }
 
         #region InteractionHUD
-        
-            void ShowInteraction(InteractEvent e) {
+
+        private void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
 
-                if (!e.ShowInteraction) {
+                if (!e.ShowInteraction || e.Interaction == Interaction.None) {
                     interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
                     interactionUI2.GetGroup.DOFade(0f, 0.25f);
                     return;
@@ -189,10 +191,10 @@ namespace _Project.Scripts.UI
                     Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
                     Interaction.UseKey =>  $"{useKey}",
                     Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
-                    Interaction.needFragment => $"{needFragment}",
-                    Interaction.needKey  => $"{needKey}",
-                    Interaction.needSomethingElse => $"{needSomethingElse}",
-                    Interaction.dialogue => $"{dialogueInteraction}",
+                    Interaction.NeedFragment => $"{needFragment}",
+                    Interaction.NeedKey  => $"{needKey}",
+                    Interaction.NeedSomethingElse => $"{needSomethingElse}",
+                    Interaction.Dialogue => $"{dialogueInteraction}",
                     Interaction.EnterPressurePlate => $"{enterPressurePlate}",
                     Interaction.LeavePressurePlate => $"{leavePressurePlate}",
                     Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
@@ -204,19 +206,20 @@ namespace _Project.Scripts.UI
                 if (e.Interaction == Interaction.EnterMemory)
                 {
                     interactionUI2.GetInteractionText.text = $"{pickObjectPressurePlate}";
-                    interactionUI2.GetInteractionImage.sprite = spriteNormal;
+                    interactionUI2.GetInteractionImage.sprite = spriteUp;
                 }
                 interactionUI2.GetGroup.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
                 
                 interactionUI.GetInteractionImage.sprite = e.Interaction switch
                 {
-                    Interaction.Grab => spriteUp,
+                    Interaction.Grab => spriteNormal,
+                    Interaction.PickObjectOnPressurePlate => spriteUp,
                     Interaction.ObtainShard => spriteGlass,
                     Interaction.UseDoor => spriteUseDoor,
                     Interaction.UseKey => spriteKey,
                     Interaction.UseFragment => spriteDown,
-                    Interaction.needFragment => spriteGlass,
-                    Interaction.needKey => spriteKey,
+                    Interaction.NeedFragment => spriteGlass,
+                    Interaction.NeedKey => spriteKey,
                     _ => spriteNormal
                 };
                 
@@ -239,13 +242,14 @@ namespace _Project.Scripts.UI
 
             public static void InteractionSetPosition(Vector3 position)
             {
-                Instance.interactionParent.transform.position = new Vector3(position.x, position.y + 2f, 0f);
+                Instance.interactionParent.transform.position = position;
             }
 
-            void ShowMemory(MemoryEvent e) {
+            private void ShowMemory(MemoryEvent e) {
                 memoryTween.Kill();
                 
                 memoryImage.sprite = e.memory;
+                memoryImage.sprite = e.memoryLine;
                 
                 memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
             }

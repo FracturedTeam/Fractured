@@ -1,6 +1,7 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States {
@@ -24,7 +25,8 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnUpdate() {
-            player.transform.position = Vector3.Lerp(endPos, startPos, Mathf.Clamp(exitStateTimer.Progress, 0.2f, 1f));
+            player.movement.GetRigidbody().MovePosition(Vector3.Lerp(endPos, startPos, Mathf.Clamp(exitStateTimer.Progress, 0.2f, 1f)));
+            //player.movement.GetRigidbody().DOMove(endPos, 1.8f).SetEase(Ease.OutSine).SetUpdate(UpdateType.Fixed);
 
             animator.SetFloat(BlendingHash,
                 exitStateTimer.Progress > 0.2f

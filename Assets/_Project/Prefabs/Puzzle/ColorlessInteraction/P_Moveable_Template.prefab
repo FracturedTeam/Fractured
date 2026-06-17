@@ -132,6 +132,8 @@ MonoBehaviour:
     dialogue: {fileID: 0}
     oneTime: 0
     alreadyInteracted: 0
+  particles: {fileID: 0}
+  dissolve: {fileID: 3141156177714796143}
 --- !u!114 &4874448006855017427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +162,10 @@ MonoBehaviour:
   locked: 0
   memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
-  hudTransform: {fileID: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
+  interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
@@ -176,6 +181,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5134744362116337008}
     m_Modifications:
+    - target: {fileID: 7476278674713369306, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a996787c32810f849a05eee5a3cc7d80, type: 2}
     - target: {fileID: 8613766555186078133, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -237,6 +246,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
+--- !u!23 &3141156177714796143 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7476278674713369306, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}
+  m_PrefabInstance: {fileID: 5500781019334741173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4313476723861171456 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8613766555186078133, guid: 83e2011ad8f24f34fab777b2d8c4eee9, type: 3}

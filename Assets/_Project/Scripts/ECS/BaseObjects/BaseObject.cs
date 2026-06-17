@@ -3,10 +3,10 @@ using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -35,14 +35,15 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private Vector2 hudSpecialTransformPoint;
         
         [Header("Tutorial")]
-        [SerializeField] protected TutorialTriggerType stopTutorialTriggerType;
-        [SerializeField] protected TutorialElement interactTutorialElement;
-        
+        [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
+        [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
+        [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
+        public MeshFilter meshFilter { get; private set; }
         private Collider objectCollider;
 
-        private bool initialized = false;
+        public bool initialized { get; private set; }
         private bool canBeInteractedWith;
         private bool isOnPressurePlate = false;
         
@@ -99,9 +100,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         #endregion
         
-        private void Awake() {
+        /*private void Awake() {
             Initialize();
-        }
+        }*/
 
         public void Initialize() {
             if(!initialized) {
@@ -115,6 +116,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
+                
+                if(TryGetComponent(typeof(MeshFilter), out var mf)) meshFilter = mf as MeshFilter;
+                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
@@ -128,6 +132,15 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
                 SetInteract(false);
+            
+            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
+                Trigger(true);
+            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+                
         }
         
         //Collider[] inObjects = new Collider[4];
@@ -149,11 +162,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
             GetInteract.OnInteract(interaction, interactable);
 
-            if (stopTutorialTriggerType != TutorialTriggerType.OnInteract)
-                return;
-            
-            Trigger(false);
-            interactTutorialElement?.TriggerEventStart();
+            if (stopTutorialTriggerType == TutorialTriggerType.OnInteract)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnInteract)
+                Trigger(true);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
@@ -162,21 +177,32 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!isOn) 
                 return;
 
-            if (stopTutorialTriggerType != TutorialTriggerType.OnHideReveal) 
-                return;
-            
-            Trigger(false);
-            interactTutorialElement?.TriggerEventStart();
+            if (stopTutorialTriggerType == TutorialTriggerType.OnHideReveal)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnHideReveal)
+                Trigger(true);
         }
 
-        private void CompleteObject() {
-            Debug.Log("[BaseObject] Complete Object");
-            GetInteract.CompleteObject();
+        public void CompleteObject() {
+            if (GetGlass) GetGlassInteract.CompleteObject();
+            GetInteract?.CompleteObject();
+            
+            if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)
+            {
+                Trigger(false);
+                interactTutorialElement?.TriggerEventStart();
+            }
+            if (startTutorialTriggerType == TutorialTriggerType.OnSuccess)
+                Trigger(true);
         }
 
         public void ResetInteract() {
             GetInteract?.ResetObject();
-            GetGlassInteract?.ResetObject();
+            if(GetInteractionType is not ObjectType.Moveable)
+                GetGlassInteract?.ResetObject();
         }
         
         public void SetInteract(bool canInteract) {
@@ -204,22 +230,15 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public Vector3 GetUIPosition(bool special = false)
-        {
-            return transform.position + (special ? 
-                new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 3, 0) : 
-                new Vector3(hudTransformPoint.x, hudTransformPoint.y + 3, 0));
+        public Vector2 GetUIPosition(bool special = false) {
+            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + 
+                   (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
         }
 
-        public void Trigger(bool on)
-        {
-            print("Trigger");
-            if (!GetTutorialElement)
-                return;
-            if(on)
-                GetTutorialElement.TriggerEventStart();
-            else
-                GetTutorialElement.TriggerEventStop();
+        public void Trigger(bool on) {
+            if (!GetTutorialElement) return;
+            if(on) GetTutorialElement.TriggerEventStart();
+            else GetTutorialElement.TriggerEventStop();
         }
 
         public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;

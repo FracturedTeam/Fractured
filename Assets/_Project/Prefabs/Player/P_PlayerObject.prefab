@@ -320,7 +320,7 @@ MonoBehaviour:
   breakObjectClip: {fileID: 5545533017366794915, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
   failedDoorClip: {fileID: -6983255843466406200, guid: 898af435872f12f4c979b7e5851e6967, type: 3}
   leaveMemoryClip: {fileID: 6539261393042782472, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
-  usePiedestalClip: {fileID: 6365244650581584053, guid: e8494df8bfc43c549aa383778431ed72, type: 3}
+  usePiedestalClip: {fileID: -3650281524580427706, guid: 9eb10b675e11bbf4aaae4fc507d7a096, type: 3}
   triggerEnterRoom: 0
 --- !u!114 &4559356953594915415
 MonoBehaviour:
@@ -393,7 +393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5042233969229290551
 Transform:
   m_ObjectHideFlags: 0
@@ -660,11 +660,11 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
-  m_AllowMSAA: 0
+  m_HDR: 1
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!114 &551608302285027002
@@ -690,8 +690,8 @@ MonoBehaviour:
     Enabled: 1
     DefaultMode: 2
   DefaultBlend:
-    Style: 6
-    Time: 0.4
+    Style: 0
+    Time: 0
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -723,7 +723,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0

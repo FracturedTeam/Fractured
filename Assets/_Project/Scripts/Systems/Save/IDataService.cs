@@ -8,5 +8,7 @@ namespace _Project.Scripts.Systems.Save {
         void Delete(string name);
         void DeleteAll();
         IEnumerable<string> ListSaves();
+        
+        bool FileDoesExist(string name);
     }
 }

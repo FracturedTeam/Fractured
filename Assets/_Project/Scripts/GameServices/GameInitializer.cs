@@ -151,9 +151,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void RepopulateInteractableOnLoadLevel() {
-            Debug.Log($"[GameInitializer] Populate interactable");
-            shardService.RepopulateBaseObjet(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
-            
+            shardService.RepopulateBaseObjet(SaveInstance.Instance.baseObjects.ToArray());
         }
 
         public BaseObject[] GetInteractables() {
@@ -179,7 +177,10 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void LoadShards() {
-            foreach (var shard in shardService.shards) {
+            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
+                shard.LoadData();
+            }*/
+            foreach (var shard in SaveInstance.Instance.GetShards()) {
                 shard.LoadData();
             }
         }
@@ -229,10 +230,12 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InBlueEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInBlueEditableArea });
             return shardService.PlayerInBlueEditableArea;
         }
         
         public bool InRedEditableArea() {
+            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInRedEditableArea });
             return shardService.PlayerInRedEditableArea;
         }
         

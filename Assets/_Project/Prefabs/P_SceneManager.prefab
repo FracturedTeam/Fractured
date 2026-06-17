@@ -88,12 +88,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.GameSaveSystem
   AutoUnparentOnAwake: 1
   saveFile:
-    SaveName: SaveFile
+    SaveName: New Game
     CurrentScene: 
     PlayerData:
       position: {x: 0, y: 0, z: 0}
+    memory:
+      unlocked: []
     SceneDatas: []
-  deleteSaveOnPlay: 1
+  deleteSaveOnPlay: 0
 --- !u!114 &2659810081231417284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.AudioManager
   AutoUnparentOnAwake: 1
+  masterVolume: 1
+  sfxVolume: 1
+  musicVolume: 1
   playerFootstepSound:
     Guid:
       Data1: 918943603
@@ -130,11 +135,11 @@ MonoBehaviour:
     Path: event:/GlassShards/UnmovableShard
   revealSound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -2097273480
+      Data2: 1109822826
+      Data3: 248002945
+      Data4: -1272179928
+    Path: event:/GlassShards/RevealObject
   hideSound:
     Guid:
       Data1: 0
@@ -200,11 +205,11 @@ MonoBehaviour:
     Path: event:/Avatar/DropObjectAvatar
   reconstructMemorySound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1404006921
+      Data2: 1077536647
+      Data3: -135973474
+      Data4: -1509290500
+    Path: event:/Interactables/Memories/MemoryConnected
   enterMemorySound:
     Guid:
       Data1: 1130414617
@@ -214,11 +219,11 @@ MonoBehaviour:
     Path: event:/Interactables/Memories/MemoryEnter
   leaveMemorySound:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -869429855
+      Data2: 1223166782
+      Data3: 2112804230
+      Data4: -1842925339
+    Path: event:/Interactables/Memories/MemoryLeave
   pressurePlateActiveSound:
     Guid:
       Data1: 250698333
@@ -263,25 +268,25 @@ MonoBehaviour:
     Path: event:/Ambiance/AmbianceZone1
   menuLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -938664448
+      Data2: 1244451118
+      Data3: 1589274037
+      Data4: -1098736284
+    Path: event:/Ambiance/MainMenu
   editableLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1645112945
+      Data2: 1288471288
+      Data3: -973021286
+      Data4: 1686767403
+    Path: event:/GlassShards/EditableLoop
   creditsLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1409963897
+      Data2: 1080404392
+      Data3: -2067258466
+      Data4: 1610149415
+    Path: event:/Ambiance/Credits
   uiBttClickedSound:
     Guid:
       Data1: 1338886063

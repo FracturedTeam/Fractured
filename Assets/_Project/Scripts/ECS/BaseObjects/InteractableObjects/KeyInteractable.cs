@@ -32,13 +32,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public virtual void OnInteract(ObjectInteraction interaction = ObjectInteraction.None, IInteractable other = null) {
-            if (HasOneKey() && interaction is ObjectInteraction.Remove) {
+            if (interaction is ObjectInteraction.Remove) {
+                if(!HasOneKey()) return;
                 Debug.Log("[KeyInteractable] Removing");
+                
+                if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                    baseObject.Trigger(true);
+                else if (baseObject.stopTutorialTriggerType == TutorialTriggerType.OnUnsolved) {
+                    baseObject.Trigger(false);
+                    baseObject.interactTutorialElement?.TriggerEventStart();
+                }
+                
                 RemoveObject();
                 return;
             }
             
-            if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
+            //if(baseObject.GetCompletion is InteractionCompletion.Completed) return;
             
             if (interaction is not ObjectInteraction.Drop) {
                 Debug.LogError($"[KeyInteractable] Interaction is not Drop {nameof(KeyInteractable)} | Interaction is {interaction}");
@@ -108,6 +117,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void RemoveObject() {
             var index = keyUsed.Count - 1;
+            
+            if(index < 0) 
+                return;
+            
             var objectRemoved = keyUsed[index];
             
             keyUsed.RemoveAt(index);
@@ -116,6 +129,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(true);
             objectRemoved.GetCompletion = InteractionCompletion.NotCompleted;
             PlayerController.Instance.interact.SetGrabbedObject(objectRemoved);
+            
+            if (objectRemoved.startTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+                objectRemoved.Trigger(true);
+            else if (objectRemoved.stopTutorialTriggerType == TutorialTriggerType.OnUnsolved)
+            {
+                objectRemoved.Trigger(false);
+                objectRemoved.interactTutorialElement?.TriggerEventStart();
+            }
         }
 
         protected virtual void ResolvePuzzle() {
@@ -123,6 +144,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             baseObject.GetCompletion = InteractionCompletion.Completed;
             baseObject.SetInteract(false);
+
+            foreach (var key in keyRequired) {
+                key.SetInteract(false);
+                key.SetCollider(false);
+            }
         }
 
         public virtual void ResetObject() {
@@ -138,12 +164,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public bool GetKeyObject(BaseObject currentInteraction) {
             foreach (var key in keyRequired) {
-                if (key == currentInteraction) return true;
+                if (key == currentInteraction) 
+                    return true;
             }
             return false;
         }
 
-        public bool HasOneKey() {
+        private bool HasOneKey() {
             return keyRequired.Count > 0;
         }
         

@@ -9,7 +9,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnEnter() {
-            animator.CrossFade(IdleHash,  defaultCrossFadeDuration);
+            animator.CrossFade(IdleHash,  DefaultCrossFadeDuration);
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(true);
         }

@@ -73,6 +73,11 @@ namespace _Project.Scripts.DebugSystems.Services {
             if (GUILayout.Button("Reset interactable", buttonStyle)) {
                 GameInitializer.Instance.ResetInteractable();
             }
+            if (GUILayout.Button("Complete interactable", buttonStyle)) {
+                foreach (var interactable in GameInitializer.Instance.GetInteractables()) {
+                    interactable.CompleteObject();
+                }
+            }
             
             GUILayout.EndVertical();
         }

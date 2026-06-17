@@ -66,5 +66,10 @@ namespace _Project.Scripts.Systems.Save {
                     yield return Path.GetFileNameWithoutExtension(path);
             }
         }
+
+        public bool FileDoesExist(string name) {
+            var fileLocation = GetPathToFile(name);
+            return File.Exists(fileLocation);
+        }
     }
 }

@@ -12,9 +12,9 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             //Animator -- Set the hold animation while holding object
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
-            animator.CrossFade(CarryHash,  defaultCrossFadeDuration, UpperBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
+            animator.CrossFade(CarryHash,  DefaultCrossFadeDuration, UpperBodyLayer);
             
             player.movement.SetSpeed(PlayerSpeedEnum.Normal);
             player.interact.SetInteract(true);
@@ -33,9 +33,9 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnExit() {
             //Animator
-            animWeightTween?.Kill();
-            animWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
-            animator.CrossFade(EmptyHash, defaultCrossFadeDuration, UpperBodyLayer);
+            AnimWeightTween?.Kill();
+            AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
+            animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, UpperBodyLayer);
         }
     }
 }

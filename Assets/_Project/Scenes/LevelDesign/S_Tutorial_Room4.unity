@@ -189,7 +189,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: cba51915958e43d44bd0206b893fdd3e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5691693772629930603, guid: f4172e0d090f9ab4093f6b537c3a516b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5202369145631912920}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5023525656795326673, guid: f4172e0d090f9ab4093f6b537c3a516b, type: 3}
       insertIndex: -1
@@ -245,6 +248,7 @@ MonoBehaviour:
     dialogue: {fileID: 0}
     oneTime: 0
     alreadyInteracted: 0
+  particles: {fileID: 5202369145631912921}
 --- !u!114 &10348618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,9 +276,10 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {x: 0.55, y: 0}
+  hudTransformPoint: {x: 45, y: 7.5}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -938,14 +943,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MemoryInteractable
   unlockedMemoryId: 0
-  memorySprite: {fileID: 21300000, guid: 04503644a38d8f643834d834dfeb84cf, type: 3}
+  memorySprite: {fileID: 21300000, guid: 45a45ce4fc06b0d44b611dfaa00c0e5f, type: 3}
+  memoryLineSprite: {fileID: 21300000, guid: 518037b4f5160f940b7ccc4cf42ee7a7, type: 3}
   associateMemoryLoop:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 550238381
+      Data2: 1163896090
+      Data3: 10307254
+      Data4: -1576165361
+    Path: event:/Ambiance/MemoryTea
 --- !u!114 &38826223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973,9 +979,10 @@ MonoBehaviour:
     alreadyInteracted: 0
   locked: 0
   memoryId: 0
-  hudTransformPoint: {x: -0.5, y: 0}
+  hudTransformPoint: {x: 44.5, y: 97}
   hudSpecialTransformPoint: {x: 0, y: 0}
   stopTutorialTriggerType: 0
+  startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
     baseObject: {fileID: 0}
@@ -6307,16 +6314,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: hudTransformPoint.x
-      value: 2.5
+      value: -53
       objectReference: {fileID: 0}
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: hudTransformPoint.y
-      value: 3.6
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: failedDialogue.dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 6766aaad0a84e75419358fdc32be29f9, type: 2}
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: successDialogue.oneTime
       value: 0
@@ -7776,11 +7783,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: hudTransformPoint.x
-      value: 0.5
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: hudTransformPoint.y
-      value: -3
+      value: 15.7
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: successDialogue.dialogue
@@ -16964,6 +16971,73 @@ Transform:
   - {fileID: 281201730}
   m_Father: {fileID: 878831092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5202369145631912919
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 10348619}
+    m_Modifications:
+    - target: {fileID: 3184858159303538188, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_Name
+      value: P_Interactible_Sparkle_R4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+--- !u!4 &5202369145631912920 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4158633341613175300, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+  m_PrefabInstance: {fileID: 5202369145631912919}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5202369145631912921 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2226980807864871992, guid: 864dcb7b004aa5e4bbb6058c8937e0a0, type: 3}
+  m_PrefabInstance: {fileID: 5202369145631912919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
