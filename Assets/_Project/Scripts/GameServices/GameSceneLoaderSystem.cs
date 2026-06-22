@@ -26,6 +26,8 @@ namespace _Project.Scripts.GameServices {
 
         private bool loadCredits = false;
         
+        private bool newGameStarted = false;
+        
         private void Start() {
             scenesToLoad = new List<SceneField>();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -134,6 +136,9 @@ namespace _Project.Scripts.GameServices {
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
                 }
+                
+                if(newGameStarted) return;
+                
                 GameInitializer.Instance.LoadData();
             }
             catch (Exception e) {
@@ -207,6 +212,8 @@ namespace _Project.Scripts.GameServices {
             
             await LoadSceneAsync(newGameScene);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+
+            newGameStarted = true;
             
             _ = UnloadGameplaySceneAsync();
             

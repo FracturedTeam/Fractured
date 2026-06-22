@@ -108,9 +108,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 doorAnimator.SetBool("CanBeInteract", true);
             }
 
-            if (!linkedDoor.GetBaseObject().GetCollider().enabled) {
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
-            }
+            // if (!linkedDoor.GetBaseObject().GetCollider().enabled) {
+            //     GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
+            // }
         }
 
         public void Tick(float deltaTime) {

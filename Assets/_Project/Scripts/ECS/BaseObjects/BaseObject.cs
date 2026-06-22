@@ -100,13 +100,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         #endregion
         
-
         public void Initialize() {
             if(!initialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
+                
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -203,6 +203,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void SetInteract(bool canInteract) {
+            Debug.Log($"Set Interact to {canInteract}");
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
         }
