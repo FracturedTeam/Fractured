@@ -19,9 +19,9 @@ namespace _Project.Scripts.UI {
             slider = GetComponent<Slider>();
 
             slider.value = volumeType switch {
-                VolumeType.Master => AudioManager.Instance.masterVolume,
-                VolumeType.Sfx => AudioManager.Instance.sfxVolume,
-                VolumeType.Music => AudioManager.Instance.musicVolume,
+                VolumeType.Master => GameInitializer.Instance.GetMasterVolume(),
+                VolumeType.Sfx => GameInitializer.Instance.GetSFXVolume(),
+                VolumeType.Music => GameInitializer.Instance.GetMusicVolume(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -29,13 +29,13 @@ namespace _Project.Scripts.UI {
         public void OnSliderValueChanged() {
             switch (volumeType) {
                 case VolumeType.Master:
-                    AudioManager.Instance.masterVolume = slider.value;
+                    GameInitializer.Instance.SetMasterVolume(slider.value);
                     break;
                 case VolumeType.Sfx:
-                    AudioManager.Instance.sfxVolume = slider.value;
+                    GameInitializer.Instance.SetSFXVolume(slider.value);
                     break;
                 case VolumeType.Music:
-                    AudioManager.Instance.musicVolume = slider.value;
+                    GameInitializer.Instance.SetMusicVolume(slider.value);
                     break;
                 default:
                     break;

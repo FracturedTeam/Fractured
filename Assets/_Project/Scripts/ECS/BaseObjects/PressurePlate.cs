@@ -119,8 +119,10 @@ namespace _Project.Scripts.ECS.BaseObjects {
             if (previousActivation != isActive) {
                 previousActivation = isActive;
                 
-                if(isActive) AudioManager.Instance.PlayPlateActiveSound(transform.position);
-                else AudioManager.Instance.PlayPlateInactiveSound(transform.position);
+                if(isActive)
+                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pressurePlateActiveSound, transform.position);
+                else
+                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pressurePlateInactiveSound, transform.position);
             }
             
             if (lockedBehindThis.Length > 0) {

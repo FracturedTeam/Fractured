@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
@@ -246,8 +245,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectInside && !objectOut)
                 ActivateObjectInside(!isUnder);
             
-            if(isUnder) AudioManager.Instance.PlayHideObjectSound(transform.position);
-            else AudioManager.Instance.PlayRevealObjectSound(transform.position);
+            if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
+            else GameInitializer.Instance.PlayRevealSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {

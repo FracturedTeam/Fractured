@@ -48,7 +48,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 gameObject.layer = LayerMask.NameToLayer("MemoryObject");
 
                 if(!associateMemoryLoop.IsNull)
-                    soundInstance = AudioManager.Instance.CreateInstance(associateMemoryLoop);
+                    soundInstance = GameInitializer.Instance.CreateInstance(associateMemoryLoop);
             }
             
             initialized = true;
@@ -110,14 +110,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         void DisplayMemory() {
             baseObject.SetInteract(false);
-            AudioManager.Instance.PlayEnterMemorySound(transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().enterMemorySound, transform.position);
             displayCountdown.Start();
         }
 
         private void DelayDisplay() {
-            EventBus<MemorySound>.Raise(new MemorySound {
-                inMemory = true
-            });
+            GameInitializer.Instance.SetMemoryLoop(true);
             
             soundInstance.getPlaybackState(out var playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
@@ -139,14 +137,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void StopMemoryInteraction() {
             baseObject.SetInteract(true);
             
-            AudioManager.Instance.PlayLeaveMemorySound(transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().leaveMemorySound, transform.position);
+            
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            EventBus<MemorySound>.Raise(new MemorySound {
-                inMemory = false
-            });
+            GameInitializer.Instance.SetMemoryLoop(false);
+            
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
+            
             Debug.Log($"[MemoryInteractable] Leaving memory");
+            
             if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)
                 baseObject.Trigger(true);
             else if (baseObject.startTutorialTriggerType == TutorialTriggerType.OnLeavingMemory)

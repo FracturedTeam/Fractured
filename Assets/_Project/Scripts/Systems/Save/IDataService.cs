@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
 
 namespace _Project.Scripts.Systems.Save {
     public interface IDataService {

@@ -22,8 +22,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(true);
-            player.movement.UnfreezeController();
+            player.SetInteraction(true);
+            player.FreezeController(false);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;

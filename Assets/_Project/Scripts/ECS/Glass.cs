@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Player;
-using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
@@ -159,13 +154,13 @@ namespace _Project.Scripts.ECS
             if (!canInteract) return;
             if (!canEditAnywhere) {
                 if (!GameInitializer.Instance.InEditableArea() && isOn) {
-                    AudioManager.Instance.PlayGrabGlassFailedSound();
+                    GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassFailedSound);
                     return;
                 }
             }
 
             isHeld = isOn;
-            if (isOn) AudioManager.Instance.PlayGrabGlassSound();
+            if (isOn) GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassSound);
         }
         
         

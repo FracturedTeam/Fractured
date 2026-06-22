@@ -16,7 +16,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects{
         {
             if (!initialized) {
                 if(TryGetComponent(typeof(BaseObject), out var component)) baseObject = component as BaseObject;
-                else Debug.LogError($"[ObtainShardInteractable] Cannot find {nameof(BaseObject)} in {nameof(ObtainShardInteractable)}");
+                else Debug.LogError($"[DialogueInteractable] Cannot find {nameof(BaseObject)} in {nameof(DialogueInteractable)}");
 
                 baseObject.GetInteractionType = ObjectType.Dialogue;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;

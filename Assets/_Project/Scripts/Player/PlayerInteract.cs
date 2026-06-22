@@ -227,8 +227,8 @@ namespace _Project.Scripts.Player {
         #endregion
 
         private void HandleInteractRotation(Vector3 playerDir) {
-            var newPos = transform.position + player.movement.mesh.forward * interactZoneSize.z;
-            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.movement.playerConfig.rotationSpeed * Time.deltaTime);
+            var newPos = transform.position + player.GetForwardDir() * interactZoneSize.z;
+            interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.GetRotationSpeed() * Time.deltaTime);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
@@ -499,19 +499,18 @@ namespace _Project.Scripts.Player {
             usingDoor.Start();
         }
         
-        public bool UsingDoor() {
+        public bool IsUsingDoor() {
             return usingDoor.IsRunning;
         }
 
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
             triggerDoor = true;
-            AudioManager.Instance.PlayOpenBigSound(position);
             StartCoroutine(LoadScene(toLoad, position));
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
-            GameInitializer.Instance.LoadNewLevel(toLoad);
+            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(toLoad);
         }
     }
 }

@@ -9,16 +9,16 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             animator.CrossFade(FallHash,  DefaultCrossFadeDuration);
-            player.movement.SetSpeed(PlayerSpeedEnum.Normal);
-            player.interact.SetInteract(false);
+            player.SetMoveSpeed(PlayerSpeedEnum.Normal);
+            player.SetInteraction(false);
         }
 
         public override void OnUpdate() {
-            player.movement.HandleUpdate();
+            player.UpdateMovement();
         }
 
         public override void OnFixedUpdate() {
-            player.movement.HandleMovement();
+            player.FixedUpdateMovement();
         }
 
         public override void OnExit() {

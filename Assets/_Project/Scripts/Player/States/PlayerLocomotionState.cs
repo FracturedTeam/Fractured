@@ -10,19 +10,19 @@ namespace _Project.Scripts.Player.States {
 
         public override void OnEnter() {
             animator.CrossFade(IdleHash,  DefaultCrossFadeDuration);
-            player.movement.SetSpeed(PlayerSpeedEnum.Normal);
-            player.interact.SetInteract(true);
+            player.SetMoveSpeed(PlayerSpeedEnum.Normal);
+            player.SetInteraction(true);
         }
 
         public override void OnUpdate() {
-            player.movement.HandleUpdate();
-            player.interact.HandleUpdate(player.movement.previousMoveDir);
+            player.UpdateMovement();
+            player.UpdateInteraction();
 
-            animator.SetFloat(BlendingHash, player.movement.SetAnimatorSpeed());
+            animator.SetFloat(BlendingHash, player.SetAnimatorSpeed());
         }
 
         public override void OnFixedUpdate() {
-            player.movement.HandleMovement();
+            player.FixedUpdateMovement();
         }
 
         public override void OnExit() {

@@ -6,22 +6,29 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
+using FMOD.Studio;
+using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
+        //SYSTEM REGISTRY SERVICE
         private GameSystems gameSystems;
-        private ShardService  shardService;
+        
+        //INTERNAL SERVICES
+        private ShardService shardService;
+        private SaveService saveService;
+        private AudioService audioService;
 
-        [Header("Services")]
-        [SerializeField] private GameSaveSystem gameSaveSystem;
-        [SerializeField] private GameSceneLoaderSystem gameSceneLoaderSystem;
-        [SerializeField] private PlayerService player;
-        [SerializeField] private HudManager hudManager;
+        [Header("Save service")] 
+        [SerializeField] private bool deleteSaveOnPay;
+        
+        [Header("Audio Bank")]
+        [SerializeField] private AudioBank audioBank;
         
         [Header("ScreenEffect")]
         [SerializeField] private Material screenEffectMat;
@@ -30,25 +37,15 @@ namespace _Project.Scripts.GameServices {
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
-        [SerializeField] private bool InitializeDebugger = true;
+        [SerializeField] private bool initializeDebugger = true;
         #endif
         
         protected override void Awake() {
             base.Awake();
-            if (!GameSaveSystem.HasInstance) Instantiate(gameSaveSystem);
-            if (!GameSceneLoaderSystem.HasInstance) Instantiate(gameSceneLoaderSystem);
-            if (!PlayerService.HasInstance) Instantiate(player);
-            if (!HudManager.HasInstance) Instantiate(hudManager);
             
             InitializeGameSystems();
             
-            #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            InitializeDebugSystems();
-            #endif
-            
-            //Populate the glassShardService
-            PopulateShardOnStart();
-
+            //Shard Edition area Screen Effect
             screenEffectMat.SetFloat("_Progression", 0f);
         }
 
@@ -56,17 +53,23 @@ namespace _Project.Scripts.GameServices {
             //Create all the game systems
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();
+            saveService = new SaveService(shardService, deleteSaveOnPay);
+            audioService = new AudioService(audioBank);
             
             //Then register the game systems
             gameSystems.Register(shardService);
+            gameSystems.Register(saveService);
+            gameSystems.Register(audioService);
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
+            saveService.Initialize();
+            audioService.Initialize();
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        void InitializeDebugSystems() {
-            if(!InitializeDebugger) return;
+        public void InitializeDebugSystems() {
+            if(!initializeDebugger) return;
             
             var debugUIState = new DebugUIState();
             var debugSystem = new DebugSystem();
@@ -85,7 +88,7 @@ namespace _Project.Scripts.GameServices {
             var cameraDebugService = new CameraDebugService(debugUIState, cameras);
             debugSystem.Register(cameraDebugService);
             
-            var generalDebug =  new GeneralDebugService(debugUIState);
+            var generalDebug =  new GeneralDebugService(debugUIState, saveService);
             debugSystem.Register(generalDebug);
 
             //Set the debug system
@@ -107,11 +110,10 @@ namespace _Project.Scripts.GameServices {
         }
         
         private void OnDestroy() {
-            screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
-        public CinemachineCamera[] GetCameras() {
+        private CinemachineCamera[] GetCameras() {
             return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
         }
 
@@ -122,16 +124,22 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
+        #region SaveService
+
+        public void SaveData() => saveService.SaveData();
+        public void LoadData() => saveService.LoadData();
+        public void LoadPlayerData() => saveService.LoadPlayerData();
+        public void LoadGame() => saveService.LoadGame();
+        public string GetLastScene() => saveService.saveFile.CurrentScene;
+        public bool ExistingSave() => saveService.ExistingSave();
+        public void CreateNewSave() => saveService.NewGame();
+
+        #endregion
+
         #region ShardService
 
-        private void PopulateShardOnStart() {
-            //gameObject.AddComponent<EventSystem>();
-            //gameObject.AddComponent<InputSystemUIInputModule>();
-            
-            var _interactables = FindObjectsByType<BaseObject>(FindObjectsSortMode.None);
-            var _shards = FindObjectsByType<Glass>(FindObjectsSortMode.None);
-            var _text = FindObjectsByType<GlassText>(FindObjectsSortMode.None);
-            shardService.PopulateService(_interactables, _shards, _text);
+        public void DisposeShards() {
+            shardService.ClearAll();
         }
 
         public void EmptyAll() {
@@ -150,39 +158,14 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void RepopulateInteractableOnLoadLevel() {
-            shardService.RepopulateBaseObjet(SaveInstance.Instance.baseObjects.ToArray());
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
+            shardService.RepopulateBaseObjet(_baseObjects);
+            if(_shards.Length > 0)
+                AddShards(_shards);
         }
-
+        
         public BaseObject[] GetInteractables() {
             return shardService.interactables.ToArray();
-        }
-
-        public void SaveInteractable() {
-            foreach (var interactable in shardService.interactables) {
-                interactable.SaveData();
-            }
-        }
-        
-        public void SaveShards() {
-            foreach (var shard in shardService.shards) {
-                shard.SaveData();
-            }
-        }
-        
-        public void LoadInteractable() {
-            foreach (var interactable in shardService.interactables) {
-                interactable.Load();
-            }
-        }
-        
-        public void LoadShards() {
-            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
-                shard.LoadData();
-            }*/
-            foreach (var shard in SaveInstance.Instance.GetShards()) {
-                shard.LoadData();
-            }
         }
         
         public void AddShards(Glass[] shards) {
@@ -193,15 +176,13 @@ namespace _Project.Scripts.GameServices {
             }
             
             shardService.AddShards(newShards.ToArray());
-            GameSaveSystem.Instance.SetRuntimeShard(shardService.shards);
+            saveService.SetRuntimeShard(shardService.shards);
         }
 
         public void ResetInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
-            
-            GameSceneSettings.Instance.ResetShard();
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
@@ -225,31 +206,79 @@ namespace _Project.Scripts.GameServices {
         }
         
         public bool InEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInEditableArea;
         }
         
         public bool InBlueEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInBlueEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInBlueEditableArea;
         }
         
         public bool InRedEditableArea() {
-            EventBus<EditableSound>.Raise(new EditableSound { inEditable = shardService.PlayerInRedEditableArea });
+            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInRedEditableArea;
         }
         
 
         #endregion
 
-        #region LoadScene
+        #region AudioService
 
-        public void LoadNewLevel(SceneSettings sceneSettings) {
-            GameSaveSystem.Instance.SaveGame();
-            //EmptyAll();
-            ResetCameras();
-            
-            _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(sceneSettings);
+        public AudioBank GetBank() {
+            return audioBank;
+        }
+
+        public EventInstance CreateInstance(EventReference reference) {
+            return audioService.CreateInstance(reference);
+        }
+        
+        public void PlaySound3D(EventReference audioClip, Vector3 position) {
+            audioService.PlayOneShot3D(audioClip, position);
+        }
+        
+        public void PlaySound2D(EventReference audioClip) {
+            audioService.PlayOneShot2D(audioClip);
+        }
+
+        public void PlayRevealSound(Vector3 position) {
+            audioService.PlayRevealObjectSound(position);
+        }
+
+        public void PlayHideSound(Vector3 position) {
+            audioService.PlayHideObjectSound(position);
+        }
+        
+        public void UpdateAmbientLoop(int sceneIndex) {
+            audioService.UpdateAmbientLoop(sceneIndex);
+        }
+
+        public void SetMemoryLoop(bool inMemory) {
+            audioService.UpdateMemory(inMemory);
+        }
+        
+        public float GetMasterVolume() {
+            return audioService.masterVolume;
+        }
+
+        public void SetMasterVolume(float volume) {
+            audioService.masterVolume = volume;
+        }
+        
+        public float GetSFXVolume() {
+            return audioService.sfxVolume;
+        }
+
+        public void SetSFXVolume(float volume) {
+            audioService.sfxVolume = volume;
+        }
+        
+        public float GetMusicVolume() {
+            return audioService.musicVolume;
+        }
+
+        public void SetMusicVolume(float volume) {
+            audioService.musicVolume = volume;
         }
 
         #endregion

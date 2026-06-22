@@ -16,11 +16,11 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 1f, 0.2f);
             animator.CrossFade(BreakGlassHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(false);
-            player.movement.FreezeController();
+            player.SetInteraction(false);
+            player.FreezeController(true);
             
             animationExitTimer.Start();
-            player.interact.triggerShard = false;
+            player.SetShardTriggered(false);
         }
 
         public override void OnUpdate() {
@@ -35,8 +35,8 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween = FadeLayer(animator, FullBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash,  DefaultCrossFadeDuration, FullBodyLayer);
             
-            player.interact.SetInteract(true);
-            player.movement.UnfreezeController();
+            player.SetInteraction(true);
+            player.FreezeController(false);
         }
     }
 }

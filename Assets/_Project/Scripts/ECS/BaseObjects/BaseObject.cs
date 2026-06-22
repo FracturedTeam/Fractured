@@ -68,7 +68,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (GetCompletion is InteractionCompletion.Completed) {
                 if (GetInteractionType is ObjectType.PressurePlate) {
                     var p = GetInteract as PressurePlate;
-                    p.objectOnPressurePlate = SaveInstance.Instance.gameData.ObjectDatas[data.objectIndexOnDisplay].baseObject.GetInteract as MoveableObject;
+                    p.objectOnPressurePlate = GameSceneSettings.Instance.GetGameData().ObjectDatas[data.objectIndexOnDisplay].baseObject.GetInteract as MoveableObject;
                 }
                 CompleteObject();
             }
@@ -85,8 +85,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (GetCompletion is InteractionCompletion.Completed && GetInteractionType is ObjectType.PressurePlate) {
                 var p = GetInteract as PressurePlate;
                 var index = 0;
-                for (var i = 0; i < SaveInstance.Instance.gameData.ObjectDatas.Count; i++) {
-                    if (p.objectOnPressurePlate.GetBaseObject() == SaveInstance.Instance.gameData.ObjectDatas[i].baseObject) {
+                for (var i = 0; i < GameSceneSettings.Instance.GetGameData().ObjectDatas.Count; i++) {
+                    if (p.objectOnPressurePlate.GetBaseObject() == GameSceneSettings.Instance.GetGameData().ObjectDatas[i].baseObject) {
                         index = i;
                         break;
                     }
@@ -100,16 +100,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         #endregion
         
-        /*private void Awake() {
-            Initialize();
-        }*/
-
         public void Initialize() {
             if(!initialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
+                
                 if(TryGetComponent(typeof(IInteractable), out var p))
                     GetInteract = p as IInteractable;
                 else SetInteract(false);
@@ -206,6 +203,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void SetInteract(bool canInteract) {
+            Debug.Log($"Set Interact to {canInteract}");
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
         }

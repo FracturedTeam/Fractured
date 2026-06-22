@@ -63,8 +63,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     key.Initialize();
                 }
                 if(key.GetBaseObject().GetCompletion is not InteractionCompletion.Completed) {
-                    if(doorType is DoorType.BigDoor) AudioManager.Instance.PlayLockedBigSound(transform.position);
-                    else AudioManager.Instance.PlayLockedSmallSound(transform.position);
+                    if(doorType is DoorType.BigDoor) 
+                        GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedBigDoorSound, transform.position);
+                    else 
+                        GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
                     
                     PlayerController.Instance.interact.StartUsingLockedDoor();
                     
@@ -79,7 +81,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             if (doorType is DoorType.SmallDoor) {
-                AudioManager.Instance.PlayLockedSmallSound(transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
                 PlayerController.Instance.interact.StartUsingLockedDoor();
                     
                 if(baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) {
@@ -101,13 +103,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
                 if (sceneToLoad == null) return;
                 hasBeenInteracted = true;
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().openBigDoorSound, transform.position);
                 PlayerController.Instance.interact.TriggerBigDoor(sceneToLoad, transform.position);
                 doorAnimator.SetBool("CanBeInteract", true);
             }
 
             // if (!linkedDoor.GetBaseObject().GetCollider().enabled) {
-            //     AudioManager.Instance.PlayLockedSmallSound(transform.position);
-            //     return;
+            //     GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
             // }
         }
 
@@ -133,7 +135,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 var size = Physics.OverlapBoxNonAlloc(triggerPoint.position, new Vector3(3f,4.5f,1), cols, transform.rotation, mask);
 
                 if (size > 0) {
-                    AudioManager.Instance.PlayOpenSmallSound(transform.position);
                     PlayerController.Instance.interact.StartUsingDoor();
                     PlayerController.Instance.movement.SetPosition(linkedDoor.exitPoint.position, exitDir);
                 }

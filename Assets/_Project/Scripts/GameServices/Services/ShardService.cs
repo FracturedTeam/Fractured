@@ -140,10 +140,16 @@ namespace _Project.Scripts.GameServices.Services {
         public void SetBlueEditableArea(bool inArea) {
             PlayerInBlueEditableArea = inArea;
         }
-        
 
+        public void ClearAll() {
+            shards.Clear();
+            shardsInteractable.Clear();
+            interactables.Clear();
+        }
+        
         public void Dispose() {
             shardsInteractable.Clear();
+            shards.Clear();
         }
         
         public int ShardCount => shards.Count;

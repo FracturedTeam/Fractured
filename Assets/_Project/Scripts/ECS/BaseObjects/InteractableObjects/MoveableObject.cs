@@ -190,9 +190,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             //Call audio
             if(keyObjectNeeded == null)
-                AudioManager.Instance.PlayPickUpSound(transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpObjectSound, transform.position);
             else
-                AudioManager.Instance.PlayPickUpKeySound(transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
             
             var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.objectOut
                 ? specialDialogue
@@ -230,7 +230,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
-                AudioManager.Instance.PlayDropSound(transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                 
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
                 {
@@ -255,7 +255,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject.SetInteract(false);
                     baseObject.SetCollider(false);
                     
-                    AudioManager.Instance.PlayDropSound(transform.position);
+                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                     
                     isGrabbed = false;
                     PlayerController.Instance.interact.SetDropObject();
@@ -286,7 +286,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     keyObject.OnInteract(ObjectInteraction.Drop, this);
                     baseObject.GetCompletion = InteractionCompletion.Completed;
                     
-                    AudioManager.Instance.PlayDropSound(transform.position);
+                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                     if(particles) particles.Stop();
                     if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
                     
@@ -321,7 +321,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
                 IsColliding();
                 baseObject.SetInteract(true);
-                AudioManager.Instance.PlayDropSound(transform.position);
+                
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                 
                 if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
                 {
