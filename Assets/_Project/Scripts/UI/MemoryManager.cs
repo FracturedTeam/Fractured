@@ -24,6 +24,8 @@ namespace _Project.Scripts.UI
       }
         
       public void SaveData(SavedMemory data) {
+         if(data == null) return;
+         
          this.data = data;
          data.unlocked = new List<KeyAndValue>();
          for (int i = 0; i < memories.Count; i++) {

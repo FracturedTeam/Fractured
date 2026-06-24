@@ -78,6 +78,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [ContextMenu("Save")]
         public void SaveData() {
+            if(data == null) return;
+            
             if(GetInteractionType is ObjectType.Moveable)
                 data.position = transform.position;
                     

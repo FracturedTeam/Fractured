@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,8 +37,35 @@ namespace _Project.Scripts.GameServices {
             if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
+            #if UNITY_EDITOR
+            else {
+                GameInitializer.Instance.CreateNewSave();
+                
+                _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                
+                if (!PlayerService.HasInstance) Instantiate(player);
+                if (!HudManager.HasInstance) Instantiate(hudManager);
+            
+                GameInitializer.Instance.InitializeDebugSystems();
+
+                StartCoroutine(SetSceneWithDelay());
+            }
+            #endif
         }
 
+        IEnumerator SetSceneWithDelay() {
+            yield return new WaitForNextFrameUnit();
+            
+            if(GameSceneSettings.HasInstance)
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                
+            GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
+            GameInitializer.Instance.SaveData();
+            
+            PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+            PlayerController.Instance.triggerEnterRoom = true;
+        }
+        
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             if (scene.buildIndex == 12) {
                 loadCredits = true;
@@ -186,7 +215,6 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.DisposeShards();
             
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
-            //if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
 
             Time.timeScale = 1;
