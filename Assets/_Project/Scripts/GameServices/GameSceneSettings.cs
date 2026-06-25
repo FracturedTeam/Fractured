@@ -30,9 +30,9 @@ namespace _Project.Scripts.GameServices {
             roomCamera.Priority = 1;
         }
 
-        public void BindData() => saveInstance.Bind();
-        public GameData GetGameData() => saveInstance.GetGameData();
-        public void SetGameData(GameData gameData) => saveInstance.SetGameData(gameData);
+        public void BindData(bool firstTimeBind) => saveInstance.Bind(firstTimeBind);
+        public SceneData GetSceneData() => saveInstance.GetGameData();
+        public void SetSceneData(SceneData objectData) => saveInstance.SetGameData(objectData);
         public List<Glass> GetAllShards() => saveInstance.GetShards();
 
         #if UNITY_EDITOR
@@ -58,12 +58,5 @@ namespace _Project.Scripts.GameServices {
             saveInstance.SetObjectData(baseObjects.ToArray(), glassShards);
         }
         #endif
-    }
-
-    [Serializable]
-    public class FragmentData {
-        [SerializeField] public Glass glassShards;
-        public Vector3 position;
-        public bool spawned;
     }
 }

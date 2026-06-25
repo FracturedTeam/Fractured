@@ -1885,6 +1885,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &109074017
 MonoBehaviour:
@@ -5590,6 +5591,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &232951193
 MonoBehaviour:
@@ -6551,12 +6553,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 1339f23b-e82e-4f40-8be1-4563b9b9d20c
 --- !u!43 &308380539
 Mesh:
   m_ObjectHideFlags: 0
@@ -10382,12 +10385,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 321f8ac9-42e5-4a73-9c4c-150f7577c859
 --- !u!1001 &542869710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10476,6 +10480,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6092876044229115826, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: b95fb09a-875f-4732-8f61-8807bfe9c27a
+      objectReference: {fileID: 0}
     - target: {fileID: 7689884049490561877, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: exitDir
       value: 3
@@ -10495,6 +10503,10 @@ PrefabInstance:
     - target: {fileID: 8053244353030313981, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
       propertyPath: sceneToLoad.direction
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9035452237000916337, guid: 638b3dbecf497b9469572bc26933086d, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: e034d206-7897-4a79-a287-9a684dbf7a7c
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -12100,15 +12112,15 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1625551156}
+      objectReference: {fileID: 906719808}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 716077566}
+      objectReference: {fileID: 1420069723}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 542869713}
+      objectReference: {fileID: 1861593788}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
@@ -12116,101 +12128,105 @@ PrefabInstance:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 297552435}
+      objectReference: {fileID: 1625551156}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 756699380}
+      objectReference: {fileID: 1597345189}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1258999278}
+      objectReference: {fileID: 2032173096}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 856724145}
+      objectReference: {fileID: 539777354}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 542869712}
+      objectReference: {fileID: 968586034}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 1861593788}
+      objectReference: {fileID: 2106266284}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 1687121122}
+      objectReference: {fileID: 1258999278}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 2106266284}
+      objectReference: {fileID: 297552435}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 1069637048}
+      objectReference: {fileID: 1206757936}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 2032173096}
+      objectReference: {fileID: 2115229129}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[14]'
       value: 
-      objectReference: {fileID: 1597345189}
+      objectReference: {fileID: 2137355563}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[15]'
       value: 
-      objectReference: {fileID: 539777354}
+      objectReference: {fileID: 1762260291}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[16]'
       value: 
-      objectReference: {fileID: 2106266285}
+      objectReference: {fileID: 856724145}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[17]'
       value: 
-      objectReference: {fileID: 1456771646}
+      objectReference: {fileID: 2106266285}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[18]'
       value: 
-      objectReference: {fileID: 906719808}
+      objectReference: {fileID: 542869713}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[19]'
       value: 
-      objectReference: {fileID: 968586034}
+      objectReference: {fileID: 1069637048}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[20]'
       value: 
-      objectReference: {fileID: 1420069723}
+      objectReference: {fileID: 1687121122}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[21]'
       value: 
-      objectReference: {fileID: 2115229129}
+      objectReference: {fileID: 756699380}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[22]'
       value: 
-      objectReference: {fileID: 1442460784}
+      objectReference: {fileID: 542869712}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[23]'
       value: 
-      objectReference: {fileID: 1633438474}
+      objectReference: {fileID: 1456771646}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[24]'
       value: 
-      objectReference: {fileID: 1762260291}
+      objectReference: {fileID: 716077566}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[25]'
       value: 
-      objectReference: {fileID: 2137355563}
+      objectReference: {fileID: 1633438474}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[26]'
       value: 
-      objectReference: {fileID: 1206757936}
+      objectReference: {fileID: 1442460784}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.ObjectDatas.Array.size
       value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: sceneData.FragmentDatas.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
@@ -12327,6 +12343,14 @@ PrefabInstance:
       objectReference: {fileID: 6228244736871802056, guid: e00b5b28fe5c2bf4cb5105ecc7731c47, type: 3}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: gameData.FragmentDatas.Array.data[1].glassShards
+      value: 
+      objectReference: {fileID: 6282969817189507598, guid: 8f0e89c594439ce418146705f634adc5, type: 3}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: sceneData.FragmentDatas.Array.data[0].glassShards
+      value: 
+      objectReference: {fileID: 6228244736871802056, guid: e00b5b28fe5c2bf4cb5105ecc7731c47, type: 3}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: sceneData.FragmentDatas.Array.data[1].glassShards
       value: 
       objectReference: {fileID: 6282969817189507598, guid: 8f0e89c594439ce418146705f634adc5, type: 3}
     - target: {fileID: 5153374514516450965, guid: ce9dbf1fe93e96742836468669308977, type: 3}
@@ -12544,15 +12568,15 @@ PrefabInstance:
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1625551156}
+      objectReference: {fileID: 906719808}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 716077566}
+      objectReference: {fileID: 1420069723}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 542869713}
+      objectReference: {fileID: 1861593788}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
@@ -12560,27 +12584,27 @@ PrefabInstance:
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 297552435}
+      objectReference: {fileID: 1625551156}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 756699380}
+      objectReference: {fileID: 1597345189}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1258999278}
+      objectReference: {fileID: 2032173096}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 856724145}
+      objectReference: {fileID: 539777354}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 542869712}
+      objectReference: {fileID: 968586034}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 1861593788}
+      objectReference: {fileID: 2106266284}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'glassShards.Array.data[0]'
       value: 
@@ -12592,71 +12616,71 @@ PrefabInstance:
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 1687121122}
+      objectReference: {fileID: 1258999278}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 2106266284}
+      objectReference: {fileID: 297552435}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 1069637048}
+      objectReference: {fileID: 1206757936}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 2032173096}
+      objectReference: {fileID: 2115229129}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[14]'
       value: 
-      objectReference: {fileID: 1597345189}
+      objectReference: {fileID: 2137355563}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[15]'
       value: 
-      objectReference: {fileID: 539777354}
+      objectReference: {fileID: 1762260291}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[16]'
       value: 
-      objectReference: {fileID: 2106266285}
+      objectReference: {fileID: 856724145}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[17]'
       value: 
-      objectReference: {fileID: 1456771646}
+      objectReference: {fileID: 2106266285}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[18]'
       value: 
-      objectReference: {fileID: 906719808}
+      objectReference: {fileID: 542869713}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[19]'
       value: 
-      objectReference: {fileID: 968586034}
+      objectReference: {fileID: 1069637048}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[20]'
       value: 
-      objectReference: {fileID: 1420069723}
+      objectReference: {fileID: 1687121122}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[21]'
       value: 
-      objectReference: {fileID: 2115229129}
+      objectReference: {fileID: 756699380}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[22]'
       value: 
-      objectReference: {fileID: 1442460784}
+      objectReference: {fileID: 542869712}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[23]'
       value: 
-      objectReference: {fileID: 1633438474}
+      objectReference: {fileID: 1456771646}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[24]'
       value: 
-      objectReference: {fileID: 1762260291}
+      objectReference: {fileID: 716077566}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[25]'
       value: 
-      objectReference: {fileID: 2137355563}
+      objectReference: {fileID: 1633438474}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[26]'
       value: 
-      objectReference: {fileID: 1206757936}
+      objectReference: {fileID: 1442460784}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12883,12 +12907,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 9636267c-59e0-44fa-88ba-f5588d762a21
 --- !u!43 &690473760
 Mesh:
   m_ObjectHideFlags: 0
@@ -13469,6 +13494,10 @@ PrefabInstance:
     - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: hudTransformPoint.y
       value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: cab152aa-fa7e-4ad8-a9a2-0beda3b2bb35
       objectReference: {fileID: 0}
     - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: stopTutorialTriggerType
@@ -14248,12 +14277,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 6d31d8cb-da81-4162-a972-a5250920b620
 --- !u!43 &757571425
 Mesh:
   m_ObjectHideFlags: 0
@@ -15176,12 +15206,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: c721ab2d-21a0-4439-8d4c-0d982f3bddfb
 --- !u!1 &858731488
 GameObject:
   m_ObjectHideFlags: 0
@@ -15745,12 +15776,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 8c1b49c8-e2c3-4e1a-8aa4-c6d4ba855c99
 --- !u!1001 &907272371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16935,12 +16967,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 1144b573-4822-464b-8dd8-3729b6ee53d5
 --- !u!4 &968586035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6927820533842761074, guid: cd3cfaeeee6a41f45908accd1f78569f, type: 3}
@@ -17841,6 +17874,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1015630159
 MonoBehaviour:
@@ -19272,12 +19306,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: b8be7991-45e8-4c72-9cfb-2e4198bfbe65
 --- !u!114 &1069637049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20698,6 +20733,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1121356890
 MonoBehaviour:
@@ -22547,6 +22583,10 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: 89d363c8-81a5-42c7-b232-599eb04619e5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: successDialogue.dialogue
       value: 
       objectReference: {fileID: 11400000, guid: f14fa6173d3af744996457cb8d33ceab, type: 2}
@@ -23634,6 +23674,10 @@ PrefabInstance:
     - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: hudTransformPoint.y
       value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257679666663022619, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: 83536886-a18e-4c79-bb81-4248d29da73f
       objectReference: {fileID: 0}
     - target: {fileID: 4190270486851189757, guid: 3519ecdff565a64488a92a1eb15c11d9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -25187,6 +25231,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1358917544
 MonoBehaviour:
@@ -26560,12 +26605,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 5accae97-7e85-4aaf-9928-f2cd0633fe3f
 --- !u!4 &1420069724 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1742990232857584293, guid: 4521df29d4d118e4c88b818de440b624, type: 3}
@@ -27234,12 +27280,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 502f575a-e73e-4123-b111-0d45565e6367
 --- !u!43 &1446699771
 Mesh:
   m_ObjectHideFlags: 0
@@ -27556,12 +27603,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: f0c74cf4-83a3-41ef-95da-e93dcfdaecf6
 --- !u!4 &1456771647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1742990232857584293, guid: 4521df29d4d118e4c88b818de440b624, type: 3}
@@ -29498,6 +29546,10 @@ PrefabInstance:
       value: -12.5
       objectReference: {fileID: 0}
     - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: 2c7d7717-26df-4894-ac4d-630bfbf288fb
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
       propertyPath: successDialogue.dialogue
       value: 
       objectReference: {fileID: 11400000, guid: 2718f31342d21a847801847f7d352e27, type: 2}
@@ -29965,12 +30017,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 53dde304-9f7c-4ead-98a8-df57fdef3e83
 --- !u!1001 &1626599815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30203,12 +30256,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 277000a3-37cc-4d2d-a956-ec58933d94b3
 --- !u!1001 &1641061175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30767,12 +30821,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 63f76f1a-5717-464d-957c-21bd9ef76505
 --- !u!1001 &1687908158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31540,12 +31595,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 1b76eea8-85b3-4524-98bc-bb38f4ce05eb
 --- !u!4 &1762260292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9188082385023692429, guid: 853d85ac494cd3343b42821f026c9cef, type: 3}
@@ -32644,12 +32700,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 6e099500-edb8-4c9c-8ec9-79caad1a4dcc
 --- !u!43 &1881611310
 Mesh:
   m_ObjectHideFlags: 0
@@ -34480,12 +34537,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: 2b2f5af9-29d9-469f-ac26-c5ff87c87178
 --- !u!1001 &2036166954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35663,6 +35721,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1983608572296388674, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: efa27128-4bbe-4317-8727-8274490aff05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983608572296388674, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: successDialogue.oneTime
       value: 1
       objectReference: {fileID: 0}
@@ -35789,6 +35851,10 @@ PrefabInstance:
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: ObjectName
       value: Pantry
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
+      propertyPath: <Guid>k__BackingField
+      value: 24efc2cf-dfc8-4017-835c-4bfc9e01ff7d
       objectReference: {fileID: 0}
     - target: {fileID: 4269597601030339688, guid: ec87a38f1ee0aef4db56e84b6802bd32, type: 3}
       propertyPath: failedDialogue.dialogue
@@ -36002,12 +36068,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: d1361a81-150c-442b-95fe-d04001111238
 --- !u!1001 &2128240772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36402,12 +36469,13 @@ MonoBehaviour:
   startTutorialTriggerType: 0
   interactTutorialElement: {fileID: 0}
   data:
-    baseObject: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    completion: 0
-    canInteract: 0
-    objectOut: 0
-    objectIndexOnDisplay: 0
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+    ObjectGuidOnPedestal: 
+  <Guid>k__BackingField: ac948f91-856e-49d4-b280-8f744ff91646
 --- !u!1 &2140287744
 GameObject:
   m_ObjectHideFlags: 0

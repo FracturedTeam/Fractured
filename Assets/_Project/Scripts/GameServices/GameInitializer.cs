@@ -130,7 +130,7 @@ namespace _Project.Scripts.GameServices {
         public void LoadData() => saveService.LoadData();
         public void LoadPlayerData() => saveService.LoadPlayerData();
         public void LoadGame() => saveService.LoadGame();
-        public string GetLastScene() => saveService.saveFile.CurrentScene;
+        public string GetLastScene() => saveService.GameData.CurrentScene;
         public bool ExistingSave() => saveService.ExistingSave();
         public void CreateNewSave() => saveService.NewGame();
 

@@ -26,7 +26,7 @@ namespace _Project.Scripts.Systems.Save {
             return Path.Combine(saveFolder, string.Concat(fileName, ".", fileExtension));
         }
         
-        public void Save(SaveFile data, bool overwrite = true) {
+        public void Save(GameData data, bool overwrite = true) {
             var fileLocation = GetPathToFile(data.SaveName);
 
             if (!overwrite && File.Exists(fileLocation)) {
@@ -36,14 +36,14 @@ namespace _Project.Scripts.Systems.Save {
             File.WriteAllText(fileLocation, serializer.Serialize(data));
         }
 
-        public SaveFile Load(string name) {
+        public GameData Load(string name) {
             var fileLocation = GetPathToFile(name);
 
             if (!File.Exists(fileLocation)) {
                 throw new ArgumentException($"No persisted GameData with name '{name}'");
             }
             
-            return serializer.Deserialize<SaveFile>(File.ReadAllText(fileLocation));
+            return serializer.Deserialize<GameData>(File.ReadAllText(fileLocation));
         }
 
         public void Delete(string name) {

@@ -165,8 +165,11 @@ namespace _Project.Scripts.GameServices {
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
                 }
-                
-                if(newGameStarted) return;
+
+                if (newGameStarted) {
+                    newGameStarted = false;
+                    return;
+                }
                 
                 GameInitializer.Instance.LoadData();
             }
