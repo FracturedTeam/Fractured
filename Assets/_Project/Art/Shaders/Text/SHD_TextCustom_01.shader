@@ -1,6 +1,8 @@
-Shader "TextMeshPro/Distance Field Test" {
+Shader "SHD/Text Custom 01" {
 
 Properties {
+	[IntRange] _StencilID ("Stencil ID", Range(0,3)) = 0
+
 	_FaceTex			("Face Texture", 2D) = "white" {}
 	_FaceUVSpeedX		("Face UV Speed X", Range(-5, 5)) = 0.0
 	_FaceUVSpeedY		("Face UV Speed Y", Range(-5, 5)) = 0.0
@@ -104,7 +106,7 @@ SubShader {
 
 	Stencil
 	{
-		Ref 2
+		Ref [_StencilID]
 		Comp Equal
 		Pass Keep
 		ReadMask [_StencilReadMask]
@@ -331,5 +333,5 @@ SubShader {
 }
 
 Fallback "TextMeshPro/Mobile/Distance Field"
-CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
+//CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
 }
