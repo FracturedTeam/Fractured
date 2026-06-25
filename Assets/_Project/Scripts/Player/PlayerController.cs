@@ -20,6 +20,8 @@ namespace _Project.Scripts.Player {
         }
         
         public void SaveData(PlayerData data) {
+            if(data == null) return;
+            
             this.data = data;
             data.position = transform.position;
         }

@@ -126,7 +126,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
             if (!objectInside) return;
-            if (!objectOut) {
+            if (!objectOut) { //TODO SetInteract est update a chaque frame, optimiser ça
                 if(objectColor == ColorEnum.Blue && underBlue <= 0 || objectColor == ColorEnum.Red && underRed <= 0)
                     ActivateObjectInside(false);
             }
