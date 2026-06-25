@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;

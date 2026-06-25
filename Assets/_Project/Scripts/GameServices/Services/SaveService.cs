@@ -121,15 +121,15 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void LoadData(string sceneName) {
-            Debug.Log($"[SaveService]::Load - Scene wanting to load {sceneName}");
             
             if (!dataService.FileDoesExist(saveFileName)) {
                 dataService.Save(GameData);
+                Debug.Log($"[SaveService]::Load - SaveFile does not exist, creating a new one");
                 return;
             }
             
             // TODO ajouter un check pour ne pas avoir a recharger la sauvegarde à chaque fois que l'on appel la méthode
-            GameData = dataService.Load(GameData.SaveName); //Fail - Faut que je regarde pourquoi j'ai mis Fail
+            GameData ??= dataService.Load(GameData.SaveName);
             
             var foundExisting = false;
             var index = 0;
@@ -190,8 +190,6 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
-            Debug.Log($"[SaveService] Set Runtime Shard : {shards.Count}");
-            
             // Check si la liste n'excède pas le nombre de shard et la met à jour
             if (GameSceneSettings.Instance.GetAllShards().Count < shards.Count) {
                 shards = shards.Distinct().ToList();

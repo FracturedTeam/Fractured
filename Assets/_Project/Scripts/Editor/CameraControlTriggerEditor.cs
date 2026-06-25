@@ -14,7 +14,7 @@ namespace _Project.Scripts.Editor {
         private SerializedProperty cameraOnFrontProp;
         private SerializedProperty cameraOnBackProp;
         
-        private bool showSwapSettings = false;
+        private bool showSwapSettings = true;
         
         private void OnEnable() {
             cameraControlTrigger = serializedObject.FindProperty("customInspectorObjects");
@@ -47,15 +47,15 @@ namespace _Project.Scripts.Editor {
             EditorGUILayout.Space();
 
             if (showSwapSettings) {
-                GUI.color = Color.deepPink;
+                GUI.backgroundColor = Color.deepPink;
                 EditorGUILayout.PropertyField(cameraOnLeftProp, new GUIContent("Camera On Left"));
-                GUI.color = Color.limeGreen;
+                GUI.backgroundColor = Color.limeGreen;
                 EditorGUILayout.PropertyField(cameraOnRightProp, new GUIContent("Camera On Right"));
-                GUI.color = Color.cadetBlue;
+                GUI.backgroundColor = Color.cadetBlue;
                 EditorGUILayout.PropertyField(cameraOnFrontProp, new GUIContent("Camera On Front"));
-                GUI.color = Color.darkOrange;
+                GUI.backgroundColor = Color.darkOrange;
                 EditorGUILayout.PropertyField(cameraOnBackProp, new GUIContent("Camera On Back"));
-                GUI.color = Color.white;
+                GUI.backgroundColor = Color.white;
             }
             
             EditorGUILayout.EndFoldoutHeaderGroup();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Systems.Singletons;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,11 +16,9 @@ namespace _Project.Scripts.GameServices {
     }
     
     public class SaveInstance : MonoBehaviour {
-        [SerializeField] private SceneData sceneData;
-        [SerializeField] private List<BaseObject> baseObjects;
-        [SerializeField] private List<Glass> shards;
-        
-        //TODO regarder où je créer les data pour attribuer une première fois les GUID
+        [SerializeField, HideInInspector] private SceneData sceneData;
+        [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
+        [SerializeField, HideInInspector] private List<Glass> shards;
         
         public void Bind(bool firstTimeBind) {
             sceneData.SceneName = gameObject.scene.name;

@@ -3,7 +3,6 @@ using _Project.Scripts.Systems.Timers;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace _Project.Scripts.GameServices.Services {
@@ -142,6 +141,7 @@ namespace _Project.Scripts.GameServices.Services {
                 Debug.LogError($"[AudioService] Instance Creation Failed : Missing event reference {reference}, Please verify Audio Bank References");
                 return new EventInstance();
             }
+            
             return RuntimeManager.CreateInstance(reference);
         }
 
