@@ -39,9 +39,11 @@ namespace _Project.Scripts.GameServices {
             }
             #if UNITY_EDITOR
             else {
-                GameInitializer.Instance.CreateNewSave();
+                if (GameSceneSettings.HasInstance) {
+                    GameInitializer.Instance.CreateNewSave();
+                    _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                }
                 
-                _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 
                 if (!PlayerService.HasInstance) Instantiate(player);
                 if (!HudManager.HasInstance) Instantiate(hudManager);
@@ -55,15 +57,15 @@ namespace _Project.Scripts.GameServices {
 
         IEnumerator SetSceneWithDelay() {
             yield return new WaitForNextFrameUnit();
-            
-            if(GameSceneSettings.HasInstance)
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
-                
+
             GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
-            GameInitializer.Instance.SaveData();
             
-            PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-            PlayerController.Instance.triggerEnterRoom = true;
+            if (GameSceneSettings.HasInstance) {
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                GameInitializer.Instance.SaveData();
+                PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+                PlayerController.Instance.triggerEnterRoom = true;
+            }
         }
         
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
