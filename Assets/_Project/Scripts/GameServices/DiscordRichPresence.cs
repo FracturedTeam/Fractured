@@ -17,9 +17,13 @@ namespace _Project.Scripts.GameServices {
         public Discord.Discord discord;
 
         void Start() {
-            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.NoRequireDiscord);
+            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.Default);
 
             UpdateStatus();
+        }
+
+        private void OnDisable() {
+            discord.Dispose();
         }
 
         private void Update() {
