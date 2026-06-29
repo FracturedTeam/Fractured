@@ -26,24 +26,23 @@ namespace _Project.Scripts.Systems.Save {
             return Path.Combine(saveFolder, string.Concat(fileName, ".", fileExtension));
         }
         
-        public void Save(GameData data, bool overwrite = true) {
-            var fileLocation = GetPathToFile(data.SaveName);
-
+        public void Save<T>(T data, string fileLocation, bool overwrite = true) {
             if (!overwrite && File.Exists(fileLocation)) {
-                throw new IOException($"The file '{data.SaveName}.{fileExtension}' already exists and cannot be overwritten.");
+                throw new IOException($"The file at {fileLocation} already exists and cannot be overwritten.");
             }
             
             File.WriteAllText(fileLocation, serializer.Serialize(data));
         }
+        
 
-        public GameData Load(string name) {
+        public T Load<T>(string name) {
             var fileLocation = GetPathToFile(name);
 
             if (!File.Exists(fileLocation)) {
                 throw new ArgumentException($"No persisted GameData with name '{name}'");
             }
             
-            return serializer.Deserialize<GameData>(File.ReadAllText(fileLocation));
+            return serializer.Deserialize<T>(File.ReadAllText(fileLocation));
         }
 
         public void Delete(string name) {

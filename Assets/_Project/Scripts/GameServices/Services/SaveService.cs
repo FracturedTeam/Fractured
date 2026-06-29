@@ -18,11 +18,21 @@ namespace _Project.Scripts.GameServices.Services {
         public List<SceneData> SceneDatas;
     }
     
+    [Serializable]
+    public class SettingData
+    {
+        public float MainVolume;
+        public float MusicVolume;
+        public float SFXVolume;
+    }
+    
     public class SaveService : IGameSystem {
         private readonly ShardService shardService;
         private readonly string saveFileName = "New Game";
+        private readonly string settingsFileName = "Settings";
         
         public GameData GameData;
+        public SettingData SettingData;
         private IDataService dataService;
         
         private SceneData sceneData;
@@ -52,6 +62,14 @@ namespace _Project.Scripts.GameServices.Services {
             else {
                 GameData.SaveName = saveFileName;
             }
+            
+            if (dataService.FileDoesExist(settingsFileName)) {
+                LoadSettings();
+            }
+            else {
+                NewSettings();
+            }
+           
         }
         
         public void SaveData() {
@@ -106,11 +124,17 @@ namespace _Project.Scripts.GameServices.Services {
                     Debug.Log($"[SaveSystem]::Saving - Has updated scene data in save file");
                 }
             
-                dataService.Save(GameData);
+                dataService.Save(GameData, GameData.SaveName);
             
                 Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {GameData.SaveName}");
             }
         }
+        
+         public void SaveSettings()
+         {
+             dataService.Save(SettingData, settingsFileName);
+             Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {settingsFileName}");
+         }
         
         public void LoadData() {
             if(GameSceneSettings.HasInstance)
@@ -123,13 +147,13 @@ namespace _Project.Scripts.GameServices.Services {
         private void LoadData(string sceneName) {
             
             if (!dataService.FileDoesExist(saveFileName)) {
-                dataService.Save(GameData);
+                dataService.Save(GameData, GameData.SaveName);
                 Debug.Log($"[SaveService]::Load - SaveFile does not exist, creating a new one");
                 return;
             }
             
             // TODO ajouter un check pour ne pas avoir a recharger la sauvegarde à chaque fois que l'on appel la méthode
-            GameData ??= dataService.Load(GameData.SaveName);
+            GameData ??= dataService.Load<GameData>(GameData.SaveName);
             
             var foundExisting = false;
             var index = 0;
@@ -182,11 +206,29 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void LoadGame() {
-            GameData = dataService.Load(GameData.SaveName);
+            GameData = dataService.Load<GameData>(GameData.SaveName);
         }
         
         public void DeleteGame(string gameName) {
             dataService.Delete(gameName);
+        }
+        
+        public void NewSettings() {
+            
+            SettingData = new SettingData() {
+                MainVolume = 0.5f,
+                MusicVolume = 0.5f,
+                SFXVolume = 0.5f,
+            };
+        }
+        
+        public void LoadSettings()
+        {
+            SettingData = dataService.Load<SettingData>(settingsFileName);
+        }
+        
+        public void DeleteSettings() {
+            dataService.Delete(settingsFileName);
         }
         
         public void SetRuntimeShard(List<Glass> shards) {
