@@ -205,7 +205,6 @@ namespace _Project.Scripts.GameServices {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(color), color, null);
             }
-            
         }
         
         public bool InEditableArea() {
@@ -222,7 +221,6 @@ namespace _Project.Scripts.GameServices {
             audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInRedEditableArea;
         }
-        
 
         #endregion
 
@@ -274,8 +272,6 @@ namespace _Project.Scripts.GameServices {
         public void SetVolume(int index, float volume) {
             audioService.SetSound(index, volume);
         }
-        
-
         #endregion
        
     }

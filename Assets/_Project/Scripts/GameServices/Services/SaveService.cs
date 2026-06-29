@@ -110,7 +110,6 @@ namespace _Project.Scripts.GameServices.Services {
                         }
                     }
                 }
-
                 
                 sceneData = GameSceneSettings.Instance.GetSceneData();
                 GameData.CurrentScene = sceneData.SceneName;
