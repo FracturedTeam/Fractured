@@ -26,7 +26,9 @@ namespace _Project.Scripts.Systems.Save {
             return Path.Combine(saveFolder, string.Concat(fileName, ".", fileExtension));
         }
         
-        public void Save<T>(T data, string fileLocation, bool overwrite = true) {
+        public void Save<T>(T data, string fileName, bool overwrite = true)
+        {
+            var fileLocation = GetPathToFile(fileName);
             if (!overwrite && File.Exists(fileLocation)) {
                 throw new IOException($"The file at {fileLocation} already exists and cannot be overwritten.");
             }
