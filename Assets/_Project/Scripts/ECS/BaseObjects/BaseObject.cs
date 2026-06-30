@@ -2,10 +2,12 @@ using System;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -49,54 +51,87 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
+
+        [field:SerializeField] public string Guid { get; set; }
         
+        private System.Guid _guid;
+
+        public System.Guid guid {
+            get {
+                if(_guid == System.Guid.Empty && !System.String.IsNullOrEmpty(Guid))
+                {
+                    _guid = new System.Guid(Guid);
+                }
+
+                return _guid;
+            }
+        }
+
+#if UNITY_EDITOR
+        
+        [ContextMenu("Generate Unique ID")]
+        public void GenerateGuid() {
+            _guid = System.Guid.NewGuid();
+            Guid = _guid.ToString();
+            EditorUtility.SetDirty(this);
+        }
+#endif
+
         public void Bind(ObjectData data) {
             this.data = data;
+            if (String.IsNullOrEmpty(Guid)) {
+                Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
+                return;
+            }
+            data.Guid = Guid;
         }
         
         [ContextMenu("Load")]
         public void Load() {
+            if(data.Guid != Guid) return;
+            
             if (GetGlass) {
-                GetGlassInteract.objectOut = data.objectOut;
-                if (data.objectOut) GetGlassInteract.SetInteractableInBox(true);
+                GetGlassInteract.objectOut = data.ObjectOutOfBox;
+                if (data.ObjectOutOfBox) GetGlassInteract.SetInteractableInBox(true);
             }
             
             if(GetInteractionType is ObjectType.Moveable)
-                transform.position = data.position;
-            GetCompletion = data.completion;
+                transform.position = data.Position;
+            GetCompletion = data.ObjectCompletion;
             
             if (GetCompletion is InteractionCompletion.Completed) {
                 if (GetInteractionType is ObjectType.PressurePlate) {
                     var p = GetInteract as PressurePlate;
-                    p.objectOnPressurePlate = GameSceneSettings.Instance.GetGameData().ObjectDatas[data.objectIndexOnDisplay].baseObject.GetInteract as MoveableObject;
+
+                    for (int i = 0; i < GameSceneSettings.Instance.baseObjects.Capacity; i++) {
+                        if (GameSceneSettings.Instance.baseObjects[i].Guid == data.ObjectGuidOnPedestal) {
+                            p.objectOnPressurePlate = (MoveableObject)GameSceneSettings.Instance.baseObjects[i].GetInteract;
+                            break;
+                        }
+                    }
                 }
                 CompleteObject();
             }
             
-            SetInteract(data.canInteract);
+            SetInteract(data.CanBeInteractedWith);
         }
         
         [ContextMenu("Save")]
         public void SaveData() {
+            if(data == null || data.Guid != Guid) return;
+            
             if(GetInteractionType is ObjectType.Moveable)
-                data.position = transform.position;
+                data.Position = transform.position;
                     
-            data.completion = GetCompletion;
+            data.ObjectCompletion = GetCompletion;
+            
             if (GetCompletion is InteractionCompletion.Completed && GetInteractionType is ObjectType.PressurePlate) {
                 var p = GetInteract as PressurePlate;
-                var index = 0;
-                for (var i = 0; i < GameSceneSettings.Instance.GetGameData().ObjectDatas.Count; i++) {
-                    if (p.objectOnPressurePlate.GetBaseObject() == GameSceneSettings.Instance.GetGameData().ObjectDatas[i].baseObject) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                data.objectIndexOnDisplay = index;
+                data.ObjectGuidOnPedestal = p.objectOnPressurePlate.GetBaseObject().Guid;
             }
             
-            data.canInteract = canBeInteractedWith;
-            if (GetGlass) data.objectOut = GetGlassInteract.objectOut;
+            data.CanBeInteractedWith = canBeInteractedWith;
+            if (GetGlass) data.ObjectOutOfBox = GetGlassInteract.objectOut;
         }
         #endregion
         
@@ -202,8 +237,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 GetGlassInteract?.ResetObject();
         }
         
-        public void SetInteract(bool canInteract) {
-            Debug.Log($"Set Interact to {canInteract}");
+        public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             if(GetInteract != null)
                 canBeInteractedWith = canInteract;
         }
@@ -245,12 +279,12 @@ namespace _Project.Scripts.ECS.BaseObjects
 
     [Serializable]
     public class ObjectData {
-        public BaseObject baseObject;
-        public Vector3 position;
-        public InteractionCompletion completion;
-        public bool canInteract;
-        public bool objectOut;
-        public int objectIndexOnDisplay;
+        [field: SerializeField] public string Guid { get; set; }
+        public Vector3 Position;
+        public InteractionCompletion ObjectCompletion;
+        public bool CanBeInteractedWith;
+        public bool ObjectOutOfBox;
+        public string ObjectGuidOnPedestal;
     }
 }
 

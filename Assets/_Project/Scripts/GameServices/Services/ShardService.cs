@@ -58,7 +58,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void Tick() {
             HandleShardMovement();
-            UpdateGlassInteraction(); //Expensive methods
+            //UpdateGlassInteraction(); //Expensive methods
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
@@ -87,7 +87,9 @@ namespace _Project.Scripts.GameServices.Services {
                 onTopGlass = shards.Last();
             
             //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
-            if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass) {
+            if (Mouse.current.leftButton.wasPressedThisFrame && !currentGlass)
+            {
+                UpdateGlassInteraction();
                 foreach (var shard in shards)
                 {
                     if (!shard.IsColliding(Mouse.current.position.ReadValue())) 

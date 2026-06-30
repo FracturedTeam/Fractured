@@ -3,42 +3,63 @@ using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Systems.Singletons;
 using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices {
     
     [Serializable]
-    public struct GameData {
+    public struct SceneData {
         public string SceneName;
         public List<ObjectData> ObjectDatas;
         public List<FragmentData> FragmentDatas;
     }
     
     public class SaveInstance : MonoBehaviour {
-        [SerializeField] public GameData gameData;
-        [SerializeField] public List<BaseObject> baseObjects;
-        [SerializeField] private List<Glass> shards;
+        [SerializeField, HideInInspector] private SceneData sceneData;
+        [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
+        [SerializeField, HideInInspector] private List<Glass> shards;
         
-        public void Bind() {
-            for(var i = 0; i < baseObjects.Count; i++) {
-                gameData.ObjectDatas[i].baseObject = baseObjects[i];
-                gameData.ObjectDatas[i].baseObject.Bind(gameData.ObjectDatas[i]);
+        public void Bind(bool firstTimeBind) {
+            sceneData.SceneName = gameObject.scene.name;
+
+            if (firstTimeBind) {
+                sceneData.ObjectDatas = new List<ObjectData>();
+                foreach (var interactable in baseObjects) {
+                    sceneData.ObjectDatas.Add(new ObjectData{Guid = interactable.Guid});
+                }
+
+                sceneData.FragmentDatas = new List<FragmentData>();
+                foreach (var shard in shards) {
+                    sceneData.FragmentDatas.Add(new FragmentData{Guid = shard.Guid});
+                }
+            }
+            
+            for(var i = 0; i < baseObjects.Count; i++) { // Itérer a travers les baseObject
+                for (var x = 0; x < sceneData.ObjectDatas.Count; x++) { // Pour chaque baseObject -> Itère sur chaque ObjectData pour comparer les Guid
+                    if (baseObjects[i].Guid == sceneData.ObjectDatas[x].Guid) {
+                        baseObjects[i].Bind(sceneData.ObjectDatas[x]);
+                        break;
+                    }
+                }
             }
 
-            for (var i = 0; i < shards.Count; i++) {
-                gameData.FragmentDatas[i].glassShards = shards[i];
-                gameData.FragmentDatas[i].glassShards.Bind(gameData.FragmentDatas[i]);
+            for (var i = 0; i < shards.Count; i++) { // Itérer a travers les shards
+                for (var x = 0; x < sceneData.ObjectDatas.Count; x++) { // Pour chaque shard -> Itérer sur chaque fragment data
+                    if (shards[i].Guid == sceneData.FragmentDatas[x].Guid) {
+                        shards[i].Bind(sceneData.FragmentDatas[x]);
+                        break;
+                    }
+                }
             }
         }
 
-        public GameData GetGameData() {
-            return gameData;   
+        public SceneData GetGameData() {
+            return sceneData;   
         }
 
-        public void SetGameData(GameData data) {
-            gameData = data;
+        public void SetGameData(SceneData data) {
+            sceneData = data;
         }
         
         public List<Glass> GetShards() {
@@ -49,28 +70,25 @@ namespace _Project.Scripts.GameServices {
         public void SetObjectData(BaseObject[] _baseObjects, Glass[] _shards) {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
-            gameData.ObjectDatas = new List<ObjectData>();
-            gameData.FragmentDatas = new List<FragmentData>();
             
-            //Set Shards
+            // Set Shards
             shards.AddRange(_shards); 
-            
-            foreach (var shard in shards) {
-                gameData.FragmentDatas.Add(new FragmentData{glassShards = shard});
-            }
             
             //Set interactable
             baseObjects.AddRange(_baseObjects);
             
-            foreach (var interactable in baseObjects) {
-                gameData.ObjectDatas.Add(new ObjectData{baseObject = interactable});
+            foreach (var interactable in _baseObjects) {
+                if (System.String.IsNullOrEmpty(interactable.Guid)) { // Generate Object GUID
+                    interactable.GenerateGuid();
+                }
                 
-                //Set shard in interactable
                 if (interactable.TryGetComponent(out ObtainShardInteractable shard)) {
-                    shards.AddRange(shard.shards);
                     foreach (var s in shard.shards) {
-                        gameData.FragmentDatas.Add(new FragmentData{glassShards = s});
+                        if (System.String.IsNullOrEmpty(s.Guid)) { // Generate Object GUID
+                            s.GenerateGuid();
+                        }
                     }
+                    shards.AddRange(shard.shards);
                 }
             }
             

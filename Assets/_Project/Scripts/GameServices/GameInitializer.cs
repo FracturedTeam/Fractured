@@ -130,9 +130,12 @@ namespace _Project.Scripts.GameServices {
         public void LoadData() => saveService.LoadData();
         public void LoadPlayerData() => saveService.LoadPlayerData();
         public void LoadGame() => saveService.LoadGame();
-        public string GetLastScene() => saveService.saveFile.CurrentScene;
+        public string GetLastScene() => saveService.GameData.CurrentScene;
         public bool ExistingSave() => saveService.ExistingSave();
         public void CreateNewSave() => saveService.NewGame();
+        public void LoadSettings() => saveService.LoadSettings();
+        public void SaveSettings() => saveService.SaveSettings();
+        public SettingData GetSettings => saveService.SettingData;
 
         #endregion
 
@@ -202,7 +205,6 @@ namespace _Project.Scripts.GameServices {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(color), color, null);
             }
-            
         }
         
         public bool InEditableArea() {
@@ -219,7 +221,6 @@ namespace _Project.Scripts.GameServices {
             audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
             return shardService.PlayerInRedEditableArea;
         }
-        
 
         #endregion
 
@@ -257,30 +258,20 @@ namespace _Project.Scripts.GameServices {
             audioService.UpdateMemory(inMemory);
         }
         
-        public float GetMasterVolume() {
-            return audioService.masterVolume;
+        public float GetVolume(int index)
+        {
+            return index switch
+            {
+                0 => GetSettings.MainVolume,
+                1 => GetSettings.MusicVolume,
+                2 => GetSettings.SFXVolume,
+                _ => 0
+            };
         }
 
-        public void SetMasterVolume(float volume) {
-            audioService.masterVolume = volume;
+        public void SetVolume(int index, float volume) {
+            audioService.SetSound(index, volume);
         }
-        
-        public float GetSFXVolume() {
-            return audioService.sfxVolume;
-        }
-
-        public void SetSFXVolume(float volume) {
-            audioService.sfxVolume = volume;
-        }
-        
-        public float GetMusicVolume() {
-            return audioService.musicVolume;
-        }
-
-        public void SetMusicVolume(float volume) {
-            audioService.musicVolume = volume;
-        }
-
         #endregion
        
     }

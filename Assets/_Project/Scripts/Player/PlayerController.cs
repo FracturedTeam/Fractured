@@ -20,6 +20,8 @@ namespace _Project.Scripts.Player {
         }
         
         public void SaveData(PlayerData data) {
+            if(data == null) return;
+            
             this.data = data;
             data.position = transform.position;
         }
@@ -174,7 +176,7 @@ namespace _Project.Scripts.Player {
         #region Movement Helper/Setter
 
         public void UpdateMovement() => movement.HandleUpdate();
-        public void FixedUpdateMovement() => movement.HandleMovement();
+        public void FixedUpdateMovement() => movement.HandleFixedUpdate();
         
         public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
         

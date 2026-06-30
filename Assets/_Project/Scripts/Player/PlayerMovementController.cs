@@ -52,6 +52,8 @@ public class PlayerMovementController : MonoBehaviour
     private float lerpTime = 1f;
     private float lerpTimer = 0f;
 
+    private Vector3 lastPosition;
+    
     public void Awake() {
         
         //Get every component needed
@@ -117,6 +119,22 @@ public class PlayerMovementController : MonoBehaviour
             UpdateCameraDir();
     }
 
+    private bool IsAgainstWall() {
+        var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
+        var mask = ~(1 << ignoreLayer);
+        Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), mesh.forward, out var hit, 0.6f, mask);
+
+        if (hit.collider) {
+            var wallNormal = hit.normal;
+
+            if (Vector3.Dot(wallNormal, mesh.forward) < -0.1f) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void MeshRotation() {
         if (player.IsUsingDoor()) return;
         if(moveDir == Vector3.zero) return;
@@ -148,6 +166,11 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void HandleTimeBeforeMoving() {
+        if (IsAgainstWall()) {
+            timeBeforeMoving = 0;
+            return;
+        }
+        
         //Handling player time before moving when he start to press a move key
         timeBeforeMoving = moveDir.magnitude > 0 ? 
             timeBeforeMoving += Time.deltaTime : 
@@ -168,7 +191,7 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private void HandleAcceleration() {
-        if (moveDir.magnitude > 0 && timeBeforeMoving >= playerConfig.timeBeforeMoving) {
+        if (moveDir.magnitude > 0 && timeBeforeMoving >= playerConfig.timeBeforeMoving && !IsAgainstWall()) {
             accelTime += Time.deltaTime;
             decelTime -= Time.deltaTime;
             
@@ -211,13 +234,15 @@ public class PlayerMovementController : MonoBehaviour
 
     #region ApplyMovementForces
 
-    public void HandleMovement() {
+    public void HandleFixedUpdate() {
         if (!IsGrounded())
             rb.AddForce(Vector3.down * currentFallSpeed, ForceMode.Acceleration);
         
         if (player.IsUsingDoor()) return;
         
         PlayerMove();
+        
+        lastPosition = transform.position;
     }
     
     private void PlayerMove() {
@@ -267,7 +292,7 @@ public class PlayerMovementController : MonoBehaviour
     public float SetAnimatorSpeed() {
         if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, lerpTime);
         
-        if (moveDir.magnitude > 0) 
+        if (moveDir.magnitude > 0 && !IsAgainstWall()) 
           return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);
         
         return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, lerpTime);

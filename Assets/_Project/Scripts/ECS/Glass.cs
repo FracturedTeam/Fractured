@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,22 +12,62 @@ using UnityEngine.UI;
 namespace _Project.Scripts.ECS
 {
     public class Glass : MonoBehaviour, IDragHandler {
-        [SerializeField, HideInInspector] private FragmentData data;
+        
+        #region Save/Load
+        
+        [SerializeField, HideInInspector] public FragmentData data;
+        
+        [field:SerializeField] public string Guid { get; set; }
+        
+        private System.Guid _guid;
+
+        public System.Guid guid {
+            get {
+                if(_guid == System.Guid.Empty && !System.String.IsNullOrEmpty(Guid))
+                {
+                    _guid = new System.Guid(Guid);
+                }
+
+                return _guid;
+            }
+        }
+        
+        #if UNITY_EDITOR
+
+        [ContextMenu("Generate Unique ID")]
+        public void GenerateGuid() {
+            _guid = System.Guid.NewGuid();
+            Guid = _guid.ToString();
+            EditorUtility.SetDirty(this);
+        }
+        
+        #endif
         
         public void Bind(FragmentData data) {
             this.data = data;
+            if (String.IsNullOrEmpty(Guid)) {
+                Debug.LogError($"[Glass] {gameObject.name} does not have Guid, please generate it");
+                return;
+            }
+            data.Guid = Guid;
         }
         
         public void SaveData() {
+            if(data.Guid != Guid) return;
+            
             data.position = transform.position;
             data.spawned = spawned;
         }
         
         public void LoadData() {
+            if(data.Guid != Guid) return;
+            
             transform.position = data.position;
             spawned = data.spawned;
             Set3DShard();
         }
+
+        #endregion
         
         public ColorEnum GetColor => color2D;
 
@@ -203,5 +245,12 @@ namespace _Project.Scripts.ECS
             vector3.z = setOnTop ? 0 : -0.0001f;
             shard.transform.position = vector3;
         }
+    }
+    
+    [Serializable]
+    public class FragmentData {
+        [field: SerializeField] public string Guid { get; set; }
+        public Vector3 position;
+        public bool spawned;
     }
 }

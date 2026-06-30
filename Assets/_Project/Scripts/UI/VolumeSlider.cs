@@ -15,31 +15,15 @@ namespace _Project.Scripts.UI {
         
         [SerializeField] private VolumeType volumeType;
         
-        private void Awake() {
+        private void Start() {
             slider = GetComponent<Slider>();
 
-            slider.value = volumeType switch {
-                VolumeType.Master => GameInitializer.Instance.GetMasterVolume(),
-                VolumeType.Sfx => GameInitializer.Instance.GetSFXVolume(),
-                VolumeType.Music => GameInitializer.Instance.GetMusicVolume(),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            slider.value = GameInitializer.Instance.GetVolume((int)volumeType);
         }
 
         public void OnSliderValueChanged() {
-            switch (volumeType) {
-                case VolumeType.Master:
-                    GameInitializer.Instance.SetMasterVolume(slider.value);
-                    break;
-                case VolumeType.Sfx:
-                    GameInitializer.Instance.SetSFXVolume(slider.value);
-                    break;
-                case VolumeType.Music:
-                    GameInitializer.Instance.SetMusicVolume(slider.value);
-                    break;
-                default:
-                    break;
-            }
+            
+            GameInitializer.Instance.SetVolume((int)volumeType, slider.value);
         }
     }
 }
