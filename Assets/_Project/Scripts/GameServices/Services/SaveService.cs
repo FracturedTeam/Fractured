@@ -24,6 +24,10 @@ namespace _Project.Scripts.GameServices.Services {
         public float MainVolume;
         public float MusicVolume;
         public float SFXVolume;
+        public bool FullScreen;
+        public int ScreenResolution;
+        public float Brightness;
+        public int SubtitleSize;
     }
     
     public class SaveService : IGameSystem {
