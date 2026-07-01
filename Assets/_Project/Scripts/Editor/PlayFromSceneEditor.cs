@@ -30,15 +30,6 @@ namespace _Project.Scripts.Editor {
             sceneNames = scenes.Select(x => (Path.GetFileNameWithoutExtension(x.path))).ToArray();
         }
 
-        void Update() {
-            if (!EditorApplication.isPlaying) {
-                if (null == waitScene && !string.IsNullOrEmpty(lastScene)) {
-                    EditorSceneManager.OpenScene(lastScene);
-                    lastScene = null;
-                }
-            }
-        }
-
         void OnGUI() {
             if (EditorApplication.isPlaying) {
                 if (EditorSceneManager.GetActiveScene().path == waitScene) {
