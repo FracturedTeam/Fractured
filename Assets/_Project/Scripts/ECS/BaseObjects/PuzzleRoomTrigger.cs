@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.InteractableObjects {
@@ -11,7 +12,7 @@ namespace _Project.Scripts.ECS.InteractableObjects {
         [Tooltip("Shards to solve the room")]
         public Glass[] shards;
         [Tooltip("Texts")]
-        public GlassText[] texts;
+        public SubtitleText[] texts;
 
         void OnTriggerEnter(Collider other) {
             if (other.CompareTag("Player")) {

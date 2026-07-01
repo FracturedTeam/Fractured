@@ -188,7 +188,7 @@ namespace _Project.Scripts.GameServices {
                 interactable.ResetInteract();
         }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, SubtitleText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
