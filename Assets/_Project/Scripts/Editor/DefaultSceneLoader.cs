@@ -25,12 +25,17 @@ namespace _Project.Scripts.Editor {
                 EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
             if (state == PlayModeStateChange.EnteredPlayMode) {
-                if(EditorSceneManager.GetActiveScene().buildIndex == 0) return;
+                if(SceneManager.GetActiveScene().buildIndex == 0) return;
+
+                if (SceneManager.GetActiveScene().buildIndex == 1) {
+                    SceneManager.LoadScene(0);
+                    return;
+                }
                 
-                string CurrentScene = EditorSceneManager.GetActiveScene().path;
+                var currentScene = SceneManager.GetActiveScene().path;
                 
                 SceneManager.LoadScene(0);
-                SceneManager.LoadScene(CurrentScene, LoadSceneMode.Additive);
+                SceneManager.LoadScene(currentScene, LoadSceneMode.Additive);
             }
         }
     }
