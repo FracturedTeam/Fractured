@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        public List<GlassText> glassTexts {get; private set;}
+        public List<SubtitleText> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         private Glass onTopGlass;
@@ -25,7 +25,7 @@ namespace _Project.Scripts.GameServices.Services {
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            glassTexts = new List<GlassText>();
+            glassTexts = new List<SubtitleText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
@@ -41,7 +41,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, SubtitleText[] _texts) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
