@@ -10,14 +10,6 @@ namespace _Project.Scripts.UI
 
         [Header("Button Ref")]
         [SerializeField] private GameObject loadGameBtt;
-        
-        // public static MenuManager Instance;
-
-        // private void Awake()
-        // {
-        //     if(Instance == null) Instance =  this;
-        //     else Destroy(this);
-        // }
 
         private void Start() {
             if(GameInitializer.HasInstance)

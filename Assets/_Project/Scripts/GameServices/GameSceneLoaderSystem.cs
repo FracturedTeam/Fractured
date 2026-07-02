@@ -218,6 +218,7 @@ namespace _Project.Scripts.GameServices {
             _ = LoadSceneAsync(menuScene);
             
             GameInitializer.Instance.DisposeShards();
+            GameInitializer.Instance.SetEditableArea(false, ColorEnum.Both);
             
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);

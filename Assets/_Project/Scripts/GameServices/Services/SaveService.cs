@@ -5,6 +5,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
@@ -19,13 +20,13 @@ namespace _Project.Scripts.GameServices.Services {
     }
     
     [Serializable]
-    public class SettingData
-    {
+    public class SettingData {
         public float MainVolume;
         public float MusicVolume;
         public float SFXVolume;
-        public bool FullScreen;
-        public int ScreenResolution;
+        public int ScreenResolutionIndex;
+        public int FullScreenMode;
+        public bool vSyncEnabled;
         public float Brightness;
         public int SubtitleSize;
     }
@@ -76,6 +77,30 @@ namespace _Project.Scripts.GameServices.Services {
            
         }
         
+        public void NewGame(string gameName = "") {
+            if (gameName == "") gameName = saveFileName;
+            
+            GameData = new GameData {
+                SaveName = gameName,
+                PlayerData = new PlayerData(),
+                SceneDatas = new List<SceneData>(),
+                memory = new SavedMemory ()
+            };
+        }
+        
+        private void NewSettings() {
+            SettingData = new SettingData() { 
+                MainVolume = 1f, 
+                MusicVolume = 1f,
+                SFXVolume = 1f,
+                ScreenResolutionIndex = -1,
+                FullScreenMode = (int)PlayerSettings.fullScreenMode,
+                vSyncEnabled = true,
+                Brightness = 1,
+                SubtitleSize = 16
+            };
+        }
+        
         public void SaveData() {
             if (GameSceneSettings.HasInstance) { 
                 
@@ -94,7 +119,7 @@ namespace _Project.Scripts.GameServices.Services {
                 }
 
                 // Bind des data
-                if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time
+                if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time in the save file
                     GameSceneSettings.Instance.BindData(true);
                 if(MemoryManager.HasInstance) MemoryManager.Instance.SaveData(GameData.memory);
                 PlayerController.Instance.SaveData(GameData.PlayerData); // Lui donner accès au shard Service (Pourquoi ? j'ai oublié)
@@ -155,7 +180,6 @@ namespace _Project.Scripts.GameServices.Services {
                 return;
             }
             
-            // TODO ajouter un check pour ne pas avoir a recharger la sauvegarde à chaque fois que l'on appel la méthode
             GameData ??= dataService.Load<GameData>(GameData.SaveName);
             
             var foundExisting = false;
@@ -197,17 +221,6 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerController.Instance.Load(GameData.PlayerData);
         }
         
-        public void NewGame(string gameName = "") {
-            if (gameName == "") gameName = saveFileName;
-            
-            GameData = new GameData {
-                SaveName = gameName,
-                PlayerData = new PlayerData(),
-                SceneDatas = new List<SceneData>(),
-                memory = new SavedMemory ()
-            };
-        }
-        
         public void LoadGame() {
             GameData = dataService.Load<GameData>(GameData.SaveName);
         }
@@ -216,17 +229,7 @@ namespace _Project.Scripts.GameServices.Services {
             dataService.Delete(gameName);
         }
         
-        public void NewSettings() {
-            
-            SettingData = new SettingData() {
-                MainVolume = 0.5f,
-                MusicVolume = 0.5f,
-                SFXVolume = 0.5f,
-            };
-        }
-        
-        public void LoadSettings()
-        {
+        public void LoadSettings() {
             SettingData = dataService.Load<SettingData>(settingsFileName);
         }
         
