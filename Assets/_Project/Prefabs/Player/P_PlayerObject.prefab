@@ -1125,14 +1125,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3212840581946447344}
     m_Modifications:
-    - target: {fileID: 517297153954113440, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 612438537971867061, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1164,18 +1156,6 @@ PrefabInstance:
     - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.10691672
-      objectReference: {fileID: 0}
-    - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.10691672
-      objectReference: {fileID: 0}
-    - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.10691672
       objectReference: {fileID: 0}
     - target: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1229,28 +1209,50 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 6275382852799146018}
-    - target: {fileID: 7332074754018459481, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_RenderMode
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
       propertyPath: m_Name
       value: GlassText
       objectReference: {fileID: 0}
-    - target: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5904219573223309676, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6395592730544558604}
   m_SourcePrefab: {fileID: 100100000, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
 --- !u!224 &4343784894558984430 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
   m_PrefabInstance: {fileID: 2684857868947346365}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &4648360391794355428 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 7332074754018459481, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+  m_PrefabInstance: {fileID: 2684857868947346365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5835518148211043351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+  m_PrefabInstance: {fileID: 2684857868947346365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6395592730544558604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835518148211043351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0a9a9cfc022a848ac3bd29cc87e37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassTextManager
+  glassTextHolderWorldSpace: {fileID: 4648360391794355428}
+  glassTextHolderManuscript: {fileID: 6410842684006389704}
+  prefab: {fileID: 6184519215950601872, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
+  glassDocument: {fileID: 4937053273211255251}
 --- !u!1001 &4182486017287522963
 PrefabInstance:
   m_ObjectHideFlags: 0
