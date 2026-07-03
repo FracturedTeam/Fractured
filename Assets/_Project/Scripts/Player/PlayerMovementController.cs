@@ -120,19 +120,15 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     private bool IsAgainstWall() {
-        var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
-        var mask = ~(1 << ignoreLayer);
-        Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), mesh.forward, out var hit, 0.6f, mask);
+        // var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
+        // var mask = ~(1 << ignoreLayer);
+        Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), mesh.forward, out var hit, 0.6f);
 
-        if (hit.collider) {
-            var wallNormal = hit.normal;
-
-            if (Vector3.Dot(wallNormal, mesh.forward) < -0.1f) {
-                return true;
-            }
-        }
-
-        return false;
+        if (!hit.collider) return false;
+        if(hit.collider.isTrigger) return false;
+            
+        var wallNormal = hit.normal;
+        return Vector3.Dot(wallNormal, mesh.forward) < -0.1f;
     }
 
     private void MeshRotation() {
