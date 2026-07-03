@@ -146,6 +146,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269713296553678192}
+  - component: {fileID: 6184519215950601872}
+  - component: {fileID: 8691554435132116232}
   m_Layer: 5
   m_Name: GlassText
   m_TagString: Untagged
@@ -176,6 +178,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -233}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6184519215950601872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382768433343599057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693485fe0a56125489313c1007d64ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassText
+  currentTextScriptableObject: {fileID: 0}
+  baseText: {fileID: 8214878066533478881}
+  fragAText: {fileID: 9122773055497293943}
+  fragBText: {fileID: 5439749455606793854}
+  bothText: {fileID: 7167814895559506874}
+  canvasGroup: {fileID: 8691554435132116232}
+--- !u!225 &8691554435132116232
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382768433343599057}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6553077433689221527
 GameObject:
   m_ObjectHideFlags: 0
