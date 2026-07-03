@@ -59,7 +59,7 @@ namespace _Project.Scripts.UI
         private Tweener memoryTween;
         
         [Header("Dialogue")]
-        [SerializeField] private GlassText glassText;
+        [SerializeField] private SubtitleText subtitleText;
         private DialogueScriptableObject currentDialogue;
         private CountdownTimer textTimer;
         
@@ -104,12 +104,12 @@ namespace _Project.Scripts.UI
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {
-            if(!glassText || !newDialogue)
+            if(!subtitleText || !newDialogue)
                 return;
             
             currentDialogue = newDialogue;
             
-            glassText.Setup(currentDialogue);
+            subtitleText.Setup(currentDialogue);
             
             if (currentDialogue.time <= 0)
                 return;
@@ -122,7 +122,7 @@ namespace _Project.Scripts.UI
             if(currentDialogue && currentDialogue.next)
                 SetText(currentDialogue.next);
             else
-                glassText.Setup(null);
+                subtitleText.Setup(null);
         }
 
         public void ShardSpawn(Glass shard)
