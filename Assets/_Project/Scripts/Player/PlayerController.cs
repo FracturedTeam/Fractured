@@ -147,11 +147,11 @@ namespace _Project.Scripts.Player {
 
         private void Update() {
             stateMachine.Update();
-            
-            //Pour la build, à virer
+      
+			#if UNITY_EDITOR
             if(transform.position.y < -10)
                 transform.position = new Vector3(transform.position.x, 10, transform.position.z);
-                
+        	#endif
         }
         
         void FixedUpdate() {

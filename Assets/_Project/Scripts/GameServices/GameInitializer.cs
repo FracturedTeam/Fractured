@@ -110,6 +110,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         private void OnDestroy() {
+            screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 

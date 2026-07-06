@@ -51,7 +51,6 @@ namespace _Project.Scripts.UI
         }
 
         public void LoadMenu() {
-            Time.timeScale = 1;
             GameSceneLoaderSystem.Instance.LoadMenu();
         }
         

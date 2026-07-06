@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
-using _Project.Scripts.Interfaces;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
