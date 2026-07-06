@@ -25,38 +25,36 @@ namespace _Project.Scripts.Player {
     
         private PlayerController player;
     
-        public float currentMaxSpeed { get; private set; }
-        public float currentSpeed { get; private set; }
-    
-        public float currentFallSpeed { get; private set; }
+        public float CurrentMaxSpeed { get; private set; }
+        public float CurrentSpeed { get; private set; }
+        public float CurrentFallSpeed { get; private set; }
         private float currentTimeToFall;
-    
+        
         private float currentSlopeMult;
-        public float currentSlopeAngle { get; private set; }
+        public float CurrentSlopeAngle { get; private set; }
 
-        public float accelTime { get; private set; }
-        public float decelTime { get; private set; }
+        public float AccelTime { get; private set; }
+        public float DecelTime { get; private set; }
 
-        public float timeBeforeMoving { get; private set; }
+        public float TimeBeforeMoving { get; private set; }
         private float timeBeforeMovingReset;
     
-        private Vector3 moveDir;//Inputs joueur de direction
-        public Vector3 previousMoveDir { get; private set; }//Keep last inputs joueur de direction
+        private Vector3 moveDir; // Inputs joueur de direction
+        public Vector3 PreviousMoveDir { get; private set; } // Keep last inputs joueur de direction
     
-        private Vector3 slopeMoveDir;//Si le joueur est sur une slope
-        private Vector3 forwardDir, rightDir;//Par rapport à la caméra
+        private Vector3 slopeMoveDir; // Si le joueur est sur une slope
+        private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
         private Vector3 previousForwardDir;
     
-        private RaycastHit slopeHit;//Pour check si le joueur est sur une slope
+        private RaycastHit slopeHit; // Pour check si le joueur est sur une slope
 
-        private float lerpTime = 1f;
+        private const float LerpTime = 1f;
         private float lerpTimer = 0f;
-
-        private Vector3 lastPosition;
+        private float currentDrag = 0f;
     
         public void Awake() {
         
-            //Get every component needed
+            // Get every component needed
             if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
@@ -100,10 +98,10 @@ namespace _Project.Scripts.Player {
         public void SetSpeed(PlayerSpeedEnum speed) {
             switch (speed) {
                 case PlayerSpeedEnum.Normal :
-                    currentMaxSpeed = playerConfig.normalMoveSpeed;
+                    CurrentMaxSpeed = playerConfig.normalMoveSpeed;
                     break;
                 case PlayerSpeedEnum.None :
-                    currentMaxSpeed = 0;
+                    CurrentMaxSpeed = 0;
                     break;
             }
         }
@@ -115,100 +113,89 @@ namespace _Project.Scripts.Player {
             CheckMethods();
             UpdateDrag();
         
+            // TODO a voir pour déplacer cette fonction pour être appeler uniquement lors d'un changement de salle
             if(forwardDir != cam.transform.forward || rightDir != cam.transform.right)
                 UpdateCameraDir();
         }
 
-        private bool IsAgainstWall() {
-            // var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
-            // var mask = ~(1 << ignoreLayer);
-            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), mesh.forward, out var hit, 0.6f);
-
-            if (!hit.collider) return false;
-            if(hit.collider.isTrigger) return false;
-            
-            var wallNormal = hit.normal;
-            return Vector3.Dot(wallNormal, mesh.forward) < -0.1f;
-        }
-
         private void MeshRotation() {
             if (player.IsUsingDoor()) return;
-            if(moveDir == Vector3.zero) return;
+            if (moveDir == Vector3.zero) return;
         
-            var angle = Mathf.Atan2(previousMoveDir.x, previousMoveDir.z) * Mathf.Rad2Deg;
+            var angle = Mathf.Atan2(PreviousMoveDir.x, PreviousMoveDir.z) * Mathf.Rad2Deg;
             var targetRotation = Quaternion.Euler(0, angle, 0);
             mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
         }
 
         private void CheckMethods() {
-            slopeMoveDir = Vector3.ProjectOnPlane(previousMoveDir, slopeHit.normal);
+            slopeMoveDir = Vector3.ProjectOnPlane(PreviousMoveDir, slopeHit.normal);
         
             if(moveDir != Vector3.zero)
-                previousMoveDir = moveDir;
+                PreviousMoveDir = moveDir;
         
             HandleTimeBeforeMoving();
             HandleAcceleration();
             HandlingSlope();
 
             if (IsGrounded()) {
-                currentFallSpeed = 0;
+                CurrentFallSpeed = 0;
                 currentTimeToFall = 0;
             }
             else {
                 currentTimeToFall += Time.deltaTime;
                 if(currentTimeToFall >= playerConfig.timeBeforeApplyingFallSpeed)
-                    currentFallSpeed = Mathf.SmoothStep(currentFallSpeed, playerConfig.maxFallSpeed, playerConfig.fallSpeedAccel * Time.deltaTime);
+                    CurrentFallSpeed = Mathf.SmoothStep(CurrentFallSpeed, playerConfig.maxFallSpeed, playerConfig.fallSpeedAccel * Time.deltaTime);
             }
         }
 
         private void HandleTimeBeforeMoving() {
             if (IsAgainstWall()) {
-                timeBeforeMoving = 0;
+                TimeBeforeMoving = 0;
                 return;
             }
         
             //Handling player time before moving when he start to press a move key
-            timeBeforeMoving = moveDir.magnitude > 0 ? 
-                timeBeforeMoving += Time.deltaTime : 
+            TimeBeforeMoving = moveDir.magnitude > 0 ? 
+                TimeBeforeMoving += Time.deltaTime : 
                 timeBeforeMovingReset <= 0 ?
-                    timeBeforeMoving -= Time.deltaTime : 
-                    timeBeforeMoving = timeBeforeMoving;
+                    TimeBeforeMoving -= Time.deltaTime : 
+                    TimeBeforeMoving = TimeBeforeMoving;
 
             if (rb.linearVelocity == Vector3.zero && moveDir == Vector3.zero && timeBeforeMovingReset <= 0)
-                timeBeforeMoving = 0;
+                TimeBeforeMoving = 0;
         
             if(moveDir == Vector3.zero)
                 timeBeforeMovingReset -= Time.deltaTime;
 
-            if (timeBeforeMoving >= playerConfig.timeBeforeMoving && moveDir != Vector3.zero)
+            if (TimeBeforeMoving >= playerConfig.timeBeforeMoving && moveDir != Vector3.zero)
                 timeBeforeMovingReset = playerConfig.timeBeforeMovingReset;
         
-            timeBeforeMoving = Mathf.Clamp(timeBeforeMoving, 0, playerConfig.timeBeforeMoving);
+            TimeBeforeMoving = Mathf.Clamp(TimeBeforeMoving, 0, playerConfig.timeBeforeMoving);
         }
 
         private void HandleAcceleration() {
-            if (moveDir.magnitude > 0 && timeBeforeMoving >= playerConfig.timeBeforeMoving && !IsAgainstWall()) {
-                accelTime += Time.deltaTime;
-                decelTime -= Time.deltaTime;
+            if (moveDir.magnitude > 0 && TimeBeforeMoving >= playerConfig.timeBeforeMoving && !IsAgainstWall()) {
+                AccelTime += Time.deltaTime;
+                DecelTime -= Time.deltaTime;
             
-                if(currentSpeed >= currentMaxSpeed - 0.1f)
-                    decelTime = 0;
+                if(CurrentSpeed >= CurrentMaxSpeed - 0.1f)
+                    DecelTime = 0;
             
-                currentSpeed = Mathf.Lerp(0, currentMaxSpeed, playerConfig.accelCurve.Evaluate(accelTime / playerConfig.accelTime));
+                CurrentSpeed = Mathf.Lerp(0, CurrentMaxSpeed, playerConfig.accelCurve.Evaluate(AccelTime / playerConfig.accelTime));
             
             }
             else {
-                decelTime += Time.deltaTime;
-                accelTime -= Time.deltaTime;
+                DecelTime += Time.deltaTime;
+                AccelTime -= Time.deltaTime;
             
-                if(currentSpeed <= 0.1f)
-                    accelTime = 0;
+                if(CurrentSpeed <= 0.1f)
+                    AccelTime = 0;
             
-                currentSpeed = Mathf.Lerp(currentMaxSpeed, 0, playerConfig.decelCurve.Evaluate(decelTime / playerConfig.decelTime));
+                CurrentSpeed = Mathf.Lerp(CurrentMaxSpeed, 0, playerConfig.decelCurve.Evaluate(DecelTime / playerConfig.decelTime));
             }
         
-            decelTime = Mathf.Clamp(decelTime, 0, playerConfig.decelTime);
-            accelTime = Mathf.Clamp(accelTime, 0, playerConfig.accelTime);
+            DecelTime = Mathf.Clamp(DecelTime, 0, playerConfig.decelTime);
+            AccelTime = Mathf.Clamp(AccelTime, 0, playerConfig.accelTime);
         }
 
         private void HandlingSlope() {
@@ -220,40 +207,50 @@ namespace _Project.Scripts.Player {
             }
 
             if (IsClimbingSlope())
-                currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, currentSlopeAngle / playerConfig.maxSlopeAngle);
+                currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
             else 
-                currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, currentSlopeAngle / playerConfig.maxSlopeAngle);
+                currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
         }
-    
-        private void UpdateDrag() =>
-            rb.linearDamping = IsGrounded() ? playerConfig.groundDrag : playerConfig.airDrag;
+
+        private void UpdateDrag() {
+            if(IsGrounded() && !Mathf.Approximately(currentDrag, playerConfig.groundDrag)) {
+                currentDrag = playerConfig.groundDrag;
+                rb.linearDamping = currentDrag;
+            }
+            else if (!IsGrounded() && !Mathf.Approximately(currentDrag, playerConfig.airDrag)) {
+                currentDrag = playerConfig.airDrag;
+                rb.linearDamping = playerConfig.airDrag;
+            }
+        }
 
         #region ApplyMovementForces
 
         public void HandleFixedUpdate() {
-            if (!IsGrounded())
-                rb.AddForce(Vector3.down * currentFallSpeed, ForceMode.Acceleration);
-        
+            if(rb.isKinematic) return;
+            
             if (player.IsUsingDoor()) return;
+            
+            if (!IsGrounded())
+                rb.AddForce(Vector3.down * CurrentFallSpeed, ForceMode.Acceleration);
         
             PlayerMove();
-        
-            lastPosition = transform.position;
         }
     
         private void PlayerMove() {
             if (!IsGrounded())
-                rb.AddForce(previousMoveDir.normalized * (currentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
+                rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
             else if (!IsOnSlope())
-                rb.AddForce(previousMoveDir.normalized * (currentSpeed * playerConfig.moveMult), ForceMode.Acceleration);
+                rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult), ForceMode.Acceleration);
             else if(IsGrounded() && IsOnSlope())
-                rb.AddForce(slopeMoveDir.normalized * (currentSpeed * currentSlopeMult * playerConfig.moveMult), ForceMode.Acceleration);
+                rb.AddForce(slopeMoveDir.normalized * (CurrentSpeed * currentSlopeMult * playerConfig.moveMult), ForceMode.Acceleration);
         }
     
         #endregion
 
+        #region Settes/Helpers
+
         public void SetPosition(Vector3 position, Direction dir) {
-            FreezeController();
+            SetKinematic(true);
             rb.interpolation = RigidbodyInterpolation.None;
         
             rb.Move(position, Quaternion.identity);
@@ -269,38 +266,36 @@ namespace _Project.Scripts.Player {
             };
         
             rb.interpolation = RigidbodyInterpolation.Interpolate;
-            UnfreezeController();
+            SetKinematic(false);
         }
 
-        public void FreezeController() {
-            rb.isKinematic = true;
-        }
-
-        public void UnfreezeController() {
-            rb.isKinematic = false;
+        public void SetKinematic(bool doFreeze) {
+            rb.isKinematic = doFreeze;
         }
 
         public float GetSpeedRatio() {
             if (player.IsUsingDoor()) return 0;
-            return currentSpeed / currentMaxSpeed;
+            return CurrentSpeed / CurrentMaxSpeed;
         }
 
         public float SetAnimatorSpeed() {
-            if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, lerpTime);
+            if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
             if (moveDir.magnitude > 0 && !IsAgainstWall()) 
-                return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, lerpTime);
+                return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, LerpTime);
         
-            return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, lerpTime);
+            return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, LerpTime);
         }
     
-        internal bool IsPlayerFrozen() {
+        public bool IsPlayerFrozen() {
             return rb.isKinematic;
         }
 
         public Rigidbody GetRigidbody() {
             return rb;
         }
+
+        #endregion
     
         #region Boolean
     
@@ -317,13 +312,13 @@ namespace _Project.Scripts.Player {
                 if (slopeHit.normal != Vector3.up) {
                     float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
                 
-                    if(angle <= playerConfig.maxSlopeAngle) currentSlopeAngle = angle;
+                    if(angle <= playerConfig.maxSlopeAngle) CurrentSlopeAngle = angle;
                 
                     return angle <= playerConfig.maxSlopeAngle && angle != 0;
                 }
             }
 
-            currentSlopeAngle = 0;
+            CurrentSlopeAngle = 0;
             return false;
         }
 
@@ -332,6 +327,16 @@ namespace _Project.Scripts.Player {
             var verticalComponent = Vector3.Dot(rbDir, slopeHit.normal);
 
             return verticalComponent < -0.1f;
+        }
+        
+        private bool IsAgainstWall() {
+            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), moveDir.normalized, out var hit, 0.6f);
+
+            if (!hit.collider) return false;
+            if(hit.collider.isTrigger) return false;
+            
+            var wallNormal = hit.normal;
+            return Vector3.Dot(wallNormal, moveDir.normalized) < -0.1f;
         }
     
         #endregion

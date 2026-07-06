@@ -27,7 +27,7 @@ namespace _Project.Scripts.Player {
         }
         
         
-        InputsBrain inputsBrain;
+        // InputsBrain inputsBrain;
         StateMachine stateMachine;
 
         [Header("Cinemachine Brain")]
@@ -54,12 +54,12 @@ namespace _Project.Scripts.Player {
 
         private void Start() {
             stateMachine = new StateMachine();
-            //quick fix for that art part, need rework for the steam version
+            // quick fix for that art part, need rework for the steam version
             cinemachineBrain.gameObject.SetActive(false);
             
-            //Get every component needed
-            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
+            // Get every component needed
+            // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
+            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
             
             if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
             else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
@@ -177,13 +177,8 @@ namespace _Project.Scripts.Player {
 
         public void UpdateMovement() => movement.HandleUpdate();
         public void FixedUpdateMovement() => movement.HandleFixedUpdate();
-        
         public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
-        
-        public void FreezeController(bool doFreeze) {
-            if(doFreeze) movement.FreezeController();
-            else movement.UnfreezeController();
-        }
+        public void FreezeController(bool doFreeze) => movement.SetKinematic(doFreeze);
         public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
         public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
         public Vector3 GetForwardDir() => movement.mesh.forward;
@@ -191,7 +186,7 @@ namespace _Project.Scripts.Player {
         #endregion
         
         #region Interaction Helper/Setter
-        public void UpdateInteraction() => interact.HandleUpdate(movement.previousMoveDir);
+        public void UpdateInteraction() => interact.HandleUpdate(movement.PreviousMoveDir);
         public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
         public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
         public void SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;

@@ -38,6 +38,7 @@ namespace _Project.Scripts.Player {
         private bool canInteract;
         private bool inMemory = false;
         private bool inPressurePlate = false;
+        
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
         [HideInInspector] public bool triggerFailedDrop = false;
@@ -46,12 +47,12 @@ namespace _Project.Scripts.Player {
         private CountdownTimer usingLockedDoor;
         private CountdownTimer usingDoor;
         private CountdownTimer interactCooldown;
-        private float timerToUseDoor = 0.15f;
+        private const float TimerToUseDoor = 0.15f;
         
         private Interaction interactionType;
 
         private float interactDuration = 0;
-        private float holdInteractionNeeded = 0.5f;
+        private const float HoldInteractionNeeded = 0.5f;
         private bool interactionHold = false;
         private bool hasRemoved = false;
         
@@ -68,7 +69,7 @@ namespace _Project.Scripts.Player {
             }
         }
         
-        public int size { get; private set; }
+        public int Size { get; private set; }
 
         #region Initialization
 
@@ -79,9 +80,9 @@ namespace _Project.Scripts.Player {
             if(TryGetComponent(out PlayerController _player)) player = _player;
             else Debug.LogWarning("[PlayerController] No PlayerController found");
             
-            size = 0;
+            Size = 0;
 
-            usingLockedDoor = new CountdownTimer(timerToUseDoor);
+            usingLockedDoor = new CountdownTimer(TimerToUseDoor);
             usingDoor = new CountdownTimer(0.4f);
             interactCooldown = new CountdownTimer(0.5f);
         }
@@ -224,7 +225,7 @@ namespace _Project.Scripts.Player {
         #endregion
 
         private void HandleInteractRotation(Vector3 playerDir) {
-            var newPos = transform.position + player.GetForwardDir() * interactZoneSize.z;
+            var newPos = transform.position + playerDir * interactZoneSize.z;
             interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.GetRotationSpeed() * Time.deltaTime);
         }
         
@@ -234,12 +235,9 @@ namespace _Project.Scripts.Player {
             if(interactionHold)
                 interactDuration += Time.deltaTime;
             
-            if (interactDuration >= holdInteractionNeeded && !HasObject) {
-                //If causes a null ref (tried to fix it)
-                if (potentialInteraction 
-                    &&  potentialInteraction.GetInteractionType is ObjectType.Memory 
-                        && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory() 
-                    || (potentialInteraction.GetInteractionType is ObjectType.PressurePlate && !inPressurePlate)) { 
+            if (interactDuration >= HoldInteractionNeeded && !HasObject) {
+                //If causes a null ref (tried to fix it) - I Think it is fixed
+                if (potentialInteraction && CanRemoveMemoryObject() || CanRemovePedestalObject()) { 
                     potentialInteraction?.OnInteract(ObjectInteraction.Remove);
                     hasRemoved = true;
                 }
@@ -255,42 +253,45 @@ namespace _Project.Scripts.Player {
             HandleInteraction();
             SetPlayerInteraction();
         }
-
+        
         #region UpdateInteraction
 
         void HandleInteraction() {
             if(!canPlayerInteract) return;
             
-            size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
+            Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
 
-            switch (size) {
+            switch (Size) {
                 case 0:
                     potentialInteraction = null;
                     return;
+                case 1 :
+                    potentialInteraction = results[0].GetComponent<BaseObject>();
+                    break;
                 case > 1:
                     var closestDist = 10f;
-                    BaseObject closest = null;
-                    foreach (Collider c in results) {
-                        if(c == null) continue;
-                        if (!c.TryGetComponent(out BaseObject b)) continue;
-                        if(!b.CanBeInteractedWith()) continue;
-                        
-                        var dist = Vector3.Distance(c.transform.position, transform.position);
-                        if (dist < closestDist) {
-                            closest = b;
-                            closestDist = dist;
+                    
+                    for (var i = 0; i < Size; i++) {
+                        if (results[i].TryGetComponent(out BaseObject b)) {
+                            if (!b.CanBeInteractedWith()) continue;
+                            var dist = Vector3.Distance(b.transform.position, transform.position);
+
+                            if (dist < closestDist) {
+                                closestDist = dist;
+                                potentialInteraction = b;
+                            }
                         }
                     }
-                    potentialInteraction = closest;
                     break;
-                default: // No need for logic, just get the only object we detect
-                    potentialInteraction = results[0].GetComponent<BaseObject>();
+                default:
+                    potentialInteraction = null;
                     break;
             }
 
-            if (!HasObject) 
+            if (!HasObject) // Check si le joueur possède un objet
                 return;
             
+            // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
             if (potentialInteraction == currentInteraction) potentialInteraction = null;
 
         }
@@ -304,7 +305,7 @@ namespace _Project.Scripts.Player {
             UpdatePossibleInteraction();
             
             if (potentialInteraction.CanBeInteractedWith())
-                CanInteract = canPlayerInteract && size > 0;
+                CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
                 return;
@@ -432,6 +433,15 @@ namespace _Project.Scripts.Player {
             currentInteraction?.OnInteract(ObjectInteraction.DropNoTimer);
             currentInteraction = null;
         }
+        
+        private bool CanRemovePedestalObject() {
+            return potentialInteraction.GetInteractionType is ObjectType.PressurePlate && !inPressurePlate;
+        }
+
+        private bool CanRemoveMemoryObject() {
+            return potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory();
+        }
+
         
         private bool CanGrab() {
             if(potentialInteraction == null) return false;
