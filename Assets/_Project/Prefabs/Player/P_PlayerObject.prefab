@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassDocument
   background: {fileID: 2884930188781485459}
-  glassText: {fileID: 5832284078454083937}
+  glassText: {fileID: 0}
 --- !u!1 &2553514471740705682
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,8 +142,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1494440288927619713}
+  m_Children: []
   m_Father: {fileID: 910528689803511408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -839,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 9118735760167049477}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
-  m_LocalPosition: {x: 0, y: 22.1, z: -5.5}
+  m_LocalPosition: {x: 19.9, y: 26.5, z: 33.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -878,8 +877,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 6.5
-  far clip plane: 816.3
+  near clip plane: 0.3
+  far clip plane: 1000
   field of view: 60
   orthographic: 0
   orthographic size: 10
@@ -988,135 +987,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 4831234619962423155}
---- !u!1001 &370346312362364913
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1872861980618951657}
-    m_Modifications:
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.106920004
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.10692002
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.10692002
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.292969
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.81915206
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.57357633
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -80.389534
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2382768433343599057, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_Name
-      value: GlassText
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691554435132116232, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
---- !u!224 &1494440288927619713 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1269713296553678192, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-  m_PrefabInstance: {fileID: 370346312362364913}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5832284078454083937 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6184519215950601872, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-  m_PrefabInstance: {fileID: 370346312362364913}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693485fe0a56125489313c1007d64ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GlassText
 --- !u!1001 &2684857868947346365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1213,46 +1083,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlassText
       objectReference: {fileID: 0}
+    - target: {fileID: 9003664571925421361, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+      propertyPath: glassDocument
+      value: 
+      objectReference: {fileID: 4937053273211255251}
+    - target: {fileID: 9003664571925421361, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+      propertyPath: glassTextHolderManuscript
+      value: 
+      objectReference: {fileID: 6410842684006389704}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5904219573223309676, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6395592730544558604}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
 --- !u!224 &4343784894558984430 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1804449598067018579, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
   m_PrefabInstance: {fileID: 2684857868947346365}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &4648360391794355428 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 7332074754018459481, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-  m_PrefabInstance: {fileID: 2684857868947346365}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5835518148211043351 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8482922248774238122, guid: fbdf7e08171c06e49b3e48b7b4c1e813, type: 3}
-  m_PrefabInstance: {fileID: 2684857868947346365}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6395592730544558604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5835518148211043351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa0a9a9cfc022a848ac3bd29cc87e37a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GlassTextManager
-  glassTextHolderWorldSpace: {fileID: 4648360391794355428}
-  glassTextHolderManuscript: {fileID: 6410842684006389704}
-  prefab: {fileID: 6184519215950601872, guid: 6f7cb501045412d4b868d5a037c62212, type: 3}
-  glassDocument: {fileID: 4937053273211255251}
 --- !u!1001 &4182486017287522963
 PrefabInstance:
   m_ObjectHideFlags: 0

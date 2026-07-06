@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        public List<SubtitleText> glassTexts {get; private set;}
+        public List<GlassTextLink> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         private Glass onTopGlass;
@@ -25,7 +25,7 @@ namespace _Project.Scripts.GameServices.Services {
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            glassTexts = new List<SubtitleText>();
+            glassTexts = new List<GlassTextLink>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
@@ -41,7 +41,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, SubtitleText[] _texts) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassTextLink[] _texts) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
@@ -64,8 +64,8 @@ namespace _Project.Scripts.GameServices.Services {
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            /*foreach (var glassText in glassTexts)
-              SetGlassTextState(glassText);*/
+            foreach (var glassText in glassTexts)
+                SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
@@ -74,11 +74,11 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        /*private void SetGlassTextState(GlassText text) {
+        private void SetGlassTextState(GlassTextLink text) {
             foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.TagPositions), shard);
+                text.OnInteract(shard.IsColliding(text.transform.position), shard);
             }
-        }*/
+        }
         
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement()

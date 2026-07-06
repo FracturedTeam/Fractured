@@ -26,7 +26,6 @@ namespace _Project.Scripts.Player {
             data.position = transform.position;
         }
         
-        
         InputsBrain inputsBrain;
         StateMachine stateMachine;
 

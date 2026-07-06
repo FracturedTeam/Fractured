@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2115355978746145654}
   - component: {fileID: 3572775510301404438}
   - component: {fileID: 9122773055497293943}
+  - component: {fileID: 7048848211865910209}
   m_Layer: 5
   m_Name: Frag A Text
   m_TagString: Untagged
@@ -92,15 +93,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -137,6 +138,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7048848211865910209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276702429596101051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
 --- !u!1 &2382768433343599057
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,11 +203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693485fe0a56125489313c1007d64ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassText
-  currentTextScriptableObject: {fileID: 0}
-  baseText: {fileID: 8214878066533478881}
-  fragAText: {fileID: 9122773055497293943}
-  fragBText: {fileID: 5439749455606793854}
-  bothText: {fileID: 7167814895559506874}
+  currentTextScriptableObject: {fileID: 11400000, guid: 87b216eb549d782459a51363da2b0401, type: 2}
+  baseText: {fileID: 2037879296210167869}
+  fragAText: {fileID: 7048848211865910209}
+  fragBText: {fileID: 8321830982846574690}
+  bothText: {fileID: 7538792194804883822}
   canvasGroup: {fileID: 8691554435132116232}
 --- !u!225 &8691554435132116232
 CanvasGroup:
@@ -219,6 +232,7 @@ GameObject:
   - component: {fileID: 6208053188296863092}
   - component: {fileID: 8112589779633501683}
   - component: {fileID: 8214878066533478881}
+  - component: {fileID: 2037879296210167869}
   m_Layer: 5
   m_Name: No Frag Text
   m_TagString: Untagged
@@ -300,15 +314,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -345,6 +359,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2037879296210167869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6553077433689221527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &7791987606189572591
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +382,7 @@ GameObject:
   - component: {fileID: 2070310021137928106}
   - component: {fileID: 4120534344732043167}
   - component: {fileID: 7167814895559506874}
+  - component: {fileID: 7538792194804883822}
   m_Layer: 5
   m_Name: Frag A&B Text
   m_TagString: Untagged
@@ -437,15 +464,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -482,6 +509,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7538792194804883822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791987606189572591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
 --- !u!1 &8804554345394479233
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +532,7 @@ GameObject:
   - component: {fileID: 8076914892014343771}
   - component: {fileID: 8723943367762967749}
   - component: {fileID: 5439749455606793854}
+  - component: {fileID: 8321830982846574690}
   m_Layer: 5
   m_Name: Frag B Text
   m_TagString: Untagged
@@ -574,15 +614,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -619,3 +659,15 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8321830982846574690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804554345394479233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
