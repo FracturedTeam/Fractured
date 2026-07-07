@@ -16,7 +16,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public GlassInteractable GetGlassInteract { get; private set; }
         public IInteractable GetInteract  { get; set; }
         public TutorialElement  GetTutorialElement { get; set; }
-        public ObjectType GetInteractionType { get; set; }
+        public ObjectType GetObjectType { get; set; }
         public InteractionCompletion GetCompletion { get; set; }
 
         [Header("Object Name")]
@@ -41,16 +41,15 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
-        public MeshFilter meshFilter { get; private set; }
+        
         private Collider objectCollider;
 
-        public bool initialized { get; private set; }
+        public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
         private bool isOnPressurePlate = false;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
-
         [field:SerializeField] public string Guid { get; set; }
         
         private System.Guid _guid;
@@ -91,15 +90,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (GetGlass) {
                 GetGlassInteract.objectOut = data.ObjectOutOfBox;
-                if (data.ObjectOutOfBox) GetGlassInteract.SetInteractableInBox(true);
+                GetGlassInteract.SetInteractableInBox(data.ObjectOutOfBox);
             }
             
-            if(GetInteractionType is ObjectType.Moveable)
+            if(GetObjectType is ObjectType.Moveable)
                 transform.position = data.Position;
+            
             GetCompletion = data.ObjectCompletion;
             
             if (GetCompletion is InteractionCompletion.Completed) {
-                if (GetInteractionType is ObjectType.PressurePlate) {
+                if (GetObjectType is ObjectType.PressurePlate) { // TODO a enlever avec les pedestal
                     var p = GetInteract as PressurePlate;
 
                     for (int i = 0; i < GameSceneSettings.Instance.baseObjects.Capacity; i++) {
@@ -119,12 +119,12 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SaveData() {
             if(data == null || data.Guid != Guid) return;
             
-            if(GetInteractionType is ObjectType.Moveable)
+            if(GetObjectType is ObjectType.Moveable)
                 data.Position = transform.position;
                     
             data.ObjectCompletion = GetCompletion;
             
-            if (GetCompletion is InteractionCompletion.Completed && GetInteractionType is ObjectType.PressurePlate) {
+            if (GetCompletion is InteractionCompletion.Completed && GetObjectType is ObjectType.PressurePlate) {
                 var p = GetInteract as PressurePlate;
                 data.ObjectGuidOnPedestal = p.objectOnPressurePlate.GetBaseObject().Guid;
             }
@@ -135,28 +135,24 @@ namespace _Project.Scripts.ECS.BaseObjects
         #endregion
         
         public void Initialize() {
-            if(!initialized) {
+            if(!IsInitialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
                 
-                if(TryGetComponent(typeof(IInteractable), out var p))
-                    GetInteract = p as IInteractable;
+                if(TryGetComponent(out IInteractable interactable)) GetInteract = interactable;
                 else SetInteract(false);
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
-                
-                if(TryGetComponent(typeof(MeshFilter), out var mf)) meshFilter = mf as MeshFilter;
-                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
             }
-            initialized = true;
+            IsInitialized = true;
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
@@ -166,15 +162,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
                 Trigger(true);
-            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
-            {
+            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen) {
                 Trigger(false);
                 interactTutorialElement?.TriggerEventStart();
             }
                 
         }
         
-        //Collider[] inObjects = new Collider[4];
         private void Update() {
             if (locked && MemoryManager.Instance.IsUnlockedMemory(memoryId)) {
                 locked = false;
@@ -203,7 +197,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
-            GetGlassInteract.OnInteract(isOn, shard);
+            GetGlassInteract.OnShardUpdated(isOn, shard);
 
             if (!isOn) 
                 return;
@@ -232,13 +226,12 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void ResetInteract() {
             GetInteract?.ResetObject();
-            if(GetInteractionType is not ObjectType.Moveable)
+            if(GetObjectType is not ObjectType.Moveable)
                 GetGlassInteract?.ResetObject();
         }
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
-            if(GetInteract != null)
-                canBeInteractedWith = canInteract;
+            canBeInteractedWith = GetInteract != null && canInteract;
         }
         
         public void SetCollider(bool isOn) {
@@ -272,7 +265,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             else GetTutorialElement.TriggerEventStop();
         }
 
-        public void SetOnPressurePlate(bool p) => isOnPressurePlate = p;
+        public void SetOnPressurePlate(bool isOn) => isOnPressurePlate = isOn;
         public bool IsOnPressurePlate() => isOnPressurePlate;
     }
 

@@ -37,7 +37,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
                 if(TryGetComponent(out KeyInteractable k)) key = k;
                 
-                baseObject.GetInteractionType = ObjectType.Door;
+                baseObject.GetObjectType = ObjectType.Door;
             }
             
             if(doorType is DoorType.BigDoor)

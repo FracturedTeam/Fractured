@@ -43,7 +43,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(TryGetComponent(out KeyInteractable k)) key = k;
 
-                baseObject.GetInteractionType = ObjectType.Memory;
+                baseObject.GetObjectType = ObjectType.Memory;
                 
                 gameObject.layer = LayerMask.NameToLayer("MemoryObject");
 

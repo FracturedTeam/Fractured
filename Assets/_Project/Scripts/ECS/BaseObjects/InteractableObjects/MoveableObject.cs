@@ -48,7 +48,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 originalPosition = transform.position;
                 
-                baseObject.GetInteractionType = ObjectType.Moveable;
+                baseObject.GetObjectType = ObjectType.Moveable;
                 baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
                 
                 baseObject?.SetInteract(true);

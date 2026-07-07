@@ -138,7 +138,7 @@ namespace _Project.Scripts.Player {
             else if (IsPressurePlate())
                 PressurePlateInteraction();
             else if (CanContextualInteract()) {
-                if(potentialInteraction.GetInteractionType is ObjectType.Shard) triggerShard = true;
+                if(potentialInteraction.GetObjectType is ObjectType.Shard) triggerShard = true;
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
             }
@@ -342,7 +342,7 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
-            switch (potentialInteraction.GetInteractionType) {
+            switch (potentialInteraction.GetObjectType) {
                 case ObjectType.Moveable:
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
@@ -440,11 +440,11 @@ namespace _Project.Scripts.Player {
         }
         
         private bool CanRemovePedestalObject() {
-            return potentialInteraction.GetInteractionType is ObjectType.PressurePlate && !inPressurePlate;
+            return potentialInteraction.GetObjectType is ObjectType.PressurePlate && !inPressurePlate;
         }
 
         private bool CanRemoveMemoryObject() {
-            return potentialInteraction.GetInteractionType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory();
+            return potentialInteraction.GetObjectType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory();
         }
 
         

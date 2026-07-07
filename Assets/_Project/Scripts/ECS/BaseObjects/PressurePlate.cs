@@ -35,7 +35,7 @@ namespace _Project.Scripts.ECS.BaseObjects {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
                 else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(PressurePlate)}");
                 
-                baseObject.GetInteractionType = ObjectType.PressurePlate;
+                baseObject.GetObjectType = ObjectType.PressurePlate;
                 baseObject.GetCompletion = InteractionCompletion.NotCompleted;
             }
             foreach (var obj in movedObjects) {
