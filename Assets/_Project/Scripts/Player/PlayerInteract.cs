@@ -89,6 +89,7 @@ namespace _Project.Scripts.Player {
 
         private void OnEnable() {
             inputsBrain.OnInteract += Interact;
+            inputsBrain.OnSecondaryInteract += SecondaryInteract;
         }
 
         private void OnDisable() {
@@ -153,6 +154,10 @@ namespace _Project.Scripts.Player {
             }
         }
 
+        private void SecondaryInteract(InputAction.CallbackContext obj) {
+            
+        }
+        
         #region InteractionMethods
 
         private void GrabObject() {

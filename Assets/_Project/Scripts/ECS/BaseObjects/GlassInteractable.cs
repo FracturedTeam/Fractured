@@ -124,18 +124,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
-        public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
-            if (!objectInside) return;
-            if (!objectOut) { //TODO SetInteract est update a chaque frame, optimiser ça
-                if(objectColor == ColorEnum.Blue && underBlue <= 0 || objectColor == ColorEnum.Red && underRed <= 0)
-                    ActivateObjectInside(false);
-            }
-            if (objectOut) return;
+        public void Tick(float deltaTime) {
+            if (!objectInside || objectOut) return;
             
-            interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
             if (interactableInBox.IsGrabbed() && !objectOut) {
                 objectOut = true;
-                UpdateShards();
             }
         }
 
@@ -150,28 +143,32 @@ namespace _Project.Scripts.ECS.BaseObjects
             updatePos.OnTick -= Set2DPoints;
             updatePos.Stop();
             updatePos.Dispose();
+
+            shardsOnTop.onUpdate -= UpdateShards;
+            shardsOnTop.Clear();
         }
 
         private void UpdateShards() {
-            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
-                baseObject.SetRenderer(false);
-                for (var i = 0; i < transform.childCount; i++) {
-                    transform.GetChild(i).gameObject.SetActive(false);
+            if (baseObject.locked) {
+                if (baseObject.GetRendered().enabled) {
+                    baseObject.SetRenderer(false);
+                    for (var i = 0; i < transform.childCount; i++) {
+                        transform.GetChild(i).gameObject.SetActive(false);
+                    }
                 }
                 return;
             }
             
-            if (!baseObject.locked){
-                if (!baseObject.GetRendered().enabled) {
-                    baseObject.SetRenderer(true);
-                    for (var i = 0; i < transform.childCount; i++) {
-                        transform.GetChild(i).gameObject.SetActive(true);
+            if (!baseObject.GetRendered().enabled) {
+                baseObject.SetRenderer(true);
+                for (var i = 0; i < transform.childCount; i++) {
+                    transform.GetChild(i).gameObject.SetActive(true);
+                }
+
+                if (wallRenderer.Length > 0) {
+                    foreach (var wall in wallRenderer) {
+                        wall.material = invisibleWallMat;
                     }
-                    
-                    if(wallRenderer.Length > 0)
-                        foreach (var wall in wallRenderer) {
-                            wall.material = invisibleWallMat;
-                        }
                 }
             }
             
@@ -217,7 +214,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             else IsVisible = !isUnder;
             
             if (selfMoveable) {
-                if (baseObject.IsOnPressurePlate()) {
+                if (baseObject.IsOnPressurePlate()) { // TODO Enlever ce morceau de code (il n'y a plus les plaques de pressions)
                     if (IsVisible && objectInside) {
                         if (!objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
                         else selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
@@ -250,6 +247,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void ActivateObjectInside(bool isUnder) {
+            interactableInBox.transform.position = transform.position;
+            
             SetInteractableInBox(isUnder);
 
             if(!selfMoveable) return;
@@ -278,17 +277,25 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
-            if(!interactableInBox.GetBaseObject().initialized) interactableInBox.GetBaseObject().Initialize();
-            if(interactableInBox.GetBaseObject().GetCompletion is InteractionCompletion.NotCompleted)
-                interactableInBox?.GetBaseObject().SetInteract(revealed);
-            interactableInBox?.GetBaseObject().SetCollider(revealed);
-            interactableInBox?.GetBaseObject().SetRenderer(revealed);
+            
+            var inBoxObject = interactableInBox.GetBaseObject();
+            if (!inBoxObject.initialized) {
+                inBoxObject.Initialize();
+            }
+
+            if (inBoxObject.GetCompletion is InteractionCompletion.NotCompleted) {
+                inBoxObject.SetInteract(revealed);
+            }
+            
+            inBoxObject.SetCollider(revealed);
+            inBoxObject.SetRenderer(revealed);
         }
 
         bool InteractableInBoxActive() {
-            return interactableInBox.GetBaseObject().GetCollider().enabled &&
-                   interactableInBox.GetBaseObject().CanBeInteractedWith() &&
-                   interactableInBox.GetBaseObject().GetRendered().enabled;
+            var inBoxObject = interactableInBox.GetBaseObject();
+            return inBoxObject.GetCollider().enabled &&
+                   inBoxObject.CanBeInteractedWith() &&
+                   inBoxObject.GetRendered().enabled;
         }
 
         #if UNITY_EDITOR

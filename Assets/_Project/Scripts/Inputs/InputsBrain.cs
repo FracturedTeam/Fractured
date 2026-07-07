@@ -8,6 +8,7 @@ namespace _Project.Scripts.Inputs {
 
         public event Action<Vector2> OnPlayerMove = delegate { };
         public event Action<InputAction.CallbackContext> OnInteract = delegate { };
+        public event Action<InputAction.CallbackContext> OnSecondaryInteract = delegate { };
     
         private void Awake() {
             inputs = new InputSystem_Actions();
@@ -18,6 +19,8 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.Move.canceled += PlayerMove;
             inputs.Player.Interact.performed += Interact;
             inputs.Player.Interact.canceled += Interact;
+            inputs.Player.Interact.performed += SecondaryInteract;
+            inputs.Player.Interact.canceled += SecondaryInteract;
         
             inputs.Enable();
         }
@@ -27,6 +30,8 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.Move.canceled -= PlayerMove;
             inputs.Player.Interact.performed -= Interact;
             inputs.Player.Interact.canceled -= Interact;
+            inputs.Player.Interact.performed -= SecondaryInteract;
+            inputs.Player.Interact.canceled -= SecondaryInteract;
             
             inputs.Disable();
         }
@@ -37,6 +42,10 @@ namespace _Project.Scripts.Inputs {
 
         private void Interact(InputAction.CallbackContext context) {
             OnInteract.Invoke(context);
+        }
+
+        private void SecondaryInteract(InputAction.CallbackContext context) {
+            OnSecondaryInteract.Invoke(context);
         }
     }
 }
