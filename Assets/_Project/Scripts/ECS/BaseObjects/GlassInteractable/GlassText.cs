@@ -19,23 +19,37 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragAText;
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
-    [SerializeField] private CanvasGroup canvasGroup;
 
-    private void Start()
+    internal void Initialize()
     {
         if (currentTextScriptableObject)
             Setup(currentTextScriptableObject);
-        canvasGroup.alpha = 0;
+        SetAlpha(0);
+    }
+
+    private void SetAlpha(float alpha, float time = 0)
+    {
+        baseText.SetAlpha(alpha, time);
+        fragAText.SetAlpha(alpha, time);
+        fragBText.SetAlpha(alpha, time);
+        bothText.SetAlpha(alpha, time);
+    }
+
+    internal void OnInteract(bool isColliding, Glass shard)
+    {
+        fragAText.OnInteract(isColliding, shard);
+        fragBText.OnInteract(isColliding, shard);
+        bothText.OnInteract(isColliding, shard);
     }
 
     public void Setup(GlassTextScriptableObject newData)
     {
-        canvasGroup.DOFade(0, 0);
+        SetAlpha(0);
         currentTextScriptableObject = newData;
         baseText.SetText(currentTextScriptableObject.baseText);
         fragAText.SetText(currentTextScriptableObject.fragAText);
         fragBText.SetText(currentTextScriptableObject.fragBText);
         bothText.SetText(currentTextScriptableObject.bothText);
-        canvasGroup.DOFade(1, 1);
+        SetAlpha(0,1);
     }
 }

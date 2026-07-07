@@ -12,7 +12,7 @@ namespace _Project.Scripts.ECS.InteractableObjects {
         [Tooltip("Shards to solve the room")]
         public Glass[] shards;
         [Tooltip("Texts")]
-        public GlassTextLink[] texts;
+        public GlassText[] texts;
 
         void OnTriggerEnter(Collider other) {
             if (other.CompareTag("Player")) {

@@ -3,6 +3,7 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,12 +21,17 @@ public class GlassTextLink : MonoBehaviour
     private int underBlue;
 
 
-    private void Start()
+    public void Initialize() //Initialize
     {
         camera = PlayerController.Instance.cinemachineBrain.OutputCamera;
         baseText = GetComponent<TMP_Text>();
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
+    }
+    
+    public void SetAlpha(float alpha, float time)
+    {
+        baseText.DOFade(alpha, time);
     }
     
     private void UpdateShards()
