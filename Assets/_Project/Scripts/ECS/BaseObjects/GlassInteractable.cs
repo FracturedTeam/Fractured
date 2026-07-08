@@ -26,7 +26,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Behaviour")] 
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
         [SerializeField] private bool objectInside = false;
-        [SerializeField] private MoveableObject interactableInBox;
+        [SerializeField] private MovableAttribute interactableInBox;
         
         [Header("Invisible Walls")]
         [SerializeField] private MeshRenderer[] wallRenderer;
@@ -39,7 +39,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField, Range(0 ,2)] private float scaleModificator = 1;
         
         internal Vector3[] BoundingBox;
-        private MoveableObject moveableComponent;
+        private MovableAttribute moveableComponent;
         private readonly FrequencyTimer updateShardVisual = new (1.0f);
         
         private int underRed;
@@ -61,7 +61,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
 
                 if (baseObject.GetObjectType is ObjectType.Moveable) {
-                    moveableComponent = baseObject.GetInteract as MoveableObject;
+                    moveableComponent = baseObject.GetInteract as MovableAttribute;
                 }
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
@@ -214,20 +214,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             else IsVisible = !isUnder;
             
             if (baseObject.GetObjectType is ObjectType.Moveable) {
-                if (baseObject.IsOnPressurePlate()) { // TODO Enlever ce morceau de code (il n'y a plus les plaques de pressions)
-                    if (IsVisible && objectInside) {
-                        if (!objectOut) moveableComponent.GetPressurePlateOn().SetActivation(!isUnder);
-                        else moveableComponent.GetPressurePlateOn().SetActivation(isUnder);
-                    }
-                    else {
-                        moveableComponent.GetPressurePlateOn().SetActivation(isUnder);
-                    }
-
-                    baseObject.SetCollider(false);
-                    baseObject.SetInteract(false);
-                    moveableComponent.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
-                }
-                else if (!moveableComponent.IsGrabbed()) {
+                if (!moveableComponent.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
                 }

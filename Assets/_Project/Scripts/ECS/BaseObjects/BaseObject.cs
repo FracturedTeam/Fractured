@@ -46,7 +46,6 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
-        private bool isOnPressurePlate = false;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
@@ -99,16 +98,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetCompletion = data.ObjectCompletion;
             
             if (GetCompletion is InteractionCompletion.Completed) {
-                if (GetObjectType is ObjectType.PressurePlate) { // TODO a enlever avec les pedestal
-                    var p = GetInteract as PressurePlate;
-
-                    for (int i = 0; i < GameSceneSettings.Instance.baseObjects.Capacity; i++) {
-                        if (GameSceneSettings.Instance.baseObjects[i].Guid == data.ObjectGuidOnPedestal) {
-                            p.objectOnPressurePlate = (MoveableObject)GameSceneSettings.Instance.baseObjects[i].GetInteract;
-                            break;
-                        }
-                    }
-                }
                 CompleteObject();
             }
             
@@ -123,11 +112,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                 data.Position = transform.position;
                     
             data.ObjectCompletion = GetCompletion;
-            
-            if (GetCompletion is InteractionCompletion.Completed && GetObjectType is ObjectType.PressurePlate) {
-                var p = GetInteract as PressurePlate;
-                data.ObjectGuidOnPedestal = p.objectOnPressurePlate.GetBaseObject().Guid;
-            }
             
             data.CanBeInteractedWith = canBeInteractedWith;
             if (GetGlass) data.ObjectOutOfBox = GetGlassInteract.objectOut;
@@ -264,9 +248,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(on) GetTutorialElement.TriggerEventStart();
             else GetTutorialElement.TriggerEventStop();
         }
-
-        public void SetOnPressurePlate(bool isOn) => isOnPressurePlate = isOn;
-        public bool IsOnPressurePlate() => isOnPressurePlate;
     }
 
     [Serializable]
@@ -276,7 +257,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public InteractionCompletion ObjectCompletion;
         public bool CanBeInteractedWith;
         public bool ObjectOutOfBox;
-        public string ObjectGuidOnPedestal;
     }
 }
 

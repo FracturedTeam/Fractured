@@ -82,14 +82,14 @@ namespace _Project.Scripts.GameServices {
                     interactable.GenerateGuid();
                 }
                 
-                if (interactable.TryGetComponent(out ObtainShardInteractable shard)) {
-                    foreach (var s in shard.shards) {
-                        if (System.String.IsNullOrEmpty(s.Guid)) { // Generate Object GUID
-                            s.GenerateGuid();
-                        }
-                    }
-                    shards.AddRange(shard.shards);
-                }
+                // if (interactable.TryGetComponent(out ObtainShardInteractable shard)) {
+                //     foreach (var s in shard.shards) {
+                //         if (System.String.IsNullOrEmpty(s.Guid)) { // Generate Object GUID
+                //             s.GenerateGuid();
+                //         }
+                //     }
+                //     shards.AddRange(shard.shards);
+                // }
             }
             
             EditorUtility.SetDirty(this);

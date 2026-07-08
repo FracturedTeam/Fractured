@@ -30,22 +30,22 @@ namespace _Project.Scripts.Editor {
             door.doorType = (DoorType)EditorGUILayout.EnumPopup("Door Type", door.doorType);
             EditorGUILayout.Space();
 
-            if (door.doorType is DoorType.SmallDoor) {
-                EditorGUILayout.LabelField("Small Door Settings", EditorStyles.boldLabel);
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                
-                door.exitPoint = (Transform)EditorGUILayout.ObjectField("Exit Point", door.exitPoint, typeof(Transform), true);
-                door.triggerPoint = (Transform)EditorGUILayout.ObjectField("Trigger Point", door.triggerPoint, typeof(Transform), true);
-                door.linkedDoor = (DoorInteractable)EditorGUILayout.ObjectField("Linked Door", door.linkedDoor, typeof(DoorInteractable), true);
-                door.exitDir = (Direction)EditorGUILayout.EnumPopup("Exit Direction", door.exitDir);
-                door.doorAnimator = (Animator)EditorGUILayout.ObjectField("DoorAnimator", door.doorAnimator, typeof(Animator), true);
-                
-                serializedObject.ApplyModifiedProperties();
-                
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.Space();
-            }
-            else if (door.doorType is DoorType.BigDoor) {
+            // if (door.doorType is DoorType.SmallDoor) {
+            //     EditorGUILayout.LabelField("Small Door Settings", EditorStyles.boldLabel);
+            //     EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            //     
+            //     door.exitPoint = (Transform)EditorGUILayout.ObjectField("Exit Point", door.exitPoint, typeof(Transform), true);
+            //     door.triggerPoint = (Transform)EditorGUILayout.ObjectField("Trigger Point", door.triggerPoint, typeof(Transform), true);
+            //     door.linkedDoor = (DoorInteractable)EditorGUILayout.ObjectField("Linked Door", door.linkedDoor, typeof(DoorInteractable), true);
+            //     door.exitDir = (Direction)EditorGUILayout.EnumPopup("Exit Direction", door.exitDir);
+            //     door.doorAnimator = (Animator)EditorGUILayout.ObjectField("DoorAnimator", door.doorAnimator, typeof(Animator), true);
+            //     
+            //     serializedObject.ApplyModifiedProperties();
+            //     
+            //     EditorGUILayout.EndVertical();
+            //     EditorGUILayout.Space();
+            // }
+            if (door.doorType is DoorType.BigDoor) {
                 EditorGUILayout.LabelField("Big Door Settings", EditorStyles.boldLabel);
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 

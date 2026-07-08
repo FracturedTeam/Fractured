@@ -71,18 +71,15 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label($"{player.interact.Size} Object in the interact area", debugStyle);
             GUILayout.Label($"Can player interact : {player.interact.CanInteract}", debugStyle);
             GUILayout.Label($"Is player holding an object : {player.interact.HasObject}", debugStyle);
-            GUILayout.Label($"Is player in a memory : {player.interact.IsInMemory()}", debugStyle);
-            GUILayout.Label($"Is player in a pedestal : {player.interact.IsInPressurePlate()}", debugStyle);
+            // GUILayout.Label($"Is player in a memory : {player.interact.IsInMemory()}", debugStyle);
             
             GUILayout.Label("Debug Buttons", headerStyle);
             if(GUILayout.Button("Drop Current Object", buttonStyle))
                 PlayerController.Instance.interact.SetDropObjectDebug();
             if(GUILayout.Button("Reset Player Position", buttonStyle))
                 PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-            if(GUILayout.Button("Exit Memory", buttonStyle))
-                PlayerController.Instance.interact.LeaveMemory();
-            if(GUILayout.Button("Exit Pedestal", buttonStyle))
-                PlayerController.Instance.interact.LeavePressurePlate();
+            // if(GUILayout.Button("Exit Memory", buttonStyle))
+            //     PlayerController.Instance.interact.LeaveMemory();
             
             GUILayout.EndVertical();
         }
