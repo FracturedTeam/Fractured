@@ -134,11 +134,11 @@ namespace _Project.Scripts.GameServices.Services {
         public void RepopulateBaseObjet(BaseObject[] obj, GlassText[] texts) {
             interactables.Clear();
             interactables.AddRange(obj);
-            UpdateInteractableObjects();
             
             glassTexts.Clear();
             glassTexts.AddRange(texts);
             
+            UpdateInteractableObjects();
         }
         
         public void AddShards(Glass[] newShards) {

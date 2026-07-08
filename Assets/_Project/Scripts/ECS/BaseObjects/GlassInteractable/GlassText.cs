@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 
 public class GlassText : MonoBehaviour
 {
+    [SerializeField] private bool isVisibleFromStart; 
     [SerializeField] private GlassTextScriptableObject currentTextScriptableObject;
     [SerializeField] private GlassTextLink baseText;
     [SerializeField] private GlassTextLink fragAText;
@@ -22,9 +23,21 @@ public class GlassText : MonoBehaviour
 
     internal void Initialize()
     {
+        baseText.Initialize();
+        fragAText.Initialize();
+        fragBText.Initialize();
+        bothText.Initialize();
+        
+        ForceSet();
+        
+        SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
+    }
+
+    [ContextMenu("Set Texts")]
+    private void ForceSet()
+    {
         if (currentTextScriptableObject)
             Setup(currentTextScriptableObject);
-        SetAlpha(0);
     }
 
     private void SetAlpha(float alpha, float time = 0)
@@ -44,12 +57,10 @@ public class GlassText : MonoBehaviour
 
     public void Setup(GlassTextScriptableObject newData)
     {
-        SetAlpha(0);
         currentTextScriptableObject = newData;
         baseText.SetText(currentTextScriptableObject.baseText);
         fragAText.SetText(currentTextScriptableObject.fragAText);
         fragBText.SetText(currentTextScriptableObject.fragBText);
         bothText.SetText(currentTextScriptableObject.bothText);
-        SetAlpha(0,1);
     }
 }

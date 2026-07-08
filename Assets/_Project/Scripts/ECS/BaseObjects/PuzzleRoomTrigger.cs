@@ -17,6 +17,7 @@ namespace _Project.Scripts.ECS.InteractableObjects {
         void OnTriggerEnter(Collider other) {
             if (other.CompareTag("Player")) {
                 GameInitializer.Instance.UpdatePuzzleRoom(interactable, shards, texts);
+                print(texts);
             }
         }
         

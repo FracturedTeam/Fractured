@@ -12,7 +12,6 @@ using UnityEngine.InputSystem;
 public class GlassTextLink : MonoBehaviour
 {
     private int lastIndex;
-    private Camera camera;
     private TMP_Text baseText;
     private bool isHoveringObject;
     private int m_selectedLink = -1;
@@ -23,7 +22,6 @@ public class GlassTextLink : MonoBehaviour
 
     public void Initialize() //Initialize
     {
-        camera = PlayerController.Instance.cinemachineBrain.OutputCamera;
         baseText = GetComponent<TMP_Text>();
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
@@ -38,8 +36,7 @@ public class GlassTextLink : MonoBehaviour
     {
         underBlue = 0;
         underRed = 0;
-
-        print("ffffffffffffffffffffffffff");
+        
         foreach (var shard in shardsOnTop.Items)
             switch (shard.GetColor)
             {
@@ -60,13 +57,7 @@ public class GlassTextLink : MonoBehaviour
     }
     
     internal void OnInteract(bool isUnder, Glass shard) {
-
-        Set2DPoints();
-
-        if (isUnder) 
-            shardsOnTop.Add(shard);
-        else if(shardsOnTop.Contains(shard))
-            shardsOnTop.Remove(shard);
+        
     }
     
     ///Auto Setup the collision
@@ -77,11 +68,15 @@ public class GlassTextLink : MonoBehaviour
     
     public void SetText(string newText)
     {
-        baseText.text = newText;
+        if (baseText)
+            baseText.text = newText;
+        else if(GetComponent<TMP_Text>())
+            GetComponent<TMP_Text>().text = newText;
     }
     
+    /*
 
-    public void LateUpdate()
+    public void Link()
     {
         int linkIndex = TMP_TextUtilities.FindIntersectingLink(baseText, Mouse.current.position.value, camera);
         if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink)
@@ -103,4 +98,5 @@ public class GlassTextLink : MonoBehaviour
             print(linkInfo.GetLinkID() == "id_01" ? "01" : "test"); // 100041637: // id_01
         }
     }
+    */
 }
