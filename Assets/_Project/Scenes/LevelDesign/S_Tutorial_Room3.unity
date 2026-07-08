@@ -29688,7 +29688,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 135485020078028768, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1597345192}
+    - targetCorrespondingSourceObject: {fileID: 135485020078028768, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1597345191}
   m_SourcePrefab: {fileID: 100100000, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
 --- !u!4 &1597345188 stripped
 Transform:
@@ -29700,12 +29706,45 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7337736752431959583, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
   m_PrefabInstance: {fileID: 1597345187}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1597345190}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &1597345190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 135485020078028768, guid: 7a3c9461afdf7c747b7fd8bc4c761d17, type: 3}
+  m_PrefabInstance: {fileID: 1597345187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1597345191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597345190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates: []
+--- !u!114 &1597345192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597345190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  StartTemp: 0
+  iField: {fileID: 0}
+  Template: {fileID: 0}
 --- !u!1001 &1600311953
 PrefabInstance:
   m_ObjectHideFlags: 0
