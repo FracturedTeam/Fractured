@@ -62,9 +62,11 @@ namespace _Project.Scripts.GameServices {
             
             if (GameSceneSettings.HasInstance) {
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
-                GameInitializer.Instance.SaveData();
+                
                 PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-                PlayerController.Instance.triggerEnterRoom = true;
+                
+                // GameInitializer.Instance.SaveData();
+                // PlayerController.Instance.triggerEnterRoom = true;
             }
         }
         

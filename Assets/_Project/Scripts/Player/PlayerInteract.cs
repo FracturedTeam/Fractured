@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -35,9 +36,6 @@ namespace _Project.Scripts.Player {
         public bool HasObject { get; private set; }
         
         private bool canPlayerInteract = false;
-        private bool canInteract;
-        private bool inMemory = false;
-        private bool inPressurePlate = false;
         
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
@@ -50,12 +48,11 @@ namespace _Project.Scripts.Player {
         private const float TimerToUseDoor = 0.15f;
         
         private Interaction interactionType;
-
-        private float interactDuration = 0;
-        private const float HoldInteractionNeeded = 0.5f;
-        private bool interactionHold = false;
-        private bool hasRemoved = false;
         
+        private bool isInspecting = false;
+        
+        
+        private bool canInteract;
         public bool CanInteract {
             get => canInteract;
             private set {
@@ -101,44 +98,15 @@ namespace _Project.Scripts.Player {
         private void Interact(InputAction.CallbackContext ctx) {
             if(triggerFailedDrop) return;
             
-            if (ctx.performed) {
-                interactionHold = true;
-                return;
-            }
-
-            if (ctx.canceled) interactionHold = false;
-
-            if (hasRemoved) {
-                hasRemoved = false;
-                return;
-            }
-            
-            interactDuration = 0;
-            
             if(interactCooldown.IsRunning) return;
-            
-            if (inMemory) {
-                if(memoryInteraction != null) LeaveMemory();
-                else Debug.LogError("[PlayerInteract] Current memory interaction is null");
-                
-                return;
-            }
-
-            if (inPressurePlate) {
-                if(potentialInteraction != null) LeavePressurePlate();
-                return;
-            }
             
             if(CanGrab())
                 GrabObject();
+            else if (CanPickup())
+                PickUpItem();
             else if(CanDrop())
                 DropObject();
-            else if(IsMemory())
-                MemoryInteraction();
-            else if (IsPressurePlate())
-                PressurePlateInteraction();
             else if (CanContextualInteract()) {
-                if(potentialInteraction.GetObjectType is ObjectType.Shard) triggerShard = true;
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
                 potentialInteraction = null;
             }
@@ -146,12 +114,6 @@ namespace _Project.Scripts.Player {
                 Debug.Log("[PlayerInteract] No object to interact with...");
             
             interactCooldown.Start();
-
-            if (!inMemory && !inPressurePlate) {
-                canInteract = false;
-                interactionType = Interaction.None;
-                RaiseInteraction();
-            }
         }
 
         private void SecondaryInteract(InputAction.CallbackContext obj) {
@@ -161,18 +123,27 @@ namespace _Project.Scripts.Player {
         #region InteractionMethods
 
         private void GrabObject() {
-            HasObject = true;
-            currentInteraction = potentialInteraction;
-            currentInteraction?.OnInteract(ObjectInteraction.Grab);
-            
-            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
+            potentialInteraction.OnInteract(ObjectInteraction.Grab);
+        }
+        
+        private void PickUpItem() {
+            potentialInteraction.OnInteract(ObjectInteraction.Grab);
         }
 
+        public void HoldObject(bool doHold, BaseObject heldObject = null) {
+            if (doHold) {
+                HasObject = true;
+                currentInteraction = heldObject;
+            }
+            else {
+                HasObject = false;
+                currentInteraction = null;
+            }
+        }
+        
         public void SetGrabbedObject(BaseObject interaction) {
-            interaction.SetInteract(true);
             HasObject = true;
             currentInteraction = interaction;
-            currentInteraction?.OnInteract(ObjectInteraction.Grab);
             
             Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
@@ -185,48 +156,6 @@ namespace _Project.Scripts.Player {
             else
                 currentInteraction?.OnInteract(ObjectInteraction.Drop);
         }
-
-        private void MemoryInteraction() {
-            memoryInteraction = potentialInteraction;
-            memoryInteraction?.OnInteract(ObjectInteraction.EnterMemory);
-            inMemory = true;
-            
-            UpdatePossibleInteraction();
-            Debug.Log($"[PlayerInteract] Interact with memory");
-        }
-
-        public void LeaveMemory() {
-            memoryInteraction?.OnInteract(ObjectInteraction.LeaveMemory);
-            memoryInteraction = null;
-            
-            inMemory = false;
-            
-            Debug.Log($"[PlayerInteract] Leave memory");
-        }
-        
-        private void PressurePlateInteraction() {
-            if (currentInteraction != null) {
-                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate, currentInteraction.GetInteract);
-            }
-            else {
-                potentialInteraction?.OnInteract(ObjectInteraction.EnterPressurePlate);
-                inPressurePlate = true;
-            }
-            
-            
-            UpdatePossibleInteraction();
-            Debug.Log($"[PlayerInteract] Interact with Pressure Plate");
-        }
-
-        public void LeavePressurePlate() {
-            potentialInteraction?.OnInteract(ObjectInteraction.LeavePressurePlate);
-            potentialInteraction = null;
-            
-            inPressurePlate = false;
-            UpdatePossibleInteraction();
-            Debug.Log($"[PlayerInteract] Leave Pressure Plate");
-        }
-
         #endregion
 
         private void HandleInteractRotation(Vector3 playerDir) {
@@ -236,24 +165,6 @@ namespace _Project.Scripts.Player {
         
         public void HandleUpdate(Vector3 playerDir) {
             HandleInteractRotation(playerDir);
-            
-            if(interactionHold)
-                interactDuration += Time.deltaTime;
-            
-            if (interactDuration >= HoldInteractionNeeded && !HasObject) {
-                //If causes a null ref (tried to fix it) - I Think it is fixed
-                if (potentialInteraction && CanRemoveMemoryObject() || CanRemovePedestalObject()) { 
-                    potentialInteraction?.OnInteract(ObjectInteraction.Remove);
-                    hasRemoved = true;
-                }
-
-                interactDuration = 0;
-                
-                canInteract = false;
-                interactionType = Interaction.None;
-                RaiseInteraction();
-                return;
-            }
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -303,16 +214,16 @@ namespace _Project.Scripts.Player {
 
         void SetPlayerInteraction() {
             if (potentialInteraction is null) {
-                CanInteract = false;
+                canInteract = false;
                 return;
             }
             
             UpdatePossibleInteraction();
             
             if (potentialInteraction.CanBeInteractedWith())
-                CanInteract = canPlayerInteract && Size > 0;
+                canInteract = canPlayerInteract && Size > 0;
             else {
-                CanInteract = false;
+                canInteract = false;
                 return;
             }
 
@@ -321,84 +232,49 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
-            if (inMemory) {
-                canInteract = true;
-                interactionType = Interaction.LeaveMemory;
-                RaiseInteraction();
-                return;
-            }
-
-            if (inPressurePlate) {
-                canInteract = true;
-                interactionType = Interaction.LeavePressurePlate;
-                RaiseInteraction();
-                return;
-            }
-
-
+            
             if (potentialInteraction == null || interactCooldown.IsRunning) {
                 canInteract = false;
                 interactionType = Interaction.None;
                 RaiseInteraction();
                 return;
             }
+            
             switch (potentialInteraction.GetObjectType) {
                 case ObjectType.Moveable:
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
-                case ObjectType.Door when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
-                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
-                        interactionType = Interaction.UseDoor;
-                    else if (HasObject) {
-                        var key = potentialInteraction.GetComponent<KeyInteractable>();
-                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
-                    }
-                    else
-                        interactionType = Interaction.NeedKey;
-                    RaiseInteraction();
-                    return;
-                }
+                // case ObjectType.Door when potentialInteraction.GetLockState is not LockedState.None: {
+                //     if (potentialInteraction.GetLockState is LockedState.Unlocked)
+                //         interactionType = Interaction.UseDoor;
+                //     // else if (HasObject) {
+                //     //     var key = potentialInteraction.GetComponent<KeyInteractable>();
+                //     //     interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
+                //     // }
+                //     else
+                //         interactionType = Interaction.NeedKey;
+                //     RaiseInteraction();
+                //     return;
+                // }
                 case ObjectType.Door:
                     interactionType = Interaction.UseDoor;
                     RaiseInteraction();
                     return;
-                case ObjectType.Memory when potentialInteraction.GetCompletion is not InteractionCompletion.None: {
-                    if (potentialInteraction.GetCompletion is InteractionCompletion.Completed)
-                    {
-                        interactionType = IsInMemory() ? Interaction.LeaveMemory : Interaction.EnterMemory;
-                        RaiseInteraction();
-                    }
-                    else if (HasObject) {
-                        var key = potentialInteraction.GetComponent<KeyInteractable>();
-                        interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseFragment : Interaction.NeedSomethingElse;
-                    }
-                    else
-                        interactionType = Interaction.NeedFragment;
+                case ObjectType.Collectable:
+                    interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
-                }
-                case ObjectType.Memory:
-                    interactionType = Interaction.EnterMemory;
+                case ObjectType.Usable:
+                    interactionType = Interaction.Grab;
                     RaiseInteraction();
-                    return;
-                case ObjectType.Shard:
-                    interactionType = Interaction.ObtainShard;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Dialogue:
+                    break;
+                case ObjectType.Inspectable:
                     interactionType = Interaction.Dialogue;
                     RaiseInteraction();
                     return;
-                case ObjectType.PressurePlate:
-                    if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is not null)
-                        interactionType = Interaction.PutObjectOnPressurePlate;
-                    else if(potentialInteraction.GetCompletion is not InteractionCompletion.Completed && currentInteraction is null)
-                        interactionType = IsInPressurePlate() ? Interaction.LeavePressurePlate : Interaction.EnterPressurePlate;
-                    else interactionType = Interaction.PickObjectOnPressurePlate;
-                    RaiseInteraction();
-                    return;
                 case ObjectType.None:
+                default:
                     interactionType = Interaction.None;
                     return;
             }
@@ -439,47 +315,26 @@ namespace _Project.Scripts.Player {
             currentInteraction = null;
         }
         
-        private bool CanRemovePedestalObject() {
-            return potentialInteraction.GetObjectType is ObjectType.PressurePlate && !inPressurePlate;
-        }
-
-        private bool CanRemoveMemoryObject() {
-            return potentialInteraction.GetObjectType is ObjectType.Memory && potentialInteraction.GetCompletion is not InteractionCompletion.None && !IsInMemory();
-        }
-
-        
         private bool CanGrab() {
             if(potentialInteraction == null) return false;
-            
-            if(potentialInteraction.TryGetComponent(out MoveableObject moveable))
+
+            if (potentialInteraction.TryGetComponent(out MovableAttribute moveable))
                 return CanInteract && !HasObject && currentInteraction == null && moveable.CanBeGrab();
+
+            return false;
+        }
+
+        private bool CanPickup() {
+            if(potentialInteraction == null) return false;
+            
+            if(potentialInteraction.TryGetComponent(out CollectableAttribute collectable))
+                return CanInteract && /*!HasObject && currentInteraction == null &&*/ collectable.CanBeGrab();
             
             return false;
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null) return HasObject && currentInteraction != null;
-            
-            if (potentialInteraction.TryGetComponent(out KeyInteractable drop))
-                return HasObject && currentInteraction != null && drop != null && potentialInteraction.GetCompletion is InteractionCompletion.NotCompleted;
-            
-            return false;
-        }
-
-        private bool IsMemory() {
-            if (potentialInteraction == null) return false;
-            
-            if (potentialInteraction.TryGetComponent(out MemoryInteractable memory))
-                return memory != null && potentialInteraction.GetCompletion is not InteractionCompletion.NotCompleted;
-            
-            return false;
-        }
-
-        private bool IsPressurePlate() {
-            if (potentialInteraction == null) return false;
-            
-            if (potentialInteraction.TryGetComponent(out PressurePlate plate))
-                return plate != null && potentialInteraction.GetCompletion is not InteractionCompletion.Completed;
+            if (potentialInteraction == null) return IsCarrying();
             
             return false;
         }
@@ -490,14 +345,6 @@ namespace _Project.Scripts.Player {
 
         public bool IsCarrying() {
             return currentInteraction != null && HasObject;
-        }
-        
-        public bool IsInMemory() {
-            return inMemory;
-        }
-        
-        public bool IsInPressurePlate() {
-            return inPressurePlate;
         }
 
         public void StartUsingLockedDoor() {
@@ -518,6 +365,13 @@ namespace _Project.Scripts.Player {
         public void TriggerBigDoor(SceneSettings toLoad, Vector3 position) {
             triggerDoor = true;
             StartCoroutine(LoadScene(toLoad, position));
+        }
+
+        public void SetIsInspecting(bool isInspecting, BaseObject obj = null) {
+            this.isInspecting = isInspecting;
+            
+            if (isInspecting)
+                currentInteraction = obj;
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {

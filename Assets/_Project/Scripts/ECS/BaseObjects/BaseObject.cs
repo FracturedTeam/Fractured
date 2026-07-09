@@ -17,8 +17,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         public IInteractable GetInteract  { get; set; }
         public TutorialElement  GetTutorialElement { get; set; }
         public ObjectType GetObjectType { get; set; }
-        public InteractionCompletion GetCompletion { get; set; }
+        public LockedState GetLockState { get; set; }
 
+        private BlockedAttribute blockedAttribute;
+        private SceneElement sceneElement;
+        
         [Header("Object Name")]
         public string ObjectName;
         
@@ -46,7 +49,6 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
-        private bool isOnPressurePlate = false;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
@@ -96,19 +98,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(GetObjectType is ObjectType.Moveable)
                 transform.position = data.Position;
             
-            GetCompletion = data.ObjectCompletion;
+            GetLockState = data.ObjectCompletion;
             
-            if (GetCompletion is InteractionCompletion.Completed) {
-                if (GetObjectType is ObjectType.PressurePlate) { // TODO a enlever avec les pedestal
-                    var p = GetInteract as PressurePlate;
-
-                    for (int i = 0; i < GameSceneSettings.Instance.baseObjects.Capacity; i++) {
-                        if (GameSceneSettings.Instance.baseObjects[i].Guid == data.ObjectGuidOnPedestal) {
-                            p.objectOnPressurePlate = (MoveableObject)GameSceneSettings.Instance.baseObjects[i].GetInteract;
-                            break;
-                        }
-                    }
-                }
+            if (GetLockState is LockedState.Unlocked) {
                 CompleteObject();
             }
             
@@ -122,12 +114,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(GetObjectType is ObjectType.Moveable)
                 data.Position = transform.position;
                     
-            data.ObjectCompletion = GetCompletion;
-            
-            if (GetCompletion is InteractionCompletion.Completed && GetObjectType is ObjectType.PressurePlate) {
-                var p = GetInteract as PressurePlate;
-                data.ObjectGuidOnPedestal = p.objectOnPressurePlate.GetBaseObject().Guid;
-            }
+            data.ObjectCompletion = GetLockState;
             
             data.CanBeInteractedWith = canBeInteractedWith;
             if (GetGlass) data.ObjectOutOfBox = GetGlassInteract.objectOut;
@@ -143,6 +130,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if(TryGetComponent(out IInteractable interactable)) GetInteract = interactable;
                 else SetInteract(false);
+
+                if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
+
+                if (TryGetComponent(out SceneElement scene)) sceneElement = scene;
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
@@ -156,6 +147,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
+            blockedAttribute?.Initialize();
             
             if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
                 SetInteract(false);
@@ -170,10 +162,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void Update() {
-            if (locked && MemoryManager.Instance.IsUnlockedMemory(memoryId)) {
-                locked = false;
-                SetInteract(true);
-            }
+            // if (locked && MemoryManager.Instance.IsUnlockedMemory(memoryId)) {
+            //     locked = false;
+            //     SetInteract(true);
+            // }
             
             
             GetInteract?.Tick(Time.deltaTime);
@@ -184,7 +176,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract?.Dispose();
         }
 
-        public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) { 
+        public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {
+            if (GetLockState is LockedState.Locked) {
+                blockedAttribute.OnInteract(GetInteract);
+                return;
+            }
+            
             GetInteract.OnInteract(interaction, interactable);
 
             if (stopTutorialTriggerType == TutorialTriggerType.OnInteract)
@@ -259,24 +256,28 @@ namespace _Project.Scripts.ECS.BaseObjects
                    (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
         }
 
+        public bool HasSceneElement() {
+            return sceneElement != null;
+        }
+
+        public void TriggerSceneElement() {
+            sceneElement.CheckValidation();
+        }
+
         public void Trigger(bool on) {
             if (!GetTutorialElement) return;
             if(on) GetTutorialElement.TriggerEventStart();
             else GetTutorialElement.TriggerEventStop();
         }
-
-        public void SetOnPressurePlate(bool isOn) => isOnPressurePlate = isOn;
-        public bool IsOnPressurePlate() => isOnPressurePlate;
     }
 
     [Serializable]
     public class ObjectData {
         [field: SerializeField] public string Guid { get; set; }
         public Vector3 Position;
-        public InteractionCompletion ObjectCompletion;
+        public LockedState ObjectCompletion;
         public bool CanBeInteractedWith;
         public bool ObjectOutOfBox;
-        public string ObjectGuidOnPedestal;
     }
 }
 
