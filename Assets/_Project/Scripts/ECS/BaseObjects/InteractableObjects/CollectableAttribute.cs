@@ -133,6 +133,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObject();
             
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
+            
             Debug.Log("[Collectable] Reset object");
         }
 
@@ -189,12 +192,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 colTimer.Start();
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
             }
 
             if (isInInventory) {
                 isInInventory = false;
                 PlayerController.Instance.inventory.OnItemDropped(baseObject);
             }
+            
             isHeld = false;
             PlayerController.Instance.interact.SetDropObject();
         }
@@ -213,6 +220,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
+            }
+            
+            if (isInInventory) {
+                isInInventory = false;
+                PlayerController.Instance.inventory.OnItemDropped(baseObject);
             }
             
             isHeld = false;

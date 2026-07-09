@@ -232,6 +232,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
             else GameInitializer.Instance.PlayRevealSound(transform.position);
+            
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
         }
         
         private void ActivateObjectInside(bool isUnder) {

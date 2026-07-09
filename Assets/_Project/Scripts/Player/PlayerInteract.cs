@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -35,7 +36,6 @@ namespace _Project.Scripts.Player {
         public bool HasObject { get; private set; }
         
         private bool canPlayerInteract = false;
-        private bool canInteract;
         
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
@@ -51,6 +51,8 @@ namespace _Project.Scripts.Player {
         
         private bool isInspecting = false;
         
+        
+        private bool canInteract;
         public bool CanInteract {
             get => canInteract;
             private set {
@@ -212,16 +214,16 @@ namespace _Project.Scripts.Player {
 
         void SetPlayerInteraction() {
             if (potentialInteraction is null) {
-                CanInteract = false;
+                canInteract = false;
                 return;
             }
             
             UpdatePossibleInteraction();
             
             if (potentialInteraction.CanBeInteractedWith())
-                CanInteract = canPlayerInteract && Size > 0;
+                canInteract = canPlayerInteract && Size > 0;
             else {
-                CanInteract = false;
+                canInteract = false;
                 return;
             }
 
@@ -237,23 +239,24 @@ namespace _Project.Scripts.Player {
                 RaiseInteraction();
                 return;
             }
+            
             switch (potentialInteraction.GetObjectType) {
                 case ObjectType.Moveable:
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
-                case ObjectType.Door when potentialInteraction.GetLockState is not LockedState.None: {
-                    if (potentialInteraction.GetLockState is LockedState.Unlocked)
-                        interactionType = Interaction.UseDoor;
-                    // else if (HasObject) {
-                    //     var key = potentialInteraction.GetComponent<KeyInteractable>();
-                    //     interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
-                    // }
-                    else
-                        interactionType = Interaction.NeedKey;
-                    RaiseInteraction();
-                    return;
-                }
+                // case ObjectType.Door when potentialInteraction.GetLockState is not LockedState.None: {
+                //     if (potentialInteraction.GetLockState is LockedState.Unlocked)
+                //         interactionType = Interaction.UseDoor;
+                //     // else if (HasObject) {
+                //     //     var key = potentialInteraction.GetComponent<KeyInteractable>();
+                //     //     interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
+                //     // }
+                //     else
+                //         interactionType = Interaction.NeedKey;
+                //     RaiseInteraction();
+                //     return;
+                // }
                 case ObjectType.Door:
                     interactionType = Interaction.UseDoor;
                     RaiseInteraction();
@@ -271,6 +274,7 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.None:
+                default:
                     interactionType = Interaction.None;
                     return;
             }

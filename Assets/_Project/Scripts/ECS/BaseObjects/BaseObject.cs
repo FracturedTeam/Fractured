@@ -20,6 +20,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public LockedState GetLockState { get; set; }
 
         private BlockedAttribute blockedAttribute;
+        private SceneElement sceneElement;
         
         [Header("Object Name")]
         public string ObjectName;
@@ -131,6 +132,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else SetInteract(false);
 
                 if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
+
+                if (TryGetComponent(out SceneElement scene)) sceneElement = scene;
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
@@ -251,6 +254,14 @@ namespace _Project.Scripts.ECS.BaseObjects
         public Vector2 GetUIPosition(bool special = false) {
             return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + 
                    (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
+        }
+
+        public bool HasSceneElement() {
+            return sceneElement != null;
+        }
+
+        public void TriggerSceneElement() {
+            sceneElement.CheckValidation();
         }
 
         public void Trigger(bool on) {

@@ -3,27 +3,26 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class UsableAttribute : MonoBehaviour, IInteractable {
-        
         private BaseObject baseObject;
         
-        private bool initialized = false;
-        
-        private bool isUsed = false;
-        
         [Header("Usable Attribute")]
-        [SerializeField] private bool OneTimeUse = false;
+        [SerializeField] private bool oneTimeUse = false;
         [SerializeField] private bool hasObjectInside = false;
         [SerializeField] private GameObject[] objectsInside;
 
-        [SerializeField] private UnityEvent EventOnActivation;
-        [SerializeField] private UnityEvent EventOnDeactivation;
+        [SerializeField] private UnityEvent eventOnActivation;
+        [SerializeField] private UnityEvent eventOnDeactivation;
+        
+        private bool isInitialized = false;
+        public bool IsUsed { get; private set; }
         
         public void Initialize() {
-            if (!initialized) {
+            if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
                 
@@ -32,15 +31,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
 
                 if (hasObjectInside) {
-                    OneTimeUse = true;
+                    oneTimeUse = true;
                     foreach (var obj in objectsInside) {
                         obj.SetActive(false);
                     }
                 }
-                
             }
 
-            initialized = true;
+            isInitialized = true;
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -50,25 +48,28 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void Use() {
-            if(isUsed && OneTimeUse) return;
+            if(IsUsed && oneTimeUse) return;
             
-            isUsed = !isUsed;
+            IsUsed = !IsUsed;
 
-            if (hasObjectInside && isUsed) {
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
+            
+            if (hasObjectInside && IsUsed) {
                 foreach (var obj in objectsInside) {
                     obj.SetActive(true);
                 }
             }
 
-            if (OneTimeUse) {
+            if (oneTimeUse) {
                 baseObject.SetInteract(false);
             }
 
-            if (isUsed) {
-                EventOnActivation.Invoke();
+            if (IsUsed) {
+                eventOnActivation.Invoke();
             }
             else {
-                EventOnDeactivation.Invoke();
+                eventOnDeactivation.Invoke();
             }
         }
         

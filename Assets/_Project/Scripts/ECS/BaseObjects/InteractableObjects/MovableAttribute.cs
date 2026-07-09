@@ -172,6 +172,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObject();
             
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
+            
             Debug.Log("[MoveableObject] Reset object");
         }
 
@@ -188,6 +191,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             //Call audio
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
+            
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
             
             Debug.Log("[MoveableObject] Grab object");
         }
@@ -211,6 +217,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 colTimer.Start();
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
             }
             // else {
             //     if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
@@ -272,6 +281,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
             }
             
             isGrabbed = false;
