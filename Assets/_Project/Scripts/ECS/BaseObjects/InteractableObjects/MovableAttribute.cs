@@ -1,10 +1,9 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
-using _Project.Scripts.Structs;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -43,7 +42,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
+                else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
                 
                 originalPosition = transform.position;
                 
@@ -177,6 +176,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnGrab(IInteractable other = null) {
+            PlayerController.Instance.interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             baseObject.SetRenderer(true);
@@ -187,19 +187,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             TweenObjectOnPlayer();
 
             //Call audio
-            // if(keyObjectNeeded == null)
-            //     GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpObjectSound, transform.position);
-            // else
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
-            
-            // var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.objectOut
-            //     ? specialDialogue
-            //     : baseObject.successDialogue;
-            //
-            // if (dialogue is not{ oneTime: true, alreadyInteracted: true }) {
-            //     HudManager.Instance.SetText(dialogue.dialogue);
-            //     dialogue.alreadyInteracted = true;
-            // }
             
             Debug.Log("[MoveableObject] Grab object");
         }
@@ -207,14 +195,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnDrop(IInteractable other) {
             if (other == null) {
                 
-                if(ObstructedSpace())
-                {
+                if(ObstructedSpace()) {
                     PlayerController.Instance.interact.triggerFailedDrop = true;
-                    // if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
-                    // {
-                    //     HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                    //     baseObject.cantInteractDialogue.alreadyInteracted = true;
-                    // }
                     return;
                 }
 
@@ -229,14 +211,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 colTimer.Start();
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                // if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
-                // {
-                //     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
-                //     baseObject.failedDialogue.alreadyInteracted = true;
-                // }
-                //
-                // Debug.Log("[MoveableObject] Drop on ground");
             }
             // else {
             //     if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
@@ -298,14 +272,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                // if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
-                // {
-                //     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
-                //     baseObject.failedDialogue.alreadyInteracted = true;
-                // }
-                
-                // Debug.Log("[MoveableObject] Drop on ground");
             }
             
             isGrabbed = false;

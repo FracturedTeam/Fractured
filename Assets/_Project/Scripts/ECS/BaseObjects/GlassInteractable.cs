@@ -270,7 +270,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 inBoxObject.Initialize();
             }
 
-            if (inBoxObject.GetCompletion is InteractionCompletion.NotCompleted) {
+            if (inBoxObject.GetLockState is LockedState.Locked) {
                 inBoxObject.SetInteract(revealed);
             }
             

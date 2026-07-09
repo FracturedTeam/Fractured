@@ -22,15 +22,30 @@ namespace _Project.Scripts.Player {
             EventBus<AddKeyEvent>.Raise(new AddKeyEvent{key = newKey});
         }
 
-        public void OnKeyUsed(KeyAttribute key) {
-            for (int i = 0; i < keys.Capacity; i++) {
-                if (keys[i].ID == key.ID) {
-                    if (key.oneTimeUse) {
-                        EventBus<RemoveKeyEvent>.Raise(new RemoveKeyEvent{key = keys[i]});
-                        keys.RemoveAt(i);
-                    }
-                }
+        public void OnKeyUsed(int keyID) {
+            if(keys.Count == 0) return;
+            
+            if (keys.Count == 1) {
+                if(IsRequestedKey(0, keyID))
+                    return;
             }
+            
+            for (int i = 0; i < keys.Capacity; i++) {
+                if(IsRequestedKey(i, keyID)) break;
+            }
+        }
+
+        private bool IsRequestedKey(int index, int keyID) {
+            if (keys[index].ID == keyID) {
+                if (keys[index].oneTimeUse) {
+                    EventBus<RemoveKeyEvent>.Raise(new RemoveKeyEvent{key = keys[index]});
+                    keys.RemoveAt(index);
+                }
+
+                return true;
+            }
+            
+            return false;
         }
         
         public void OnItemPickedUp(CollectableAttribute item) {

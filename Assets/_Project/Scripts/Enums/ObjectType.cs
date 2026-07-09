@@ -5,8 +5,6 @@ namespace _Project.Scripts.Enums {
         Door,
         Collectable,
         Usable,
-        //Memory,
-        //Dialogue,
-        //Shard
+        Inspectable
     }
 }
