@@ -214,16 +214,16 @@ namespace _Project.Scripts.Player {
 
         void SetPlayerInteraction() {
             if (potentialInteraction is null) {
-                canInteract = false;
+                CanInteract = false;
                 return;
             }
             
             UpdatePossibleInteraction();
             
             if (potentialInteraction.CanBeInteractedWith())
-                canInteract = canPlayerInteract && Size > 0;
+                CanInteract = canPlayerInteract && Size > 0;
             else {
-                canInteract = false;
+                CanInteract = false;
                 return;
             }
 
@@ -234,7 +234,7 @@ namespace _Project.Scripts.Player {
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
             
             if (potentialInteraction == null || interactCooldown.IsRunning) {
-                canInteract = false;
+                CanInteract = false;
                 interactionType = Interaction.None;
                 RaiseInteraction();
                 return;

@@ -11,21 +11,25 @@ namespace _Project.Scripts.ECS {
         private bool isValidated;
         public bool IsValidated {
             get => isValidated;
-            set {
+            private set {
                 isValidated = value;
                 masterValidation.CheckForValidation();
             }
         }
 
-        private enum ValidationMethod {Position, GlassState, UseState}
-        [SerializeField] private ValidationMethod validationMethod;
+        public enum ValidationMethod {Position, GlassState, UseState}
+        public ValidationMethod validationMethod;
         
-        private Vector3 requestedPosition;
-        private bool requestedVisibility;
-        private bool requestedUseState;
+        public Vector3 requestedPosition;
+        public bool requestedVisibility;
+        public bool requestedUseState;
 
         private Action onPlayerInteraction;
 
+        public void SetBaseObject(BaseObject baseObject) {
+            this.baseObject = baseObject;
+        }
+        
         private void OnEnable() {
             switch (validationMethod) {
                 case ValidationMethod.Position:
@@ -61,16 +65,20 @@ namespace _Project.Scripts.ECS {
 
         private void PositionValidation() {
             var distanceToLocation = Vector3.Distance(requestedPosition, transform.position);
-            isValidated = distanceToLocation <= 2f;
+            IsValidated = distanceToLocation <= 4f;
         }
 
         private void UsableValidation() {
             var usable = baseObject.GetInteract as UsableAttribute;
-            isValidated = usable.IsUsed == requestedUseState;
+            IsValidated = usable?.IsUsed == requestedUseState;
         }
         
         private void GlassValidation() {
-            isValidated = baseObject.GetGlassInteract.IsVisible == requestedVisibility;
+            IsValidated = baseObject.GetGlassInteract.IsVisible == requestedVisibility;
+        }
+
+        public void SetSceneMaster(SceneMaster master) {
+            masterValidation = master;
         }
     }
 }

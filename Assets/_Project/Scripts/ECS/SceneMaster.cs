@@ -1,21 +1,59 @@
+using _Project.Scripts.GameServices;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS {
     public class SceneMaster : MonoBehaviour {
+        [Header("Scene Elements")]
+        [SerializeField] private SceneElement[] elements;
         
-        //Soit chacun à un sceneElement avec un state validated dans lequel on peut choisir quel est l'état rempli pour être validated
-        //Lorsqu'il est validated => il envoie l'info au MemoryScene
-        //Lorsque tout les objets du memory scene sont validated => Trigger son event (souvenir / shard / objet)
-        
-        
-        //SceneElement qui est sur l'objet
+        [Header("Obtainable Elements")]
+        [SerializeField] public Glass[] glassShards;
 
-        private void SetValidationToSceneElement() {
-            
+        private bool hasSceneBeenValidated;
+        
+        private bool isSceneValid;
+        private bool IsSceneValidated {
+            get => isSceneValid;
+            set {
+                isSceneValid = value;
+                if (isSceneValid) {
+                    ValidSceneElement();
+                }
+            }
         }
 
-        public void CheckForValidation() {
+        private void Start() {
+            SetMasterToSceneElement();
+        }
+
+        private void SetMasterToSceneElement() {
+            foreach (var element in elements) {
+                element.SetSceneMaster(this);
+            }
+        }
+
+        private void ValidSceneElement() {
+            if(hasSceneBeenValidated) return;
             
+            hasSceneBeenValidated = true;
+            //Faire les trucs
+            
+            GameInitializer.Instance.AddShards(glassShards);
+            
+            Debug.Log("Scene has been validated");
+        }
+        
+        public void CheckForValidation() {
+            var everyElementIsValid = true;
+            
+            foreach (var element in elements) {
+                if (!element.IsValidated) {
+                    everyElementIsValid = false;
+                    break;
+                }
+            }
+            
+            IsSceneValidated = everyElementIsValid;
         }
     }
 }
