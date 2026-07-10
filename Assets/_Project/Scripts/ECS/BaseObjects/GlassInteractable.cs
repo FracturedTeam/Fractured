@@ -147,6 +147,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             updateShardVisual.Stop();
             updateShardVisual.Dispose();
 
+            if (shardsOnTop == null) 
+                return;
+            
             shardsOnTop.onUpdate -= UpdateShards;
             shardsOnTop.Clear();
         }
