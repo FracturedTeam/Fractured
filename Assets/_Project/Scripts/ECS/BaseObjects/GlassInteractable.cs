@@ -57,7 +57,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
 
-                if(TryGetComponent(typeof(MeshFilter), out var mf)) meshFilter = mf as MeshFilter;
+                if(TryGetComponent(out MeshFilter mf)) meshFilter = mf;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
 
                 if (baseObject.GetObjectType is ObjectType.Moveable) {

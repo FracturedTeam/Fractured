@@ -133,7 +133,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
                 if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
 
-                if (TryGetComponent(out SceneElement scene)) sceneElement = scene;
+                if (TryGetComponent(out SceneElement scene)) {
+                    sceneElement = scene;
+                    sceneElement.SetBaseObject(this);
+                }
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
                 else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");

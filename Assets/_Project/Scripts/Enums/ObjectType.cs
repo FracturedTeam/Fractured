@@ -5,6 +5,7 @@ namespace _Project.Scripts.Enums {
         Door,
         Collectable,
         Usable,
-        Inspectable
+        Inspectable,
+        MemoryFrame
     }
 }

@@ -162,8 +162,8 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
-            shardService.RepopulateBaseObjet(_baseObjects);
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards, GlassText[] _glassTexts) {
+            shardService.RepopulateBaseObjet(_baseObjects, _glassTexts);
             if(_shards.Length > 0)
                 AddShards(_shards);
         }
@@ -189,7 +189,7 @@ namespace _Project.Scripts.GameServices {
                 interactable.ResetInteract();
         }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, SubtitleText[] _text) =>
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
             shardService.PopulateService(_interactable,  _shards, _text);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
