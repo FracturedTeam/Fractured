@@ -49,7 +49,7 @@ namespace _Project.Scripts.Player {
         
         private Interaction interactionType;
         
-        private bool isInspecting = false;
+        private bool isFocus = false;
         
         
         private bool canInteract;
@@ -273,6 +273,10 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.Dialogue;
                     RaiseInteraction();
                     return;
+                case ObjectType.MemoryFrame:
+                    interactionType = Interaction.Grab;
+                    RaiseInteraction();
+                    return;
                 case ObjectType.None:
                 default:
                     interactionType = Interaction.None;
@@ -367,10 +371,10 @@ namespace _Project.Scripts.Player {
             StartCoroutine(LoadScene(toLoad, position));
         }
 
-        public void SetIsInspecting(bool isInspecting, BaseObject obj = null) {
-            this.isInspecting = isInspecting;
+        public void SetIsFocus(bool isFocus, BaseObject obj = null) {
+            this.isFocus = isFocus;
             
-            if (isInspecting)
+            if (isFocus)
                 currentInteraction = obj;
         }
 
