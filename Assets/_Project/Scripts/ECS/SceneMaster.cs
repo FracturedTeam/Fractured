@@ -13,6 +13,7 @@ namespace _Project.Scripts.ECS {
         private bool isValidPlayerPosition;
         
         [Header("Obtainable Elements")]
+        [SerializeField] public MemoryFrame frame;
         [SerializeField] public Glass[] glassShards;
 
         private bool hasSceneBeenValidated;
@@ -57,6 +58,7 @@ namespace _Project.Scripts.ECS {
                 element.baseObject.SetInteract(false);
             }
             
+            frame.Unlock();
             GameInitializer.Instance.AddShards(glassShards);
             
             Debug.Log("Scene has been validated");

@@ -37,6 +37,7 @@ namespace _Project.Scripts.ECS {
 
                 for (var i = 0; i < frameSlots.Length; i++) {
                     frames[i].SetCurrentPosition(i);
+                    frames[i].Initialize(this);
                 }
                 
                 baseObject.SetInteract(true);
@@ -74,6 +75,10 @@ namespace _Project.Scripts.ECS {
             }
         }
 
+        public Vector3 GetCurrentSlotPosition(int index) {
+            return frameSlots[index].position;
+        }
+        
         public void Tick(float deltaTime) {
             
         }
