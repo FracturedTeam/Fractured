@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        public List<SubtitleText> glassTexts {get; private set;}
+        public List<GlassText> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         private Glass onTopGlass;
@@ -23,23 +23,33 @@ namespace _Project.Scripts.GameServices.Services {
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            glassTexts = new List<SubtitleText>();
+            glassTexts = new List<GlassText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
 
         private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
-            if(interactables.Count == 0) return;
-
-            foreach (var interactable in interactables) {
-                interactable.Initialize();
-                if (interactable.GetGlass) {
-                    shardsInteractable.Add(interactable);
+            if(interactables.Count != 0)
+            {
+                foreach (var interactable in interactables)
+                {
+                    interactable.Initialize();
+                    if (interactable.GetGlass)
+                    {
+                        shardsInteractable.Add(interactable);
+                    }
+                }
+            }
+            if(glassTexts.Count != 0)
+            {
+                foreach (var text in glassTexts)
+                {
+                    text.Initialize();
                 }
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, SubtitleText[] _texts) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
@@ -56,14 +66,14 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void Tick() {
             HandleShardMovement();
-            //UpdateGlassInteraction(); //Expensive methods
+            UpdateGlassInteraction(); //Expensive methods
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            /*foreach (var glassText in glassTexts)
-              SetGlassTextState(glassText);*/
+            foreach (var glassText in glassTexts)
+                SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
@@ -72,11 +82,11 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        /*private void SetGlassTextState(GlassText text) {
+        private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.TagPositions), shard);
+                text.OnInteract(shard.IsColliding(text.transform.position), shard);
             }
-        }*/
+        }
         
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement()
@@ -119,9 +129,13 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void RepopulateBaseObjet(BaseObject[] obj) {
+        public void RepopulateBaseObjet(BaseObject[] obj, GlassText[] texts) {
             interactables.Clear();
             interactables.AddRange(obj);
+            
+            glassTexts.Clear();
+            glassTexts.AddRange(texts);
+            
             UpdateInteractableObjects();
         }
         
