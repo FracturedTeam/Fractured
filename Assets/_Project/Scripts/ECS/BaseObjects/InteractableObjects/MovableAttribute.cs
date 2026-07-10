@@ -1,16 +1,15 @@
+using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
-using _Project.Scripts.Structs;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
-    public class MoveableObject : MonoBehaviour, IInteractable, IMoveable {
+    public class MovableAttribute : MonoBehaviour, IInteractable, IMoveable {
         private BaseObject baseObject;
         private Transform originalParent;
         private Vector3 originalPosition;
@@ -18,12 +17,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Vector3 boundExtent;
         private Vector3 boundCenter;
         
-        [Header("Key Settings")]
-        [Tooltip("The object location where he must be put to resolve the puzzle")]
-        [SerializeField] private KeyInteractable keyObjectNeeded;
-        [Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
-        [SerializeField] private MoveableType moveableType;
-        [SerializeField] internal Dialogue specialDialogue;
+        //[Header("Key Settings")]
+        //[Tooltip("The object location where he must be put to resolve the puzzle")]
+        //[SerializeField] private KeyInteractable keyObjectNeeded;
+        //[Tooltip("Set the object type, will be used for knowing what object it is for the UI or other thing")]
+        //[SerializeField] private MoveableType moveableType;
+        //[SerializeField] internal Dialogue specialDialogue;
         
         [Header("Particles")]
         [SerializeField] private ParticleSystem particles;
@@ -34,7 +33,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool canBeGrab = false;
         private bool isGrabbed = false;
 
-        private PressurePlate pressurePlateOn;
         private Tweener tween;
         private Tweener matTween;
         private CountdownTimer colTimer = null;
@@ -44,27 +42,27 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else Debug.LogError($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MoveableObject)}");
+                else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
                 
                 originalPosition = transform.position;
                 
-                baseObject.GetInteractionType = ObjectType.Moveable;
-                baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+                baseObject.GetObjectType = ObjectType.Moveable;
+                //baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
                 
-                baseObject?.SetInteract(true);
+                baseObject.SetInteract(true);
                 
-                if(keyObjectNeeded == null)
-                    Debug.LogWarning("[MoveableObject] ResolveLocation is null");
+                // if(keyObjectNeeded == null)
+                //     Debug.LogWarning("[MoveableObject] ResolveLocation is null");
 
                 colTimer = new CountdownTimer(0.5f);
                 colTimer.OnTimerStop += ActiveCollision;
                 
-                keyObjectNeeded?.Initialize();
-            
-                //Set resolve location object
-                keyObjectNeeded?.GetBaseObject().SetInteract(true);
-                keyObjectNeeded?.GetBaseObject().SetCollider(true);
-                keyObjectNeeded?.SetKeyObject(GetBaseObject());
+                // keyObjectNeeded?.Initialize();
+                //
+                // //Set resolve location object
+                // keyObjectNeeded?.GetBaseObject().SetInteract(true);
+                // keyObjectNeeded?.GetBaseObject().SetCollider(true);
+                // keyObjectNeeded?.SetKeyObject(GetBaseObject());
             }
 
             initialized = true;
@@ -121,7 +119,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (!PlayerController.HasInstance || !PlayerController.Instance.interact || PlayerController.Instance.interact.GetCurrentInteractable() == null) 
                 return;  //C'est infame mais je sais pas ce qui cause une null ref
 
-            if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MoveableObject == this && !isGrabbed) {
+            if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MovableAttribute == this && !isGrabbed) {
                 OnGrab();
             }
         }
@@ -132,23 +130,23 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void CompleteObject() {
-            if (!keyObjectNeeded) 
-                return;
-            
-            if (keyObjectNeeded.keyObjectPos != null) {
-                transform.SetParent(keyObjectNeeded.keyObjectPos);
-                transform.position = keyObjectNeeded.keyObjectPos.position;
-                transform.rotation = keyObjectNeeded.keyObjectPos.rotation;
-            }
-            else {
-                transform.SetParent(keyObjectNeeded.transform);
-                transform.position = keyObjectNeeded.transform.position;
-            }
+            // if (!keyObjectNeeded) 
+            //     return;
+            //
+            // if (keyObjectNeeded.keyObjectPos != null) {
+            //     transform.SetParent(keyObjectNeeded.keyObjectPos);
+            //     transform.position = keyObjectNeeded.keyObjectPos.position;
+            //     transform.rotation = keyObjectNeeded.keyObjectPos.rotation;
+            // }
+            // else {
+            //     transform.SetParent(keyObjectNeeded.transform);
+            //     transform.position = keyObjectNeeded.transform.position;
+            // }
                     
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
                     
-            keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
+            // keyObjectNeeded.OnInteract(ObjectInteraction.Drop, this);
                 
             if(particles) particles.Stop();
             if(dissolve) dissolve.material.SetFloat("_Progression", 1f);
@@ -156,14 +154,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
-            baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
+            // baseObject.GetCompletion = keyObjectNeeded ? InteractionCompletion.NotCompleted : InteractionCompletion.None;
             
             tween?.Pause();
             tween?.Kill();
             
             colTimer.Pause();
             
-            pressurePlateOn = null;
             baseObject.SetInteract(true);
             baseObject.SetCollider(true);
             
@@ -175,10 +172,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObject();
             
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
+            
             Debug.Log("[MoveableObject] Reset object");
         }
 
         public void OnGrab(IInteractable other = null) {
+            PlayerController.Instance.interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             baseObject.SetRenderer(true);
@@ -189,19 +190,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             TweenObjectOnPlayer();
 
             //Call audio
-            if(keyObjectNeeded == null)
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpObjectSound, transform.position);
-            else
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
             
-            var dialogue = baseObject.GetGlassInteract && baseObject.GetGlassInteract.objectOut
-                ? specialDialogue
-                : baseObject.successDialogue;
-            
-            if (dialogue is not{ oneTime: true, alreadyInteracted: true }) {
-                HudManager.Instance.SetText(dialogue.dialogue);
-                dialogue.alreadyInteracted = true;
-            }
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
             
             Debug.Log("[MoveableObject] Grab object");
         }
@@ -209,14 +201,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnDrop(IInteractable other) {
             if (other == null) {
                 
-                if(ObstructedSpace())
-                {
+                if(ObstructedSpace()) {
                     PlayerController.Instance.interact.triggerFailedDrop = true;
-                    if (baseObject.cantInteractDialogue is not{ oneTime: true, alreadyInteracted: true })
-                    {
-                        HudManager.Instance.SetText(baseObject.cantInteractDialogue.dialogue);
-                        baseObject.cantInteractDialogue.alreadyInteracted = true;
-                    }
                     return;
                 }
 
@@ -232,78 +218,50 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                 
-                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
-                {
-                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
-                    baseObject.failedDialogue.alreadyInteracted = true;
-                }
-                
-                Debug.Log("[MoveableObject] Drop on ground");
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
             }
-            else {
-                if (other.GetBaseObject().GetInteract as PressurePlate) {
-                    var p = other.GetBaseObject().GetInteract as PressurePlate;
-                    if (p.objectPosition == null) {
-                        transform.SetParent(originalParent);
-                        TweenObjectDrop(p.GetBaseObject().transform);
-                    }
-                    else {
-                        transform.SetParent(p.transform);
-                        TweenObjectDrop(p.objectPosition);
-                    }
-                    
-                    baseObject.SetInteract(false);
-                    baseObject.SetCollider(false);
-                    
-                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                    
-                    isGrabbed = false;
-                    PlayerController.Instance.interact.SetDropObject();
-                    
-                    Debug.Log("[MoveableObject] Pressure Plate Location");
-                    return;
-                }
-                
-                if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
-                    Debug.LogError("[MoveableObject] Not a key location !");
-                    return;
-                }
-
-                if (keyObject == keyObjectNeeded) {
-                    if (keyObject.keyObjectPos == null) {
-                        transform.SetParent(originalParent);
-                        TweenObjectDrop(keyObjectNeeded.transform);
-                    }
-                    else {
-                        transform.SetParent(keyObject.keyObjectPos);
-                        TweenObjectDrop(keyObject.keyObjectPos);
-                    }
-                    
-                    baseObject.SetInteract(false);
-                    baseObject.SetCollider(false);
-                    
-                    //Ici pour mettre l'objet sur le bon endroit
-                    keyObject.OnInteract(ObjectInteraction.Drop, this);
-                    baseObject.GetCompletion = InteractionCompletion.Completed;
-                    
-                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                    if(particles) particles.Stop();
-                    if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
-                    
-                    Debug.Log("[MoveableObject] key location");
-                }
-                else {
-                    Debug.Log("[MoveableObject] key is not for this object");
-                     
-                    if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
-                        return;
-                    
-                    HudManager.Instance.SetText( other.GetBaseObject().failedDialogue.dialogue);
-                    other.GetBaseObject().failedDialogue.alreadyInteracted = true;
-                    
-                    return;
-                }
-            }
+            // else {
+            //     if (!other.GetBaseObject().TryGetComponent(out KeyInteractable keyObject)) {
+            //         Debug.LogError("[MoveableObject] Not a key location !");
+            //         return;
+            //     }
+            //     
+            //     if (keyObject == keyObjectNeeded) {
+            //         if (keyObject.keyObjectPos == null) {
+            //             transform.SetParent(originalParent);
+            //             TweenObjectDrop(keyObjectNeeded.transform);
+            //         }
+            //         else {
+            //             transform.SetParent(keyObject.keyObjectPos);
+            //             TweenObjectDrop(keyObject.keyObjectPos);
+            //         }
+            //         
+            //         baseObject.SetInteract(false);
+            //         baseObject.SetCollider(false);
+            //         
+            //         //Ici pour mettre l'objet sur le bon endroit
+            //         keyObject.OnInteract(ObjectInteraction.Drop, this);
+            //         baseObject.GetCompletion = InteractionCompletion.Completed;
+            //         
+            //         GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+            //         if(particles) particles.Stop();
+            //         if(dissolve) matTween = dissolve.material.DOFloat(1f, "_Progression", 1f).SetEase(Ease.InQuad);
+            //         
+            //         Debug.Log("[MoveableObject] key location");
+            //     }
+            //     else {
+            //         Debug.Log("[MoveableObject] key is not for this object");
+            //          
+            //         if (baseObject.failedDialogue is { oneTime: true, alreadyInteracted: true })
+            //             return;
+            //         
+            //         HudManager.Instance.SetText( other.GetBaseObject().failedDialogue.dialogue);
+            //         other.GetBaseObject().failedDialogue.alreadyInteracted = true;
+            //         
+            //         return;
+            //     }
+            // }
             
             isGrabbed = false;
             PlayerController.Instance.interact.SetDropObject();
@@ -324,21 +282,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
                 
-                if (baseObject.failedDialogue is not{ oneTime: true, alreadyInteracted: true })
-                {
-                    HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
-                    baseObject.failedDialogue.alreadyInteracted = true;
-                }
-                
-                Debug.Log("[MoveableObject] Drop on ground");
+                if(baseObject.HasSceneElement())
+                    baseObject.TriggerSceneElement();
             }
             
             isGrabbed = false;
             PlayerController.Instance.interact.SetDropObject();
         }
-
-        public void SetPressurePlateOn(PressurePlate plate) => pressurePlateOn = plate;
-        public PressurePlate GetPressurePlateOn() => pressurePlateOn;
         
         #region OtherMethods
         private void TweenObjectOnPlayer() {
@@ -368,7 +318,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             Physics.Raycast(playerPos, dir,  out var hit, 2f);
             if (hit.collider) {
-                Debug.Log("[MoveableObject] Something in the way");
+                //Debug.Log("[MoveableObject] Something in the way");
                 
                 return true;
             }
@@ -427,10 +377,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     transform.position += dir * (distance + 0.001f);
                 }
             }
-        }
-        
-		public MoveableType GetObjectType(){
-            return moveableType;
         }
 
         public bool CanBeGrab() {

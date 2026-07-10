@@ -61,11 +61,11 @@ namespace _Project.Scripts.GameServices.Services {
             if(deleteSaveOnPlay) dataService.DeleteAll();
             #endif
 
-            if (GameData == null) {
-                NewGame();
+            if (dataService.FileDoesExist(saveFileName)) {
+                GameData = dataService.Load<GameData>(saveFileName);
             }
             else {
-                GameData.SaveName = saveFileName;
+                NewGame();
             }
             
             if (dataService.FileDoesExist(settingsFileName)) {

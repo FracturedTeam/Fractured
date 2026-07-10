@@ -3,6 +3,8 @@ namespace _Project.Scripts.Enums {
         None,
         Grab,
         Drop,
+        Held,
+        StopHeld,
         Reset,
         Contextual,
         EnterMemory,

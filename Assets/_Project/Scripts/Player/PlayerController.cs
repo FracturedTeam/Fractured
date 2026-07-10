@@ -26,17 +26,17 @@ namespace _Project.Scripts.Player {
             data.position = transform.position;
         }
         
-        InputsBrain inputsBrain;
+        
+        // InputsBrain inputsBrain;
         StateMachine stateMachine;
 
         [Header("Cinemachine Brain")]
         public CinemachineBrain cinemachineBrain;
         
-        [HideInInspector]
-        public PlayerMovementController movement;
-        [HideInInspector]
-        public PlayerInteract interact;
-
+        public PlayerMovementController movement { get; private set; }
+        public PlayerInteract interact { get; private set; }
+        public PlayerInventory inventory { get; private set; }
+        
         [Header("Animations Settings")]
         [SerializeField] private Animator animator;
         [SerializeField] public AnimationClip useDoorClip;
@@ -53,18 +53,21 @@ namespace _Project.Scripts.Player {
 
         private void Start() {
             stateMachine = new StateMachine();
-            //quick fix for that art part, need rework for the steam version
+            // quick fix for that art part, need rework for the steam version
             cinemachineBrain.gameObject.SetActive(false);
             
-            //Get every component needed
-            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
+            // Get every component needed
+            // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
+            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
             
             if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
             else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
             
             if(TryGetComponent(out PlayerInteract _interact)) interact = _interact;
             else Debug.LogWarning("[PlayerController] No PlayerInteract found");
+            
+            if(TryGetComponent(out PlayerInventory _inventory)) inventory = _inventory;
+            else Debug.LogWarning("[PlayerController] No PlayerInventory found");
             
             //Define state machine
             DefineState();
@@ -76,10 +79,9 @@ namespace _Project.Scripts.Player {
             var locomotionState = new PlayerLocomotionState(this, animator);
             var fallState = new PlayerFallState(this, animator);
             var carryState = new PlayerCarryState(this, animator);
-            var memoryState = new PlayerMemoryState(this, animator);
+            //var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
-            var usePedestal = new PlayerPressurePlateState(this, animator);
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
@@ -87,8 +89,7 @@ namespace _Project.Scripts.Player {
             var dropObject = new DropObjectState(this, animator, dropObjectClip);
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
-            var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
-            var leavePedestal = new LeavePiedestalState(this, animator, usePedestalClip);
+            //var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
             
             //Define all states transitions
             //Locomotion State
@@ -110,10 +111,10 @@ namespace _Project.Scripts.Player {
             At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));*/
             
             //Memory State
-            At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory()));
-            At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
+            // At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            // At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
+            // At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory()));
+            // At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
             At(locomotionState, doorState, new FuncPredicate(() => interact.triggerDoor));
@@ -124,11 +125,6 @@ namespace _Project.Scripts.Player {
             //Failed Door
             At(locomotionState, failedDoor, new FuncPredicate(() => interact.UsingLockedDoor()));
             At(failedDoor, locomotionState, new FuncPredicate(() => !interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
-            
-            //Use Piedestal
-            At(locomotionState, usePedestal, new FuncPredicate(() => interact.IsInPressurePlate()));
-            At(usePedestal, leavePedestal, new FuncPredicate(() => !interact.IsInPressurePlate()));
-            At(leavePedestal, locomotionState, new FuncPredicate(() => leavePedestal.IsClipFinished()));
             
             //Obtenir un éclat de verre
             At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));
@@ -146,11 +142,11 @@ namespace _Project.Scripts.Player {
 
         private void Update() {
             stateMachine.Update();
-            
-            //Pour la build, à virer
+      
+			#if UNITY_EDITOR
             if(transform.position.y < -10)
                 transform.position = new Vector3(transform.position.x, 10, transform.position.z);
-                
+        	#endif
         }
         
         void FixedUpdate() {
@@ -176,13 +172,8 @@ namespace _Project.Scripts.Player {
 
         public void UpdateMovement() => movement.HandleUpdate();
         public void FixedUpdateMovement() => movement.HandleFixedUpdate();
-        
         public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
-        
-        public void FreezeController(bool doFreeze) {
-            if(doFreeze) movement.FreezeController();
-            else movement.UnfreezeController();
-        }
+        public void FreezeController(bool doFreeze) => movement.SetKinematic(doFreeze);
         public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
         public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
         public Vector3 GetForwardDir() => movement.mesh.forward;
@@ -190,7 +181,7 @@ namespace _Project.Scripts.Player {
         #endregion
         
         #region Interaction Helper/Setter
-        public void UpdateInteraction() => interact.HandleUpdate(movement.previousMoveDir);
+        public void UpdateInteraction() => interact.HandleUpdate(movement.PreviousMoveDir);
         public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
         public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
         public void SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
