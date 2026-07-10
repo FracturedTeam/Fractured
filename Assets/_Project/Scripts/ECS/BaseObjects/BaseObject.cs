@@ -137,6 +137,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
+            GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
         }
         
