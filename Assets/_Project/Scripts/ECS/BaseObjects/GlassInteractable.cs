@@ -80,12 +80,14 @@ namespace _Project.Scripts.ECS.BaseObjects
                         transform.GetChild(i).gameObject.SetActive(false);
                     }
                     
+                    /*
                     if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
                         if(wallRenderer.Length > 0)
                             foreach (var wall in wallRenderer) {
                                 wall.material = visibleWallMat;
                             }
                     }
+                    */
                 }
                 
                 underRed = 0;
@@ -150,16 +152,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
-            if (baseObject.locked) {
-                if (baseObject.GetRendered().enabled) {
-                    baseObject.SetRenderer(false);
-                    for (var i = 0; i < transform.childCount; i++) {
-                        transform.GetChild(i).gameObject.SetActive(false);
-                    }
-                }
-                return;
-            }
-            
             if (!baseObject.GetRendered().enabled) {
                 baseObject.SetRenderer(true);
                 for (var i = 0; i < transform.childCount; i++) {

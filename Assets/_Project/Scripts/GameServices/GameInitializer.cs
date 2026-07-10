@@ -162,8 +162,8 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards, GlassText[] _glassTexts) {
-            shardService.RepopulateBaseObjet(_baseObjects, _glassTexts);
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
+            shardService.RepopulateBaseObjet(_baseObjects);
             if(_shards.Length > 0)
                 AddShards(_shards);
         }

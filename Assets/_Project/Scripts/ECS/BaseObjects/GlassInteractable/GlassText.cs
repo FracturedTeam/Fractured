@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
@@ -12,6 +13,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
 {
     [SerializeField] private bool isVisibleFromStart; 
