@@ -17,6 +17,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public GlassText GetTextInteractable { get; private set; }
         public IInteractable GetInteract  { get; set; }
         public TutorialElement  GetTutorialElement { get; set; }
+        public TriggerComponent  GetTrigger { get; set; }
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
 
@@ -115,10 +116,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
+                if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
                 if(TryGetComponent(typeof(GlassText), out var gt))
                     GetTextInteractable = gt as GlassText;
-                
                 if(TryGetComponent(out IInteractable interactable)) GetInteract = interactable;
+                
                 else SetInteract(false);
 
                 if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
@@ -165,6 +167,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             GetInteract.OnInteract(interaction, interactable);
+            GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
