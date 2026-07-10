@@ -36,11 +36,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isInspecting = !isInspecting;
 
             if (isInspecting) {
-                PlayerController.Instance.interact.SetIsInspecting(true, baseObject);
+                PlayerController.Instance.interact.SetIsFocus(true, baseObject);
                 PlayerController.Instance.FreezeController(true);
             }
             else {
-                PlayerController.Instance.interact.SetIsInspecting(false);
+                PlayerController.Instance.interact.SetIsFocus(false);
                 PlayerController.Instance.FreezeController(false);
             }
         }

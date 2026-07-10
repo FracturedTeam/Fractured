@@ -192,9 +192,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             //Call audio
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
             
-            if(baseObject.HasSceneElement())
-                baseObject.TriggerSceneElement();
-            
             Debug.Log("[MoveableObject] Grab object");
         }
 
