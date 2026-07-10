@@ -10042,7 +10042,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8492057756971255774, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
   m_PrefabInstance: {fileID: 932025135}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2080861314}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 693485fe0a56125489313c1007d64ebe, type: 3}
@@ -16293,7 +16293,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: "po\xF9!op\xF9poo\xF9p\xF9po\xF9op\xF9"
+      value: <link="id_01">my link</link>
       objectReference: {fileID: 0}
     - target: {fileID: 4508558174255291151, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_Name
@@ -16347,6 +16347,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4508558174255291151, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2080861318}
     - targetCorrespondingSourceObject: {fileID: 417300570812013176, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -29674,40 +29677,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
-  showHideList: 0
-  OnInteract:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCollisionTriggerEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCollisionTriggerExit:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHideReveal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTextHideReveal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnInteractSuccess:
-    m_PersistentCalls:
-      m_Calls: []
-  OnInteractFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSetStateOn:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSetStateOff:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSceneComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAtelierComplete:
-    m_PersistentCalls:
-      m_Calls: []
+  OnInteract: []
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
 --- !u!1001 &1600311953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34870,40 +34850,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
-  showHideList: 1
   OnInteract:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCollisionTriggerEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCollisionTriggerExit:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHideReveal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTextHideReveal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnInteractSuccess:
-    m_PersistentCalls:
-      m_Calls: []
-  OnInteractFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSetStateOn:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSetStateOff:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSceneComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAtelierComplete:
-    m_PersistentCalls:
-      m_Calls: []
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 0
+  - actions:
+      m_PersistentCalls:
+        m_Calls: []
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
 --- !u!114 &2038455625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35272,17 +35249,45 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &2080861314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4508558174255291151, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+  m_PrefabInstance: {fileID: 932025135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2080861317 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5040674146446807392, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
   m_PrefabInstance: {fileID: 932025135}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2080861314}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!114 &2080861318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080861314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract: []
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
 --- !u!43 &2083643031
 Mesh:
   m_ObjectHideFlags: 0
