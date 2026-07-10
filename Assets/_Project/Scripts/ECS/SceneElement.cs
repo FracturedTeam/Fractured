@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.ECS {
     public class SceneElement : MonoBehaviour {
-        private BaseObject baseObject;
+        public BaseObject baseObject {get; private set;}
         private SceneMaster masterValidation;
 
         private bool isValidated;

@@ -1,10 +1,17 @@
+using System;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS {
     public class SceneMaster : MonoBehaviour {
         [Header("Scene Elements")]
         [SerializeField] private SceneElement[] elements;
+        [Space]
+        [SerializeField] private bool requiredPlayerPosition;
+        [SerializeField] private Vector3 requiredPosition;
+        
+        private bool isValidPlayerPosition;
         
         [Header("Obtainable Elements")]
         [SerializeField] public Glass[] glassShards;
@@ -26,6 +33,16 @@ namespace _Project.Scripts.ECS {
             SetMasterToSceneElement();
         }
 
+        private void Update() {
+            if (requiredPlayerPosition) {
+                var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
+                if (isValidPlayerPosition != dist <= 2) {
+                    isValidPlayerPosition = dist <= 2;
+                    CheckForValidation();
+                }
+            }
+        }
+
         private void SetMasterToSceneElement() {
             foreach (var element in elements) {
                 element.SetSceneMaster(this);
@@ -36,7 +53,10 @@ namespace _Project.Scripts.ECS {
             if(hasSceneBeenValidated) return;
             
             hasSceneBeenValidated = true;
-            //Faire les trucs
+
+            foreach (var element in elements) { // Lock interaction with sceneElement once the scene is valid
+                element.baseObject.SetInteract(false);
+            }
             
             GameInitializer.Instance.AddShards(glassShards);
             
@@ -52,6 +72,8 @@ namespace _Project.Scripts.ECS {
                     break;
                 }
             }
+            
+            if(requiredPlayerPosition && !isValidPlayerPosition) everyElementIsValid = false;
             
             IsSceneValidated = everyElementIsValid;
         }
