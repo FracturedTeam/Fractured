@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
@@ -18,7 +17,7 @@ namespace _Project.Scripts.GameServices {
         [Header("Puzzle Objects")]
         [SerializeField] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
-
+        
         [Header("Debug Settings")]
         public Vector3 playerPosition;
         
@@ -30,9 +29,9 @@ namespace _Project.Scripts.GameServices {
             roomCamera.Priority = 1;
         }
 
-        public void BindData() => saveInstance.Bind();
-        public GameData GetGameData() => saveInstance.GetGameData();
-        public void SetGameData(GameData gameData) => saveInstance.SetGameData(gameData);
+        public void BindData(bool firstTimeBind) => saveInstance.Bind(firstTimeBind);
+        public SceneData GetSceneData() => saveInstance.GetGameData();
+        public void SetSceneData(SceneData objectData) => saveInstance.SetGameData(objectData);
         public List<Glass> GetAllShards() => saveInstance.GetShards();
 
         #if UNITY_EDITOR
@@ -58,12 +57,5 @@ namespace _Project.Scripts.GameServices {
             saveInstance.SetObjectData(baseObjects.ToArray(), glassShards);
         }
         #endif
-    }
-
-    [Serializable]
-    public class FragmentData {
-        [SerializeField] public Glass glassShards;
-        public Vector3 position;
-        public bool spawned;
     }
 }

@@ -68,7 +68,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             if(GUILayout.Button("Save game", buttonStyle))
                 saveService.SaveData();
             if(GUILayout.Button("Load save", buttonStyle))
-                saveService.LoadGame();
+                GameSceneLoaderSystem.Instance.LoadGame();
             /*if(GUILayout.Button("Start New Game", buttonStyle))
                 GameSceneLoaderSystem.Instance.NewGame();*/
             

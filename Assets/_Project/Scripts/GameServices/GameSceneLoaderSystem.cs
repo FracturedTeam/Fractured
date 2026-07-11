@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,7 +27,6 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] public SceneField[] allScenes;
 
         private bool loadCredits = false;
-        
         private bool newGameStarted = false;
         
         private void Start() {
@@ -35,74 +36,40 @@ namespace _Project.Scripts.GameServices {
             if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
-        }
-
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (scene.buildIndex == 12) {
-                loadCredits = true;
-            }
-            
-            GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
-        }
-        
-        private async Task LoadSceneAsync(SceneField newScene) {
-            scenesToLoad.Add(newScene);
-            
-            var loading = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
-
-            if (loading is null) {
-                Debug.LogError($"Failed to load scene {newScene.SceneName}, Verify Build Settings Or if it is Referenced");
-                return;
-            }
-            
-            while (loading is { isDone: false }) {
-                await Task.Yield();
-            }
-        }
-        
-        public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
-            try {
-                scenesToLoad.Clear();
-                GameInitializer.Instance.SaveData();
-                EventBus<FadeObject>.Raise(new FadeObject {
-                    show = true
-                });
-                await Task.Delay(500);
-                await Task.Yield();
-                
-                HudManager.Instance.StopEventInteraction();
-                
-                await LoadSceneAsync(sceneSettings.levelDesign);
-                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
-
-                PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
-                await Task.Yield();
-                PlayerController.Instance.triggerEnterRoom = true;
-
-                await UnloadGameplaySceneAsync();
-                
-                if (loadCredits) {
-                    await UnloadSceneAsync();
-                    
-                    Destroy(PlayerService.Instance.gameObject);
-                    Destroy(GameInitializer.Instance.gameObject);
-                    Destroy(HudManager.Instance.gameObject);
-                    loadCredits = false;
+            #if UNITY_EDITOR
+            else {
+                if (GameSceneSettings.HasInstance) {
+                    GameInitializer.Instance.CreateNewSave();
+                    _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 }
                 
-                await Task.Delay(500);
-                EventBus<FadeObject>.Raise(new FadeObject {
-                    show = false
-                });
+                
+                if (!PlayerService.HasInstance) Instantiate(player);
+                if (!HudManager.HasInstance) Instantiate(hudManager);
+            
+                GameInitializer.Instance.InitializeDebugSystems();
+
+                StartCoroutine(SetSceneWithDelay());
             }
-            catch (Exception e) {
-                Debug.LogError("LoadGameplaySceneAsync failed: It most likely is a need to SetInteractable in the P_SceneSettings prefab\n" + e);
-                EventBus<FadeObject>.Raise(new FadeObject {
-                    show = false
-                });
-            }
+            #endif
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        IEnumerator SetSceneWithDelay() {
+            yield return new WaitForNextFrameUnit();
+
+            GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
+            
+            if (GameSceneSettings.HasInstance) {
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                
+                PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+                
+                // GameInitializer.Instance.SaveData();
+                // PlayerController.Instance.triggerEnterRoom = true;
+            }
+        }
+        
         public async Task LoadSceneFromDebug(SceneField scene) {
             GameInitializer.Instance.SaveData();
             GameInitializer.Instance.ResetCameras();
@@ -126,23 +93,36 @@ namespace _Project.Scripts.GameServices {
             PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
         }
         
-        private async Task UnloadGameplaySceneAsync() {
-            try {
-                await UnloadSceneAsync();
-                GameInitializer.Instance.EmptyAll();
-                
-                await Task.Delay(200);
-                
-                if (GameSceneSettings.HasInstance) {
-                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
-                }
-                
-                if(newGameStarted) return;
-                
-                GameInitializer.Instance.LoadData();
+#endif
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (scene.buildIndex == 12) {
+                loadCredits = true;
             }
-            catch (Exception e) {
-                Debug.LogError("Unload Gameplay failed: \n" + e);
+            
+            GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
+        }
+        
+        public void NewGame() 
+            => _ = StartNewGame();
+        
+        public void LoadGame(string sceneName = "") 
+            => _ = LoadSave(sceneName == "" ? GameInitializer.Instance.GetLastScene() : sceneName);
+        
+        public void LoadMenu() 
+            => _ = LoadMenuAsync();
+        
+        private async Task LoadSceneAsync(SceneField newScene) {
+            scenesToLoad.Add(newScene);
+            
+            var loading = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
+
+            if (loading is null) {
+                Debug.LogError($"Failed to load scene {newScene.SceneName}, Verify Build Settings Or if it is Referenced");
+                return;
+            }
+            
+            while (loading is { isDone: false }) {
+                await Task.Yield();
             }
         }
         
@@ -163,53 +143,98 @@ namespace _Project.Scripts.GameServices {
                 if(unload == null) continue;
 
                 while (!unload.isDone) {
-                    await Task.Delay(10);
+                    await Task.Yield();
                 }
             }
         }
+        
+        public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
+            try {
+                scenesToLoad.Clear();
+                GameInitializer.Instance.SaveData();
+                
+                await FadeToBlack();
+                
+                HudManager.Instance.StopEventInteraction();
+                
+                await LoadSceneAsync(sceneSettings.levelDesign);
+                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
-        public void LoadMenu() {
-            GameInitializer.Instance.SaveData();
-            scenesToLoad.Clear();
-            _ = LoadMenuAsync();
-        }
+                PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                await Task.Yield();
+                PlayerController.Instance.triggerEnterRoom = true;
 
-        private async Task LoadMenuAsync() {
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = true
-            });
-            await Task.Delay(600);
-            
-            _ = UnloadSceneAsync();
-            _ = LoadSceneAsync(menuScene);
-            
-            GameInitializer.Instance.DisposeShards();
-            
-            if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
-            //if(GameInitializer.HasInstance) Destroy(GameInitializer.Instance.gameObject);
-            if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
+                await UnloadGameplaySceneAsync();
+                
+                if (loadCredits) {
+                    await UnloadSceneAsync();
+                    
+                    Destroy(PlayerService.Instance.gameObject);
+                    Destroy(GameInitializer.Instance.gameObject);
+                    Destroy(HudManager.Instance.gameObject);
+                    loadCredits = false;
+                }
 
-            Time.timeScale = 1;
-            
-            await Task.Delay(600);
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = false
-            });
+                await FadeToGame();
+            }
+            catch (Exception e) {
+                Debug.LogError("LoadGameplaySceneAsync failed: It most likely is a need to SetInteractable in the P_SceneSettings prefab\n" + e);
+                EventBus<FadeObject>.Raise(new FadeObject {
+                    show = false
+                });
+            }
         }
         
-        public void NewGame() {
-            GameInitializer.Instance.CreateNewSave();
-            _ = StartNewGame();
+        private async Task UnloadGameplaySceneAsync() {
+            try {
+                await UnloadSceneAsync();
+                GameInitializer.Instance.EmptyAll();
+                
+                await Task.Yield();
+                
+                if (GameSceneSettings.HasInstance) {
+                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                }
+
+                if (newGameStarted) {
+                    newGameStarted = false;
+                    return;
+                }
+                
+                GameInitializer.Instance.LoadData();
+            }
+            catch (Exception e) {
+                Debug.LogError("Unload Gameplay failed: \n" + e);
+            }
+        }
+        
+        private async Task LoadMenuAsync() {
+            GameInitializer.Instance.SaveData();
+            scenesToLoad.Clear();
+            
+            await FadeToBlack();
+            
+            await UnloadSceneAsync();
+            
+            GameInitializer.Instance.DisposeShards();
+            GameInitializer.Instance.SetEditableArea(false, ColorEnum.Both);
+            
+            if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
+            if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
+            
+            _ = LoadSceneAsync(menuScene);
+
+            Time.timeScale = 1;
+
+            await FadeToGame();
         }
 
         private async Task StartNewGame() {
+            GameInitializer.Instance.CreateNewSave();
             scenesToLoad.Clear();
             
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = true
-            });
-            await Task.Delay(600);
-            
+            await FadeToBlack();
+
             await LoadSceneAsync(newGameScene);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
@@ -227,43 +252,29 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.SaveData();
             PlayerController.Instance.triggerEnterRoom = true;
             
-            await Task.Delay(600);
-            EventBus<FadeObject>.Raise(new FadeObject {
-                show = false
-            });
+            await FadeToGame();
         }
         
-        public void LoadGame(string sceneName) {
-            GameInitializer.Instance.LoadGame();
-            _ = LoadSave(sceneName);
-        }
-        
-        public void LoadGame() {
-            GameInitializer.Instance.LoadGame();
-            _ = LoadSave(GameInitializer.Instance.GetLastScene());
-        }
-
-        private async Task LoadSave(string sceneName) {
+        private async Task LoadSave(string lastOpenScene) {
             try {
+                GameInitializer.Instance.LoadGame();
                 scenesToLoad.Clear();
 
-                EventBus<FadeObject>.Raise(new FadeObject {
-                    show = true
-                });
-                await Task.Delay(600);
+                await FadeToBlack();
                 
                 var foundScene = false;
                 foreach (var scene in allScenes) {
-                    if (scene.SceneName != sceneName) continue;
+                    if (scene.SceneName != lastOpenScene) continue;
                     foundScene = true;
                     await LoadSceneAsync(scene);
                     break;
                 }
 
                 if (!foundScene) {
-                    Debug.LogError($"Failed to find scene {sceneName}");
+                    Debug.LogError($"Failed to find scene {lastOpenScene}");
                     return;
                 }
+                
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 
                 _ = UnloadGameplaySceneAsync();
@@ -271,25 +282,32 @@ namespace _Project.Scripts.GameServices {
                 if (!PlayerService.HasInstance) Instantiate(player);
                 if (!HudManager.HasInstance) Instantiate(hudManager);
                 
-                #if UNITY_EDITOR || DEVELOPMENT_BUILD
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
                 GameInitializer.Instance.InitializeDebugSystems();
                 #endif
-                
-                await Task.Delay(600);
-                
+
+                await FadeToGame();
                 GameInitializer.Instance.LoadPlayerData();
-                EventBus<FadeObject>.Raise(new FadeObject {
-                    show = false
-                });
             }
             catch (Exception e) {
                 Debug.LogError("LoadSaveGame failed: \n" + e);
             }
         }
-
-        public List<SceneField> GetLoadedScenes() {
-            return scenesToLoad;
+        
+        private async Task FadeToBlack() {
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = true
+            });
+            await Task.Delay(500);
         }
+        private static async Task FadeToGame() {
+            await Task.Delay(300);
+            EventBus<FadeObject>.Raise(new FadeObject {
+                show = false
+            });
+        }
+        
+        
     }
     
     [Serializable]
@@ -310,28 +328,26 @@ namespace _Project.Scripts.GameServices {
         public string SceneName => m_SceneName;
 
         // makes it work with the existing Unity methods (LoadLevel/LoadScene)
-        public static implicit operator string( SceneField sceneField )
-        {
+        public static implicit operator string( SceneField sceneField ) {
             return sceneField.SceneName;
         }
     }
 
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(SceneField))]
-    public class SceneFieldPropertyDrawer : PropertyDrawer 
-    {
-        public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label)
-        {
-            EditorGUI.BeginProperty(_position, GUIContent.none, _property);
-            var sceneAsset = _property.FindPropertyRelative("m_SceneAsset");
-            var sceneName = _property.FindPropertyRelative("m_SceneName");
-            _position = EditorGUI.PrefixLabel(_position, GUIUtility.GetControlID(FocusType.Passive), _label);
-            if (sceneAsset != null)
-            {
-                sceneAsset.objectReferenceValue = EditorGUI.ObjectField(_position, sceneAsset.objectReferenceValue, typeof(SceneAsset), false); 
+    public class SceneFieldPropertyDrawer : PropertyDrawer {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+            EditorGUI.BeginProperty(position, GUIContent.none, property);
+            
+            var sceneAsset = property.FindPropertyRelative("m_SceneAsset");
+            var sceneName = property.FindPropertyRelative("m_SceneName");
+            
+            position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+            
+            if (sceneAsset != null) {
+                sceneAsset.objectReferenceValue = EditorGUI.ObjectField(position, sceneAsset.objectReferenceValue, typeof(SceneAsset), false); 
 
-                if( sceneAsset.objectReferenceValue != null )
-                {
+                if( sceneAsset.objectReferenceValue != null ) {
                     sceneName.stringValue = ((SceneAsset)sceneAsset.objectReferenceValue).name;
                 }
             }

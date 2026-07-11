@@ -6,7 +6,7 @@ namespace _Project.Scripts.ECS {
     public class OutOfBounds : MonoBehaviour {
         void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent(out BaseObject baseObject)) {
-                var m = baseObject.GetInteract as MoveableObject;
+                var m = baseObject.GetInteract as MovableAttribute;
                 if (m) {
                     m.ResetObject();
                 }

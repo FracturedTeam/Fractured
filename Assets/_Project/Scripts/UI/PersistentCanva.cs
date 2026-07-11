@@ -12,8 +12,8 @@ namespace _Project.Scripts.UI {
 
         private EventBinding<FadeObject> fadeEventBinding;
         [SerializeField] private CanvasGroup fadeCanvasGroup;
-        [SerializeField] private float fadeInDuration = 0.5f;
-        [SerializeField] private float fadeOutDuration = 0.5f;
+        [SerializeField] private float fadeInDuration = 0.3f;
+        [SerializeField] private float fadeOutDuration = 0.3f;
 
         private Tweener tween;
         

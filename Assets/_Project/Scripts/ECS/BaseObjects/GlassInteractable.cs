@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
@@ -17,6 +18,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private BaseObject baseObject;
         private Camera mainCamera;
         private ObservableHashSet<Glass> shardsOnTop;
+        private MeshFilter meshFilter;
         
         [Header("Object Color")]
         public ColorEnum objectColor;
@@ -24,7 +26,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Behaviour")] 
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
         [SerializeField] private bool objectInside = false;
-        [SerializeField] private MoveableObject interactableInBox;
+        [SerializeField] private MovableAttribute interactableInBox;
         
         [Header("Invisible Walls")]
         [SerializeField] private MeshRenderer[] wallRenderer;
@@ -37,14 +39,13 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField, Range(0 ,2)] private float scaleModificator = 1;
         
         internal Vector3[] BoundingBox;
-        private MoveableObject selfMoveable;
-        private FrequencyTimer updatePos = new (1.0f);
-        private CountdownTimer setObjectInsideTimer = new (.1f);
+        private MovableAttribute moveableComponent;
+        private readonly FrequencyTimer updateShardVisual = new (1.0f);
         
         private int underRed;
         private int underBlue;
         
-        private bool initialized = false;
+        private bool isInitialized;
         public bool objectOut { get; set; }
         
         public bool IsVisible { get; private set; }
@@ -52,51 +53,56 @@ namespace _Project.Scripts.ECS.BaseObjects
         public  void Initialize() {
             mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
             
-            if (!initialized) {
-                if(TryGetComponent(typeof(BaseObject), out var component))
-                    baseObject = component as BaseObject;
-                else
-                    Debug.LogError($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
+            if (!isInitialized) {
+                if(TryGetComponent(out BaseObject component)) baseObject = component;
+                else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
 
-                if (TryGetComponent(out MoveableObject m))
-                    selfMoveable = m;
+                if(TryGetComponent(out MeshFilter mf)) meshFilter = mf;
+                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
+
+                if (baseObject.GetObjectType is ObjectType.Moveable) {
+                    moveableComponent = baseObject.GetInteract as MovableAttribute;
+                }
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
-                updatePos.OnTick += Set2DPoints;
-                updatePos.Start();
+                updateShardVisual.OnTick += Set2DPoints;
+                updateShardVisual.Start();
                 
                 gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
                 
                 if (objectColor is ColorEnum.Both) {
                     SetVisibility(false);
-                    baseObject?.SetRenderer(false);
+                    
+                    baseObject.SetRenderer(false);
                     for (var i = 0; i < transform.childCount; i++) {
                         transform.GetChild(i).gameObject.SetActive(false);
                     }
+                    
+                    /*
                     if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
                         if(wallRenderer.Length > 0)
                             foreach (var wall in wallRenderer) {
                                 wall.material = visibleWallMat;
                             }
-                        Debug.Log("Executed lock");
                     }
-                    Debug.Log("Set visibility to false");
+                    */
                 }
                 
                 underRed = 0;
                 underBlue = 0;
                 
-                baseObject!.SetCollider(objectColor != ColorEnum.Both);
+                baseObject.SetCollider(objectColor != ColorEnum.Both);
                 
                 if (objectInside) {
-                    if (interactableInBox != null) {
+                    if (interactableInBox != null)
                         SetObjectInside();
-                    }
                     else
                         Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
                 }
+                
+                isInitialized = true;
             }
             
             BoundingBox = new Vector3[4];
@@ -105,7 +111,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             Set2DPoints();
             
-            initialized = true;
         }
 
         void SetObjectInside() {
@@ -113,9 +118,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             interactableInBox.transform.position = transform.position;
         }
 
-        internal void OnInteract(bool isUnder, Glass shard) {
-            if(!baseObject) return;
-
+        internal void OnShardUpdated(bool isUnder, Glass shard) {
             Set2DPoints();
 
             if (isUnder) 
@@ -124,18 +127,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
-        public void Tick(float deltaTime) { //Bien de voir pour dégager les updates - Pour le moment elle n'est pas couteuse donc c'est fine
-            if (!objectInside) return;
-            if (!objectOut) {
-                if(objectColor == ColorEnum.Blue && underBlue <= 0 || objectColor == ColorEnum.Red && underRed <= 0)
-                    ActivateObjectInside(false);
-            }
-            if (objectOut) return;
+        public void Tick(float deltaTime) {
+            if (!objectInside || objectOut) return;
             
-            interactableInBox.transform.position = transform.position; //C'est ça qui entre en conflit avec la save
             if (interactableInBox.IsGrabbed() && !objectOut) {
                 objectOut = true;
-                UpdateShards();
             }
         }
 
@@ -147,31 +143,28 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         void OnDestroy() {
-            updatePos.OnTick -= Set2DPoints;
-            updatePos.Stop();
-            updatePos.Dispose();
+            updateShardVisual.OnTick -= Set2DPoints;
+            updateShardVisual.Stop();
+            updateShardVisual.Dispose();
+
+            if (shardsOnTop == null) 
+                return;
+            
+            shardsOnTop.onUpdate -= UpdateShards;
+            shardsOnTop.Clear();
         }
 
         private void UpdateShards() {
-            if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
-                baseObject.SetRenderer(false);
+            if (!baseObject.GetRendered().enabled) {
+                baseObject.SetRenderer(true);
                 for (var i = 0; i < transform.childCount; i++) {
-                    transform.GetChild(i).gameObject.SetActive(false);
+                    transform.GetChild(i).gameObject.SetActive(true);
                 }
-                return;
-            }
-            
-            if (!baseObject.locked){
-                if (!baseObject.GetRendered().enabled) {
-                    baseObject.SetRenderer(true);
-                    for (var i = 0; i < transform.childCount; i++) {
-                        transform.GetChild(i).gameObject.SetActive(true);
+
+                if (wallRenderer.Length > 0) {
+                    foreach (var wall in wallRenderer) {
+                        wall.material = invisibleWallMat;
                     }
-                    
-                    if(wallRenderer.Length > 0)
-                        foreach (var wall in wallRenderer) {
-                            wall.material = invisibleWallMat;
-                        }
                 }
             }
             
@@ -213,28 +206,15 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private void SetVisibility(bool isUnder) {
             if (objectColor == ColorEnum.Both) IsVisible = isUnder;
-            
             else IsVisible = !isUnder;
             
-            if (selfMoveable) {
-                if (baseObject.IsOnPressurePlate()) {
-                    if (IsVisible && objectInside) {
-                        if (!objectOut) selfMoveable.GetPressurePlateOn().SetActivation(!isUnder);
-                        else selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
-                    }
-                    else {
-                        selfMoveable.GetPressurePlateOn().SetActivation(isUnder);
-                    }
-
-                    baseObject.SetCollider(false);
-                    baseObject.SetInteract(false);
-                    selfMoveable.GetPressurePlateOn().GetBaseObject().SetInteract(isUnder);
-                }
-                else if (!selfMoveable.IsGrabbed()) {
+            if (baseObject.GetObjectType is ObjectType.Moveable) {
+                if (!moveableComponent.IsGrabbed()) {
                     baseObject.SetCollider(isUnder);
                     baseObject.SetInteract(isUnder);
-                }else if (selfMoveable.IsGrabbed() && !objectInside && !isUnder) {
-                    selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
+                }
+                else if (moveableComponent.IsGrabbed() && !objectInside && !isUnder) {
+                    moveableComponent.OnInteract(ObjectInteraction.DropNoTimer);
                 }
             }
             else {
@@ -247,20 +227,24 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
             else GameInitializer.Instance.PlayRevealSound(transform.position);
+            
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
         }
         
         private void ActivateObjectInside(bool isUnder) {
+            interactableInBox.transform.position = transform.position;
+            
             SetInteractableInBox(isUnder);
 
-            if(!selfMoveable) return;
-            if (!selfMoveable.IsGrabbed()) return;
+            if(!moveableComponent) return;
+            if (!moveableComponent.IsGrabbed()) return;
             
-            if(!InteractableInBoxActive()) return;
+            if(!IsInteractableInBoxActive()) return;
             
-            selfMoveable.OnInteract(ObjectInteraction.DropNoTimer);
+            moveableComponent.OnInteract(ObjectInteraction.DropNoTimer);
             PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
             objectOut = true;
-            Debug.Log("Activate Object Inside");
         }
 
         public void ResetObject() {
@@ -278,17 +262,25 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
-            if(!interactableInBox.GetBaseObject().initialized) interactableInBox.GetBaseObject().Initialize();
-            if(interactableInBox.GetBaseObject().GetCompletion is InteractionCompletion.NotCompleted)
-                interactableInBox?.GetBaseObject().SetInteract(revealed);
-            interactableInBox?.GetBaseObject().SetCollider(revealed);
-            interactableInBox?.GetBaseObject().SetRenderer(revealed);
+            
+            var inBoxObject = interactableInBox.GetBaseObject();
+            if (!inBoxObject.IsInitialized) {
+                inBoxObject.Initialize();
+            }
+
+            if (inBoxObject.GetLockState is LockedState.Locked) {
+                inBoxObject.SetInteract(revealed);
+            }
+            
+            inBoxObject.SetCollider(revealed);
+            inBoxObject.SetRenderer(revealed);
         }
 
-        bool InteractableInBoxActive() {
-            return interactableInBox.GetBaseObject().GetCollider().enabled &&
-                   interactableInBox.GetBaseObject().CanBeInteractedWith() &&
-                   interactableInBox.GetBaseObject().GetRendered().enabled;
+        bool IsInteractableInBoxActive() {
+            var inBoxObject = interactableInBox.GetBaseObject();
+            return inBoxObject.GetCollider().enabled &&
+                   inBoxObject.CanBeInteractedWith() &&
+                   inBoxObject.GetRendered().enabled;
         }
 
         #if UNITY_EDITOR
@@ -310,7 +302,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         ///Auto Setup the collision
         private void Set2DPoints() {
-            var points = baseObject.meshFilter.sharedMesh.vertices;
+            var points = meshFilter.sharedMesh.vertices;
             var pointsHashSet = points.ToHashSet();
             
             var pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);

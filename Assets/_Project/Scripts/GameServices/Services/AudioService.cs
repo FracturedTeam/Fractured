@@ -3,16 +3,12 @@ using _Project.Scripts.Systems.Timers;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace _Project.Scripts.GameServices.Services {
     public class AudioService : IGameSystem {
         private AudioBank bank;
-
-        public float masterVolume = 1;
-        public float sfxVolume = 1;
-        public float musicVolume = 1;
+        private SaveService saveService;
         
         private Bus masterBus;
         private Bus sfxBus;
@@ -28,6 +24,8 @@ namespace _Project.Scripts.GameServices.Services {
         
         private readonly CountdownTimer revealObjectTimer = new CountdownTimer(1f);
         private readonly CountdownTimer hideObjectTimer = new CountdownTimer(1f);
+
+        private SettingData settingData;
 
         public AudioService(AudioBank _bank) {
             bank = _bank;
@@ -50,12 +48,34 @@ namespace _Project.Scripts.GameServices.Services {
             //Others ambient loop
             menuInstance = CreateInstance(bank.ambient_MainMenu_Loop);
             creditsInstance = CreateInstance(bank.ambient_Credits_Loop);
+            
+            settingData = GameInitializer.Instance.GetSettings;
         }
 
-        public void Tick() {
-            masterBus.setVolume(masterVolume);
-            musicBus.setVolume(musicVolume);
-            sfxBus.setVolume(sfxVolume);
+        public void Tick()
+        {
+            
+        }
+
+        public void SetSound(int index, float newValue)
+        {
+            switch (index)
+            {
+                case 0:
+                    masterBus.setVolume(newValue);
+                    settingData.MainVolume = newValue;
+                    break;
+                case 1:
+                    musicBus.setVolume(newValue);
+                    settingData.MusicVolume = newValue;
+                    break;
+                case 2:
+                    sfxBus.setVolume(newValue);
+                    settingData.SFXVolume = newValue;
+                    break;
+            }
+            
+            GameInitializer.Instance.SaveSettings();
         }
         
         public void Dispose() {
@@ -142,6 +162,7 @@ namespace _Project.Scripts.GameServices.Services {
                 Debug.LogError($"[AudioService] Instance Creation Failed : Missing event reference {reference}, Please verify Audio Bank References");
                 return new EventInstance();
             }
+            
             return RuntimeManager.CreateInstance(reference);
         }
 
