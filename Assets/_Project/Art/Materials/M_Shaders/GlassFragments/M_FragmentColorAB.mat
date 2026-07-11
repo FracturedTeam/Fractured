@@ -12,13 +12,14 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _SCENECOLORFUSION_SOFT_LIGHT
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2952
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -89,6 +90,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _UITexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -104,10 +109,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AdditiveColorIntensity: 0.121
+    - _AdditiveColorIntensity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BackFaceOpacity: 0.6
+    - _BackFaceOpacity: 0.7
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _Boolean: 0
@@ -126,7 +131,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
-    - _EdgesIntensity: 0.061
+    - _EdgesIntensity: 0.088
     - _EdgesThickness: 0
     - _EnvironmentReflections: 1
     - _Float: 0.8
@@ -138,18 +143,20 @@ Material:
     - _NoiseIntensity: 0.008
     - _NoiseScale: 50
     - _OcclusionStrength: 1
-    - _Opacity: 0.9
+    - _Opacity: 1
     - _Parallax: 0.005
     - _Progression: 1
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: -48
     - _ReceiveShadows: 0
     - _Roughness: 0
+    - _SCENECOLORFUSION: 1
     - _SceneColorCorrection: 1.5
-    - _ScratchesIntensity: 0.03
+    - _SceneColorOpacity: 1
+    - _ScratchesIntensity: 0
     - _ScratchesTiling: 0.55
     - _ShineFrequency: 0.1
-    - _ShineIntensity: 0.05
+    - _ShineIntensity: 0
     - _ShineNiseIntensity: 0
     - _ShineNoiseIntensity: 0
     - _ShineNoiseScale: 8
@@ -166,13 +173,14 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.23921567, b: 0.25509375, a: 1}
+    - _BaseColor: {r: 1, g: 0, b: 0.05047798, a: 1}
     - _BaseColorDark: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EdgesColor: {r: 1, g: 0.93696576, b: 0.8235294, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MaxDeformation: {r: 0.003, g: 0.0035, b: 0, a: 0}
     - _NoiseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShineBaseOffset: {r: 0, g: 0, b: 0, a: 0}
     - _ShineColor: {r: 2, g: 1.0339895, b: 0.56544495, a: 1}
     - _ShineOffset_1: {r: 0, g: 0, b: 0, a: 0}
     - _ShineSmoothstep: {r: 0.55, g: 1, b: 0, a: 0}
