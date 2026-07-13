@@ -14,7 +14,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)}");
+                else throw new ArgumentNullException($"[SimpleInteractionAttribute] Cannot find {nameof(BaseObject)} in {nameof(SimpleInteractionAttribute)}");
 
                 baseObject.GetObjectType = ObjectType.None;
                 

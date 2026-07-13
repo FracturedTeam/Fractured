@@ -15,7 +15,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
+                else throw new ArgumentNullException($"[SwitchStateAttribute] Cannot find {nameof(BaseObject)} in {nameof(SwitchStateAttribute)}");
 
                 baseObject.GetObjectType = ObjectType.None;
                 

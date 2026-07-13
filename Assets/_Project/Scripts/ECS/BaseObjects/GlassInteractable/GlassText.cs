@@ -71,6 +71,7 @@ public class GlassText : MonoBehaviour
         fragAText.OnInteract(isColliding, shard);
         fragBText.OnInteract(isColliding, shard);
         bothText.OnInteract(isColliding, shard);
+        SetAlpha( 1, 1);
     }
 
     public void Setup(GlassTextScriptableObject newData)
