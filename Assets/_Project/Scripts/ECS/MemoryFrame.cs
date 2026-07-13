@@ -16,8 +16,8 @@ namespace _Project.Scripts.ECS {
         private bool canBeInteracted;
 
         private bool isSelected;
-
-        private float zPos;
+        
+        private bool isCorrectPosition;
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
@@ -44,9 +44,6 @@ namespace _Project.Scripts.ECS {
             isSelected = true;
             collider.enabled = false;
             
-            // Trouver un moyen d'avoir la "profondeur" de l'objet
-            zPos = Vector3.Distance(eventData.pointerCurrentRaycast.origin, eventData.pointerCurrentRaycast.worldPosition);
-            
             Debug.Log($"OnPointerDown {eventData.position}");
         }
 
@@ -55,7 +52,62 @@ namespace _Project.Scripts.ECS {
             
             isSelected = false;
             collider.enabled = true;
-            transform.position = master.GetCurrentSlotPosition(currentPos);
+            
+            var closest = GetClosetPosition();
+            
+            switch (GetCurrentPosition()) {
+                case 0:
+                    // See if it is closer to position 1 or 2
+                    if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        currentPos = closest;
+                        frame1.currentPos = 0;
+                    }
+                    else if (closest == 2) {
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        currentPos = closest;
+                        frame1.currentPos = 0;
+                        frame2.currentPos = 1;
+                    }
+                    
+                    break;
+                case 1:
+                    // See if it is closer to position 0 or 2
+                    if (closest == 0) {
+                        var frame1 = master.GetFrame(0);
+                        currentPos = closest;
+                        frame1.currentPos = 1;
+                    }
+                    else if (closest == 2) {
+                        var frame2 = master.GetFrame(2);
+                        currentPos = closest;
+                        frame2.currentPos = 1;
+                    }
+                    
+                    break;
+                case 2:
+                    // See if it is closer to position 0 or 1
+                    if (closest == 0) {
+                        var frame0 = master.GetFrame(0);
+                        var frame1 = master.GetFrame(1);
+                        currentPos = closest;
+                        frame0.currentPos = 1;
+                        frame1.currentPos = 2;
+                    }
+                    else if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        currentPos = closest;
+                        frame1.currentPos = 2;
+                    }
+                    
+                    break;
+                default:
+                    // No options here
+                    break;
+            }
+            
+            master.SetPaintingTransform();
             
             Debug.Log($"OnPointerUp {eventData.position}");
         }
@@ -74,9 +126,32 @@ namespace _Project.Scripts.ECS {
         
         public void OnDrag(PointerEventData eventData) {
             if(!isSelected) return;
-
-            // Il y a un soucis avec la position Z de l'objets
             
+            transform.position = GetMousePosition(eventData);
+        }
+
+        public bool ValidPosition() {
+            if (currentPos == requiredPosition) return true;
+            
+            return false;
+        }
+
+        private int GetClosetPosition() {
+            var closest = float.MaxValue;
+            var index = 0;
+            
+            for(var i = 0; i < master.GetSlots().Length ; i++){
+                var dist =  Vector3.Distance(master.GetSlots()[i].transform.position, transform.position);
+                if (dist < closest) {
+                    closest = dist;
+                    index = i;
+                }
+            }
+            
+            return index;
+        }
+        
+        private Vector3 GetMousePosition(PointerEventData eventData) {
             var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
             var screenPosition = cam.WorldToScreenPoint(transform.position);
             
@@ -84,7 +159,7 @@ namespace _Project.Scripts.ECS {
                 screenPosition.x + eventData.delta.x, 
                 screenPosition.y + eventData.delta.y, 
                 screenPosition.z
-                ));
+            ));
             
             var rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
             var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
@@ -92,8 +167,8 @@ namespace _Project.Scripts.ECS {
             var horizontal = Vector3.Dot(newPos, rightDir);
             var depth = Vector3.Dot(newPos, forwardDir);
             var vertical = Vector3.Dot(newPos, Vector3.up);
-            
-            transform.position = horizontal * rightDir + vertical * Vector3.up + depth * forwardDir;
+
+            return horizontal * rightDir + vertical * Vector3.up + depth * forwardDir;
         }
     }
 }
