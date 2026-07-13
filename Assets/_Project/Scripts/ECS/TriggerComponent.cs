@@ -1,53 +1,69 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.Interfaces;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(BaseObject))] 
 public class TriggerComponent : MonoBehaviour
 {
-    public bool showHideList = false; 
-  // [ShowIf(ActionOnConditionFail.JustDisable, ConditionOperator.And, nameof(showHideList))]
-    [SerializeField] private UnityEvent OnInteract;
+    [SerializeField] internal List<CustomEvent> OnInteract;
+ 
+    [SerializeField, ] internal List<CustomEvent> OnCollisionTriggerEnter;
+    [SerializeField, ] internal List<CustomEvent> OnCollisionTriggerExit;
+
+    [SerializeField, ] internal List<CustomEvent> OnHideReveal;
     
-    [SerializeField, ] internal UnityEvent OnCollisionTriggerEnter;
-    [SerializeField, ] private UnityEvent OnCollisionTriggerExit;
+    [SerializeField, ] internal List<CustomEvent> OnTextHideReveal;
     
-    [SerializeField, ] private UnityEvent OnHideReveal;
+    [SerializeField, ] internal List<CustomEvent> OnInteractSuccess;
+    [SerializeField, ] internal List<CustomEvent> OnInteractFailed;
     
-    [SerializeField, ] private UnityEvent OnTextHideReveal;
+    [SerializeField, ] internal List<CustomEvent> OnSetStateOn;
+    [SerializeField, ] internal List<CustomEvent> OnSetStateOff;    
     
-    [SerializeField, ] internal UnityEvent OnInteractSuccess;
-    [SerializeField, ] private UnityEvent OnInteractFailed;
+    [SerializeField, ] internal List<CustomEvent> OnSceneComplete;
+    [SerializeField, ] internal List<CustomEvent> OnAtelierComplete;
     
-    [SerializeField, ] internal UnityEvent OnSetStateOn;
-    [SerializeField, ] private UnityEvent OnSetStateOff;    
-    
-    
-    [SerializeField, ] internal UnityEvent OnSceneComplete;
-    [SerializeField, ] private UnityEvent OnAtelierComplete;
-    
+    public void OnFunction(List<CustomEvent> events)
+    {
+        foreach (var customEvent in events)
+        {
+            customEvent.Call();
+        }
+    }
 }
 
-#if UNITY_EDITOR
-public enum ConditionOperator
+[Serializable]
+public class CustomEvent 
 {
-    // A field is visible/enabled only if all conditions are true.
-    And,
-    // A field is visible/enabled if at least ONE condition is true.
-    Or,
+    public CustomEvent CreateInstance()
+    {
+        count = times;
+        return new CustomEvent();
+    }
+
+    public UnityEvent actions;
+    public int times;
+    private int count;
+    private bool noLimit;
+    
+
+    public void Call()
+    {
+        if (!noLimit && count <= 0) 
+            return;
+        
+        count--;
+        actions.Invoke();
+    }
+
+    public void ForceCall()
+    {
+        actions.Invoke();
+    }
 }
-
-public enum ActionOnConditionFail
-{
-    // If condition(s) are false, don't draw the field at all.
-    DontDraw,
-    // If condition(s) are false, just set the field as disabled.
-    JustDisable,
-}
-
-
-
-#endif

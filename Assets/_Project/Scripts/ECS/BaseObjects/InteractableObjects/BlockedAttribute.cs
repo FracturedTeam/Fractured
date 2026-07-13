@@ -31,6 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if (key.ID == ID) {
                     baseObject.GetLockState = LockedState.Unlocked;
                     PlayerController.Instance.inventory.OnKeyUsed(key.ID);
+                    baseObject.GetTrigger.OnFunction(baseObject.GetTrigger.OnInteractSuccess);
 
                     if (doInteractImmediately) {
                         switch (interactable.GetBaseObject().GetObjectType) {
@@ -48,6 +49,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                                 break;
                         }
                     }
+                    baseObject.GetTrigger.OnFunction(baseObject.GetTrigger.OnInteractFailed);
                     break;
                 }
             }

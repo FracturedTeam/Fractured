@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
@@ -12,6 +13,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
 {
     [SerializeField] private bool isVisibleFromStart; 
@@ -20,6 +22,10 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragAText;
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
+    private ObservableHashSet<Glass> shardsOnTop;
+    private BaseObject baseObject;
+    private bool isInitialized;
+    
 
     internal void Initialize()
     {
@@ -29,7 +35,17 @@ public class GlassText : MonoBehaviour
         bothText.Initialize();
         
         ForceSet();
-        
+        if (!isInitialized)
+        {
+            if (TryGetComponent(out BaseObject component)) baseObject = component;
+            else
+                throw new ArgumentNullException(
+                    $"[GlassText] BaseObject on {gameObject.name} could not be found !");
+
+            shardsOnTop = new ObservableHashSet<Glass>();
+            shardsOnTop.onUpdate += UpdateShards;
+        }
+
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
     }
 
@@ -46,6 +62,23 @@ public class GlassText : MonoBehaviour
         fragAText.SetAlpha(alpha, time);
         fragBText.SetAlpha(alpha, time);
         bothText.SetAlpha(alpha, time);
+    }
+
+    private void UpdateShards()
+    {
+    }
+
+    private void OnDestroy() {
+        if (shardsOnTop == null) 
+            return;
+        
+        shardsOnTop.onUpdate -= UpdateShards;
+        shardsOnTop.Clear();
+    }
+
+    public void Appear()
+    {
+        SetAlpha( 1, 1);
     }
 
     internal void OnInteract(bool isColliding, Glass shard)
