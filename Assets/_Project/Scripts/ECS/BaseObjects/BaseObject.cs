@@ -165,7 +165,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                 blockedAttribute.OnInteract(GetInteract);
                 return;
             }
-            
             GetInteract.OnInteract(interaction, interactable);
             GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
