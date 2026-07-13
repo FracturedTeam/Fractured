@@ -21,7 +21,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public Vector3 requestedPosition;
         public bool requestedVisibility;
         public bool requestedUseState;
-
+        public float tolerance = 4f;
+            
         private Action onPlayerInteraction;
 
         public void SetBaseObject(BaseObject baseObject) {
@@ -63,7 +64,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void PositionValidation() {
             var distanceToLocation = Vector3.Distance(requestedPosition, transform.position);
-            IsValidated = distanceToLocation <= 4f;
+            IsValidated = distanceToLocation <= tolerance;
         }
 
         private void UsableValidation() {

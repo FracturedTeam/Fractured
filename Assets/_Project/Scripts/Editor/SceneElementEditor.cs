@@ -18,6 +18,7 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
                 scene.requestedPosition = EditorGUILayout.Vector3Field("Position", scene.requestedPosition);
+                scene.tolerance =  EditorGUILayout.FloatField("Tolerance", scene.tolerance);
                 
                 EditorUtility.SetDirty(target);
                 

@@ -8,8 +8,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private MemoryFrameMaster master;
         private Collider collider;
         
-        [Header("Position Required")]
+        [Header("Painting Settings")]
         public int requiredPosition;
+        public Material revealedMat;
+        public MeshRenderer paintingMesh;
         
         private int currentPos;
         private bool isUnlocked;
@@ -19,6 +21,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private bool isCorrectPosition;
         
+        
+        
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
             
@@ -26,16 +30,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
-            
-            gameObject.SetActive(isUnlocked);
         }
         
         public int GetCurrentPosition() => currentPos;
         public void SetCurrentPosition(int newPos) => currentPos = newPos;
 
         public void Unlock() {
-            gameObject.SetActive(true);
             isUnlocked = true;
+            paintingMesh.material = revealedMat;
         }
 
         public void CanBeInteracted(bool can) {
@@ -44,7 +46,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         // Mouse event
         public void OnPointerDown(PointerEventData eventData) {
-            if(!canBeInteracted && isUnlocked) return;
+            if(!canBeInteracted) return;
             
             isSelected = true;
             collider.enabled = false;
@@ -53,7 +55,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnPointerUp(PointerEventData eventData) {
-            if(!canBeInteracted && isUnlocked) return;
+            if(!canBeInteracted) return;
             
             isSelected = false;
             collider.enabled = true;
@@ -118,19 +120,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
-            if(!canBeInteracted && isUnlocked) return;
+            if(!canBeInteracted) return;
             
             Debug.Log($"OnPointerEnter {eventData.position}");
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            if(!canBeInteracted && isUnlocked) return;
+            if(!canBeInteracted) return;
             
             Debug.Log($"OnPointerExit {eventData.position}");
         }
         
         public void OnDrag(PointerEventData eventData) {
-            if(!isSelected && isUnlocked) return;
+            if(!isSelected) return;
             
             transform.position = GetMousePosition(eventData);
         }

@@ -222,6 +222,14 @@ namespace _Project.Scripts.ECS.BaseObjects
             sceneElement.CheckValidation();
         }
 
+        public bool GetSceneElementPosition(Vector3 dropPosition, ref Vector3 position) {
+            if (Vector3.Distance(sceneElement.requestedPosition, dropPosition) <= sceneElement.tolerance) {
+                position = sceneElement.requestedPosition;
+                return true;
+            }
+            return false;
+        }
+
         public void Trigger(bool on) {
             if (!GetTutorialElement) return;
             if(on) GetTutorialElement.TriggerEventStart();

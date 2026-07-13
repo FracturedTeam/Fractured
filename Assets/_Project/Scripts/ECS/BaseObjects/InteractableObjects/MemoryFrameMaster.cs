@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
@@ -79,6 +80,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             UseMemoryFrame();
             
+            GameInitializer.Instance.EmptyShards();
+            
             Debug.Log("Memory Completed");
         }
         
@@ -87,9 +90,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void SetPaintingTransform() {
-            bool allValid = true;
             foreach (var frame in frames) {
                 frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
+            }
+            
+            DoValidation(); //TODO Juste pour tester - à enlever avec la validation par input
+        }
+
+        public void DoValidation() { //TODO appeler via le player interact avec un input long
+            bool allValid = true;
+            foreach (var frame in frames) {
                 if(!frame.ValidPosition()) allValid = false;
             }
 

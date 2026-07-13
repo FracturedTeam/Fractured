@@ -144,10 +144,10 @@ namespace _Project.Scripts.ECS
             if(!isHeld) return;
             if(MemoryManager.Instance.isInMemory) return;
 
-            if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
-                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
-            }
+            // if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
+            //     if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
+            //     if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
+            // }
 
             transform.position += (Vector3)eventData.delta; 
             
@@ -194,12 +194,12 @@ namespace _Project.Scripts.ECS
         
         internal void ChangeHoldingState(bool isOn) {
             if (!canInteract) return;
-            if (!canEditAnywhere) {
-                if (!GameInitializer.Instance.InEditableArea() && isOn) {
-                    GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassFailedSound);
-                    return;
-                }
-            }
+            // if (!canEditAnywhere) {
+            //     if (!GameInitializer.Instance.InEditableArea() && isOn) {
+            //         GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassFailedSound);
+            //         return;
+            //     }
+            // }
 
             isHeld = isOn;
             if (isOn) GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassSound);

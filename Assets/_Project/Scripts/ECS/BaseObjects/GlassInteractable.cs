@@ -72,6 +72,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
                 
+                IsVisible = true;
+                
                 if (objectColor is ColorEnum.Both) {
                     SetVisibility(false);
                     
@@ -147,8 +149,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             updateShardVisual.Stop();
             updateShardVisual.Dispose();
 
-            if (shardsOnTop == null) 
-                return;
+            // if (shardsOnTop == null) 
+            //     return;
             
             shardsOnTop.onUpdate -= UpdateShards;
             shardsOnTop.Clear();
@@ -205,8 +207,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void SetVisibility(bool isUnder) {
-            if (objectColor == ColorEnum.Both) IsVisible = isUnder;
-            else IsVisible = !isUnder;
+            if (objectColor == ColorEnum.Both) IsVisible = !isUnder;
+            else IsVisible = isUnder;
             baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnHideReveal);
             
             if (baseObject.GetObjectType is ObjectType.Moveable) {
