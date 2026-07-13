@@ -710,6 +710,7 @@ MonoBehaviour:
   - {fileID: 880346039}
   requiredPlayerPosition: 0
   requiredPosition: {x: 0, y: 0, z: 0}
+  frame: {fileID: 0}
   glassShards:
   - {fileID: 6282969817189507598, guid: a72438263a61bd74ab159f95b163c97a, type: 3}
 --- !u!1 &161775829
@@ -2494,7 +2495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4065172292997579122, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.41
+      value: -8.4
       objectReference: {fileID: 0}
     - target: {fileID: 4065172292997579122, guid: 7f7c4cc930b114e42a66e533254f4711, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4398,7 +4399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722176103694666831, guid: 90bc52dfb9a808a4892c37da5cf09063, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.409999
+      value: -8.4
       objectReference: {fileID: 0}
     - target: {fileID: 6722176103694666831, guid: 90bc52dfb9a808a4892c37da5cf09063, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6546,7 +6547,7 @@ Transform:
   m_GameObject: {fileID: 1278036857}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -4.44, y: 4.53, z: -6.19}
+  m_LocalPosition: {x: 3.24, y: 4.53, z: -6.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6768,6 +6769,7 @@ MonoBehaviour:
   - {fileID: 1178035907}
   requiredPlayerPosition: 1
   requiredPosition: {x: 0, y: 0, z: -7}
+  frame: {fileID: 0}
   glassShards:
   - {fileID: 3668694956852880153, guid: da4ba6a284c69954e90634605386b896, type: 3}
 --- !u!1001 &1344684702
@@ -7443,6 +7445,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5595809549613474722, guid: b4433e8d16ad71d41b782f4f09027e8c, type: 3}
   m_PrefabInstance: {fileID: 1493162281}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1522251349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9118735760167049477, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+  m_PrefabInstance: {fileID: 1774632697}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1522251355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522251349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_MaxRayIntersections: 0
 --- !u!1 &1522829221
 GameObject:
   m_ObjectHideFlags: 0
@@ -8893,6 +8916,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4831234619962423155, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 456632452}
+    - targetCorrespondingSourceObject: {fileID: 9118735760167049477, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1522251355}
   m_SourcePrefab: {fileID: 100100000, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
 --- !u!1 &1782627211
 GameObject:
@@ -10021,7 +10047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4047758597590339774, guid: 32003cdf1ea1ba648b9e661b19adc183, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.41
+      value: -8.4
       objectReference: {fileID: 0}
     - target: {fileID: 4047758597590339774, guid: 32003cdf1ea1ba648b9e661b19adc183, type: 3}
       propertyPath: m_LocalPosition.y

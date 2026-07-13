@@ -10,15 +10,6 @@ namespace _Project.Scripts.ECS {
     [RequireComponent(typeof(BaseObject))]
     public class MemoryFrameMaster : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
-        // Il va me falloir un collider avec lequel interagir
-        // Raccrocher ça au baseObject ? Sinon il faut que je fasse des modifs dans le PlayerInteract
-        
-        // Changement de caméra sur les tableaux
-        // Moyen de déplacer les tableaux à la souris
-        // Comment détecter la souris ? screenPos to worldPos ?
-        // Avoir une sorte de snap pour les tableaux
-        
-        // Comment checker quel ordre est le bon ?
 
         [Header("Memory Frame")]
         [SerializeField] private CinemachineCamera frameCamera;
@@ -27,6 +18,8 @@ namespace _Project.Scripts.ECS {
         
         private bool isInitialized;
         private bool isUsingMemoryFrame;
+
+        private bool memoryCompleted;
         
         public void Initialize() {
             if (!isInitialized) {
@@ -37,6 +30,7 @@ namespace _Project.Scripts.ECS {
 
                 for (var i = 0; i < frameSlots.Length; i++) {
                     frames[i].SetCurrentPosition(i);
+                    frames[i].Initialize(this);
                 }
                 
                 baseObject.SetInteract(true);
@@ -46,6 +40,8 @@ namespace _Project.Scripts.ECS {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if(memoryCompleted) return;
+            
             if (interaction is ObjectInteraction.Contextual) {
                 UseMemoryFrame();
             }
@@ -74,6 +70,10 @@ namespace _Project.Scripts.ECS {
             }
         }
 
+        public Vector3 GetCurrentSlotPosition(int index) {
+            return frameSlots[index].position;
+        }
+        
         public void Tick(float deltaTime) {
             
         }
@@ -90,6 +90,38 @@ namespace _Project.Scripts.ECS {
             
         }
 
+        private void CompleteFrames() {
+            memoryCompleted = true;
+            baseObject.SetInteract(false);
+            
+            UseMemoryFrame();
+            
+            Debug.Log("Memory Completed");
+        }
+        
+        public Transform[] GetSlots() {
+            return frameSlots;
+        }
+
+        public void SetPaintingTransform() {
+            bool allValid = true;
+            foreach (var frame in frames) {
+                frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
+                if(!frame.ValidPosition()) allValid = false;
+            }
+
+            if (allValid) {
+                CompleteFrames();
+            }
+        }
+        
+        public MemoryFrame GetFrame(int index) {
+            foreach (var frame in frames) {
+                if(frame.GetCurrentPosition() == index) return frame;
+            }
+            return null;
+        }
+        
         public BaseObject GetBaseObject() {
             return baseObject;
         }
