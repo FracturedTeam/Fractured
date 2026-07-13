@@ -1477,25 +1477,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Key #1
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -2337,6 +2320,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1885058526782806060, guid: 16af00b08bc382d4f9fee8e298b0b172, type: 3}
   m_PrefabInstance: {fileID: 466861885}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &472372795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6184298790874359725, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
+  m_PrefabInstance: {fileID: 626169609}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &480316408
 GameObject:
   m_ObjectHideFlags: 0
@@ -2692,25 +2680,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Key
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -2956,6 +2927,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Armchair
       objectReference: {fileID: 0}
+    - target: {fileID: 6184298790874359725, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 6816438075779054871, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.5
@@ -2999,13 +2974,84 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6184298790874359725, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 626169615}
+    - targetCorrespondingSourceObject: {fileID: 6184298790874359725, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 626169614}
+    - targetCorrespondingSourceObject: {fileID: 6184298790874359725, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 626169616}
   m_SourcePrefab: {fileID: 100100000, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
 --- !u!4 &626169610 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6816438075779054871, guid: 904cfe3ac05716f438e6fed874bcfbfd, type: 3}
   m_PrefabInstance: {fileID: 626169609}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &626169614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472372795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls: []
+    times: 25
+    noLimit: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
+--- !u!114 &626169615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472372795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  hudTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  data:
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+  <Guid>k__BackingField: 13f4d095-59a7-4a20-8340-cb9f10549d71
+--- !u!114 &626169616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472372795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
 --- !u!1001 &635998341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3401,25 +3447,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Key #2
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -4283,25 +4312,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -6089,25 +6101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: 
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -7182,25 +7177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Chimney
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -7715,45 +7693,57 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: shards.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'shards.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3668694956852880153, guid: da4ba6a284c69954e90634605386b896, type: 3}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: baseObjects.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 576163150}
+      objectReference: {fileID: 880346041}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1178035905}
+      objectReference: {fileID: 626169615}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 265448402}
+      objectReference: {fileID: 576163150}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 880346041}
+      objectReference: {fileID: 1178035905}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 1734623828}
+      objectReference: {fileID: 2034082844}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 2034082844}
+      objectReference: {fileID: 1734623828}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1438064217}
+      objectReference: {fileID: 1706578077}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 684621337}
+      objectReference: {fileID: 1438064217}
     - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 1706578077}
+      objectReference: {fileID: 684621337}
+    - target: {fileID: 2512746686963369149, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[9]'
+      value: 
+      objectReference: {fileID: 265448402}
     - target: {fileID: 5929228106835848343, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.67046
@@ -7812,44 +7802,56 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: baseObjects.Array.size
-      value: 9
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: glassShards.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 576163150}
+      objectReference: {fileID: 880346041}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1178035905}
+      objectReference: {fileID: 626169615}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 265448402}
+      objectReference: {fileID: 576163150}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 880346041}
+      objectReference: {fileID: 1178035905}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 1734623828}
+      objectReference: {fileID: 2034082844}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 2034082844}
+      objectReference: {fileID: 1734623828}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1438064217}
+      objectReference: {fileID: 1706578077}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 684621337}
+      objectReference: {fileID: 1438064217}
     - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
       propertyPath: 'baseObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 1706578077}
+      objectReference: {fileID: 684621337}
+    - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'baseObjects.Array.data[9]'
+      value: 
+      objectReference: {fileID: 265448402}
+    - target: {fileID: 8868553382031444163, guid: ce9dbf1fe93e96742836468669308977, type: 3}
+      propertyPath: 'glassShards.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3668694956852880153, guid: da4ba6a284c69954e90634605386b896, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8346,25 +8348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Test Item 2
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -8593,25 +8578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Paper
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}
@@ -9725,25 +9693,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Test Item 3
-  successDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  cantInteractDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  failedDialogue:
-    dialogue: {fileID: 0}
-    oneTime: 0
-    alreadyInteracted: 0
-  locked: 0
-  memoryId: 0
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
-  stopTutorialTriggerType: 0
-  startTutorialTriggerType: 0
-  interactTutorialElement: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     Position: {x: 0, y: 0, z: 0}

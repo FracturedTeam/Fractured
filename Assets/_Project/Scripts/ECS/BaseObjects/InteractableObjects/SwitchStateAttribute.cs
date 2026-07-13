@@ -35,7 +35,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void ForceChangeState(bool isOn)
         {
             stateOn = isOn;
-            baseObject.GetTrigger?.OnFunction(stateOn ? baseObject.GetTrigger.OnSetStateOn : baseObject.GetTrigger.OnSetStateOff);
+            baseObject.GetTrigger?.OnFunction(stateOn ? baseObject.GetTrigger?.OnSetStateOn : baseObject.GetTrigger?.OnSetStateOff);
         }
         
  
