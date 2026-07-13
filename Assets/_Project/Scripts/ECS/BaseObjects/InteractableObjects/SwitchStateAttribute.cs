@@ -17,7 +17,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[SwitchStateAttribute] Cannot find {nameof(BaseObject)} in {nameof(SwitchStateAttribute)}");
 
-                baseObject.GetObjectType = ObjectType.None;
+                baseObject.GetObjectType = ObjectType.MemoryFrame;
                 
                 baseObject.SetInteract(true);
                 
