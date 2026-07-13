@@ -1,4 +1,4 @@
-using System;
+using _Project.Scripts.GameServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,6 +42,10 @@ namespace _Project.Scripts.UI
         private void SpeedUp(bool speeding)
         {
             Time.timeScale = Mathf.Clamp(Time.timeScale += (speeding? Time.deltaTime : -Time.deltaTime) , 1, maxSpeed);
+        }
+        
+        public void LoadMenu() { 
+            GameSceneLoaderSystem.Instance.LoadMenu();
         }
     }
 }

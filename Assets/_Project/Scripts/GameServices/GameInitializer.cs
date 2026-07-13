@@ -110,6 +110,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         private void OnDestroy() {
+            screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
@@ -161,8 +162,8 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
-            shardService.RepopulateBaseObjet(_baseObjects);
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards, GlassText[] _glassTexts) {
+            shardService.RepopulateBaseObjet(_baseObjects, _glassTexts);
             if(_shards.Length > 0)
                 AddShards(_shards);
         }

@@ -82,7 +82,7 @@ namespace _Project.Scripts.UI
          memories.TryAdd(id, true);
          memories[id] = true;
       }
-
+      
       public bool IsUnlockedMemory(int id)
       {
          if (!memories.ContainsKey(id))

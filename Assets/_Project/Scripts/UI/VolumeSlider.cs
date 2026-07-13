@@ -18,7 +18,8 @@ namespace _Project.Scripts.UI {
         private void Start() {
             slider = GetComponent<Slider>();
 
-            slider.value = GameInitializer.Instance.GetVolume((int)volumeType);
+            if(GameInitializer.HasInstance)
+                slider.value = GameInitializer.Instance.GetVolume((int)volumeType);
         }
 
         public void OnSliderValueChanged() {

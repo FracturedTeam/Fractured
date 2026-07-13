@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.InteractableObjects;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -31,12 +29,22 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
-            if(interactables.Count == 0) return;
-
-            foreach (var interactable in interactables) {
-                interactable.Initialize();
-                if (interactable.GetGlass) {
-                    shardsInteractable.Add(interactable);
+            if(interactables.Count != 0)
+            {
+                foreach (var interactable in interactables)
+                {
+                    interactable.Initialize();
+                    if (interactable.GetGlass)
+                    {
+                        shardsInteractable.Add(interactable);
+                    }
+                }
+            }
+            if(glassTexts.Count != 0)
+            {
+                foreach (var text in glassTexts)
+                {
+                    text.Initialize();
                 }
             }
         }
@@ -58,14 +66,14 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void Tick() {
             HandleShardMovement();
-            //UpdateGlassInteraction(); //Expensive methods
+            UpdateGlassInteraction(); //Expensive methods
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            /*foreach (var glassText in glassTexts)
-              SetGlassTextState(glassText);*/
+            foreach (var glassText in glassTexts)
+                SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
@@ -74,11 +82,11 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        /*private void SetGlassTextState(GlassText text) {
+        private void SetGlassTextState(GlassText text) {
             foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.TagPositions), shard);
+                text.OnInteract(shard.IsColliding(text.transform.position), shard);
             }
-        }*/
+        }
         
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement()
@@ -121,9 +129,13 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void RepopulateBaseObjet(BaseObject[] obj) {
+        public void RepopulateBaseObjet(BaseObject[] obj, GlassText[] texts) {
             interactables.Clear();
             interactables.AddRange(obj);
+            
+            glassTexts.Clear();
+            glassTexts.AddRange(texts);
+            
             UpdateInteractableObjects();
         }
         
