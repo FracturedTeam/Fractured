@@ -26,13 +26,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public void OnInteract(IInteractable interactable) {
+        public void OnInteract(IInteractable interactable)
+        {
+            var failed = true;
             foreach (var key in PlayerController.Instance.inventory.keys) {
-                if (key.ID == ID) {
+                if (key.ID == ID)
+                {
+                    failed = false;
+                    baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractSuccess);
                     baseObject.GetLockState = LockedState.Unlocked;
                     PlayerController.Instance.inventory.OnKeyUsed(key.ID);
-                    baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractSuccess);
-
                     if (doInteractImmediately) {
                         switch (interactable.GetBaseObject().GetObjectType) {
                             case ObjectType.Collectable:
@@ -49,10 +52,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                                 break;
                         }
                     }
-                    baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractFailed);
                     break;
                 }
             }
+            if(failed)
+                baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractFailed);
         }
 
         public void Tick(float deltaTime) {
