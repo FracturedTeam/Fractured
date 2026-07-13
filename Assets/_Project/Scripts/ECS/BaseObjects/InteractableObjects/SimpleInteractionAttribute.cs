@@ -16,7 +16,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[SimpleInteractionAttribute] Cannot find {nameof(BaseObject)} in {nameof(SimpleInteractionAttribute)}");
 
-                baseObject.GetObjectType = ObjectType.None;
+                baseObject.GetObjectType = ObjectType.MemoryFrame;
                 
                 baseObject.SetInteract(true);
                 

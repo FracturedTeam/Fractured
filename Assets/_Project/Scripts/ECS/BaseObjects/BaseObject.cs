@@ -166,7 +166,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 return;
             }
             GetInteract.OnInteract(interaction, interactable);
-            GetTrigger?.OnFunction(GetTrigger.OnInteract);
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  

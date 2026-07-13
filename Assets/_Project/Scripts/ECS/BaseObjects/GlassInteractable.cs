@@ -207,7 +207,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         private void SetVisibility(bool isUnder) {
             if (objectColor == ColorEnum.Both) IsVisible = isUnder;
             else IsVisible = !isUnder;
-            baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger.OnHideReveal);
+            baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnHideReveal);
             
             if (baseObject.GetObjectType is ObjectType.Moveable) {
                 if (!moveableComponent.IsGrabbed()) {

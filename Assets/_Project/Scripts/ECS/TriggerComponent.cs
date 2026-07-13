@@ -41,21 +41,22 @@ public class TriggerComponent : MonoBehaviour
 [Serializable]
 public class CustomEvent 
 {
-    public CustomEvent CreateInstance()
-    {
-        count = times;
-        return new CustomEvent();
-    }
 
     public UnityEvent actions;
-    public int times;
+    public int times = 1;
+    public bool noLimit = true;
     private int count;
-    private bool noLimit;
+    private bool initialized;
     
 
     public void Call()
     {
-        if (!noLimit && count <= 0) 
+        if (!initialized)
+        {
+            initialized = true;
+            count = times;
+        }
+        if (!noLimit && count < 1) 
             return;
         
         count--;
