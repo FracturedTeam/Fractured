@@ -1,9 +1,7 @@
 using System;
-using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class SceneElement : MonoBehaviour {
         public BaseObject baseObject {get; private set;}
         private SceneMaster masterValidation;

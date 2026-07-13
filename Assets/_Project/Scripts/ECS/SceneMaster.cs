@@ -1,3 +1,5 @@
+using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using UnityEngine;
@@ -15,6 +17,7 @@ namespace _Project.Scripts.ECS {
         [Header("Obtainable Elements")]
         [SerializeField] public MemoryFrame frame;
         [SerializeField] public Glass[] glassShards;
+        [SerializeField] private GlassText worldText;
 
         private bool hasSceneBeenValidated;
         
@@ -59,6 +62,7 @@ namespace _Project.Scripts.ECS {
             }
             
             frame.Unlock();
+            worldText?.Appear();
             GameInitializer.Instance.AddShards(glassShards);
             
             Debug.Log("Scene has been validated");

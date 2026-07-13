@@ -1,4 +1,5 @@
 using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEditor;
 
 namespace _Project.Scripts.Editor {

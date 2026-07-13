@@ -3,7 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryFrame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler {
         private MemoryFrameMaster master;
         private Collider collider;
@@ -26,12 +26,17 @@ namespace _Project.Scripts.ECS {
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
+            
+            gameObject.SetActive(isUnlocked);
         }
         
         public int GetCurrentPosition() => currentPos;
         public void SetCurrentPosition(int newPos) => currentPos = newPos;
-        
-        public void Unlock() => isUnlocked = true;
+
+        public void Unlock() {
+            gameObject.SetActive(true);
+            isUnlocked = true;
+        }
 
         public void CanBeInteracted(bool can) {
             canBeInteracted = can;
@@ -39,7 +44,7 @@ namespace _Project.Scripts.ECS {
 
         // Mouse event
         public void OnPointerDown(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && isUnlocked) return;
             
             isSelected = true;
             collider.enabled = false;
@@ -48,7 +53,7 @@ namespace _Project.Scripts.ECS {
         }
 
         public void OnPointerUp(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && isUnlocked) return;
             
             isSelected = false;
             collider.enabled = true;
@@ -113,25 +118,25 @@ namespace _Project.Scripts.ECS {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && isUnlocked) return;
             
             Debug.Log($"OnPointerEnter {eventData.position}");
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && isUnlocked) return;
             
             Debug.Log($"OnPointerExit {eventData.position}");
         }
         
         public void OnDrag(PointerEventData eventData) {
-            if(!isSelected) return;
+            if(!isSelected && isUnlocked) return;
             
             transform.position = GetMousePosition(eventData);
         }
 
         public bool ValidPosition() {
-            if (currentPos == requiredPosition) return true;
+            if (currentPos == requiredPosition && isUnlocked) return true;
             
             return false;
         }

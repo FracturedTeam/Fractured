@@ -1,12 +1,11 @@
 using System;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class MemoryFrameMaster : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
@@ -73,22 +72,6 @@ namespace _Project.Scripts.ECS {
         public Vector3 GetCurrentSlotPosition(int index) {
             return frameSlots[index].position;
         }
-        
-        public void Tick(float deltaTime) {
-            
-        }
-
-        public void Dispose() {
-            
-        }
-
-        public void CompleteObject() {
-            
-        }
-
-        public void ResetObject() {
-            
-        }
 
         private void CompleteFrames() {
             memoryCompleted = true;
@@ -124,6 +107,22 @@ namespace _Project.Scripts.ECS {
         
         public BaseObject GetBaseObject() {
             return baseObject;
+        }
+        
+        public void Tick(float deltaTime) {
+            
+        }
+
+        public void Dispose() {
+            
+        }
+
+        public void CompleteObject() {
+            
+        }
+
+        public void ResetObject() {
+            
         }
     }
 }
