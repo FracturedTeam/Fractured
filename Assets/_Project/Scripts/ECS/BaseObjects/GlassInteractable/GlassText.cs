@@ -23,6 +23,8 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
     private ObservableHashSet<Glass> shardsOnTop;
+    private BaseObject baseObject;
+    private bool isInitialized;
     
 
     internal void Initialize()
@@ -33,9 +35,17 @@ public class GlassText : MonoBehaviour
         bothText.Initialize();
         
         ForceSet();
-        shardsOnTop = new ObservableHashSet<Glass>();
-        shardsOnTop.onUpdate += UpdateShards;
-        
+        if (!isInitialized)
+        {
+            if (TryGetComponent(out BaseObject component)) baseObject = component;
+            else
+                throw new ArgumentNullException(
+                    $"[GlassText] BaseObject on {gameObject.name} could not be found !");
+
+            shardsOnTop = new ObservableHashSet<Glass>();
+            shardsOnTop.onUpdate += UpdateShards;
+        }
+
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
     }
 
@@ -66,12 +76,16 @@ public class GlassText : MonoBehaviour
         shardsOnTop.Clear();
     }
 
+    public void Appear()
+    {
+        SetAlpha( 1, 1);
+    }
+
     internal void OnInteract(bool isColliding, Glass shard)
     {
         fragAText.OnInteract(isColliding, shard);
         fragBText.OnInteract(isColliding, shard);
         bothText.OnInteract(isColliding, shard);
-        SetAlpha( 1, 1);
     }
 
     public void Setup(GlassTextScriptableObject newData)
