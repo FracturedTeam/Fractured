@@ -22,6 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [Header("Object Color")]
         public ColorEnum objectColor;
+        public bool isOn = true;
 
         [Header("Behaviour")] 
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
@@ -155,6 +156,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
+            if (!isOn)
+                return;
+            
             if (!baseObject.GetRendered().enabled) {
                 baseObject.SetRenderer(true);
                 for (var i = 0; i < transform.childCount; i++) {
