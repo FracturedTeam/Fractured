@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -33,6 +34,15 @@ namespace _Project.Scripts.GameServices {
         [Header("ScreenEffect")]
         [SerializeField] private Material screenEffectMat;
         private float fadeTime = 1.0f;
+
+        [Header("ShardMaterials")] 
+        [SerializeField] private Material chapter1A;
+        [SerializeField] private Material chapter1B;        
+        [SerializeField] private Material chapter2A;
+        [SerializeField] private Material chapter2B;
+        [SerializeField] private Material chapter3A;
+        [SerializeField] private Material chapter3B;
+        
         private float fadeTimer = 0.0f;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -65,6 +75,27 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Initialize();
             saveService.Initialize();
             audioService.Initialize();
+        }
+
+        public Material GetCurrentFragmentMaterial(bool isA, int chapter)
+        {
+            if (isA)
+            {
+                return chapter switch
+                {
+                    1 => chapter1A,
+                    2 => chapter2A,
+                    3 => chapter3A,
+                    _ => null
+                };
+            }
+            return chapter switch
+            {
+                1 => chapter1B,
+                2 => chapter2B,
+                3 => chapter3B,
+                _ => null
+            };
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
