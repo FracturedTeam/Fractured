@@ -333,6 +333,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
             var pos = playerPos + dir.normalized * (boundExtent.x * 3);
             pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
+
+            var elementPos = new Vector3();
+            if (baseObject.HasSceneElement() && baseObject.GetSceneElementPosition(pos, ref elementPos)) {
+                return elementPos;
+            }
             
             return pos;
         }

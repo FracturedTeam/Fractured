@@ -1,12 +1,12 @@
 using System;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class MemoryFrameMaster : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
@@ -73,28 +73,14 @@ namespace _Project.Scripts.ECS {
         public Vector3 GetCurrentSlotPosition(int index) {
             return frameSlots[index].position;
         }
-        
-        public void Tick(float deltaTime) {
-            
-        }
-
-        public void Dispose() {
-            
-        }
-
-        public void CompleteObject() {
-            
-        }
-
-        public void ResetObject() {
-            
-        }
 
         private void CompleteFrames() {
             memoryCompleted = true;
             baseObject.SetInteract(false);
             
             UseMemoryFrame();
+            
+            GameInitializer.Instance.EmptyShards();
             
             Debug.Log("Memory Completed");
         }
@@ -104,9 +90,16 @@ namespace _Project.Scripts.ECS {
         }
 
         public void SetPaintingTransform() {
-            bool allValid = true;
             foreach (var frame in frames) {
                 frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
+            }
+            
+            DoValidation(); //TODO Juste pour tester - à enlever avec la validation par input
+        }
+
+        public void DoValidation() { //TODO appeler via le player interact avec un input long
+            bool allValid = true;
+            foreach (var frame in frames) {
                 if(!frame.ValidPosition()) allValid = false;
             }
 
@@ -124,6 +117,22 @@ namespace _Project.Scripts.ECS {
         
         public BaseObject GetBaseObject() {
             return baseObject;
+        }
+        
+        public void Tick(float deltaTime) {
+            
+        }
+
+        public void Dispose() {
+            
+        }
+
+        public void CompleteObject() {
+            
+        }
+
+        public void ResetObject() {
+            
         }
     }
 }
