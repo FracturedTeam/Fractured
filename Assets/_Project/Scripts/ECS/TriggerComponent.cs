@@ -33,10 +33,7 @@ public class TriggerComponent : MonoBehaviour
     {
         foreach (var customEvent in events)
         {
-            if(customEvent.times > 0)
-            {
-                customEvent.actions.Invoke();
-            }
+            customEvent.Call();
         }
     }
 }

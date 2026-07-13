@@ -22,6 +22,8 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragAText;
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
+    private ObservableHashSet<Glass> shardsOnTop;
+    
 
     internal void Initialize()
     {
@@ -31,6 +33,8 @@ public class GlassText : MonoBehaviour
         bothText.Initialize();
         
         ForceSet();
+        shardsOnTop = new ObservableHashSet<Glass>();
+        shardsOnTop.onUpdate += UpdateShards;
         
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
     }
@@ -48,6 +52,18 @@ public class GlassText : MonoBehaviour
         fragAText.SetAlpha(alpha, time);
         fragBText.SetAlpha(alpha, time);
         bothText.SetAlpha(alpha, time);
+    }
+
+    private void UpdateShards()
+    {
+    }
+
+    private void OnDestroy() {
+        if (shardsOnTop == null) 
+            return;
+        
+        shardsOnTop.onUpdate -= UpdateShards;
+        shardsOnTop.Clear();
     }
 
     internal void OnInteract(bool isColliding, Glass shard)

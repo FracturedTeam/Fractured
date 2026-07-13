@@ -176,6 +176,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void CompleteObject() {
             if (GetGlass) GetGlassInteract.CompleteObject();
             GetInteract?.CompleteObject();
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteractSuccess); 
         }
 
         public void ResetInteract() {
