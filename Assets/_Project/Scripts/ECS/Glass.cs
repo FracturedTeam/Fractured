@@ -145,8 +145,8 @@ namespace _Project.Scripts.ECS
             if(MemoryManager.Instance.isInMemory) return;
 
             if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-                if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
-                if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
+                if(color2D is ColorEnum.ColorA && !GameInitializer.Instance.InBlueEditableArea()) return;
+                if(color2D is ColorEnum.ColorB && !GameInitializer.Instance.InRedEditableArea()) return;
             }
 
             transform.position += (Vector3)eventData.delta; 

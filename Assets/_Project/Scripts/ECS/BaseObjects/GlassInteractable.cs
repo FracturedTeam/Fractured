@@ -177,10 +177,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             foreach (var shard in shardsOnTop.Items)
                 switch (shard.GetColor) {
-                    case ColorEnum.Blue:
+                    case ColorEnum.ColorA:
                         underBlue++;
                         break;
-                    case ColorEnum.Red:
+                    case ColorEnum.ColorB:
                         underRed++;
                         break;
                     case ColorEnum.Both:
@@ -196,10 +196,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 case ColorEnum.Both:
                     SetVisibility(underRed > 0 && underBlue > 0);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     SetVisibility(underRed < 1 || underBlue > 0);
                     break;
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     SetVisibility(underBlue < 1 || underRed > 0);
                     break;
                 default:
@@ -291,8 +291,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         #if UNITY_EDITOR
         private void OnDrawGizmos() {
             Gizmos.color = objectColor switch {
-                ColorEnum.Blue => Color.dodgerBlue,
-                ColorEnum.Red => Color.crimson,
+                ColorEnum.ColorA => Color.dodgerBlue,
+                ColorEnum.ColorB => Color.crimson,
                 _ => Color.darkOrchid
             };
             
