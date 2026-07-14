@@ -17,8 +17,7 @@ namespace _Project.Scripts.GameServices {
         [Header("Puzzle Objects")]
         [SerializeField] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
-        [SerializeField] public List<GlassText> glassTexts;
-
+        
         [Header("Debug Settings")]
         public Vector3 playerPosition;
         
@@ -46,11 +45,9 @@ namespace _Project.Scripts.GameServices {
         
         public void SetInteractable() {
             baseObjects = new List<BaseObject>();
-            glassTexts = new List<GlassText>();
             
             //Set interactable
             baseObjects.AddRange(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
-            glassTexts.AddRange(FindObjectsByType<GlassText>(FindObjectsSortMode.None));
             
             EditorUtility.SetDirty(this);
             if (!Application.isPlaying)
