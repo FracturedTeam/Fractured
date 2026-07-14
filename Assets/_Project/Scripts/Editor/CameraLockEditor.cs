@@ -79,7 +79,7 @@ namespace _Project.Scripts.Editor {
             }
 
             if (GUI.changed) {
-                EditorUtility.SetDirty(clamp);
+                EditorUtility.SetDirty(target);
             }
         }
     }

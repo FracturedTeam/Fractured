@@ -54,12 +54,12 @@ namespace _Project.Scripts.UI
         [SerializeField] private Image memoryLine;
         
         private EventBinding<InteractEvent> interactEventBinding;
-        private EventBinding<MemoryEvent> memoryEventBinding;
+       // private EventBinding<MemoryEvent> memoryEventBinding;
         private Tweener interactTween;
         private Tweener memoryTween;
         
         [Header("Dialogue")]
-        [SerializeField] private GlassText glassText;
+        [SerializeField] private SubtitleText subtitleText;
         private DialogueScriptableObject currentDialogue;
         private CountdownTimer textTimer;
         
@@ -89,13 +89,13 @@ namespace _Project.Scripts.UI
         private void OnEnable() {
             interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
             EventBus<InteractEvent>.Register(interactEventBinding);
-            memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
-            EventBus<MemoryEvent>.Register(memoryEventBinding);
+            //memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
+            //EventBus<MemoryEvent>.Register(memoryEventBinding);
         }
 
         private void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
-            EventBus<MemoryEvent>.Deregister(memoryEventBinding);
+            //EventBus<MemoryEvent>.Deregister(memoryEventBinding);
             
             interactTween?.Kill();
             memoryTween?.Kill();
@@ -104,12 +104,12 @@ namespace _Project.Scripts.UI
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {
-            if(!glassText || !newDialogue)
+            if(!subtitleText || !newDialogue)
                 return;
             
             currentDialogue = newDialogue;
             
-            glassText.Setup(currentDialogue);
+            subtitleText.Setup(currentDialogue);
             
             if (currentDialogue.time <= 0)
                 return;
@@ -122,7 +122,7 @@ namespace _Project.Scripts.UI
             if(currentDialogue && currentDialogue.next)
                 SetText(currentDialogue.next);
             else
-                glassText.Setup(null);
+                subtitleText.Setup(null);
         }
 
         public void ShardSpawn(Glass shard)
@@ -245,14 +245,14 @@ namespace _Project.Scripts.UI
                 Instance.interactionParent.transform.position = position;
             }
 
-            private void ShowMemory(MemoryEvent e) {
-                memoryTween.Kill();
-                
-                memoryImage.sprite = e.memory;
-                memoryImage.sprite = e.memoryLine;
-                
-                memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
-            }
+            // private void ShowMemory(MemoryEvent e) {
+            //     memoryTween.Kill();
+            //     
+            //     memoryImage.sprite = e.memory;
+            //     memoryImage.sprite = e.memoryLine;
+            //     
+            //     memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
+            // }
 
         #endregion
         

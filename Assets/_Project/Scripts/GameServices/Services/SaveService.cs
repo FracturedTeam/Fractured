@@ -5,31 +5,47 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
 using _Project.Scripts.UI;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
 
     [Serializable]
-    public struct SaveFile {
+    public class GameData {
         public string SaveName;
         public string CurrentScene;
         public PlayerData PlayerData;
         public SavedMemory memory;
-        public List<GameData> SceneDatas;
+        public List<SceneData> SceneDatas;
+    }
+    
+    [Serializable]
+    public class SettingData {
+        public float MainVolume;
+        public float MusicVolume;
+        public float SFXVolume;
+        public int ScreenResolutionIndex;
+        public int FullScreenMode;
+        public bool vSyncEnabled;
+        public float Brightness;
+        public int SubtitleSize;
     }
     
     public class SaveService : IGameSystem {
-        private string saveFileName = "New Game";
+        private readonly ShardService shardService;
+        private readonly string saveFileName = "New Game";
+        private readonly string settingsFileName = "Settings";
         
-        private GameData gameData;
+        public GameData GameData;
+        public SettingData SettingData;
         private IDataService dataService;
-        public SaveFile saveFile;
+        
+        private SceneData sceneData;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         private bool deleteSaveOnPlay = false;
         #endif
 
-        private ShardService shardService;
         
         public SaveService(ShardService shard, bool deleteOnPlay) {
             shardService = shard;
@@ -45,19 +61,68 @@ namespace _Project.Scripts.GameServices.Services {
             if(deleteSaveOnPlay) dataService.DeleteAll();
             #endif
 
-            saveFile.SaveName = saveFileName;
+            if (dataService.FileDoesExist(saveFileName)) {
+                GameData = dataService.Load<GameData>(saveFileName);
+            }
+            else {
+                NewGame();
+            }
+            
+            if (dataService.FileDoesExist(settingsFileName)) {
+                LoadSettings();
+            }
+            else {
+                NewSettings();
+            }
+           
         }
-
+        
+        public void NewGame(string gameName = "") {
+            if (gameName == "") gameName = saveFileName;
+            
+            GameData = new GameData {
+                SaveName = gameName,
+                PlayerData = new PlayerData(),
+                SceneDatas = new List<SceneData>(),
+                memory = new SavedMemory ()
+            };
+        }
+        
+        private void NewSettings() {
+            SettingData = new SettingData() { 
+                MainVolume = 1f, 
+                MusicVolume = 1f,
+                SFXVolume = 1f,
+                ScreenResolutionIndex = -1,
+                FullScreenMode = (int)PlayerSettings.fullScreenMode,
+                vSyncEnabled = true,
+                Brightness = 1,
+                SubtitleSize = 16
+            };
+        }
+        
         public void SaveData() {
-            if (GameSceneSettings.HasInstance) { //Update SaveInstance to no longer be a singleton
-                GameSceneSettings.Instance.BindData();
-                gameData = GameSceneSettings.Instance.GetGameData();
+            if (GameSceneSettings.HasInstance) { 
                 
-                //Regarder pour bind plus efficacement les datas
-                if(MemoryManager.HasInstance)  
-                    MemoryManager.Instance.SaveData(saveFile.memory);
+                Debug.Log($"[SaveSystem]::Saving - Saving on scene {GameSceneSettings.Instance.gameObject.scene.name}");
                 
-                PlayerController.Instance.SaveData(saveFile.PlayerData);//Lui donner accès au shard Service
+                // Check immédiatement pour voir si un scene data existe déjà
+                bool foundExistingSceneData = false;
+                int index = 0;
+                for (int i = 0; i < GameData.SceneDatas.Count; i++) {
+                    if (GameData.SceneDatas[i].SceneName == GameSceneSettings.Instance.gameObject.scene.name) {
+                        foundExistingSceneData = true;
+                        index = i;
+                        Debug.Log($"[SaveSystem]::Saving - Has found saved Scene Data");
+                        break;
+                    }
+                }
+
+                // Bind des data
+                if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time in the save file
+                    GameSceneSettings.Instance.BindData(true);
+                if(MemoryManager.HasInstance) MemoryManager.Instance.SaveData(GameData.memory);
+                PlayerController.Instance.SaveData(GameData.PlayerData); // Lui donner accès au shard Service (Pourquoi ? j'ai oublié)
                 
                 //Save Interactable
                 foreach (var interactable in shardService.interactables) {
@@ -66,119 +131,130 @@ namespace _Project.Scripts.GameServices.Services {
                 //Save Shard
                 foreach (var shard in shardService.shards) {
                     shard.SaveData();
-                }
-                
-                gameData.SceneName = GameSceneSettings.Instance.gameObject.scene.name; //Répétition ici
-                saveFile.CurrentScene = gameData.SceneName;
 
-                bool foundExistingSave = false;
-                for (int i = 0; i < saveFile.SceneDatas.Count; i++) {
-                    if (saveFile.SceneDatas[i].SceneName == gameData.SceneName) {
-                        saveFile.SceneDatas[i] = gameData;
-                        foundExistingSave = true;
-                        Debug.Log($"[SaveSystem] Has found existing Scene Save");
-                        break;
+                    for (var i = 0; i < GameSceneSettings.Instance.GetAllShards().Count; i++) {
+                        if (shard.Guid == GameSceneSettings.Instance.GetSceneData().FragmentDatas[i].Guid) {
+                            GameSceneSettings.Instance.GetSceneData().FragmentDatas[i] = shard.data;
+                            break;
+                        }
                     }
                 }
+                
+                sceneData = GameSceneSettings.Instance.GetSceneData();
+                GameData.CurrentScene = sceneData.SceneName;
 
-                if (!foundExistingSave) {
-                    Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
-                    saveFile.SceneDatas.Add(gameData);
+                if (!foundExistingSceneData) {
+                    GameData.SceneDatas.Add(sceneData);
+                    Debug.Log($"[SaveSystem]::Saving - Has not found existing Scene Save, Registering new one !");
+                }
+                else {
+                    GameData.SceneDatas[index] = sceneData;
+                    Debug.Log($"[SaveSystem]::Saving - Has updated scene data in save file");
                 }
             
-                dataService.Save(saveFile);
+                dataService.Save(GameData, GameData.SaveName);
             
-                Debug.Log($"[SaveSystem] Saved Data to savefile {saveFile.SaveName}");
+                Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {GameData.SaveName}");
             }
         }
+        
+         public void SaveSettings()
+         {
+             dataService.Save(SettingData, settingsFileName);
+             Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {settingsFileName}");
+         }
         
         public void LoadData() {
             if(GameSceneSettings.HasInstance)
                 LoadData(GameSceneSettings.Instance.gameObject.scene.name);
+            else {
+                Debug.LogError("[SaveService]::Load - Game scene setting not found");
+            }
         }
         
-        private void LoadData(string gameName) {
+        private void LoadData(string sceneName) {
+            
             if (!dataService.FileDoesExist(saveFileName)) {
-                dataService.Save(saveFile);
+                dataService.Save(GameData, GameData.SaveName);
+                Debug.Log($"[SaveService]::Load - SaveFile does not exist, creating a new one");
                 return;
             }
-            saveFile = dataService.Load(saveFile.SaveName); //Fail - Faut que je regarde pourquoi j'ai mis Fail
+            
+            GameData ??= dataService.Load<GameData>(GameData.SaveName);
             
             var foundExisting = false;
             var index = 0;
-            for (var i = 0; i < saveFile.SceneDatas.Count; i++) {
-                if (saveFile.SceneDatas[i].SceneName != gameName) continue;
+            for (var i = 0; i < GameData.SceneDatas.Count; i++) {
+                if (GameData.SceneDatas[i].SceneName != sceneName) continue;
                 
-                gameData = saveFile.SceneDatas[i];
+                sceneData = GameData.SceneDatas[i];
                 foundExisting = true;
                 index = i;
                 break;
             }
 
             if(!foundExisting) {  
-                Debug.Log($"[SaveSystem] Has not found existing Scene Save, Creating new one !");
-                gameData.SceneName = gameName;
+                Debug.Log($"[SaveSystem]::Load - Has not found existing Scene Save, Creating new one !");
+                sceneData.SceneName = sceneName;
                 SaveData();
                 return;
             }
             
-            GameSceneSettings.Instance.SetGameData(saveFile.SceneDatas[index]);
-            GameSceneSettings.Instance.BindData();
+            GameSceneSettings.Instance.SetSceneData(GameData.SceneDatas[index]);
+            GameSceneSettings.Instance.BindData(false);
+            
             if(MemoryManager.HasInstance)
-                MemoryManager.Instance.Load(saveFile.memory);
+                MemoryManager.Instance.Load(GameData.memory);
             
             foreach (var interactable in shardService.interactables) {
                 interactable.Load();
             }
             
-            /*foreach (var shard in shardService.shards) { //Previous method who does not accuratly work
-                shard.LoadData();
-            }*/
-            foreach (var shard in GameSceneSettings.Instance.GetAllShards()) {
+            foreach (var shard in shardService.shards) {
                 shard.LoadData();
             }
-            Debug.Log($"[SaveSystem] Save Loaded for scene {saveFile.SceneDatas[index].SceneName}");
+            
+            Debug.Log($"[SaveSystem]::Load - Save Loaded for scene {GameData.SceneDatas[index].SceneName}");
         }
 
         public void LoadPlayerData() {
-            PlayerController.Instance.Load(saveFile.PlayerData);
-        }
-        
-        public void NewGame(string gameName = "") {
-            if (gameName == "") gameName = saveFileName;
-            
-            saveFile = new SaveFile {
-                SaveName = gameName,
-                PlayerData = new PlayerData(),
-                SceneDatas = new List<GameData>(),
-                memory = new SavedMemory ()
-            };
+            PlayerController.Instance.Load(GameData.PlayerData);
         }
         
         public void LoadGame() {
-            saveFile = dataService.Load(saveFile.SaveName);
+            GameData = dataService.Load<GameData>(GameData.SaveName);
         }
         
         public void DeleteGame(string gameName) {
             dataService.Delete(gameName);
         }
         
+        public void LoadSettings() {
+            SettingData = dataService.Load<SettingData>(settingsFileName);
+        }
+        
+        public void DeleteSettings() {
+            dataService.Delete(settingsFileName);
+        }
+        
         public void SetRuntimeShard(List<Glass> shards) {
+            // Check si la liste n'excède pas le nombre de shard et la met à jour
             if (GameSceneSettings.Instance.GetAllShards().Count < shards.Count) {
                 shards = shards.Distinct().ToList();
             }
+            
             foreach (var s in shards) {
-                for (int i = 0; i < GameSceneSettings.Instance.GetAllShards().Count; i++) {
-                    if (s.gameObject.name == GameSceneSettings.Instance.GetAllShards()[i].gameObject.name) {
-                        GameSceneSettings.Instance.GetAllShards()[i] = shards[i];
-                        GameSceneSettings.Instance.GetGameData().FragmentDatas[i].glassShards = shards[i];
+                for (var i = 0; i < GameSceneSettings.Instance.GetAllShards().Count; i++) {
+                    if (s.Guid == GameSceneSettings.Instance.GetAllShards()[i].Guid) {
+                        GameSceneSettings.Instance.GetAllShards()[i] = s;
+                        break;
                     }
                 }
             }
         }
 
         public bool ExistingSave() {
-            return dataService.FileDoesExist(saveFile.SaveName);
+            return dataService.FileDoesExist(GameData.SaveName);
         }
         
         public void Tick() {
