@@ -71,6 +71,7 @@ public class GlassText : MonoBehaviour
         shardsOnTop.Clear();
     }
 
+    [ContextMenu("Manually Appear")]
     public void Appear()
     {
         SetAlpha( 1, 1);
