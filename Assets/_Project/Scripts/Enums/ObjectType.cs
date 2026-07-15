@@ -6,6 +6,7 @@ namespace _Project.Scripts.Enums {
         Collectable,
         Usable,
         Inspectable,
-        MemoryFrame
+        MemoryFrame,
+        SimpleInteraction
     }
 }

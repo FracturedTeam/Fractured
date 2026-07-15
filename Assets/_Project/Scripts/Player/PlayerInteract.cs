@@ -151,9 +151,9 @@ namespace _Project.Scripts.Player {
         private void DropObject() {
             Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
             
-            if(potentialInteraction != null)
-                currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
-            else
+            // if(potentialInteraction != null)
+            //     currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+            // else
                 currentInteraction?.OnInteract(ObjectInteraction.Drop);
         }
         #endregion
@@ -257,18 +257,6 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
-                // case ObjectType.Door when potentialInteraction.GetLockState is not LockedState.None: {
-                //     if (potentialInteraction.GetLockState is LockedState.Unlocked)
-                //         interactionType = Interaction.UseDoor;
-                //     // else if (HasObject) {
-                //     //     var key = potentialInteraction.GetComponent<KeyInteractable>();
-                //     //     interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
-                //     // }
-                //     else
-                //         interactionType = Interaction.NeedKey;
-                //     RaiseInteraction();
-                //     return;
-                // }
                 case ObjectType.Door:
                     interactionType = Interaction.UseDoor;
                     RaiseInteraction();
@@ -286,6 +274,10 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.MemoryFrame:
+                    interactionType = Interaction.Grab;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.SimpleInteraction:
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
@@ -351,7 +343,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None) return IsCarrying();
+            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None or ObjectType.SimpleInteraction) return IsCarrying();
 
             return false;
         }
