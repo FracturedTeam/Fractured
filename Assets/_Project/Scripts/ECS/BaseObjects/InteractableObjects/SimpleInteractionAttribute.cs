@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -29,6 +30,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
            
         }
  
+        public void OpenDocument(GlassDocumentScriptableObject document)
+        {
+            HudManager.Instance.OpenDocument(document);
+        }
 
         public void Tick(float deltaTime) {
         }

@@ -18,6 +18,7 @@ public class GlassTextLink : MonoBehaviour
     private ObservableHashSet<Glass> shardsOnTop;
     private int underRed;
     private int underBlue;
+    [SerializeField] private bool isBaseText;
 
 
     public void Initialize() //Initialize
@@ -26,24 +27,24 @@ public class GlassTextLink : MonoBehaviour
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
     }
-    
+
     public void SetAlpha(float alpha, float time)
     {
         baseText.DOFade(alpha, time);
     }
-    
+
     private void UpdateShards()
     {
         underBlue = 0;
         underRed = 0;
-        
+
         foreach (var shard in shardsOnTop.Items)
             switch (shard.GetColor)
             {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     underBlue++;
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     underRed++;
                     break;
                 case ColorEnum.Both:
@@ -55,48 +56,80 @@ public class GlassTextLink : MonoBehaviour
                     break;
             }
     }
-    
-    internal void OnInteract(bool isUnder, Glass shard) {
-        
+
+    internal void OnInteract(bool isUnder, Glass shard)
+    {
+
     }
-    
+
     ///Auto Setup the collision
-    private void Set2DPoints() 
+    private void Set2DPoints()
     {
-      
+
     }
-    
-    public void SetText(string newText)
+
+    public void SetText(string newText, ColorEnum colorEnum = ColorEnum.None)
     {
+        var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal) ;
+        var end = newText.IndexOf("</link>", StringComparison.Ordinal) ;
         if (baseText)
-            baseText.text = newText;
-        else if(GetComponent<TMP_Text>())
-            GetComponent<TMP_Text>().text = newText;
+            baseText.text =  isBaseText ? Replace(newText, "█", start, end - start, colorEnum) : newText;
+        else if (GetComponent<TMP_Text>())
+            GetComponent<TMP_Text>().text =  isBaseText ? Replace(newText, "█", start, end - start, colorEnum) : newText;
     }
     
-    /*
-
-    public void Link()
+    static string Replace(string output, string replacement, int index, int length, ColorEnum colorEnum = ColorEnum.None)
     {
-        int linkIndex = TMP_TextUtilities.FindIntersectingLink(baseText, Mouse.current.position.value, camera);
-        if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink)
+        var replace ="";
+        for (int l = 0; l < length - "<link='censored'>".Length; l++)
         {
-            m_selectedLink = -1;
+            replace += replacement;
         }
-
-        if (linkIndex != -1 && linkIndex != m_selectedLink)
+        
+        switch (colorEnum)
         {
-            m_selectedLink = linkIndex;
-
-            TMP_LinkInfo linkInfo = baseText.textInfo.linkInfo[linkIndex];
-
-            // Debug.Log("Link ID: \"" + linkInfo.GetLinkID() + "\"   Link Text: \"" + linkInfo.GetLinkText() + "\""); // Example of how to retrieve the Link ID and Link Text.
-
-            Vector3 worldPointInRectangle;
-            RectTransformUtility.ScreenPointToWorldPointInRectangle(baseText.rectTransform, Mouse.current.position.value, camera, out worldPointInRectangle);
-
-            print(linkInfo.GetLinkID() == "id_01" ? "01" : "test"); // 100041637: // id_01
+            case ColorEnum.ColorA:
+                replace = "<color=yellow>" + replace + "</color>";
+                break;
+            case ColorEnum.ColorB:
+                replace = "<color=#ff00ffff>" + replace + "</color>";
+                break;
+            case ColorEnum.Both:
+                break;
+            case ColorEnum.None:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(colorEnum), colorEnum, null);
         }
+        replace = "<mspace=0.5em>" + replace + "</mspace>";
+        
+        string removeString = output.Substring(index, length);
+        return output.Replace(removeString, replace);
     }
-    */
+
+        /*
+
+        public void Link()
+        {
+            int linkIndex = TMP_TextUtilities.FindIntersectingLink(baseText, Mouse.current.position.value, camera);
+            if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink)
+            {
+                m_selectedLink = -1;
+            }
+
+            if (linkIndex != -1 && linkIndex != m_selectedLink)
+            {
+                m_selectedLink = linkIndex;
+
+                TMP_LinkInfo linkInfo = baseText.textInfo.linkInfo[linkIndex];
+
+                // Debug.Log("Link ID: \"" + linkInfo.GetLinkID() + "\"   Link Text: \"" + linkInfo.GetLinkText() + "\""); // Example of how to retrieve the Link ID and Link Text.
+
+                Vector3 worldPointInRectangle;
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(baseText.rectTransform, Mouse.current.position.value, camera, out worldPointInRectangle);
+
+                print(linkInfo.GetLinkID() == "id_01" ? "01" : "test"); // 100041637: // id_01
+            }
+        }
+        */
 }

@@ -225,10 +225,10 @@ namespace _Project.Scripts.GameServices {
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
             switch (color) {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     shardService.SetBlueEditableArea(inArea);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     shardService.SetRedEditableArea(inArea);
                     break;
                 case ColorEnum.Both:
