@@ -186,7 +186,7 @@ namespace _Project.Scripts.GameServices {
             shardService.interactables.Clear();
         }
 
-        private void EmptyShards() {
+        public void EmptyShards() {
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
@@ -214,21 +214,27 @@ namespace _Project.Scripts.GameServices {
             saveService.SetRuntimeShard(shardService.shards);
         }
 
-        public void ResetInteractable() {
+        public void ResetAllInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
         }
+
+        public void ResetGlassInteractable() {
+            foreach (var interact in shardService.interactables) {
+                interact.GetGlassInteract?.ResetObject();
+            }
+        }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
-            shardService.PopulateService(_interactable,  _shards, _text);
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
+            shardService.PopulateService(_interactable,  _shards);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
             switch (color) {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     shardService.SetBlueEditableArea(inArea);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     shardService.SetRedEditableArea(inArea);
                     break;
                 case ColorEnum.Both:

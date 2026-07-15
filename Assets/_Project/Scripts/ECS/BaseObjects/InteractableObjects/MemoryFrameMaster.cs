@@ -1,12 +1,12 @@
 using System;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
     public class MemoryFrameMaster : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
@@ -45,6 +45,9 @@ namespace _Project.Scripts.ECS {
             if (interaction is ObjectInteraction.Contextual) {
                 UseMemoryFrame();
             }
+            else if (interaction is ObjectInteraction.Validate) {
+                DoValidation();
+            }
         }
 
         private void UseMemoryFrame() {
@@ -70,6 +73,52 @@ namespace _Project.Scripts.ECS {
             }
         }
 
+        private void DoValidation() {
+            Debug.Log("DoValidation");
+            
+            bool allValid = true;
+            foreach (var frame in frames) {
+                if(!frame.ValidPosition()) allValid = false;
+            }
+
+            if (allValid) {
+                CompleteFrames();
+            }
+        }
+        
+        private void CompleteFrames() {
+            memoryCompleted = true;
+            baseObject.SetInteract(false);
+            
+            UseMemoryFrame();
+            
+            GameInitializer.Instance.EmptyShards();
+            GameInitializer.Instance.ResetGlassInteractable();
+            
+            Debug.Log("Memory Completed");
+        }
+        
+        public Transform[] GetSlots() {
+            return frameSlots;
+        }
+
+        public void SetPaintingTransform() {
+            foreach (var frame in frames) {
+                frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
+            }
+        }
+        
+        public MemoryFrame GetFrame(int index) {
+            foreach (var frame in frames) {
+                if(frame.GetCurrentPosition() == index) return frame;
+            }
+            return null;
+        }
+        
+        public BaseObject GetBaseObject() {
+            return baseObject;
+        }
+        
         public Vector3 GetCurrentSlotPosition(int index) {
             return frameSlots[index].position;
         }
@@ -88,42 +137,6 @@ namespace _Project.Scripts.ECS {
 
         public void ResetObject() {
             
-        }
-
-        private void CompleteFrames() {
-            memoryCompleted = true;
-            baseObject.SetInteract(false);
-            
-            UseMemoryFrame();
-            
-            Debug.Log("Memory Completed");
-        }
-        
-        public Transform[] GetSlots() {
-            return frameSlots;
-        }
-
-        public void SetPaintingTransform() {
-            bool allValid = true;
-            foreach (var frame in frames) {
-                frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
-                if(!frame.ValidPosition()) allValid = false;
-            }
-
-            if (allValid) {
-                CompleteFrames();
-            }
-        }
-        
-        public MemoryFrame GetFrame(int index) {
-            foreach (var frame in frames) {
-                if(frame.GetCurrentPosition() == index) return frame;
-            }
-            return null;
-        }
-        
-        public BaseObject GetBaseObject() {
-            return baseObject;
         }
     }
 }

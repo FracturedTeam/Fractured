@@ -3,13 +3,15 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryFrame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler {
         private MemoryFrameMaster master;
         private Collider collider;
         
-        [Header("Position Required")]
+        [Header("Painting Settings")]
         public int requiredPosition;
+        public Material revealedMat;
+        public MeshRenderer paintingMesh;
         
         private int currentPos;
         private bool isUnlocked;
@@ -18,6 +20,8 @@ namespace _Project.Scripts.ECS {
         private bool isSelected;
         
         private bool isCorrectPosition;
+        
+        
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
@@ -30,8 +34,11 @@ namespace _Project.Scripts.ECS {
         
         public int GetCurrentPosition() => currentPos;
         public void SetCurrentPosition(int newPos) => currentPos = newPos;
-        
-        public void Unlock() => isUnlocked = true;
+
+        public void Unlock() {
+            isUnlocked = true;
+            paintingMesh.material = revealedMat;
+        }
 
         public void CanBeInteracted(bool can) {
             canBeInteracted = can;
@@ -131,7 +138,7 @@ namespace _Project.Scripts.ECS {
         }
 
         public bool ValidPosition() {
-            if (currentPos == requiredPosition) return true;
+            if (currentPos == requiredPosition && isUnlocked) return true;
             
             return false;
         }
