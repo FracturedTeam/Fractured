@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -33,6 +34,15 @@ namespace _Project.Scripts.GameServices {
         [Header("ScreenEffect")]
         [SerializeField] private Material screenEffectMat;
         private float fadeTime = 1.0f;
+
+        [Header("ShardMaterials")] 
+        [SerializeField] private Material chapter1A;
+        [SerializeField] private Material chapter1B;        
+        [SerializeField] private Material chapter2A;
+        [SerializeField] private Material chapter2B;
+        [SerializeField] private Material chapter3A;
+        [SerializeField] private Material chapter3B;
+        
         private float fadeTimer = 0.0f;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -65,6 +75,27 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Initialize();
             saveService.Initialize();
             audioService.Initialize();
+        }
+
+        public Material GetCurrentFragmentMaterial(bool isA, int chapter)
+        {
+            if (isA)
+            {
+                return chapter switch
+                {
+                    1 => chapter1A,
+                    2 => chapter2A,
+                    3 => chapter3A,
+                    _ => null
+                };
+            }
+            return chapter switch
+            {
+                1 => chapter1B,
+                2 => chapter2B,
+                3 => chapter3B,
+                _ => null
+            };
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -155,15 +186,15 @@ namespace _Project.Scripts.GameServices {
             shardService.interactables.Clear();
         }
 
-        private void EmptyShards() {
+        public void EmptyShards() {
             for (int i = shardService.shards.Count - 1; i >= 0; i--) {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards, GlassText[] _glassTexts) {
-            shardService.RepopulateBaseObjet(_baseObjects, _glassTexts);
+        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
+            shardService.RepopulateBaseObjet(_baseObjects);
             if(_shards.Length > 0)
                 AddShards(_shards);
         }
@@ -183,21 +214,27 @@ namespace _Project.Scripts.GameServices {
             saveService.SetRuntimeShard(shardService.shards);
         }
 
-        public void ResetInteractable() {
+        public void ResetAllInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
         }
+
+        public void ResetGlassInteractable() {
+            foreach (var interact in shardService.interactables) {
+                interact.GetGlassInteract?.ResetObject();
+            }
+        }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _text) =>
-            shardService.PopulateService(_interactable,  _shards, _text);
+        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
+            shardService.PopulateService(_interactable,  _shards);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
             switch (color) {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     shardService.SetBlueEditableArea(inArea);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     shardService.SetRedEditableArea(inArea);
                     break;
                 case ColorEnum.Both:

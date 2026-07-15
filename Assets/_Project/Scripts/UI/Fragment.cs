@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using UnityEngine;
 
 namespace _Project.Scripts.UI {
     public class Fragment : MonoBehaviour {
         [SerializeField] private List<Transform> corners;
         [SerializeField] private GameObject frag;
+        [SerializeField] private Renderer render;
 
         public void Setup(List<Vector3> positions) {
             if(positions.Count != corners.Count ){
@@ -22,13 +25,22 @@ namespace _Project.Scripts.UI {
         {
             if (!frag)
                 return;
-            
-            frag.layer = color switch
+
+            switch (color)
             {
-                ColorEnum.Blue => LayerMask.NameToLayer("Fragment Color A"),
-                ColorEnum.Red => LayerMask.NameToLayer("Fragment Color B"),
-                _ => LayerMask.NameToLayer("Default")
-            };
+                case ColorEnum.ColorA:
+                    frag.layer = LayerMask.NameToLayer("Fragment Color A");
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
+                    break;
+                case ColorEnum.ColorB:
+                    frag.layer = LayerMask.NameToLayer("Fragment Color B");
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
+                    break;
+                case ColorEnum.Both:
+                default:
+                    frag.layer = LayerMask.NameToLayer("Default");
+                    break;
+            }
         }
         }
     }

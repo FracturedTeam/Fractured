@@ -52,6 +52,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private CanvasGroup memoryHUD;
         [SerializeField] private Image memoryImage;
         [SerializeField] private Image memoryLine;
+        [SerializeField] private GlassDocument glassDocument;
         
         private EventBinding<InteractEvent> interactEventBinding;
        // private EventBinding<MemoryEvent> memoryEventBinding;
@@ -84,6 +85,7 @@ namespace _Project.Scripts.UI
             interactionUI.GetGroup.alpha = 0;
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
+            glassDocument.gameObject.SetActive(false);
         }
 
         private void OnEnable() {
@@ -101,6 +103,12 @@ namespace _Project.Scripts.UI
             memoryTween?.Kill();
             
             textTimer.OnTimerStop  -= ResetText;
+        }
+
+        public void OpenDocument(GlassDocumentScriptableObject document)
+        {
+            glassDocument.gameObject.SetActive(true);
+            glassDocument.SetUp(document);
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {

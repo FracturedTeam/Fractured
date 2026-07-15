@@ -48,6 +48,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            /*
             if (doorType is DoorType.None) {
                 if (baseObject.failedDialogue is not { oneTime: true, alreadyInteracted: true }) {
                     HudManager.Instance.SetText(baseObject.failedDialogue.dialogue);
@@ -55,6 +56,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
                 return;
             }
+            */
             
             if(hasBeenInteracted) return;
             
@@ -91,7 +93,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             //     
             //     return;
             // }
-            
+            /*
             if (doorType is DoorType.BigDoor) {
                 if (PlayerController.Instance.interact.HasObject) {
                     PlayerController.Instance.interact.triggerFailedDrop = true;
@@ -111,6 +113,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             // if (!linkedDoor.GetBaseObject().GetCollider().enabled) {
             //     GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().lockedSmallDoorSound, transform.position);
             // }
+            */
         }
 
         public void Tick(float deltaTime) {

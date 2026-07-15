@@ -14,8 +14,10 @@ namespace _Project.Scripts.ECS.BaseObjects
     public class BaseObject : MonoBehaviour {
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
+        public GlassText GetTextInteractable { get; private set; }
         public IInteractable GetInteract  { get; set; }
         public TutorialElement  GetTutorialElement { get; set; }
+        public TriggerComponent  GetTrigger { get; set; }
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
 
@@ -24,24 +26,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [Header("Object Name")]
         public string ObjectName;
-        
-        [Header("Dialogues")] 
-        [SerializeField] internal Dialogue successDialogue;
-        [SerializeField] internal Dialogue cantInteractDialogue;
-        [SerializeField] internal Dialogue failedDialogue;
-        
-        [Header("Locked Behind a Memory")]
-        [SerializeField] internal bool locked;
-        [SerializeField] internal int memoryId;
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
         
-        [Header("Tutorial")]
-        [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
-        [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
-        [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
         
@@ -49,6 +38,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
+        private bool canGlassInteractWith;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
@@ -127,8 +117,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
-                
+                if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
+                if(TryGetComponent(typeof(GlassText), out var gt))
+                    GetTextInteractable = gt as GlassText;
                 if(TryGetComponent(out IInteractable interactable)) GetInteract = interactable;
+                
                 else SetInteract(false);
 
                 if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
@@ -150,18 +143,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
+            GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
-            
-            if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
-                SetInteract(false);
-            
-            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
-                Trigger(true);
-            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen) {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-                
         }
         
         private void Update() {
@@ -169,7 +152,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             //     locked = false;
             //     SetInteract(true);
             // }
-            
             
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
@@ -184,44 +166,19 @@ namespace _Project.Scripts.ECS.BaseObjects
                 blockedAttribute.OnInteract(GetInteract);
                 return;
             }
-            
             GetInteract.OnInteract(interaction, interactable);
-
-            if (stopTutorialTriggerType == TutorialTriggerType.OnInteract)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnInteract)
-                Trigger(true);
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
-            GetGlassInteract.OnShardUpdated(isOn, shard);
-
-            if (!isOn) 
-                return;
-
-            if (stopTutorialTriggerType == TutorialTriggerType.OnHideReveal)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnHideReveal)
-                Trigger(true);
+            if(canGlassInteractWith)
+                GetGlassInteract.OnShardUpdated(isOn, shard);
         }
 
         public void CompleteObject() {
             if (GetGlass) GetGlassInteract.CompleteObject();
             GetInteract?.CompleteObject();
-            
-            if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnSuccess)
-                Trigger(true);
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteractSuccess); 
         }
 
         public void ResetInteract() {
@@ -232,6 +189,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
+        }
+
+        public void SetGlassInteract(bool canInteract) {
+            canGlassInteractWith = canInteract;
+            if(!canInteract) GetGlassInteract?.ResetObject();
         }
         
         public void SetCollider(bool isOn) {
@@ -265,6 +227,14 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void TriggerSceneElement() {
             sceneElement.CheckValidation();
+        }
+
+        public bool GetSceneElementPosition(Vector3 dropPosition, ref Vector3 position) {
+            if (Vector3.Distance(sceneElement.requestedPosition, dropPosition) <= sceneElement.tolerance) {
+                position = sceneElement.requestedPosition;
+                return true;
+            }
+            return false;
         }
 
         public void Trigger(bool on) {

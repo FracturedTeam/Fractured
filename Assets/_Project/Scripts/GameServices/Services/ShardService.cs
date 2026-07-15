@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
-        public List<GlassText> glassTexts {get; private set;}
         public List<Glass> shards {get; private set;}
         private Glass currentGlass;
         private Glass onTopGlass;
@@ -23,13 +22,12 @@ namespace _Project.Scripts.GameServices.Services {
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            glassTexts = new List<GlassText>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
         }
 
         private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
-            if(interactables.Count != 0)
+            if (interactables.Count != 0)
             {
                 foreach (var interactable in interactables)
                 {
@@ -40,26 +38,17 @@ namespace _Project.Scripts.GameServices.Services {
                     }
                 }
             }
-            if(glassTexts.Count != 0)
-            {
-                foreach (var text in glassTexts)
-                {
-                    text.Initialize();
-                }
-            }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
-            glassTexts.Clear();
             
             interactables.AddRange(_interactable);
             shards.AddRange(_shards);
-            glassTexts.AddRange(_texts);
             
-            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards | Populating {glassTexts.Count} texts");
+            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
             UpdateInteractableObjects();
         }
         
@@ -72,19 +61,12 @@ namespace _Project.Scripts.GameServices.Services {
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             foreach (var glassInteractable in shardsInteractable)
                 SetShardState(glassInteractable);
-            foreach (var glassText in glassTexts)
-                SetGlassTextState(glassText);
         }
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
-                glassBase.OnShardInteract(shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
-            }
-        }
-        
-        private void SetGlassTextState(GlassText text) {
-            foreach (var shard in shards) {
-                text.OnInteract(shard.IsColliding(text.transform.position), shard);
+                if(shard == null) continue;
+                glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
         
@@ -129,12 +111,9 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void RepopulateBaseObjet(BaseObject[] obj, GlassText[] texts) {
+        public void RepopulateBaseObjet(BaseObject[] obj) {
             interactables.Clear();
             interactables.AddRange(obj);
-            
-            glassTexts.Clear();
-            glassTexts.AddRange(texts);
             
             UpdateInteractableObjects();
         }
