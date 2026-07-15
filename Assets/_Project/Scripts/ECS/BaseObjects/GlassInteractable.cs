@@ -3,6 +3,7 @@ using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.Systems.Timers;
@@ -27,7 +28,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("Behaviour")] 
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
         [SerializeField] private bool objectInside = false;
-        [SerializeField] private MovableAttribute interactableInBox;
+        [SerializeField] private BaseObject interactableInBox;
         
         [Header("Invisible Walls")]
         [SerializeField] private MeshRenderer[] wallRenderer;
@@ -104,7 +105,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                     if (interactableInBox != null)
                         SetObjectInside();
                     else
-                        Debug.LogError($"[GlassInteractable] {nameof(GlassInteractable)} Does not have an object referenced");
+                        Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
                 }
                 
                 isInitialized = true;
@@ -134,10 +135,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Tick(float deltaTime) {
             if (!objectInside || objectOut) return;
-            
-            if (interactableInBox.IsGrabbed() && !objectOut) {
+
+            var move = baseObject.GetInteract as MovableAttribute;
+            var collect = baseObject.GetInteract as CollectableAttribute;
+            if (move && move.IsGrabbed() && !objectOut || collect && collect.IsInInventory() && !objectOut)
                 objectOut = true;
-            }
         }
 
         public void CompleteObject() {
@@ -252,7 +254,12 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!IsInteractableInBoxActive()) return;
             
             moveableComponent.OnInteract(ObjectInteraction.DropNoTimer);
-            interactableInBox?.GetBaseObject().OnInteract(ObjectInteraction.Grab);
+            
+            var move = baseObject.GetInteract as MovableAttribute;
+            var collect = baseObject.GetInteract as CollectableAttribute;
+            
+            move?.GetBaseObject().OnInteract(ObjectInteraction.Grab);
+            collect?.GetBaseObject().OnInteract(ObjectInteraction.Grab);
             
             objectOut = true;
         }
@@ -273,7 +280,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
             
-            var inBoxObject = interactableInBox.GetBaseObject();
+            var inBoxObject = interactableInBox;
             if (!inBoxObject.IsInitialized) {
                 inBoxObject.Initialize();
             }
@@ -287,7 +294,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         bool IsInteractableInBoxActive() {
-            var inBoxObject = interactableInBox.GetBaseObject();
+            var inBoxObject = interactableInBox;
             return inBoxObject.GetCollider().enabled &&
                    inBoxObject.CanBeInteractedWith() &&
                    inBoxObject.GetRendered().enabled;

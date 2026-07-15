@@ -333,6 +333,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return isHeld;
         }
 
+        public bool IsInInventory() {
+            return isInInventory;
+        }
+        
         public KeyAttribute GetKey() {
             if(keyAttribute) return keyAttribute;
 
