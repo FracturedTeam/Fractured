@@ -25,16 +25,22 @@ namespace _Project.Scripts.UI {
         {
             if (!frag)
                 return;
+            
+            LayerMask layer;
 
             switch (color)
             {
                 case ColorEnum.ColorA:
-                    frag.layer = LayerMask.NameToLayer("Fragment Color A");
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
+                    layer = LayerMask.NameToLayer("Fragment Color A");
+                    gameObject.layer = layer;
+                    frag.layer = layer;
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
                     break;
                 case ColorEnum.ColorB:
-                    frag.layer = LayerMask.NameToLayer("Fragment Color B");
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
+                    layer = LayerMask.NameToLayer("Fragment Color B");
+                    gameObject.layer = layer;
+                    frag.layer = layer;
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
                     break;
                 case ColorEnum.Both:
                 default:
