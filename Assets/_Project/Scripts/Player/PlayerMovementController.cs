@@ -206,10 +206,11 @@ namespace _Project.Scripts.Player {
                 return;
             }
 
-            if (IsClimbingSlope())
-                currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
-            else 
-                currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
+            currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
+            // if (IsClimbingSlope())
+            //     currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
+            // else 
+            //     currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
         }
 
         private void UpdateDrag() {
@@ -330,7 +331,10 @@ namespace _Project.Scripts.Player {
         }
         
         private bool IsAgainstWall() {
-            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), moveDir.normalized, out var hit, 0.6f);
+            var dir = moveDir.normalized;
+            if (IsOnSlope()) dir = slopeMoveDir;
+            
+            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f);
 
             if (!hit.collider) return false;
             if(hit.collider.isTrigger) return false;

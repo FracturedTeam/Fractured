@@ -38,6 +38,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
+        private bool canGlassInteractWith;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
@@ -165,18 +166,19 @@ namespace _Project.Scripts.ECS.BaseObjects
                 blockedAttribute.OnInteract(GetInteract);
                 return;
             }
-            
             GetInteract.OnInteract(interaction, interactable);
-            GetTrigger.OnFunction(GetTrigger.OnInteract);
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
-            GetGlassInteract.OnShardUpdated(isOn, shard);
+            if(canGlassInteractWith)
+                GetGlassInteract.OnShardUpdated(isOn, shard);
         }
 
         public void CompleteObject() {
             if (GetGlass) GetGlassInteract.CompleteObject();
             GetInteract?.CompleteObject();
+            if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteractSuccess); 
         }
 
         public void ResetInteract() {
@@ -187,6 +189,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
+        }
+
+        public void SetGlassInteract(bool canInteract) {
+            canGlassInteractWith = canInteract;
+            if(!canInteract) GetGlassInteract?.ResetObject();
         }
         
         public void SetCollider(bool isOn) {
@@ -220,6 +227,14 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void TriggerSceneElement() {
             sceneElement.CheckValidation();
+        }
+
+        public bool GetSceneElementPosition(Vector3 dropPosition, ref Vector3 position) {
+            if (Vector3.Distance(sceneElement.requestedPosition, dropPosition) <= sceneElement.tolerance) {
+                position = sceneElement.requestedPosition;
+                return true;
+            }
+            return false;
         }
 
         public void Trigger(bool on) {

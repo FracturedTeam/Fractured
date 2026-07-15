@@ -33,10 +33,7 @@ public class TriggerComponent : MonoBehaviour
     {
         foreach (var customEvent in events)
         {
-            if(customEvent.times > 0)
-            {
-                customEvent.actions.Invoke();
-            }
+            customEvent.Call();
         }
     }
 }
@@ -44,21 +41,23 @@ public class TriggerComponent : MonoBehaviour
 [Serializable]
 public class CustomEvent 
 {
-    public CustomEvent CreateInstance()
-    {
-        count = times;
-        return new CustomEvent();
-    }
 
     public UnityEvent actions;
-    public int times;
+    public int times = 1;
+    private bool noLimit = true;
     private int count;
-    private bool noLimit;
+    private bool initialized;
     
 
     public void Call()
     {
-        if (!noLimit && count <= 0) 
+        if (!initialized)
+        {
+            initialized = true;
+            count = times;
+            noLimit = (times == 0);
+        }
+        if (!noLimit && count < 1) 
             return;
         
         count--;

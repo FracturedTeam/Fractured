@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 7, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1231771724260813594
 MeshRenderer:
@@ -134,8 +134,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
+  isBaseText: 0
 --- !u!1 &2314499489251681005
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +231,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 7, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4293669299733699823
 MeshRenderer:
@@ -257,7 +258,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
+  - {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -304,7 +305,7 @@ MonoBehaviour:
   m_text: yellow
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -328,8 +329,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -388,6 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
+  isBaseText: 0
 --- !u!1 &4508558174255291151
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +401,7 @@ GameObject:
   - component: {fileID: 7361113650604808971}
   - component: {fileID: 8492057756971255774}
   - component: {fileID: 6471420935397449596}
+  - component: {fileID: 5040674146446807392}
   m_Layer: 0
   m_Name: GlassText
   m_TagString: Untagged
@@ -455,6 +458,28 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5040674146446807392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4508558174255291151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: 
+  hudTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  data:
+    <Guid>k__BackingField: 
+    Position: {x: 0, y: 0, z: 0}
+    ObjectCompletion: 0
+    CanBeInteractedWith: 0
+    ObjectOutOfBox: 0
+  <Guid>k__BackingField: 
 --- !u!1 &6917591063639856735
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,7 +516,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 7, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5884468950998038609
 MeshRenderer:
@@ -589,8 +614,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -649,6 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
+  isBaseText: 0
 --- !u!1 &6925786244024156266
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +711,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 7, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4609924931384603209
 MeshRenderer:
@@ -712,7 +738,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
+  - {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -759,7 +785,7 @@ MonoBehaviour:
   m_text: red
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -783,8 +809,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -843,3 +869,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744379bd6a6f0174c98aceb41db77682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassTextLink
+  isBaseText: 0
