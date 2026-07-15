@@ -18,8 +18,6 @@ public class GlassTextLink : MonoBehaviour
     private ObservableHashSet<Glass> shardsOnTop;
     private int underRed;
     private int underBlue;
-    [SerializeField] private bool isBaseText;
-
 
     public void Initialize() //Initialize
     {
@@ -68,17 +66,49 @@ public class GlassTextLink : MonoBehaviour
 
     }
 
-    public void SetText(string newText, ColorEnum colorEnum = ColorEnum.None)
+    public void SetText(string newText, ColorEnum colorEnum = ColorEnum.None, bool special = false)
     {
-        var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal) ;
-        var end = newText.IndexOf("</link>", StringComparison.Ordinal) ;
+        if(newText.Contains($"<link='censored'>"))
+        {
+            var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal);
+            var end = newText.IndexOf("</link>", StringComparison.Ordinal);
+            if (baseText)
+                baseText.text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+            else if (GetComponent<TMP_Text>())
+                GetComponent<TMP_Text>().text =
+                    Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+            return;
+        }
+        
+        var replace = AddColor(colorEnum, newText, special);
         if (baseText)
-            baseText.text =  isBaseText ? Replace(newText, "█", start, end - start, colorEnum) : newText;
+            baseText.text = replace;
         else if (GetComponent<TMP_Text>())
-            GetComponent<TMP_Text>().text =  isBaseText ? Replace(newText, "█", start, end - start, colorEnum) : newText;
+            GetComponent<TMP_Text>().text = replace;
+    }
+
+    private static string AddColor(ColorEnum color, string input, bool special = false)
+    {
+        var newString = input;
+        switch (color)
+        {
+            case ColorEnum.ColorA:
+                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
+                break;
+            case ColorEnum.ColorB:
+                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
+                break;
+            case ColorEnum.Both:
+                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";
+                break;
+            case ColorEnum.None:
+                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffffffff>" + newString + "</color>";
+                break;
+        }
+        return newString;
     }
     
-    static string Replace(string output, string replacement, int index, int length, ColorEnum colorEnum = ColorEnum.None)
+    static string Replace(string output, string replacement, int index, int length, ColorEnum colorEnum = ColorEnum.None, bool special = false)
     {
         var replace ="";
         for (int l = 0; l < length - "<link='censored'>".Length; l++)
@@ -86,24 +116,14 @@ public class GlassTextLink : MonoBehaviour
             replace += replacement;
         }
         
-        switch (colorEnum)
-        {
-            case ColorEnum.ColorA:
-                replace = "<color=yellow>" + replace + "</color>";
-                break;
-            case ColorEnum.ColorB:
-                replace = "<color=#ff00ffff>" + replace + "</color>";
-                break;
-            case ColorEnum.Both:
-                break;
-            case ColorEnum.None:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(colorEnum), colorEnum, null);
-        }
-        replace = "<mspace=0.5em>" + replace + "</mspace>";
-        
         string removeString = output.Substring(index, length);
+
+        if (colorEnum == ColorEnum.None)
+            replace = removeString;
+        
+        replace = AddColor(colorEnum, replace, special);
+        replace = "<mspace=0.5em>" + replace + "</mspace>";
+            
         return output.Replace(removeString, replace);
     }
 

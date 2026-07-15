@@ -92,24 +92,177 @@ public class GlassText : MonoBehaviour
     public void Setup(GlassTextScriptableObject newData)
     {
         currentTextScriptableObject = newData;
+        //Case 0XXX
+        if (currentTextScriptableObject.baseText == "")
+        {
+            //Case 00XX
+            if (currentTextScriptableObject.fragAText == "")
+            {
+                //Case 000X
+                if (currentTextScriptableObject.fragBText == "")
+                {
+                    //Case 0000 - 
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        Error();
+                        return; 
+                    }
+                    
+                    //Case 0001 - Both
+                    {
+                        baseText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
+                        fragAText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
+                        fragBText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
+                        bothText.SetText(currentTextScriptableObject.bothText);
+                        return;
+                    }
+                }
+                //Case 001X
+                {
+                    //Case 0010 - B
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
+                        fragAText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
+                        fragBText.SetText(currentTextScriptableObject.fragBText);
+                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
+                        return;
+                    }
 
-        if (currentTextScriptableObject.fragBText != "" && currentTextScriptableObject.baseText == "")
-        {
-            baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
-            fragBText.SetText(currentTextScriptableObject.fragBText);
-            return;
+                    //Case 0011 - BBoth
+                    {
+                        Error();
+                        return;
+                    }
+                }
+            }
+            //Case 01XX
+            {
+                //Case 010X
+                if (currentTextScriptableObject.fragBText == "")
+                {
+                    //Case 0100 - A
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
+                        fragAText.SetText(currentTextScriptableObject.fragAText);
+                        fragBText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
+                        bothText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
+                        return;
+                    }
+                    
+                    //Case 0101 - ABoth
+                    {
+                        Error();
+                        return;
+                    }
+                }
+                //Case 011X
+                {
+                    //Case 0110 - AB
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both);
+                        fragAText.SetText(currentTextScriptableObject.fragAText);
+                        fragBText.SetText(currentTextScriptableObject.fragBText);
+                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both);
+                        return;
+                    }
+                    //Case 0111 -ABBOTH
+                    {
+                        Error();
+                        return;
+                    }
+                   
+                }
+            }
         }
-        
-        if (currentTextScriptableObject.fragAText != "" && currentTextScriptableObject.baseText == "")
+        // Case 1XXX
         {
-            baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
-            fragBText.SetText(currentTextScriptableObject.fragAText);
-            return;
+             //Case 10XX
+            if (currentTextScriptableObject.fragAText == "")
+            {
+                //Case 100X
+                if (currentTextScriptableObject.fragBText == "")
+                {
+                    //Case 1000 - 
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.bothText);
+                        fragAText.SetText("");
+                        fragBText.SetText("");
+                        bothText.SetText("");
+                    }
+                    //Case 1001 - Both
+                    {
+                        Error();
+                        return;
+                    }
+                }
+                //Case 101X
+                {
+                    //Case 1010 - B
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB);
+                        fragAText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB);
+                        fragBText.SetText(currentTextScriptableObject.fragBText);
+                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB);
+                        return;
+                    }
+                    //Case 1011 - BBoth
+                    {
+                        Error();
+                        return;
+                    }
+                }
+            }
+            //Case 11XX
+            {
+                //Case 110X
+                if (currentTextScriptableObject.fragBText == "")
+                {
+                    //Case 1100 - A
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA);
+                        fragAText.SetText(currentTextScriptableObject.fragAText);
+                        fragBText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA);
+                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA);
+                        return;
+                    }
+                    //Case 1101 - ABoth
+                    {
+                        Error();
+                        return;
+                    }
+                }
+                //Case 111X
+                {
+                    //Case 1110 - AB
+                    if (currentTextScriptableObject.bothText == "")
+                    {
+                        Error();
+                        return;
+                    }
+                    //Case 1111 -ABBOTH
+                    {
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.Both);
+                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.Both);
+                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both);
+                        bothText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both);
+                        return;
+                    }
+                   
+                }
+            }
         }
-        
-        baseText.SetText(currentTextScriptableObject.baseText);
-        fragAText.SetText(currentTextScriptableObject.fragAText);
-        fragBText.SetText(currentTextScriptableObject.fragBText);
-        bothText.SetText(currentTextScriptableObject.bothText);
+    }
+
+    private void Error()
+    {
+        Debug.LogError("Error on Text Scriptable Object, Case not supported, see the documentation for more information " +
+                       "<a href=\"https://docs.google.com/document/d/1IGWeNeqUure2vZgyoxgXxlqOPQhoYTO_nbDbxLvGX8A/edit?tab=t.0#heading=h.16tvc46zf4qe\">Case Table</a> and " +
+                       "SetUp Document", transform);
     }
 }
