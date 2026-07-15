@@ -74,7 +74,7 @@ namespace _Project.Scripts.DebugSystems.Services {
                 GameInitializer.Instance.ResetAllInteractable();
             }
             if (GUILayout.Button("Complete interactable", buttonStyle)) {
-                foreach (var interactable in GameInitializer.Instance.GetInteractables()) {
+                foreach (var interactable in GameInitializer.Instance.GetInteractable()) {
                     interactable.CompleteObject();
                 }
             }

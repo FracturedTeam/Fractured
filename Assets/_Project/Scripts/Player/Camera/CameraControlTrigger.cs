@@ -1,4 +1,6 @@
 using System;
+using _Project.Scripts.GameServices;
+using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ namespace _Project.Scripts.Player.Camera {
         private Vector3 extentSize;
         private LayerMask mask;
         
+        private readonly CountdownTimer countdownTimer = new CountdownTimer(0.1f);
+        
         private void Start() {
             collider = GetComponent<Collider>();
             extentSize = new Vector3(
@@ -23,6 +27,7 @@ namespace _Project.Scripts.Player.Camera {
             );
             
             mask =  LayerMask.GetMask("Player");
+            countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
         }
 
         private void Update() {
@@ -50,6 +55,7 @@ namespace _Project.Scripts.Player.Camera {
         private void SwitchCamera() {
             var exitDir = (PlayerController.Instance.transform.position - transform.position);
             var localExitDir = transform.InverseTransformDirection(exitDir);
+            countdownTimer.Start();
             
             if (Mathf.Abs(localExitDir.x) > 0 && Mathf.Abs(localExitDir.z) < transform.localScale.z) {
                 if (localExitDir.x > 0) {
