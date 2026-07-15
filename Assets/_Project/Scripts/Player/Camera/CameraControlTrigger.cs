@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.GameServices;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -79,6 +80,8 @@ namespace _Project.Scripts.Player.Camera {
                     customInspectorObjects.cameraOnBack.Priority = 1;
                 }
             }
+            
+            GameInitializer.Instance.RepositionGlass();
         }
 
         private void OnDrawGizmos() {

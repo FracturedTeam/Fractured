@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
@@ -55,7 +56,7 @@ namespace _Project.Scripts.Player {
             stateMachine = new StateMachine();
             // quick fix for that art part, need rework for the steam version
             cinemachineBrain.gameObject.SetActive(false);
-            
+                
             // Get every component needed
             // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
             // else Debug.LogWarning("[PlayerController] No InputsBrain found");
@@ -142,7 +143,9 @@ namespace _Project.Scripts.Player {
 
         private void Update() {
             stateMachine.Update();
-      
+
+            if (cinemachineBrain.IsBlending) GameInitializer.Instance.RepositionGlass();
+            
 			#if UNITY_EDITOR
             if(transform.position.y < -10)
                 transform.position = new Vector3(transform.position.x, 10, transform.position.z);
