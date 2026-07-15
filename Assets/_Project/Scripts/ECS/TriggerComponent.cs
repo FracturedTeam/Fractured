@@ -44,7 +44,7 @@ public class CustomEvent
 
     public UnityEvent actions;
     public int times = 1;
-    public bool noLimit = true;
+    private bool noLimit = true;
     private int count;
     private bool initialized;
     
@@ -55,6 +55,7 @@ public class CustomEvent
         {
             initialized = true;
             count = times;
+            noLimit = (times == 0);
         }
         if (!noLimit && count < 1) 
             return;
