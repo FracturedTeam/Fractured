@@ -14,8 +14,10 @@ namespace _Project.Scripts.ECS.BaseObjects
     public class BaseObject : MonoBehaviour {
         public bool GetGlass =>  GetGlassInteract != null;
         public GlassInteractable GetGlassInteract { get; private set; }
+        public GlassText GetTextInteractable { get; private set; }
         public IInteractable GetInteract  { get; set; }
         public TutorialElement  GetTutorialElement { get; set; }
+        public TriggerComponent  GetTrigger { get; set; }
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
 
@@ -24,24 +26,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [Header("Object Name")]
         public string ObjectName;
-        
-        [Header("Dialogues")] 
-        [SerializeField] internal Dialogue successDialogue;
-        [SerializeField] internal Dialogue cantInteractDialogue;
-        [SerializeField] internal Dialogue failedDialogue;
-        
-        [Header("Locked Behind a Memory")]
-        [SerializeField] internal bool locked;
-        [SerializeField] internal int memoryId;
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
         
-        [Header("Tutorial")]
-        [SerializeField] internal TutorialTriggerType stopTutorialTriggerType;
-        [SerializeField] internal TutorialTriggerType startTutorialTriggerType;
-        [SerializeField] internal TutorialElement interactTutorialElement;
         
         private MeshRenderer meshRenderer;
         
@@ -127,8 +116,11 @@ namespace _Project.Scripts.ECS.BaseObjects
                     GetGlassInteract = g as GlassInteractable;
                 if(TryGetComponent(typeof(TutorialElement), out var t))
                     GetTutorialElement = t as TutorialElement;
-                
+                if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
+                if(TryGetComponent(typeof(GlassText), out var gt))
+                    GetTextInteractable = gt as GlassText;
                 if(TryGetComponent(out IInteractable interactable)) GetInteract = interactable;
+                
                 else SetInteract(false);
 
                 if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
@@ -150,18 +142,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
             GetInteract?.Initialize();
             GetGlassInteract?.Initialize();
+            GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
-            
-            if (locked && !MemoryManager.Instance.IsUnlockedMemory(memoryId))
-                SetInteract(false);
-            
-            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen)
-                Trigger(true);
-            else if (startTutorialTriggerType == TutorialTriggerType.OnCanBeSeen) {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-                
         }
         
         private void Update() {
@@ -169,7 +151,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             //     locked = false;
             //     SetInteract(true);
             // }
-            
             
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
@@ -186,42 +167,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             
             GetInteract.OnInteract(interaction, interactable);
-
-            if (stopTutorialTriggerType == TutorialTriggerType.OnInteract)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnInteract)
-                Trigger(true);
+            GetTrigger.OnFunction(GetTrigger.OnInteract);
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
             GetGlassInteract.OnShardUpdated(isOn, shard);
-
-            if (!isOn) 
-                return;
-
-            if (stopTutorialTriggerType == TutorialTriggerType.OnHideReveal)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnHideReveal)
-                Trigger(true);
         }
 
         public void CompleteObject() {
             if (GetGlass) GetGlassInteract.CompleteObject();
             GetInteract?.CompleteObject();
-            
-            if (stopTutorialTriggerType == TutorialTriggerType.OnSuccess)
-            {
-                Trigger(false);
-                interactTutorialElement?.TriggerEventStart();
-            }
-            if (startTutorialTriggerType == TutorialTriggerType.OnSuccess)
-                Trigger(true);
         }
 
         public void ResetInteract() {
