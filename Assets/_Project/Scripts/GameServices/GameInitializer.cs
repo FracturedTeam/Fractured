@@ -214,10 +214,16 @@ namespace _Project.Scripts.GameServices {
             saveService.SetRuntimeShard(shardService.shards);
         }
 
-        public void ResetInteractable() {
+        public void ResetAllInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
+        }
+
+        public void ResetGlassInteractable() {
+            foreach (var interact in shardService.interactables) {
+                interact.GetGlassInteract?.ResetObject();
+            }
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
@@ -225,10 +231,10 @@ namespace _Project.Scripts.GameServices {
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
             switch (color) {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     shardService.SetBlueEditableArea(inArea);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     shardService.SetRedEditableArea(inArea);
                     break;
                 case ColorEnum.Both:

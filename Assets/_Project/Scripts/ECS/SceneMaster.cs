@@ -59,6 +59,7 @@ namespace _Project.Scripts.ECS {
 
             foreach (var element in elements) { // Lock interaction with sceneElement once the scene is valid
                 element.baseObject.SetInteract(false);
+                element.baseObject.SetGlassInteract(false);
             }
             
             frame.Unlock();

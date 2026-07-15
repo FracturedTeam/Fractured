@@ -22,6 +22,7 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragAText;
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
+
     private ObservableHashSet<Glass> shardsOnTop;
     private BaseObject baseObject;
     private bool isInitialized;
@@ -91,6 +92,21 @@ public class GlassText : MonoBehaviour
     public void Setup(GlassTextScriptableObject newData)
     {
         currentTextScriptableObject = newData;
+
+        if (currentTextScriptableObject.fragBText != "" && currentTextScriptableObject.baseText == "")
+        {
+            baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
+            fragBText.SetText(currentTextScriptableObject.fragBText);
+            return;
+        }
+        
+        if (currentTextScriptableObject.fragAText != "" && currentTextScriptableObject.baseText == "")
+        {
+            baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
+            fragBText.SetText(currentTextScriptableObject.fragAText);
+            return;
+        }
+        
         baseText.SetText(currentTextScriptableObject.baseText);
         fragAText.SetText(currentTextScriptableObject.fragAText);
         fragBText.SetText(currentTextScriptableObject.fragBText);

@@ -22,6 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         [Header("Object Color")]
         public ColorEnum objectColor;
+        public bool isOn = true;
 
         [Header("Behaviour")] 
         [Tooltip("If true, when the object is under a shard, it will transit into a the object that is contain within")]
@@ -63,6 +64,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (baseObject.GetObjectType is ObjectType.Moveable) {
                     moveableComponent = baseObject.GetInteract as MovableAttribute;
                 }
+                
+                baseObject.SetGlassInteract(true);
                 
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
@@ -157,6 +160,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void UpdateShards() {
+            if (!isOn)
+                return;
+            
             if (!baseObject.GetRendered().enabled) {
                 baseObject.SetRenderer(true);
                 for (var i = 0; i < transform.childCount; i++) {
@@ -175,10 +181,10 @@ namespace _Project.Scripts.ECS.BaseObjects
 
             foreach (var shard in shardsOnTop.Items)
                 switch (shard.GetColor) {
-                    case ColorEnum.Blue:
+                    case ColorEnum.ColorA:
                         underBlue++;
                         break;
-                    case ColorEnum.Red:
+                    case ColorEnum.ColorB:
                         underRed++;
                         break;
                     case ColorEnum.Both:
@@ -194,10 +200,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 case ColorEnum.Both:
                     SetVisibility(underRed > 0 && underBlue > 0);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     SetVisibility(underRed < 1 || underBlue > 0);
                     break;
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     SetVisibility(underBlue < 1 || underRed > 0);
                     break;
                 default:
@@ -246,7 +252,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!IsInteractableInBoxActive()) return;
             
             moveableComponent.OnInteract(ObjectInteraction.DropNoTimer);
-            PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
+            interactableInBox?.GetBaseObject().OnInteract(ObjectInteraction.Grab);
+            
             objectOut = true;
         }
 
@@ -289,8 +296,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         #if UNITY_EDITOR
         private void OnDrawGizmos() {
             Gizmos.color = objectColor switch {
-                ColorEnum.Blue => Color.dodgerBlue,
-                ColorEnum.Red => Color.crimson,
+                ColorEnum.ColorA => Color.dodgerBlue,
+                ColorEnum.ColorB => Color.crimson,
                 _ => Color.darkOrchid
             };
             
