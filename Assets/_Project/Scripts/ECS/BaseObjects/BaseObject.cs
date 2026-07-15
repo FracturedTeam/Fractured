@@ -38,6 +38,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public bool IsInitialized { get; private set; }
         private bool canBeInteractedWith;
+        private bool canGlassInteractWith;
         
         #region Save
         [SerializeField, HideInInspector] private ObjectData data;
@@ -170,7 +171,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
-            GetGlassInteract.OnShardUpdated(isOn, shard);
+            if(canGlassInteractWith)
+                GetGlassInteract.OnShardUpdated(isOn, shard);
         }
 
         public void CompleteObject() {
@@ -187,6 +189,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
+        }
+
+        public void SetGlassInteract(bool canInteract) {
+            canGlassInteractWith = canInteract;
+            if(!canInteract) GetGlassInteract?.ResetObject();
         }
         
         public void SetCollider(bool isOn) {

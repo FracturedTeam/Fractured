@@ -50,7 +50,9 @@ namespace _Project.Scripts.Player {
         private Interaction interactionType;
         
         private bool isFocus = false;
-        
+
+        private bool validationInputHold;
+        private float validationInputTime;
         
         private bool canInteract;
         public bool CanInteract {
@@ -116,8 +118,13 @@ namespace _Project.Scripts.Player {
             interactCooldown.Start();
         }
 
-        private void SecondaryInteract(InputAction.CallbackContext obj) {
-            
+        private void SecondaryInteract(InputAction.CallbackContext ctx) {
+            if (ctx.performed) validationInputHold = true;
+
+            if (ctx.canceled && validationInputHold) {
+                validationInputHold = false;
+                validationInputTime = 0;
+            }
         }
         
         #region InteractionMethods
@@ -140,13 +147,6 @@ namespace _Project.Scripts.Player {
                 currentInteraction = null;
             }
         }
-        
-        public void SetGrabbedObject(BaseObject interaction) {
-            HasObject = true;
-            currentInteraction = interaction;
-            
-            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
-        }
 
         private void DropObject() {
             Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
@@ -165,6 +165,18 @@ namespace _Project.Scripts.Player {
         
         public void HandleUpdate(Vector3 playerDir) {
             HandleInteractRotation(playerDir);
+
+            if (validationInputHold) {
+                validationInputTime += Time.deltaTime;
+
+                if (validationInputTime >= 1 && currentInteraction) {
+                    if (currentInteraction.GetObjectType is ObjectType.MemoryFrame) {
+                        currentInteraction.OnInteract(ObjectInteraction.Validate);
+                        validationInputHold = false;
+                        validationInputTime = 0;
+                    }
+                }
+            }
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -301,11 +313,12 @@ namespace _Project.Scripts.Player {
         public BaseObject GetCurrentInteractable() {
             return currentInteraction;
         }
-
-        public void SetGrabObject(BaseObject grab) {
+        
+        public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
-            currentInteraction = grab;
-            currentInteraction?.OnInteract(ObjectInteraction.Grab);
+            currentInteraction = interaction;
+            
+            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
         
         public void SetDropObject() {
@@ -338,13 +351,13 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null) return IsCarrying();
-            
+            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None) return IsCarrying();
+
             return false;
         }
 
         private bool CanContextualInteract() {
-            return CanInteract;
+            return CanInteract && potentialInteraction.GetObjectType is not ObjectType.None;
         }
 
         public bool IsCarrying() {

@@ -65,6 +65,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                     moveableComponent = baseObject.GetInteract as MovableAttribute;
                 }
                 
+                baseObject.SetGlassInteract(true);
+                
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
@@ -250,7 +252,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!IsInteractableInBoxActive()) return;
             
             moveableComponent.OnInteract(ObjectInteraction.DropNoTimer);
-            PlayerController.Instance.interact.SetGrabObject(interactableInBox?.GetBaseObject());
+            interactableInBox?.GetBaseObject().OnInteract(ObjectInteraction.Grab);
+            
             objectOut = true;
         }
 

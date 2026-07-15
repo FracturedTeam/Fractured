@@ -214,10 +214,16 @@ namespace _Project.Scripts.GameServices {
             saveService.SetRuntimeShard(shardService.shards);
         }
 
-        public void ResetInteractable() {
+        public void ResetAllInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)
                 interactable.ResetInteract();
+        }
+
+        public void ResetGlassInteractable() {
+            foreach (var interact in shardService.interactables) {
+                interact.GetGlassInteract?.ResetObject();
+            }
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>

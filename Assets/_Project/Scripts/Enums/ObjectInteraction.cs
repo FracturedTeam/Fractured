@@ -7,12 +7,13 @@ namespace _Project.Scripts.Enums {
         StopHeld,
         Reset,
         Contextual,
-        EnterMemory,
-        LeaveMemory,
-        Remove,
-        EnterPressurePlate,
-        LeavePressurePlate,
+        Validate,
+        // EnterMemory,
+        // LeaveMemory,
+        // Remove,
+        // EnterPressurePlate,
+        // LeavePressurePlate,
         DropNoTimer,
-        Complete
+        // Complete
     }
 }

@@ -45,6 +45,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (interaction is ObjectInteraction.Contextual) {
                 UseMemoryFrame();
             }
+            else if (interaction is ObjectInteraction.Validate) {
+                DoValidation();
+            }
         }
 
         private void UseMemoryFrame() {
@@ -70,10 +73,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public Vector3 GetCurrentSlotPosition(int index) {
-            return frameSlots[index].position;
-        }
+        private void DoValidation() {
+            Debug.Log("DoValidation");
+            
+            bool allValid = true;
+            foreach (var frame in frames) {
+                if(!frame.ValidPosition()) allValid = false;
+            }
 
+            if (allValid) {
+                CompleteFrames();
+            }
+        }
+        
         private void CompleteFrames() {
             memoryCompleted = true;
             baseObject.SetInteract(false);
@@ -81,6 +93,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             UseMemoryFrame();
             
             GameInitializer.Instance.EmptyShards();
+            GameInitializer.Instance.ResetGlassInteractable();
             
             Debug.Log("Memory Completed");
         }
@@ -93,19 +106,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             foreach (var frame in frames) {
                 frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
             }
-            
-            DoValidation(); //TODO Juste pour tester - à enlever avec la validation par input
-        }
-
-        public void DoValidation() { //TODO appeler via le player interact avec un input long
-            bool allValid = true;
-            foreach (var frame in frames) {
-                if(!frame.ValidPosition()) allValid = false;
-            }
-
-            if (allValid) {
-                CompleteFrames();
-            }
         }
         
         public MemoryFrame GetFrame(int index) {
@@ -117,6 +117,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public BaseObject GetBaseObject() {
             return baseObject;
+        }
+        
+        public Vector3 GetCurrentSlotPosition(int index) {
+            return frameSlots[index].position;
         }
         
         public void Tick(float deltaTime) {

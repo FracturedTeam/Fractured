@@ -71,7 +71,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
             if (GUILayout.Button("Reset interactable", buttonStyle)) {
-                GameInitializer.Instance.ResetInteractable();
+                GameInitializer.Instance.ResetAllInteractable();
             }
             if (GUILayout.Button("Complete interactable", buttonStyle)) {
                 foreach (var interactable in GameInitializer.Instance.GetInteractables()) {
