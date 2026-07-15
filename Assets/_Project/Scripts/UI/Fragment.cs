@@ -28,11 +28,11 @@ namespace _Project.Scripts.UI {
 
             switch (color)
             {
-                case ColorEnum.Blue:
+                case ColorEnum.ColorA:
                     frag.layer = LayerMask.NameToLayer("Fragment Color A");
                     render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
                     break;
-                case ColorEnum.Red:
+                case ColorEnum.ColorB:
                     frag.layer = LayerMask.NameToLayer("Fragment Color B");
                     render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
                     break;

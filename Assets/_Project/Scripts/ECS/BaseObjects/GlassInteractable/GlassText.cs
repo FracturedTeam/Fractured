@@ -23,6 +23,11 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
 
+    private ObservableHashSet<Glass> shardsOnTop;
+    private BaseObject baseObject;
+    private bool isInitialized;
+    
+
     internal void Initialize()
     {
         baseText.Initialize();
@@ -31,7 +36,17 @@ public class GlassText : MonoBehaviour
         bothText.Initialize();
         
         ForceSet();
-        
+        if (!isInitialized)
+        {
+            if (TryGetComponent(out BaseObject component)) baseObject = component;
+            else
+                throw new ArgumentNullException(
+                    $"[GlassText] BaseObject on {gameObject.name} could not be found !");
+
+            shardsOnTop = new ObservableHashSet<Glass>();
+            shardsOnTop.onUpdate += UpdateShards;
+        }
+
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
     }
 
@@ -50,6 +65,23 @@ public class GlassText : MonoBehaviour
         bothText.SetAlpha(alpha, time);
     }
 
+    private void UpdateShards()
+    {
+    }
+
+    private void OnDestroy() {
+        if (shardsOnTop == null) 
+            return;
+        
+        shardsOnTop.onUpdate -= UpdateShards;
+        shardsOnTop.Clear();
+    }
+
+    public void Appear()
+    {
+        SetAlpha( 1, 1);
+    }
+
     internal void OnInteract(bool isColliding, Glass shard)
     {
         fragAText.OnInteract(isColliding, shard);
@@ -60,6 +92,21 @@ public class GlassText : MonoBehaviour
     public void Setup(GlassTextScriptableObject newData)
     {
         currentTextScriptableObject = newData;
+
+        if (currentTextScriptableObject.fragBText != "" && currentTextScriptableObject.baseText == "")
+        {
+            baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB);
+            fragBText.SetText(currentTextScriptableObject.fragBText);
+            return;
+        }
+        
+        if (currentTextScriptableObject.fragAText != "" && currentTextScriptableObject.baseText == "")
+        {
+            baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA);
+            fragBText.SetText(currentTextScriptableObject.fragAText);
+            return;
+        }
+        
         baseText.SetText(currentTextScriptableObject.baseText);
         fragAText.SetText(currentTextScriptableObject.fragAText);
         fragBText.SetText(currentTextScriptableObject.fragBText);

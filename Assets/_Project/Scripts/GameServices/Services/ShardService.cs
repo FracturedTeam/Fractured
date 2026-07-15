@@ -40,7 +40,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards, GlassText[] _texts) {//Clear and populate interactable and shards
+        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
@@ -64,11 +64,12 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void SetShardState(BaseObject glassBase) {
-            foreach (var shard in shards)
-            {
+            foreach (var shard in shards) {
+                if(shard == null) continue;
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
+        
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement()
         {

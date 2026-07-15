@@ -1,9 +1,7 @@
 using System;
-using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEngine;
 
-namespace _Project.Scripts.ECS {
+namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class SceneElement : MonoBehaviour {
         public BaseObject baseObject {get; private set;}
         private SceneMaster masterValidation;
@@ -23,7 +21,8 @@ namespace _Project.Scripts.ECS {
         public Vector3 requestedPosition;
         public bool requestedVisibility;
         public bool requestedUseState;
-
+        public float tolerance = 4f;
+            
         private Action onPlayerInteraction;
 
         public void SetBaseObject(BaseObject baseObject) {
@@ -65,7 +64,7 @@ namespace _Project.Scripts.ECS {
 
         private void PositionValidation() {
             var distanceToLocation = Vector3.Distance(requestedPosition, transform.position);
-            IsValidated = distanceToLocation <= 4f;
+            IsValidated = distanceToLocation <= tolerance;
         }
 
         private void UsableValidation() {

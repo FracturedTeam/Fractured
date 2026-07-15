@@ -310,16 +310,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private bool ObstructedSpace() {
-            var playerPos = PlayerController.Instance.transform.position;
+            var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
             var dir = PlayerController.Instance.movement.mesh.forward;
+
+            var maxDistance = 0.8f + boundCenter.z * 2f;
             
-            Physics.Raycast(playerPos, dir,  out var hit, 2f);
-            if (hit.collider) {
-                //Debug.Log("[MoveableObject] Something in the way");
-                
-                return true;
-            }
-            return false;
+            Physics.Raycast(playerPos, dir,  out var hit, maxDistance);
+            return hit.collider;
         }
         
         private Vector3 GetGroundPos() {
@@ -331,8 +328,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
                 
-            var pos = playerPos + dir.normalized * (boundExtent.x * 3);
+            var pos = playerPos + dir.normalized * (boundExtent.z * 2 + 0.4f);
             pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
+
+            var elementPos = new Vector3();
+            if (baseObject.HasSceneElement() && baseObject.GetSceneElementPosition(pos, ref elementPos)) {
+                return elementPos;
+            }
             
             return pos;
         }
