@@ -59,13 +59,15 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
-            foreach (var glassInteractable in shardsInteractable)
+            foreach (var glassInteractable in shardsInteractable) {
                 SetShardState(glassInteractable);
+            }
         }
         
         private void SetShardState(BaseObject glassBase) {
+            Debug.Log($"[GlassShardService] SetShardState {glassBase.gameObject.name}");
+                
             foreach (var shard in shards) {
-                if(shard == null) continue;
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }

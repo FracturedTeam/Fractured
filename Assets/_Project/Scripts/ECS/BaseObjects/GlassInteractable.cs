@@ -136,8 +136,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Tick(float deltaTime) {
             if (!objectInside || objectOut) return;
 
-            var move = baseObject.GetInteract as MovableAttribute;
-            var collect = baseObject.GetInteract as CollectableAttribute;
+            var move = interactableInBox.GetInteract as MovableAttribute;
+            var collect = interactableInBox.GetInteract as CollectableAttribute;
             if (move && move.IsGrabbed() && !objectOut || collect && collect.IsInInventory() && !objectOut)
                 objectOut = true;
         }
@@ -280,17 +280,16 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteractableInBox(bool revealed) {
             if(interactableInBox == null) return;
             
-            var inBoxObject = interactableInBox;
-            if (!inBoxObject.IsInitialized) {
-                inBoxObject.Initialize();
+            if (!interactableInBox.IsInitialized) {
+                interactableInBox.Initialize();
             }
 
-            if (inBoxObject.GetLockState is LockedState.Locked) {
-                inBoxObject.SetInteract(revealed);
+            if (interactableInBox.GetLockState is LockedState.Locked) {
+                interactableInBox.SetInteract(revealed);
             }
             
-            inBoxObject.SetCollider(revealed);
-            inBoxObject.SetRenderer(revealed);
+            interactableInBox.SetCollider(revealed);
+            interactableInBox.SetRenderer(revealed);
         }
 
         bool IsInteractableInBoxActive() {

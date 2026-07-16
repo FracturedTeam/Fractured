@@ -334,7 +334,9 @@ namespace _Project.Scripts.Player {
             var dir = moveDir.normalized;
             if (IsOnSlope()) dir = slopeMoveDir;
             
-            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f);
+            var groundLayer = LayerMask.GetMask("Walkable");
+            
+            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f, ~groundLayer);
 
             if (!hit.collider) return false;
             if(hit.collider.isTrigger) return false;
