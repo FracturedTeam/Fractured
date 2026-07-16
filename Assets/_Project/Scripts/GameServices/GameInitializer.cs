@@ -193,13 +193,13 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
-            shardService.RepopulateBaseObjet(_baseObjects);
-            if(_shards.Length > 0)
-                AddShards(_shards);
+        public void PopulateLevel(BaseObject[] baseObjects, Glass[] shards) {
+            shardService.RepopulateBaseObjet(baseObjects);
+            if(shards.Length > 0)
+                AddShards(shards);
         }
         
-        public BaseObject[] GetInteractables() {
+        public BaseObject[] GetInteractable() {
             return shardService.interactables.ToArray();
         }
         
@@ -225,24 +225,30 @@ namespace _Project.Scripts.GameServices {
                 interact.GetGlassInteract?.ResetObject();
             }
         }
+
+        public void RepositionGlass() {
+            foreach (var shard in shardService.shards) {
+                shard.Set3DShard();
+            }
+        }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
-            switch (color) {
-                case ColorEnum.ColorA:
-                    shardService.SetBlueEditableArea(inArea);
-                    break;
-                case ColorEnum.ColorB:
-                    shardService.SetRedEditableArea(inArea);
-                    break;
-                case ColorEnum.Both:
-                    shardService.SetEditableArea(inArea);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
-            }
+            // switch (color) {
+            //     case ColorEnum.ColorA:
+            //         shardService.SetBlueEditableArea(inArea);
+            //         break;
+            //     case ColorEnum.ColorB:
+            //         shardService.SetRedEditableArea(inArea);
+            //         break;
+            //     case ColorEnum.Both:
+            //         shardService.SetEditableArea(inArea);
+            //         break;
+            //     default:
+            //         throw new ArgumentOutOfRangeException(nameof(color), color, null);
+            // }
         }
         
         public bool InEditableArea() {

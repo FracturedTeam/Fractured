@@ -19,11 +19,17 @@ public class GlassTextLink : MonoBehaviour
     private int underRed;
     private int underBlue;
 
+    private bool isInitialized = false;
+    
     public void Initialize() //Initialize
     {
-        baseText = GetComponent<TMP_Text>();
+        if(TryGetComponent(out TMP_Text text)) baseText = text;
+        else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
+        
         shardsOnTop = new ObservableHashSet<Glass>();
         shardsOnTop.onUpdate += UpdateShards;
+
+        isInitialized = true;
     }
 
     public void SetAlpha(float alpha, float time)
