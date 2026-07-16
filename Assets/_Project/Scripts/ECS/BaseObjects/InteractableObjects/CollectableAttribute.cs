@@ -267,7 +267,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private Vector3 GetGroundPos() {
-            var playerPos = PlayerController.Instance.transform.position;
+            var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
             var dir = PlayerController.Instance.movement.mesh.forward;
 
             var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");

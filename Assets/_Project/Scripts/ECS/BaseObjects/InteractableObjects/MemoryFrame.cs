@@ -55,7 +55,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
                 var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
                 
-                transform.position = master.GetCurrentSlotPosition(currentPos) - (1 * forwardTime) * forwardDir;
+                transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * forwardTime) * forwardDir;
             }
         }
 
