@@ -5,6 +5,7 @@ using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.ScriptableObjects;
@@ -111,8 +112,10 @@ namespace _Project.Scripts.GameServices {
 
             var playerDebugService = new PlayerDebugService(debugUIState);
             debugSystem.Register(playerDebugService);
-            
-            var shardDebugService = new ShardDebugService(shardService,  debugUIState);
+
+            var scenes = GetScenes();
+            var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
+            var shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
             debugSystem.Register(shardDebugService);
 
             var cameras = GetCameras();
@@ -125,7 +128,8 @@ namespace _Project.Scripts.GameServices {
             //Set the debug system
             debugSystemInitializer.SetDebugSystem(debugSystem);
         }
-        #endif
+        
+#endif
         
         private void Update() {
             gameSystems.Tick();
@@ -147,6 +151,10 @@ namespace _Project.Scripts.GameServices {
 
         private CinemachineCamera[] GetCameras() {
             return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+        }
+        
+        private SceneMaster[] GetScenes() {
+            return FindObjectsByType<SceneMaster>(FindObjectsSortMode.None);
         }
 
         public void ResetCameras() {
@@ -193,13 +201,13 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] _baseObjects, Glass[] _shards) {
-            shardService.RepopulateBaseObjet(_baseObjects);
-            if(_shards.Length > 0)
-                AddShards(_shards);
+        public void PopulateLevel(BaseObject[] baseObjects, Glass[] shards) {
+            shardService.RepopulateBaseObjet(baseObjects);
+            if(shards.Length > 0)
+                AddShards(shards);
         }
         
-        public BaseObject[] GetInteractables() {
+        public BaseObject[] GetInteractable() {
             return shardService.interactables.ToArray();
         }
         
@@ -225,24 +233,30 @@ namespace _Project.Scripts.GameServices {
                 interact.GetGlassInteract?.ResetObject();
             }
         }
+
+        public void RepositionGlass() {
+            foreach (var shard in shardService.shards) {
+                shard.Set3DShard();
+            }
+        }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
-            switch (color) {
-                case ColorEnum.ColorA:
-                    shardService.SetBlueEditableArea(inArea);
-                    break;
-                case ColorEnum.ColorB:
-                    shardService.SetRedEditableArea(inArea);
-                    break;
-                case ColorEnum.Both:
-                    shardService.SetEditableArea(inArea);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
-            }
+            // switch (color) {
+            //     case ColorEnum.ColorA:
+            //         shardService.SetBlueEditableArea(inArea);
+            //         break;
+            //     case ColorEnum.ColorB:
+            //         shardService.SetRedEditableArea(inArea);
+            //         break;
+            //     case ColorEnum.Both:
+            //         shardService.SetEditableArea(inArea);
+            //         break;
+            //     default:
+            //         throw new ArgumentOutOfRangeException(nameof(color), color, null);
+            // }
         }
         
         public bool InEditableArea() {

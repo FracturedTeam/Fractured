@@ -55,6 +55,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private GlassDocument glassDocument;
         
         private EventBinding<InteractEvent> interactEventBinding;
+        private EventBinding<DocumentEvent> documentEventBinding;
        // private EventBinding<MemoryEvent> memoryEventBinding;
         private Tweener interactTween;
         private Tweener memoryTween;
@@ -90,13 +91,16 @@ namespace _Project.Scripts.UI
 
         private void OnEnable() {
             interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
-            EventBus<InteractEvent>.Register(interactEventBinding);
+            EventBus<InteractEvent>.Register(interactEventBinding); 
+            documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
+            EventBus<DocumentEvent>.Register(documentEventBinding);
             //memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
             //EventBus<MemoryEvent>.Register(memoryEventBinding);
         }
 
         private void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
+            EventBus<DocumentEvent>.Deregister(documentEventBinding);
             //EventBus<MemoryEvent>.Deregister(memoryEventBinding);
             
             interactTween?.Kill();
@@ -105,10 +109,10 @@ namespace _Project.Scripts.UI
             textTimer.OnTimerStop  -= ResetText;
         }
 
-        public void OpenDocument(GlassDocumentScriptableObject document)
+        public void OpenDocument(DocumentEvent e)
         {
-            glassDocument.gameObject.SetActive(true);
-            glassDocument.SetUp(document);
+            glassDocument.gameObject.SetActive(e.isOn);
+            glassDocument.SetUp(e.document);
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {
@@ -264,5 +268,11 @@ namespace _Project.Scripts.UI
 
         #endregion
         
+    }
+
+    public struct DocumentEvent : IEvent
+    {
+        public bool isOn;
+        public GlassDocumentScriptableObject document;
     }
 }

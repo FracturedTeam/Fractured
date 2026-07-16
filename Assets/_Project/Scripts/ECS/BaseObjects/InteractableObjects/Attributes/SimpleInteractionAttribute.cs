@@ -1,7 +1,6 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[SimpleInteractionAttribute] Cannot find {nameof(BaseObject)} in {nameof(SimpleInteractionAttribute)}");
 
-                baseObject.GetObjectType = ObjectType.MemoryFrame;
+                baseObject.GetObjectType = ObjectType.SimpleInteraction;
                 
                 baseObject.SetInteract(true);
                 
@@ -28,11 +27,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null)
         {
            
-        }
- 
-        public void OpenDocument(GlassDocumentScriptableObject document)
-        {
-            HudManager.Instance.OpenDocument(document);
         }
 
         public void Tick(float deltaTime) {

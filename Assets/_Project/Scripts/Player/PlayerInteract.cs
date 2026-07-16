@@ -48,6 +48,8 @@ namespace _Project.Scripts.Player {
         private const float TimerToUseDoor = 0.15f;
         
         private Interaction interactionType;
+        private RaycastHit wallInBetween;
+        private LayerMask wallLayerMask;
         
         private bool isFocus = false;
 
@@ -84,6 +86,8 @@ namespace _Project.Scripts.Player {
             usingLockedDoor = new CountdownTimer(TimerToUseDoor);
             usingDoor = new CountdownTimer(0.4f);
             interactCooldown = new CountdownTimer(0.5f);
+            
+            wallLayerMask = LayerMask.GetMask("Wall");
         }
 
         private void OnEnable() {
@@ -151,9 +155,9 @@ namespace _Project.Scripts.Player {
         private void DropObject() {
             Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
             
-            if(potentialInteraction != null)
-                currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
-            else
+            // if(potentialInteraction != null)
+            //     currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
+            // else
                 currentInteraction?.OnInteract(ObjectInteraction.Drop);
         }
         #endregion
@@ -185,20 +189,21 @@ namespace _Project.Scripts.Player {
         #region UpdateInteraction
 
         void HandleInteraction() {
-            if(!canPlayerInteract) return;
-            
-            Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results, Quaternion.identity, interactLayerMask);
+            if (!canPlayerInteract) return;
+
+            Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
+                Quaternion.identity, interactLayerMask);
 
             switch (Size) {
                 case 0:
                     potentialInteraction = null;
                     return;
-                case 1 :
+                case 1:
                     potentialInteraction = results[0].GetComponent<BaseObject>();
                     break;
                 case > 1:
                     var closestDist = 10f;
-                    
+
                     for (var i = 0; i < Size; i++) {
                         if (results[i].TryGetComponent(out BaseObject b)) {
                             if (!b.CanBeInteractedWith()) continue;
@@ -210,17 +215,28 @@ namespace _Project.Scripts.Player {
                             }
                         }
                     }
+
                     break;
                 default:
                     potentialInteraction = null;
                     break;
             }
 
-            if (!HasObject) // Check si le joueur possède un objet
+            if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
+                if (!potentialInteraction) return;
+                
+                var dir = (potentialInteraction.transform.position - transform.position).normalized;
+                var dist = Vector3.Distance(potentialInteraction.transform.position, transform.position);
+                
+                var hasHit = Physics.Raycast(transform.position, dir, out wallInBetween, dist, wallLayerMask);
+                if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider()) {
+                    potentialInteraction = null;
+                }
                 return;
-            
-            // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
-            if (potentialInteraction == currentInteraction) potentialInteraction = null;
+            }
+
+        // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
+        if (potentialInteraction == currentInteraction) potentialInteraction = null;
 
         }
 
@@ -257,18 +273,6 @@ namespace _Project.Scripts.Player {
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
-                // case ObjectType.Door when potentialInteraction.GetLockState is not LockedState.None: {
-                //     if (potentialInteraction.GetLockState is LockedState.Unlocked)
-                //         interactionType = Interaction.UseDoor;
-                //     // else if (HasObject) {
-                //     //     var key = potentialInteraction.GetComponent<KeyInteractable>();
-                //     //     interactionType = key.GetKeyObject(currentInteraction) ? Interaction.UseKey : Interaction.NeedSomethingElse;
-                //     // }
-                //     else
-                //         interactionType = Interaction.NeedKey;
-                //     RaiseInteraction();
-                //     return;
-                // }
                 case ObjectType.Door:
                     interactionType = Interaction.UseDoor;
                     RaiseInteraction();
@@ -286,6 +290,10 @@ namespace _Project.Scripts.Player {
                     RaiseInteraction();
                     return;
                 case ObjectType.MemoryFrame:
+                    interactionType = Interaction.Grab;
+                    RaiseInteraction();
+                    return;
+                case ObjectType.SimpleInteraction:
                     interactionType = Interaction.Grab;
                     RaiseInteraction();
                     return;
@@ -351,7 +359,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None) return IsCarrying();
+            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None or ObjectType.SimpleInteraction) return IsCarrying();
 
             return false;
         }

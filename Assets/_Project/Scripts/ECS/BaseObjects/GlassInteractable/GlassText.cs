@@ -1,17 +1,9 @@
 using System;
-using System.Collections;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
-using _Project.Scripts.Player;
-using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.HashSetUtil;
-using _Project.Scripts.UI;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
@@ -45,6 +37,8 @@ public class GlassText : MonoBehaviour
 
             shardsOnTop = new ObservableHashSet<Glass>();
             shardsOnTop.onUpdate += UpdateShards;
+
+            isInitialized = true;
         }
 
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
@@ -77,6 +71,7 @@ public class GlassText : MonoBehaviour
         shardsOnTop.Clear();
     }
 
+    [ContextMenu("Manually Appear")]
     public void Appear()
     {
         SetAlpha( 1, 1);
@@ -186,12 +181,13 @@ public class GlassText : MonoBehaviour
                 if (currentTextScriptableObject.fragBText == "")
                 {
                     //Case 1000 - 
-                    if (currentTextScriptableObject.bothText == "")
+                    if (currentTextScriptableObject.bothText.Length == 0)
                     {
-                        baseText.SetText(currentTextScriptableObject.bothText);
+                        baseText.SetText(currentTextScriptableObject.baseText);
                         fragAText.SetText("");
                         fragBText.SetText("");
                         bothText.SetText("");
+                        return;
                     }
                     //Case 1001 - Both
                     {

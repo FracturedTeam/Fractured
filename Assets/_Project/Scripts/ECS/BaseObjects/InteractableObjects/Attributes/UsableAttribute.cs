@@ -49,9 +49,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void Use() {
             if(IsUsed && oneTimeUse) return;
-            
             IsUsed = !IsUsed;
+            
+            UpdateState();
+        }
 
+        private void UpdateState() {
+            baseObject.GetTrigger?.OnFunction(IsUsed ? baseObject.GetTrigger?.OnSetStateOn : baseObject.GetTrigger?.OnSetStateOff);
+            
             if(baseObject.HasSceneElement())
                 baseObject.TriggerSceneElement();
             
@@ -71,6 +76,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             else {
                 eventOnDeactivation.Invoke();
             }
+        }
+
+        public void SetUseStateDebug(bool state) {
+            IsUsed = state;
+            UpdateState();
         }
         
         public void Tick(float deltaTime) {

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 371777441340817263}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: P_FloorCarrelage_2x4_Largeur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,11 +88,44 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Floor_2x4
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 42e3981784180a44e805a23aba7d5599, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 42e3981784180a44e805a23aba7d5599, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6792859682286355768}
   m_SourcePrefab: {fileID: 100100000, guid: 42e3981784180a44e805a23aba7d5599, type: 3}
+--- !u!1 &7452645317966155178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 42e3981784180a44e805a23aba7d5599, type: 3}
+  m_PrefabInstance: {fileID: 7758704624597790971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6792859682286355768
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7452645317966155178}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 0.25, z: 2}
+  m_Center: {x: -2, y: -0.125, z: -1}
 --- !u!4 &7793142441890649872 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42e3981784180a44e805a23aba7d5599, type: 3}
