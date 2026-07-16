@@ -28,11 +28,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         {
            
         }
- 
-        public void OpenDocument(GlassDocumentScriptableObject document)
-        {
-            HudManager.Instance.OpenDocument(document);
-        }
 
         public void Tick(float deltaTime) {
         }
