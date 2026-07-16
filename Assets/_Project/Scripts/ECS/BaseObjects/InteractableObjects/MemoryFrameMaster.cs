@@ -3,6 +3,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isUsingMemoryFrame;
 
         private bool memoryCompleted;
+        
+        public bool isAFrameSelected { get; private set; }
         
         public void Initialize() {
             if (!isInitialized) {
@@ -101,12 +104,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public Transform[] GetSlots() {
             return frameSlots;
         }
-
-        public void SetPaintingTransform() {
-            foreach (var frame in frames) {
-                frame.transform.position = frameSlots[frame.GetCurrentPosition()].position;
-            }
-        }
         
         public MemoryFrame GetFrame(int index) {
             foreach (var frame in frames) {
@@ -121,6 +118,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public Vector3 GetCurrentSlotPosition(int index) {
             return frameSlots[index].position;
+        }
+
+        public void SetFrameSelected(bool isSelected) {
+            isAFrameSelected = isSelected;
         }
         
         public void Tick(float deltaTime) {
