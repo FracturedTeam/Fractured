@@ -28,7 +28,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void SetBaseObject(BaseObject baseObject) {
             this.baseObject = baseObject;
         }
-        
+
         private void OnEnable() {
             switch (validationMethod) {
                 case ValidationMethod.Position:
@@ -42,7 +42,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     break;
             }
         }
-        
+
         private void OnDisable() {
             switch (validationMethod) {
                 case ValidationMethod.Position:
@@ -58,7 +58,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         public void CheckValidation() {
-            onPlayerInteraction.Invoke();
+            if (onPlayerInteraction != null) {
+                onPlayerInteraction.Invoke();
+                return;
+            }
+            
+            switch (validationMethod) {
+                case ValidationMethod.Position:
+                    PositionValidation();
+                    break;
+                case ValidationMethod.GlassState:
+                    GlassValidation();
+                    break;
+                case ValidationMethod.UseState:
+                    UsableValidation();
+                    break;
+            }
         }
         
 
@@ -78,7 +93,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void SetDebugUseState(bool state) {
             var usable = baseObject.GetInteract as UsableAttribute;
-            usable?.SetUseStateDebug(state);
+            usable?.SetUseState(state);
         }
 
         public void SetValidate() {

@@ -13,12 +13,14 @@ namespace _Project.Scripts.GameServices {
         public string SceneName;
         public List<ObjectData> ObjectDatas;
         public List<FragmentData> FragmentDatas;
+        public List<SceneMasterSave> sceneMasterDatas;
     }
     
     public class SaveInstance : MonoBehaviour {
-        [SerializeField, HideInInspector] private SceneData sceneData;
+        [SerializeField] private SceneData sceneData;
         [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
         [SerializeField, HideInInspector] private List<Glass> shards;
+        [SerializeField] private List<SceneMaster> masters;
         
         public void Bind(bool firstTimeBind) {
             sceneData.SceneName = gameObject.scene.name;
@@ -33,6 +35,11 @@ namespace _Project.Scripts.GameServices {
                 foreach (var shard in shards) {
                     sceneData.FragmentDatas.Add(new FragmentData{Guid = shard.Guid});
                 }
+                
+                sceneData.sceneMasterDatas = new List<SceneMasterSave>();
+                foreach (var master in masters) {
+                    sceneData.sceneMasterDatas.Add(new SceneMasterSave{Guid = master.Guid});
+                }
             }
             
             for(var i = 0; i < baseObjects.Count; i++) { // Itérer a travers les baseObject
@@ -45,9 +52,18 @@ namespace _Project.Scripts.GameServices {
             }
 
             for (var i = 0; i < shards.Count; i++) { // Itérer a travers les shards
-                for (var x = 0; x < sceneData.ObjectDatas.Count; x++) { // Pour chaque shard -> Itérer sur chaque fragment data
+                for (var x = 0; x < sceneData.FragmentDatas.Count; x++) { // Pour chaque shard -> Itérer sur chaque fragment data
                     if (shards[i].Guid == sceneData.FragmentDatas[x].Guid) {
                         shards[i].Bind(sceneData.FragmentDatas[x]);
+                        break;
+                    }
+                }
+            }
+            
+            for(var i = 0; i < masters.Count; i++) { // Itérer a travers les baseObject
+                for (var x = 0; x < sceneData.sceneMasterDatas.Count; x++) { // Pour chaque baseObject -> Itère sur chaque ObjectData pour comparer les Guid
+                    if (masters[i].Guid == sceneData.sceneMasterDatas[x].Guid) {
+                        masters[i].Bind(sceneData.sceneMasterDatas[x]);
                         break;
                     }
                 }
@@ -67,9 +83,10 @@ namespace _Project.Scripts.GameServices {
         }
         
 #if UNITY_EDITOR
-        public void SetObjectData(BaseObject[] _baseObjects, Glass[] _shards) {
+        public void SetObjectData(BaseObject[] _baseObjects, Glass[] _shards, SceneMaster[] _masters) {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
+            masters = new List<SceneMaster>();
             
             // Set Shards
             shards.AddRange(_shards); 
@@ -77,19 +94,19 @@ namespace _Project.Scripts.GameServices {
             //Set interactable
             baseObjects.AddRange(_baseObjects);
             
+            //Set scene Master
+            masters.AddRange(_masters);
+            
             foreach (var interactable in _baseObjects) {
-                if (System.String.IsNullOrEmpty(interactable.Guid)) { // Generate Object GUID
+                if (String.IsNullOrEmpty(interactable.Guid)) { // Generate Object GUID
                     interactable.GenerateGuid();
                 }
-                
-                // if (interactable.TryGetComponent(out ObtainShardInteractable shard)) {
-                //     foreach (var s in shard.shards) {
-                //         if (System.String.IsNullOrEmpty(s.Guid)) { // Generate Object GUID
-                //             s.GenerateGuid();
-                //         }
-                //     }
-                //     shards.AddRange(shard.shards);
-                // }
+            }
+            
+            foreach (var scene in _masters) {
+                if (String.IsNullOrEmpty(scene.Guid)) { // Generate Object GUID
+                    scene.GenerateGuid();
+                }
             }
             
             EditorUtility.SetDirty(this);
