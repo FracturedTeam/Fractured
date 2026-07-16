@@ -5,6 +5,7 @@ using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.ScriptableObjects;
@@ -111,8 +112,10 @@ namespace _Project.Scripts.GameServices {
 
             var playerDebugService = new PlayerDebugService(debugUIState);
             debugSystem.Register(playerDebugService);
-            
-            var shardDebugService = new ShardDebugService(shardService,  debugUIState);
+
+            var scenes = GetScenes();
+            var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
+            var shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
             debugSystem.Register(shardDebugService);
 
             var cameras = GetCameras();
@@ -125,7 +128,8 @@ namespace _Project.Scripts.GameServices {
             //Set the debug system
             debugSystemInitializer.SetDebugSystem(debugSystem);
         }
-        #endif
+        
+#endif
         
         private void Update() {
             gameSystems.Tick();
@@ -147,6 +151,10 @@ namespace _Project.Scripts.GameServices {
 
         private CinemachineCamera[] GetCameras() {
             return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
+        }
+        
+        private SceneMaster[] GetScenes() {
+            return FindObjectsByType<SceneMaster>(FindObjectsSortMode.None);
         }
 
         public void ResetCameras() {
