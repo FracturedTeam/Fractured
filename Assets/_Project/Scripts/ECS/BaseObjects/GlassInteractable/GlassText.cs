@@ -183,7 +183,7 @@ public class GlassText : MonoBehaviour
                     //Case 1000 - 
                     if (currentTextScriptableObject.bothText.Length == 0)
                     {
-                        baseText.SetText(currentTextScriptableObject.bothText);
+                        baseText.SetText(currentTextScriptableObject.baseText);
                         fragAText.SetText("");
                         fragBText.SetText("");
                         bothText.SetText("");
