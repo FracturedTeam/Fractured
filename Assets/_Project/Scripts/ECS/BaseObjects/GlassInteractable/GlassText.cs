@@ -188,10 +188,11 @@ public class GlassText : MonoBehaviour
                     //Case 1000 - 
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.bothText);
+                        baseText.SetText(currentTextScriptableObject.baseText);
                         fragAText.SetText("");
                         fragBText.SetText("");
                         bothText.SetText("");
+                        return;
                     }
                     //Case 1001 - Both
                     {
