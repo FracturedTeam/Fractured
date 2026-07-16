@@ -80,7 +80,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             if (GUILayout.Button("Unlock every Blocked interactable", buttonStyle)) {
                 foreach (var interactable in GameInitializer.Instance.GetInteractable()) {
                     if (interactable.GetLockState is LockedState.Locked) {
-                        interactable.GetBlockedAttribute().DebugUnlocked();
+                        interactable.GetBlockedAttribute().ForceUnlock();
                     }
                 }
             }
@@ -88,7 +88,7 @@ namespace _Project.Scripts.DebugSystems.Services {
                 foreach (var interactable in GameInitializer.Instance.GetInteractable()) {
                     if (interactable.GetObjectType is ObjectType.Collectable) {
                         var collect = interactable.GetInteract as CollectableAttribute;
-                        if (collect.GetKey()) {
+                        if (collect.IsKey()) {
                             interactable.OnInteract(ObjectInteraction.Grab);
                         }
                     }
@@ -100,7 +100,7 @@ namespace _Project.Scripts.DebugSystems.Services {
                 GUILayout.Label($"Scene : {scene.gameObject.name}", debugStyle);
                 GUILayout.Label($"Is Scene Completed : {scene.IsSceneValidated}", debugStyle);
                 if (GUILayout.Button("Complete Scene", buttonStyle)) {
-                    scene.DebugCompleteScene();
+                    scene.LoadCompleteScene();
                 }
             }
             

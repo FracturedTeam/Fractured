@@ -59,7 +59,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractFailed);
         }
 
-        public void DebugUnlocked() {
+        public void ForceUnlock() {
             baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractSuccess);
             baseObject.GetLockState = LockedState.Unlocked;
         }
