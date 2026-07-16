@@ -20,9 +20,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isInitialized;
         private bool isUsingMemoryFrame;
 
-        private bool memoryCompleted;
+        public bool IsMemoryCompleted { get; private set; }
         
-        public bool isAFrameSelected { get; private set; }
+        public bool IsAFrameSelected { get; private set; }
         
         public void Initialize() {
             if (!isInitialized) {
@@ -43,7 +43,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
-            if(memoryCompleted) return;
+            if(IsMemoryCompleted) return;
             
             if (interaction is ObjectInteraction.Contextual) {
                 UseMemoryFrame();
@@ -54,7 +54,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void UseMemoryFrame() {
-            isUsingMemoryFrame = !isUsingMemoryFrame;
+            if(!IsMemoryCompleted) isUsingMemoryFrame = !isUsingMemoryFrame;
+            else isUsingMemoryFrame = false;
             
             if (isUsingMemoryFrame) {
                 frameCamera.Priority = 2;
@@ -90,7 +91,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void CompleteFrames() {
-            memoryCompleted = true;
+            IsMemoryCompleted = true;
             baseObject.SetInteract(false);
             
             UseMemoryFrame();
@@ -99,6 +100,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             GameInitializer.Instance.ResetGlassInteractable();
             
             Debug.Log("Memory Completed");
+        }
+
+        public void DebugCompleteFrame() {
+            foreach (var frame in frames) {
+                frame.Unlock();
+                frame.SetNewPosition(frame.requiredPosition);
+            }
+            
+            CompleteFrames();
         }
         
         public Transform[] GetSlots() {
@@ -121,7 +131,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void SetFrameSelected(bool isSelected) {
-            isAFrameSelected = isSelected;
+            IsAFrameSelected = isSelected;
         }
         
         public void Tick(float deltaTime) {

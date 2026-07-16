@@ -69,7 +69,7 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Interaction", headerStyle);
             GUILayout.Label($"{player.interact.Size} Object in the interact area", debugStyle);
-            GUILayout.Label($"Can player interact : {player.interact.CanInteract}", debugStyle);
+            GUILayout.Label($"Can player interact with object : {player.interact.CanInteract}", debugStyle);
             GUILayout.Label($"Is player holding an object : {player.interact.HasObject}", debugStyle);
             // GUILayout.Label($"Is player in a memory : {player.interact.IsInMemory()}", debugStyle);
             

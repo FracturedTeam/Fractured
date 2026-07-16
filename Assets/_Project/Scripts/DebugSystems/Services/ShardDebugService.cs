@@ -1,3 +1,6 @@
+using _Project.Scripts.ECS;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
+using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
 using UnityEngine;
@@ -7,10 +10,14 @@ namespace _Project.Scripts.DebugSystems.Services {
 
         private readonly ShardService shardService;
         private readonly DebugUIState debugUIState;
-        private bool editShardAnywhere;
-        public ShardDebugService(ShardService shard, DebugUIState debugUI) {
+        private readonly SceneMaster[] sceneMasters;
+        private readonly MemoryFrameMaster frameMaster;
+        
+        public ShardDebugService(ShardService shard, DebugUIState debugUI, SceneMaster[] sceneMasters,  MemoryFrameMaster frameMaster) {
             shardService = shard;
             debugUIState = debugUI;
+            this.sceneMasters = sceneMasters;
+            this.frameMaster = frameMaster;
         }
         
         public void Initialize() {
@@ -56,28 +63,54 @@ namespace _Project.Scripts.DebugSystems.Services {
             };
             
             GUILayout.BeginVertical("box");
-            GUILayout.Label("Shard Debug Service", headerStyle);
+            GUILayout.Label("Interactable Debug Service", headerStyle);
             
             GUILayout.Label("Shards", sectionStyle);
             GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
-            GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
-            if (GUILayout.Button($"Edit shard anywhere : {editShardAnywhere}", buttonStyle)) {
-                editShardAnywhere = !editShardAnywhere;
-                foreach (var shard in shardService.shards) {
-                    shard.SetEditAnywhere(editShardAnywhere);
-                }
-            }
+            // GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
+            // if (GUILayout.Button($"Edit shard anywhere : {editShardAnywhere}", buttonStyle)) {
+            //     editShardAnywhere = !editShardAnywhere;
+            //     foreach (var shard in shardService.shards) {
+            //         shard.SetEditAnywhere(editShardAnywhere);
+            //     }
+            // }
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
-            if (GUILayout.Button("Reset interactable", buttonStyle)) {
-                GameInitializer.Instance.ResetAllInteractable();
-            }
-            if (GUILayout.Button("Complete interactable", buttonStyle)) {
+            if (GUILayout.Button("Unlock every Blocked interactable", buttonStyle)) {
                 foreach (var interactable in GameInitializer.Instance.GetInteractable()) {
-                    interactable.CompleteObject();
+                    if (interactable.GetLockState is LockedState.Locked) {
+                        interactable.GetBlockedAttribute().DebugUnlocked();
+                    }
                 }
             }
+            if (GUILayout.Button("Get Every Keys", buttonStyle)) {
+                foreach (var interactable in GameInitializer.Instance.GetInteractable()) {
+                    if (interactable.GetObjectType is ObjectType.Collectable) {
+                        var collect = interactable.GetInteract as CollectableAttribute;
+                        if (collect.GetKey()) {
+                            interactable.OnInteract(ObjectInteraction.Grab);
+                        }
+                    }
+                }
+            }
+            
+            GUILayout.Label("Scenes", sectionStyle);
+            foreach (var scene in sceneMasters) {
+                GUILayout.Label($"Scene : {scene.gameObject.name}", debugStyle);
+                GUILayout.Label($"Is Scene Completed : {scene.IsSceneValidated}", debugStyle);
+                if (GUILayout.Button("Complete Scene", buttonStyle)) {
+                    scene.DebugCompleteScene();
+                }
+            }
+            
+            
+            GUILayout.Label("Memory Frame", sectionStyle);
+            GUILayout.Label($"Is Memory Frame Completed : {frameMaster.IsMemoryCompleted}", debugStyle);
+            if (GUILayout.Button("Complete Memory Frame", buttonStyle)) {
+                frameMaster.DebugCompleteFrame();
+            }
+            
             
             GUILayout.EndVertical();
         }

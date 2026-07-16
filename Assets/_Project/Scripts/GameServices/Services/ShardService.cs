@@ -65,8 +65,6 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         private void SetShardState(BaseObject glassBase) {
-            Debug.Log($"[GlassShardService] SetShardState {glassBase.gameObject.name}");
-                
             foreach (var shard in shards) {
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
