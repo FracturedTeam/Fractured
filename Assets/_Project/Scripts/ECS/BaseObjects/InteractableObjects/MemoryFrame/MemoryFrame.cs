@@ -51,7 +51,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
             
-            if (!isSelected && !master.isAFrameSelected) {
+            if (!isSelected && !master.IsAFrameSelected) {
                 var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
                 var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
                 
@@ -85,7 +85,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
-            if(!canBeInteracted || master.isAFrameSelected) return;
+            if(!canBeInteracted || master.IsAFrameSelected) return;
             
             mouseOnFrame = true;
             
@@ -152,7 +152,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return horizontal * rightDir + vertical * Vector3.up + depth * forwardDir;
         }
 
-        private void SetNewPosition(int newPos) {
+        public void SetNewPosition(int newPos) {
             if(currentPos == newPos) return;
 
             currentPos = newPos;
