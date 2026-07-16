@@ -2,6 +2,8 @@ using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.EventBus;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -12,6 +14,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isInitialized;
 
         private bool isInspecting;
+
+        [SerializeField] private GlassDocumentScriptableObject glassDocument; 
         
         public void Initialize() {
             if (!isInitialized) {
@@ -38,10 +42,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (isInspecting) {
                 PlayerController.Instance.interact.SetIsFocus(true, baseObject);
                 PlayerController.Instance.FreezeController(true);
+                
+                EventBus<DocumentEvent>.Raise(new DocumentEvent{isOn = true, document =glassDocument });
             }
             else {
                 PlayerController.Instance.interact.SetIsFocus(false);
                 PlayerController.Instance.FreezeController(false);
+                
+                EventBus<DocumentEvent>.Raise(new DocumentEvent{isOn = false, document =glassDocument });
             }
         }
 

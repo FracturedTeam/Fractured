@@ -9,6 +9,7 @@ public class GlassDocument : MonoBehaviour
     public void SetUp(GlassDocumentScriptableObject data)
     {
         glassText.Setup(data);
+        glassText.Appear();
        //background.sprite = data.sprite;
     }
 }
