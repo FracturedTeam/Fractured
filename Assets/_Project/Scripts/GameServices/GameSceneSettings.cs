@@ -17,6 +17,7 @@ namespace _Project.Scripts.GameServices {
         [Header("Puzzle Objects")]
         [SerializeField] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
+        [SerializeField] public List<SceneMaster> sceneMasters;
         
         [Header("Debug Settings")]
         public Vector3 playerPosition;
@@ -45,16 +46,18 @@ namespace _Project.Scripts.GameServices {
         
         public void SetInteractable() {
             baseObjects = new List<BaseObject>();
+            sceneMasters =  new List<SceneMaster>();
             
             //Set interactable
             baseObjects.AddRange(FindObjectsByType<BaseObject>(FindObjectsSortMode.None));
+            sceneMasters.AddRange(FindObjectsByType<SceneMaster>(FindObjectsSortMode.None));
             
             EditorUtility.SetDirty(this);
             if (!Application.isPlaying)
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             
             if(saveInstance == null) saveInstance = GetComponent<SaveInstance>();
-            saveInstance.SetObjectData(baseObjects.ToArray(), glassShards);
+            saveInstance.SetObjectData(baseObjects.ToArray(), glassShards, sceneMasters.ToArray());
         }
         #endif
     }
