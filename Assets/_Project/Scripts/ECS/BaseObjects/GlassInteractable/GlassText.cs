@@ -26,8 +26,6 @@ public class GlassText : MonoBehaviour
         fragAText.Initialize();
         fragBText.Initialize();
         bothText.Initialize();
-        
-        ForceSet();
         if (!isInitialized)
         {
             if (TryGetComponent(out BaseObject component)) baseObject = component;
@@ -41,6 +39,7 @@ public class GlassText : MonoBehaviour
             isInitialized = true;
         }
 
+        ForceSet();
         SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
     }
 
