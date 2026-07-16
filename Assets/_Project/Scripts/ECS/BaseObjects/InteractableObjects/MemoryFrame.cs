@@ -51,9 +51,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
             
-            if (!isSelected) {
+            if (!isSelected && !master.isAFrameSelected) {
                 var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
                 var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+                
                 transform.position = master.GetCurrentSlotPosition(currentPos) - (1 * forwardTime) * forwardDir;
             }
         }
@@ -77,8 +78,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             mouseOnFrame = false;
             collider.enabled = true;
             
-            var closest = GetClosetPosition();
-            SetFramePositions(closest);
+            // var closest = GetClosetPosition();
+            // SetFramePositions(closest);
             
             Debug.Log($"OnPointerUp {eventData.position}");
         }
@@ -155,8 +156,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(currentPos == newPos) return;
 
             currentPos = newPos;
-            if(tween.IsActive()) tween.Kill();
-            tween = transform.DOMove(master.GetCurrentSlotPosition(newPos), 0.5f).SetEase(Ease.Linear);
+            tween = transform.DOMove(master.GetCurrentSlotPosition(newPos), 0.5f);
         }
         
         private void SetFramePositions(int closest) {
