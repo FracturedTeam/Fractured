@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.92
+      value: 0.746
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2
+      value: 3.41
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.011
+      value: -6.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -107,7 +107,7 @@ PrefabInstance:
       addedObject: {fileID: 3187940564464373167}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9091424160298877569}
+      addedObject: {fileID: 6583120655076170080}
   m_SourcePrefab: {fileID: 100100000, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
 --- !u!1 &4736022686876030384 stripped
 GameObject:
@@ -129,11 +129,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.62, y: 2.59, z: 0.29}
+  m_Size: {x: 1.62, y: 2.59, z: 3.87}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4832804587046367387
 MonoBehaviour:
@@ -186,7 +186,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     times: 1
-    noLimit: 0
   OnCollisionTriggerEnter: []
   OnCollisionTriggerExit: []
   OnHideReveal: []
@@ -197,7 +196,7 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
---- !u!114 &9091424160298877569
+--- !u!114 &6583120655076170080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,6 +205,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4736022686876030384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
+  oneTimeUse: 1
+  hasObjectInside: 0
+  objectsInside: []
+  eventOnActivation:
+    m_PersistentCalls:
+      m_Calls: []
+  eventOnDeactivation:
+    m_PersistentCalls:
+      m_Calls: []
