@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(BaseObject))] 
 public class TriggerComponent : MonoBehaviour
@@ -36,6 +39,31 @@ public class TriggerComponent : MonoBehaviour
             customEvent.Call();
         }
     }
+
+    #region editor
+#if UNITY_EDITOR
+    [CustomEditor(typeof(TriggerComponent))]
+    public class TriggerEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            TriggerComponent trigger = (TriggerComponent)target;
+            
+            //Serialize
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Text");
+            //trigger.OnInteract = EditorGUILayout.PropertyField(trigger.OnInteract);
+
+
+        }
+    }
+    
+#endif 
+    
+    #endregion
+    
 }
 
 [Serializable]
