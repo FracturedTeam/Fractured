@@ -59,6 +59,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractFailed);
         }
 
+        public void DebugUnlocked() {
+            baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractSuccess);
+            baseObject.GetLockState = LockedState.Unlocked;
+        }
+        
         public void Tick(float deltaTime) {
             
         }

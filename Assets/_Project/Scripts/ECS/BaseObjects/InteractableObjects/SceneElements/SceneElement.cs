@@ -76,6 +76,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             IsValidated = baseObject.GetGlassInteract.IsVisible == requestedVisibility;
         }
 
+        public void SetDebugUseState(bool state) {
+            var usable = baseObject.GetInteract as UsableAttribute;
+            usable?.SetUseStateDebug(state);
+        }
+
+        public void SetValidate() {
+            isValidated = true;
+        }
+        
         public void SetSceneMaster(SceneMaster master) {
             masterValidation = master;
         }

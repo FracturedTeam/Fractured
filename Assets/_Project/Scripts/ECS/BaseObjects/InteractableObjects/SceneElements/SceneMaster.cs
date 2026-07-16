@@ -22,9 +22,9 @@ namespace _Project.Scripts.ECS {
         private bool hasSceneBeenValidated;
         
         private bool isSceneValid;
-        private bool IsSceneValidated {
+        public bool IsSceneValidated {
             get => isSceneValid;
-            set {
+            private set {
                 isSceneValid = value;
                 if (isSceneValid) {
                     ValidSceneElement();
@@ -67,6 +67,22 @@ namespace _Project.Scripts.ECS {
             GameInitializer.Instance.AddShards(glassShards);
             
             Debug.Log("Scene has been validated");
+        }
+
+        public void DebugCompleteScene() {
+            ValidSceneElement();
+            
+            foreach (var element in elements) {
+                if (element.validationMethod is SceneElement.ValidationMethod.Position) {
+                    element.transform.position = element.requestedPosition;
+                }
+
+                if (element.validationMethod is SceneElement.ValidationMethod.UseState) {
+                    element.SetDebugUseState(element.requestedUseState);
+                }
+                
+                element.SetValidate();
+            }
         }
         
         public void CheckForValidation() {
