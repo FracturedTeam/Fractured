@@ -240,6 +240,11 @@ namespace _Project.Scripts.GameServices {
             }
         }
         
+        public void SetShardsOnOff(bool isOn) {
+            foreach (var shard in shardService.shards)
+                shard.SetUp3dShard(isOn);
+        }
+        
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
 

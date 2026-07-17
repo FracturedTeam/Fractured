@@ -134,9 +134,9 @@ namespace _Project.Scripts.ECS
             Set3DShard();
         }
 
-        public void SetUp3dShard()
+        public void SetUp3dShard(bool isVisible = true)
         {
-            shard.gameObject.SetActive(true);
+            shard.gameObject.SetActive(isVisible);
         }
 
         public void OnDrag(PointerEventData eventData) {
