@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3004316273569975632}
   - component: {fileID: 5506750844211808101}
   - component: {fileID: 8395952547059805371}
-  - component: {fileID: 7676441312268664204}
+  - component: {fileID: 7586857818869585233}
   m_Layer: 0
   m_Name: P_Manor_Door
   m_TagString: Untagged
@@ -52,10 +52,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 15a4ca8e-9350-46b9-8f15-81c7f43688e6
 --- !u!65 &5506750844211808101
 BoxCollider:
@@ -72,7 +75,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -117,7 +120,7 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
---- !u!114 &7676441312268664204
+--- !u!114 &7586857818869585233
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,15 +129,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7804422172726367955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
+  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
   oneTimeUse: 1
-  hasObjectInside: 0
-  objectsInside: []
-  eventOnActivation:
-    m_PersistentCalls:
-      m_Calls: []
-  eventOnDeactivation:
-    m_PersistentCalls:
-      m_Calls: []

@@ -81,6 +81,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void SetUseState(bool state) {
             IsUsed = state;
             UpdateState();
+            baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger.OnInteract);
         }
         
         public void Tick(float deltaTime) {

@@ -107,7 +107,7 @@ PrefabInstance:
       addedObject: {fileID: 3187940564464373167}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6583120655076170080}
+      addedObject: {fileID: 4253228604220701554}
   m_SourcePrefab: {fileID: 100100000, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
 --- !u!1 &4736022686876030384 stripped
 GameObject:
@@ -152,10 +152,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 62d89de9-3d0b-4c48-8529-7dbb31234901
 --- !u!114 &3187940564464373167
 MonoBehaviour:
@@ -196,7 +199,7 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
---- !u!114 &6583120655076170080
+--- !u!114 &4253228604220701554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,15 +208,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4736022686876030384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
+  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
   oneTimeUse: 1
-  hasObjectInside: 0
-  objectsInside: []
-  eventOnActivation:
-    m_PersistentCalls:
-      m_Calls: []
-  eventOnDeactivation:
-    m_PersistentCalls:
-      m_Calls: []

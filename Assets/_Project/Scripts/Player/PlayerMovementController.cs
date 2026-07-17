@@ -20,6 +20,12 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform feetPosition;
         [SerializeField] public Vector3 feetSize;
     
+        [Header("Step Settings")]
+        [SerializeField] private float lowerHit = 0.1f;
+        [SerializeField] private float upperHit = 0.2f;
+        [SerializeField] private float stepHeight = 0.2f;
+        [SerializeField] private float stepHeigtSmoothing = 2f;
+        
         [Header("Camera Settings")]
         [SerializeField] UnityEngine.Camera cam;
     
@@ -230,13 +236,24 @@ namespace _Project.Scripts.Player {
             if(rb.isKinematic) return;
             
             if (player.IsUsingDoor()) return;
+
+            if(moveDir.magnitude > 0)
+                StepStairs();
             
             if (!IsGrounded())
                 rb.AddForce(Vector3.down * CurrentFallSpeed, ForceMode.Acceleration);
         
             PlayerMove();
         }
-    
+
+        private void StepStairs() {
+            if (Physics.Raycast(feetPosition.position + Vector3.up * 0.1f, mesh.forward, lowerHit)) {
+                if (!Physics.Raycast(feetPosition.position + Vector3.up * stepHeight, mesh.forward, upperHit)) {
+                    rb.position -= new Vector3(0f, -stepHeigtSmoothing * Time.fixedDeltaTime, 0f);
+                }
+            }
+        }
+
         private void PlayerMove() {
             if (!IsGrounded())
                 rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
@@ -247,6 +264,14 @@ namespace _Project.Scripts.Player {
         }
     
         #endregion
+
+        // private void OnDrawGizmos() {
+        //     Gizmos.matrix = Matrix4x4.identity;
+        //     
+        //     Gizmos.color = Color.red;
+        //     Gizmos.DrawLine(feetPosition.position, feetPosition.position + mesh.forward * lowerHit);
+        //     Gizmos.DrawLine(feetPosition.position + Vector3.up * stepHeight, feetPosition.position + Vector3.up * stepHeight + mesh.forward * upperHit);
+        // }
 
         #region Settes/Helpers
 

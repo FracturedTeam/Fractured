@@ -99,13 +99,18 @@ namespace _Project.Scripts.ECS.BaseObjects
                     else {
                         if(data.isInInventory) collect.SetInInventory();
                     }
-                    
                     break;
                 case ObjectType.Usable:
                     var use = GetInteract as UsableAttribute;
                     use?.SetUseState(data.isUsed);
                     break;
                 case ObjectType.MemoryFrame:
+                    break;
+                case ObjectType.SimpleInteraction:
+                    if (data.hasBeenUsed) {
+                        var simple = GetInteract as SimpleInteractionAttribute;
+                        simple.SetHasBeenUse();
+                    }
                     break;
             }
             
@@ -138,6 +143,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                     data.isUsed = use.IsUsed;
                     break;
                 case ObjectType.MemoryFrame:
+                    break;
+                case ObjectType.SimpleInteraction:
+                    var simple = GetInteract as SimpleInteractionAttribute;
+                    data.hasBeenUsed = simple.hasBeenUsed;
                     break;
                 default:
                     break;
