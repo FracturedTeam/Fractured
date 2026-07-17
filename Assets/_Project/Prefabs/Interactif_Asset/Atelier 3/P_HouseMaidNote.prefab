@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9a3b3fe8982a9104683620028615dc94, type: 2}
+    - target: {fileID: -5754084199372789682, guid: a636b633dee6fbd4fb2f114ccbe440ab, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -883198674935211317, guid: e088b4c70aa5a87438cb85b2bcc061de, type: 3}
     - target: {fileID: 919132149155446097, guid: a636b633dee6fbd4fb2f114ccbe440ab, type: 3}
       propertyPath: m_Icon
       value: 
@@ -100,10 +104,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: f73f27cb-8f62-4161-aa2b-4f85cc127ac1
 --- !u!114 &6667973391819282382
 MonoBehaviour:
@@ -133,9 +140,9 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.4583839, y: 0.033027798, z: 1.3154334}
-  m_Center: {x: -0.00000008940698, y: 0.01651391, z: -0.00000008940698}
+  m_Size: {x: 0.5001416, y: 0.11027374, z: 0.77446914}
+  m_Center: {x: -0.02190929, y: 0.044455107, z: -0.013624536}
