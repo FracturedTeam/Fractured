@@ -57,7 +57,11 @@ namespace _Project.Scripts.Player {
         private const float LerpTime = 1f;
         private float lerpTimer = 0f;
         private float currentDrag = 0f;
-    
+
+        private bool newCamDirBuffer;
+        private Vector3 newForwardDir;
+        private Vector3 newRightDir;
+        
         public void Awake() {
         
             // Get every component needed
@@ -85,16 +89,16 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdateCameraDir() {
-            forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up);
-            rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up);
+            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
 
-            if (forwardDir.sqrMagnitude < 0.0001f)
-                forwardDir = previousForwardDir;
-            else
-                previousForwardDir = forwardDir;
-        
-            forwardDir.Normalize();
-            rightDir.Normalize();
+            if (moveDir != Vector3.zero) {
+                newCamDirBuffer = true;
+            }
+            else {
+                forwardDir = newForwardDir;
+                rightDir = newRightDir;
+            }
         }
 
         private void SetDir(Vector2 moveInput) {
@@ -114,13 +118,18 @@ namespace _Project.Scripts.Player {
     
         public void HandleUpdate() {
             if(rb.isKinematic) return;
-        
+
+            if (newCamDirBuffer && moveDir == Vector3.zero) {
+                forwardDir = newForwardDir;
+                rightDir = newRightDir;
+                newCamDirBuffer = false;
+            }
+            
             MeshRotation();
             CheckMethods();
             UpdateDrag();
-        
-            // TODO a voir pour déplacer cette fonction pour être appeler uniquement lors d'un changement de salle
-            if(forwardDir != cam.transform.forward || rightDir != cam.transform.right)
+            
+            if(newForwardDir != cam.transform.forward || rightDir != cam.transform.right)
                 UpdateCameraDir();
         }
 

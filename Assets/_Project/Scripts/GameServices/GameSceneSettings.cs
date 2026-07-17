@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEditor;
@@ -23,10 +24,11 @@ namespace _Project.Scripts.GameServices {
         public Vector3 playerPosition;
         
         private SaveInstance saveInstance;
-
+        
         private void Start() {
             if(saveInstance == null)
                 saveInstance = GetComponent<SaveInstance>();
+            
             roomCamera.Priority = 1;
         }
 
