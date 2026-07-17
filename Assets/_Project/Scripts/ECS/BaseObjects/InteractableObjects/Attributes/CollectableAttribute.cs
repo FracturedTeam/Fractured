@@ -186,11 +186,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 colTimer.Start();
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                if(baseObject.HasSceneElement())
-                    baseObject.TriggerSceneElement();
             }
-
+            
             if (isInInventory) {
                 isInInventory = false;
                 PlayerController.Instance.inventory.OnItemDropped(baseObject);
@@ -214,9 +211,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                if(baseObject.HasSceneElement())
-                    baseObject.TriggerSceneElement();
             }
             
             if (isInInventory) {
@@ -267,6 +261,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             tween.Kill();
             tween = transform.DOMove(pos, 0.5f);
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
+            tween.onComplete += TriggerSceneElement;
+        }
+
+        private void TriggerSceneElement() {
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
         }
         
         private void ActiveCollision() {

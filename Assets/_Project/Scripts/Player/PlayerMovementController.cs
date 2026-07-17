@@ -20,6 +20,12 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform feetPosition;
         [SerializeField] public Vector3 feetSize;
     
+        [Header("Step Settings")]
+        [SerializeField] private float lowerHit = 0.1f;
+        [SerializeField] private float upperHit = 0.2f;
+        [SerializeField] private float stepHeight = 0.2f;
+        [SerializeField] private float stepHeigtSmoothing = 2f;
+        
         [Header("Camera Settings")]
         [SerializeField] UnityEngine.Camera cam;
     
@@ -51,7 +57,11 @@ namespace _Project.Scripts.Player {
         private const float LerpTime = 1f;
         private float lerpTimer = 0f;
         private float currentDrag = 0f;
-    
+
+        private bool newCamDirBuffer;
+        private Vector3 newForwardDir;
+        private Vector3 newRightDir;
+        
         public void Awake() {
         
             // Get every component needed
@@ -79,16 +89,16 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdateCameraDir() {
-            forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up);
-            rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up);
+            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
 
-            if (forwardDir.sqrMagnitude < 0.0001f)
-                forwardDir = previousForwardDir;
-            else
-                previousForwardDir = forwardDir;
-        
-            forwardDir.Normalize();
-            rightDir.Normalize();
+            if (moveDir != Vector3.zero) {
+                newCamDirBuffer = true;
+            }
+            else {
+                forwardDir = newForwardDir;
+                rightDir = newRightDir;
+            }
         }
 
         private void SetDir(Vector2 moveInput) {
@@ -108,13 +118,18 @@ namespace _Project.Scripts.Player {
     
         public void HandleUpdate() {
             if(rb.isKinematic) return;
-        
+
+            if (newCamDirBuffer && moveDir == Vector3.zero) {
+                forwardDir = newForwardDir;
+                rightDir = newRightDir;
+                newCamDirBuffer = false;
+            }
+            
             MeshRotation();
             CheckMethods();
             UpdateDrag();
-        
-            // TODO a voir pour déplacer cette fonction pour être appeler uniquement lors d'un changement de salle
-            if(forwardDir != cam.transform.forward || rightDir != cam.transform.right)
+            
+            if(newForwardDir != cam.transform.forward || rightDir != cam.transform.right)
                 UpdateCameraDir();
         }
 
@@ -230,13 +245,24 @@ namespace _Project.Scripts.Player {
             if(rb.isKinematic) return;
             
             if (player.IsUsingDoor()) return;
+
+            if(moveDir.magnitude > 0)
+                StepStairs();
             
             if (!IsGrounded())
                 rb.AddForce(Vector3.down * CurrentFallSpeed, ForceMode.Acceleration);
         
             PlayerMove();
         }
-    
+
+        private void StepStairs() {
+            if (Physics.Raycast(feetPosition.position + Vector3.up * 0.1f, mesh.forward, lowerHit)) {
+                if (!Physics.Raycast(feetPosition.position + Vector3.up * stepHeight, mesh.forward, upperHit)) {
+                    rb.position -= new Vector3(0f, -stepHeigtSmoothing * Time.fixedDeltaTime, 0f);
+                }
+            }
+        }
+
         private void PlayerMove() {
             if (!IsGrounded())
                 rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
@@ -247,6 +273,14 @@ namespace _Project.Scripts.Player {
         }
     
         #endregion
+
+        // private void OnDrawGizmos() {
+        //     Gizmos.matrix = Matrix4x4.identity;
+        //     
+        //     Gizmos.color = Color.red;
+        //     Gizmos.DrawLine(feetPosition.position, feetPosition.position + mesh.forward * lowerHit);
+        //     Gizmos.DrawLine(feetPosition.position + Vector3.up * stepHeight, feetPosition.position + Vector3.up * stepHeight + mesh.forward * upperHit);
+        // }
 
         #region Settes/Helpers
 

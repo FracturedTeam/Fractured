@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,10 +16,10 @@ namespace _Project.Scripts.GameServices {
     }
     
     public class SaveInstance : MonoBehaviour {
-        [SerializeField] private SceneData sceneData;
+        [SerializeField, HideInInspector] private SceneData sceneData;
         [SerializeField, HideInInspector] private List<BaseObject> baseObjects;
         [SerializeField, HideInInspector] private List<Glass> shards;
-        [SerializeField] private List<SceneMaster> masters;
+        [SerializeField, HideInInspector] private List<SceneMaster> masters;
         
         public void Bind(bool firstTimeBind) {
             sceneData.SceneName = gameObject.scene.name;
