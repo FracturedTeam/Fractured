@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using DG.Tweening;
@@ -56,6 +57,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void UseMemoryFrame() {
             if(!IsMemoryCompleted) isUsingMemoryFrame = !isUsingMemoryFrame;
             else isUsingMemoryFrame = false;
+
+            GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             
             if (isUsingMemoryFrame) {
                 frameCamera.Priority = 2;
