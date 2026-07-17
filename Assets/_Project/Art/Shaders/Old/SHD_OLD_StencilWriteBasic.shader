@@ -1,4 +1,4 @@
-Shader "Custom/SHD_StencilWriteBasic"
+Shader "Custom/SHD_OLD_StencilWriteBasic"
 {
     Properties
     {

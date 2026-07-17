@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor v1.9.9.5
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "Custom/SHD_Key_Visibility"
+Shader "Custom/SHD_OLD_Key_Visibility"
 {
 	Properties
 	{
