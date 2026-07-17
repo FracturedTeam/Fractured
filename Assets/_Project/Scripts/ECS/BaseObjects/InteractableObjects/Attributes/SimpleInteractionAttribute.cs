@@ -10,7 +10,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
 
         private bool isInitialized;
-        
+
+        [SerializeField] private bool oneTimeUse;
+        public bool hasBeenUsed { get; private set; }
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
@@ -24,9 +26,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public void OnInteract(ObjectInteraction interaction, IInteractable other = null)
-        {
-           
+        public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
+            if (oneTimeUse && !hasBeenUsed) {
+                hasBeenUsed = true;
+                baseObject.SetInteract(false);
+            }
         }
 
         public void Tick(float deltaTime) {
@@ -39,6 +43,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void ResetObject() {
+        }
+
+        public void SetHasBeenUse() {
+            hasBeenUsed = true;
+            baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger.OnInteract);
         }
 
         public BaseObject GetBaseObject() {

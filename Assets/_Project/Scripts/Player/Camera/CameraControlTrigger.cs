@@ -16,7 +16,7 @@ namespace _Project.Scripts.Player.Camera {
         private Vector3 extentSize;
         private LayerMask mask;
         
-        private readonly CountdownTimer countdownTimer = new CountdownTimer(0.1f);
+        private readonly CountdownTimer countdownTimer = new (0.1f);
         
         private void Start() {
             collider = GetComponent<Collider>();
@@ -27,9 +27,17 @@ namespace _Project.Scripts.Player.Camera {
             );
             
             mask =  LayerMask.GetMask("Player");
-            countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
         }
 
+        void OnEnable() {
+            countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
+        }
+        
+        void OnDisable() {
+            countdownTimer.OnTimerStop -= GameInitializer.Instance.RepositionGlass;
+            countdownTimer.Dispose();
+        }
+        
         private void Update() {
             DetectPlayer();
         }
@@ -55,6 +63,7 @@ namespace _Project.Scripts.Player.Camera {
         private void SwitchCamera() {
             var exitDir = (PlayerController.Instance.transform.position - transform.position);
             var localExitDir = transform.InverseTransformDirection(exitDir);
+            
             countdownTimer.Start();
             
             if (Mathf.Abs(localExitDir.x) > 0 && Mathf.Abs(localExitDir.z) < transform.localScale.z) {
