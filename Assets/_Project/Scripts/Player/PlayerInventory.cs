@@ -11,11 +11,12 @@ namespace _Project.Scripts.Player {
         public List<Item> items;
         public List<Key> keys;
 
-        public void OnKeyPickUp(KeyAttribute key) {
-            var newKey = new Key() {
-                keySprite = key.keySprite,
-                ID = key.ID,
-                oneTimeUse = key.oneTimeUse
+        public void OnKeyPickUp(CollectableAttribute key) {
+            var newKey = new Key{
+                keySprite = key.itemSprite,
+                ID = key.keyID,
+                oneTimeUse = key.isOneTimeUse,
+                collect = key
             };
             keys.Add(newKey);
             
@@ -39,6 +40,7 @@ namespace _Project.Scripts.Player {
             if (keys[index].ID == keyID) {
                 if (keys[index].oneTimeUse) {
                     EventBus<RemoveKeyEvent>.Raise(new RemoveKeyEvent{key = keys[index]});
+                    keys[index].collect.SetHasBeenUse();
                     keys.RemoveAt(index);
                 }
 
@@ -84,5 +86,6 @@ namespace _Project.Scripts.Player {
         public int ID;
         public Sprite keySprite;
         public bool oneTimeUse;
+        public CollectableAttribute collect;
     }
 }

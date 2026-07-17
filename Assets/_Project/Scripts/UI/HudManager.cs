@@ -112,7 +112,7 @@ namespace _Project.Scripts.UI
         public void OpenDocument(DocumentEvent e)
         {
             glassDocument.gameObject.SetActive(e.isOn);
-            glassDocument.SetUp(e.document);
+            glassDocument.SetUp(e.document, e.isOn);
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {

@@ -1,7 +1,10 @@
+using System;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
+using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS {
@@ -69,7 +72,7 @@ namespace _Project.Scripts.ECS {
             Debug.Log("Scene has been validated");
         }
 
-        public void DebugCompleteScene() {
+        public void LoadCompleteScene() {
             ValidSceneElement();
             
             foreach (var element in elements) {
@@ -99,5 +102,63 @@ namespace _Project.Scripts.ECS {
             
             IsSceneValidated = everyElementIsValid;
         }
+        
+        
+         #region Save
+         [SerializeField, HideInInspector] private SceneMasterSave data;
+         [field:SerializeField] public string Guid { get; set; }
+         
+         private System.Guid _guid;
+         public System.Guid guid {
+             get {
+                 if(_guid == System.Guid.Empty && !System.String.IsNullOrEmpty(Guid))
+                 {
+                     _guid = new System.Guid(Guid);
+                 }
+ 
+                 return _guid;
+             }
+         }
+
+#if UNITY_EDITOR
+        
+         [ContextMenu("Generate Unique ID")]
+         public void GenerateGuid() {
+             _guid = System.Guid.NewGuid();
+             Guid = _guid.ToString();
+             EditorUtility.SetDirty(this);
+         }
+#endif 
+ 
+         public void Bind(SceneMasterSave data) {
+             this.data = data;
+             if (String.IsNullOrEmpty(Guid)) {
+                 Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
+                 return;
+             }
+             data.Guid = Guid;
+         }
+        
+         [ContextMenu("Load")]
+         public void Load() {
+             if(data.Guid != Guid) return;
+             
+             if(data.isCompleted)
+                 LoadCompleteScene();
+         }
+         
+         [ContextMenu("Save")]
+         public void SaveData() {
+             if(data == null || data.Guid != Guid) return;
+
+             data.isCompleted = isSceneValid;
+         }
+         #endregion
+    }
+
+    [Serializable]
+    public class SceneMasterSave {
+        [field: SerializeField] public string Guid { get; set; }
+        public bool isCompleted;
     }
 }

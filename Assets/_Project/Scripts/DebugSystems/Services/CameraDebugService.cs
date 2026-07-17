@@ -1,4 +1,6 @@
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ namespace _Project.Scripts.DebugSystems.Services {
         private readonly CinemachineBrain currentCamera;
         private readonly DebugUIState debugUIState;
         private readonly CinemachineCamera[] cameras;
+        private readonly CountdownTimer countdownTimer = new (0.1f);
         
         public CameraDebugService(DebugUIState debugUI, CinemachineCamera[] cameras) {
             debugUIState = debugUI;
@@ -16,6 +19,7 @@ namespace _Project.Scripts.DebugSystems.Services {
         }
         
         public void Initialize() {
+            countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
         }
 
         public void Tick() {
@@ -70,6 +74,8 @@ namespace _Project.Scripts.DebugSystems.Services {
                     c.Priority = 0;
                 
                 cam.Priority = 1;
+                
+                countdownTimer.Start();
             }
             GUILayout.EndVertical();
         }
@@ -78,6 +84,9 @@ namespace _Project.Scripts.DebugSystems.Services {
         }
         
         public void Dispose() {
+            countdownTimer.OnTimerStop -= GameInitializer.Instance.RepositionGlass;
+            countdownTimer.Dispose();
+            
         }
     }
 }

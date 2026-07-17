@@ -8,6 +8,7 @@ using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -45,7 +46,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         [field:SerializeField] public string Guid { get; set; }
         
         private System.Guid _guid;
-
         public System.Guid guid {
             get {
                 if(_guid == System.Guid.Empty && !System.String.IsNullOrEmpty(Guid))
@@ -81,33 +81,81 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(data.Guid != Guid) return;
             
             if (GetGlass) {
-                GetGlassInteract.objectOut = data.ObjectOutOfBox;
-                GetGlassInteract.SetInteractableInBox(data.ObjectOutOfBox);
+                GetGlassInteract.objectOut = data.objectOutOfGlass;
+                GetGlassInteract.SetInteractableInBox(data.objectOutOfGlass);
             }
             
-            if(GetObjectType is ObjectType.Moveable)
-                transform.position = data.Position;
+            switch (GetObjectType) {
+                case ObjectType.Moveable:
+                    transform.position = data.position;
+                    break;
+                case ObjectType.Collectable:
+                    transform.position = data.position;
+                    
+                    var collect = GetInteract as CollectableAttribute;
+                    if (collect.IsKey() && data.hasBeenUsed) {
+                        gameObject.SetActive(false);
+                    }
+                    else {
+                        if(data.isInInventory) collect.SetInInventory();
+                    }
+                    break;
+                case ObjectType.Usable:
+                    var use = GetInteract as UsableAttribute;
+                    use?.SetUseState(data.isUsed);
+                    break;
+                case ObjectType.MemoryFrame:
+                    break;
+                case ObjectType.SimpleInteraction:
+                    if (data.hasBeenUsed) {
+                        var simple = GetInteract as SimpleInteractionAttribute;
+                        simple.SetHasBeenUse();
+                    }
+                    break;
+            }
             
-            GetLockState = data.ObjectCompletion;
-            
+            GetLockState = data.lockedState;
             if (GetLockState is LockedState.Unlocked) {
-                CompleteObject();
+                blockedAttribute.ForceUnlock();
             }
             
-            SetInteract(data.CanBeInteractedWith);
+            if(HasSceneElement()) sceneElement.CheckValidation();
+            
+            SetInteract(data.canBeInteractedWith);
         }
         
         [ContextMenu("Save")]
         public void SaveData() {
             if(data == null || data.Guid != Guid) return;
-            
-            if(GetObjectType is ObjectType.Moveable)
-                data.Position = transform.position;
+
+            switch (GetObjectType) {
+                case ObjectType.Moveable:
+                    data.position = transform.position;
+                    break;
+                case ObjectType.Collectable:
+                    var collect = GetInteract as CollectableAttribute;
+                    data.position = transform.position;
+                    data.isInInventory = collect.IsInInventory();
+                    data.hasBeenUsed = collect.KeyHasBeenUsed();
+                    break;
+                case ObjectType.Usable:
+                    var use = GetInteract as UsableAttribute;
+                    data.isUsed = use.IsUsed;
+                    break;
+                case ObjectType.MemoryFrame:
+                    break;
+                case ObjectType.SimpleInteraction:
+                    var simple = GetInteract as SimpleInteractionAttribute;
+                    data.hasBeenUsed = simple.hasBeenUsed;
+                    break;
+                default:
+                    break;
+            }
                     
-            data.ObjectCompletion = GetLockState;
+            data.lockedState = GetLockState;
             
-            data.CanBeInteractedWith = canBeInteractedWith;
-            if (GetGlass) data.ObjectOutOfBox = GetGlassInteract.objectOut;
+            data.canBeInteractedWith = canBeInteractedWith;
+            if (GetGlass) data.objectOutOfGlass = GetGlassInteract.objectOut;
         }
         #endregion
         
@@ -251,10 +299,25 @@ namespace _Project.Scripts.ECS.BaseObjects
     [Serializable]
     public class ObjectData {
         [field: SerializeField] public string Guid { get; set; }
-        public Vector3 Position;
-        public LockedState ObjectCompletion;
-        public bool CanBeInteractedWith;
-        public bool ObjectOutOfBox;
+        
+        // General
+        public bool canBeInteractedWith;
+        
+        // Moveable - Collectable
+        public Vector3 position;
+        public bool isInInventory;
+        
+        // Key settings
+        public bool hasBeenUsed;
+        
+        // Blocked
+        public LockedState lockedState;
+        
+        // Usable
+        public bool isUsed;
+        
+        // Glass Interactable
+        public bool objectOutOfGlass;
     }
 }
 

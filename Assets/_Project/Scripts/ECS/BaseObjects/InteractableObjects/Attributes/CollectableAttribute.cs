@@ -12,7 +12,6 @@ using UnityEngine;
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class CollectableAttribute : MonoBehaviour, IInteractable {
         private BaseObject baseObject;
-        private KeyAttribute keyAttribute;
         private Transform originalParent;
         private Vector3 originalPosition;
         
@@ -24,6 +23,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         [Header("Particles")]
         [SerializeField] private ParticleSystem particles;
+        
+        [Header("Key Settings")]
+        [SerializeField] private bool isAKey;
+        [SerializeField] public bool isOneTimeUse;
+        [SerializeField] public int keyID;
+
+        private bool keyHasBeenUse;
         
         private bool canBeGrab = false;
         private bool isHeld = false;
@@ -39,8 +45,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
                 else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
-                
-                if(TryGetComponent(out KeyAttribute key)) keyAttribute = key;
                 
                 originalPosition = transform.position;
                 
@@ -141,18 +145,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void OnPickedUp() {
             Debug.Log("[Collectable] Picked up object");
-            baseObject.gameObject.SetActive(false);
             
-            baseObject.SetInteract(false);
-            baseObject.SetCollider(false);
-            
-            isHeld = false;
-            isInInventory = true;
-            
-            if(keyAttribute)
-                PlayerController.Instance.inventory.OnKeyPickUp(keyAttribute);
-            else
-                PlayerController.Instance.inventory.OnItemPickedUp(this);
+            SetInInventory();
 
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
         }
@@ -192,11 +186,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 colTimer.Start();
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                if(baseObject.HasSceneElement())
-                    baseObject.TriggerSceneElement();
             }
-
+            
             if (isInInventory) {
                 isInInventory = false;
                 PlayerController.Instance.inventory.OnItemDropped(baseObject);
@@ -220,9 +211,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
-                
-                if(baseObject.HasSceneElement())
-                    baseObject.TriggerSceneElement();
             }
             
             if (isInInventory) {
@@ -232,6 +220,29 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isHeld = false;
             PlayerController.Instance.interact.SetDropObject();
+        }
+
+        public void SetInInventory() {
+            baseObject.gameObject.SetActive(false);
+            
+            baseObject.SetInteract(false);
+            baseObject.SetCollider(false);
+            
+            isHeld = false;
+            isInInventory = true;
+            
+            if(isAKey)
+                PlayerController.Instance.inventory.OnKeyPickUp(this);
+            else
+                PlayerController.Instance.inventory.OnItemPickedUp(this);
+        }
+
+        public void SetHasBeenUse() {
+            keyHasBeenUse = true;
+        }
+
+        public bool KeyHasBeenUsed() {
+            return keyHasBeenUse;
         }
         
         #region OtherMethods
@@ -250,6 +261,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             tween.Kill();
             tween = transform.DOMove(pos, 0.5f);
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
+            tween.onComplete += TriggerSceneElement;
+        }
+
+        private void TriggerSceneElement() {
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
         }
         
         private void ActiveCollision() {
@@ -333,7 +350,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return canBeGrab;
         }
 
-        public bool IsGrabbed() {
+        public bool IsHeld() {
             return isHeld;
         }
 
@@ -341,10 +358,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return isInInventory;
         }
         
-        public KeyAttribute GetKey() {
-            if(keyAttribute) return keyAttribute;
-
-            return null;
+        public bool IsKey() {
+            return isAKey;
         }
         
         public BaseObject GetBaseObject() {
