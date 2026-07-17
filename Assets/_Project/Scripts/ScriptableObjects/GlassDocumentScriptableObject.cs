@@ -4,5 +4,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Glass Document", menuName = "ScriptableObjects/GlassDoc")]
 public class GlassDocumentScriptableObject : GlassTextScriptableObject
 {
-    public Sprite sprite;
+    public Material material;
+    public DocumentTypes type; 
+}
+
+public enum DocumentTypes
+{
+    square,
+    landscape,
+    portrait
 }
