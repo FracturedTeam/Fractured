@@ -133,6 +133,12 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
+        public void SetColor(ColorEnum color)
+        {
+            objectColor = color;
+            //Set the correct material
+        }
+        
         public void Tick(float deltaTime) {
             if (!objectInside || objectOut) return;
 

@@ -42,21 +42,39 @@ public class TriggerComponent : MonoBehaviour
 
     #region editor
 #if UNITY_EDITOR
-    [CustomEditor(typeof(TriggerComponent))]
-    public class TriggerEditor : Editor
+    [CustomPropertyDrawer(typeof(TriggerComponent))]
+    public class TriggerComponentDrawer : PropertyDrawer
     {
-        public override void OnInspectorGUI()
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            base.OnInspectorGUI();
+            EditorGUI.BeginProperty(position, label, property);
 
-            TriggerComponent trigger = (TriggerComponent)target;
-            
-            //Serialize
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Text");
-            //trigger.OnInteract = EditorGUILayout.PropertyField(trigger.OnInteract);
+            EditorGUI.BeginChangeCheck();
 
+            /// Label Field
+            position.height = EditorGUIUtility.singleLineHeight;
+            EditorGUI.LabelField(position, label);
 
+            /// Property Field
+            SerializedProperty unityEventProp = property.FindPropertyRelative("unityEvent");
+            position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            position.height = EditorGUI.GetPropertyHeight(unityEventProp);
+            EditorGUI.PropertyField(position, unityEventProp);
+
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
+
+            EditorGUI.EndProperty();
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            /// Height of the label
+            float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            /// Height of the property
+            height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("unityEvent"));
+            return height;
         }
     }
     
