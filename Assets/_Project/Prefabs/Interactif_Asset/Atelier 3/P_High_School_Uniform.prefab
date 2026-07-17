@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2906609758278006854}
   - component: {fileID: 8425456786949507603}
   - component: {fileID: 5028091570247903584}
-  - component: {fileID: 305007101410742732}
+  - component: {fileID: 4027321542846705122}
+  - component: {fileID: 6921314538637169222}
   m_Layer: 0
   m_Name: P_High_School_Uniform
   m_TagString: Untagged
@@ -145,7 +146,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     times: 1
-    noLimit: 0
   OnCollisionTriggerEnter: []
   OnCollisionTriggerExit: []
   OnHideReveal: []
@@ -156,7 +156,28 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
---- !u!114 &305007101410742732
+--- !u!65 &4027321542846705122
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793561808414963695}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.8, y: 19.2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6921314538637169222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,6 +186,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1793561808414963695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
+  oneTimeUse: 1
+  hasObjectInside: 0
+  objectsInside: []
+  eventOnActivation:
+    m_PersistentCalls:
+      m_Calls: []
+  eventOnDeactivation:
+    m_PersistentCalls:
+      m_Calls: []
