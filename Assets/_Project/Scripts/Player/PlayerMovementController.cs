@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -28,6 +30,7 @@ namespace _Project.Scripts.Player {
         
         [Header("Camera Settings")]
         [SerializeField] UnityEngine.Camera cam;
+        [SerializeField] private bool alternateCameraDirection;
     
         private PlayerController player;
     
@@ -47,10 +50,16 @@ namespace _Project.Scripts.Player {
     
         private Vector3 moveDir; // Inputs joueur de direction
         public Vector3 PreviousMoveDir { get; private set; } // Keep last inputs joueur de direction
-    
         private Vector3 slopeMoveDir; // Si le joueur est sur une slope
+    
+        
+        [Space]
+        private Vector3 rawMoveDir; // Inputs joueur de direction
+        [Space]
         private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
-        private Vector3 previousForwardDir;
+        [Space]
+        private Vector3 newForwardDir, newRightDir;
+        private bool newCamDirBuffer;
     
         private RaycastHit slopeHit; // Pour check si le joueur est sur une slope
 
@@ -58,9 +67,7 @@ namespace _Project.Scripts.Player {
         private float lerpTimer = 0f;
         private float currentDrag = 0f;
 
-        private bool newCamDirBuffer;
-        private Vector3 newForwardDir;
-        private Vector3 newRightDir;
+        private float lerpCameraDirTime;
         
         public void Awake() {
         
@@ -76,8 +83,6 @@ namespace _Project.Scripts.Player {
         
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
-        
-            UpdateCameraDir();
         }
 
         private void OnEnable() {
@@ -88,21 +93,9 @@ namespace _Project.Scripts.Player {
             inputsBrain.OnPlayerMove -= SetDir;
         }
 
-        private void UpdateCameraDir() {
-            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
-
-            if (moveDir != Vector3.zero) {
-                newCamDirBuffer = true;
-            }
-            else {
-                forwardDir = newForwardDir;
-                rightDir = newRightDir;
-            }
-        }
-
         private void SetDir(Vector2 moveInput) {
             moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
+            rawMoveDir = moveInput;
         }
 
         public void SetSpeed(PlayerSpeedEnum speed) {
@@ -118,19 +111,55 @@ namespace _Project.Scripts.Player {
     
         public void HandleUpdate() {
             if(rb.isKinematic) return;
-
-            if (newCamDirBuffer && moveDir == Vector3.zero) {
-                forwardDir = newForwardDir;
-                rightDir = newRightDir;
-                newCamDirBuffer = false;
-            }
             
             MeshRotation();
             CheckMethods();
             UpdateDrag();
+
+            HandleCamera();
+        }
+
+        private void HandleCamera() {
+            UpdateMoveDir();
+
+            var forwardAngle = Vector3.Dot(newForwardDir, Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized);
+            var rightAngle = Vector3.Dot(newRightDir, Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized);
             
-            if(newForwardDir != cam.transform.forward || rightDir != cam.transform.right)
+            if ((!Mathf.Approximately(forwardAngle, 1) || !Mathf.Approximately(rightAngle, 1)) && lerpCameraDirTime <= 0) 
                 UpdateCameraDir();
+        }
+
+        private void UpdateMoveDir() {
+            if(!newCamDirBuffer && !alternateCameraDirection) return;
+            
+            lerpCameraDirTime -= Time.deltaTime;
+            if(lerpCameraDirTime < 0) newCamDirBuffer = false;
+
+            var alternateForward = new Vector3();
+            if (alternateCameraDirection) {
+                var camToPlayerDir = transform.position - cam.transform.position;
+                alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
+            }
+
+            if (!alternateCameraDirection) {
+                forwardDir = Vector3.Lerp(alternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpCameraDirTime);
+                rightDir = Vector3.Lerp(newRightDir, rightDir, lerpCameraDirTime);
+            }
+
+            if (moveDir != Vector3.zero) return;
+            
+            forwardDir = alternateCameraDirection ? alternateForward : newForwardDir;
+            rightDir = newRightDir;
+            newCamDirBuffer = false;
+            lerpCameraDirTime = -1;
+        }
+
+        private void UpdateCameraDir() {
+            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
+
+            newCamDirBuffer = true;
+            lerpCameraDirTime = 2f;
         }
 
         private void MeshRotation() {
