@@ -361,6 +361,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void CanBeInteracted(bool can) {
             canBeInteracted = can;
+            if(!can)
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }
     }
 }

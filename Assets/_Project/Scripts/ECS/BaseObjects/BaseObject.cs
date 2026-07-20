@@ -273,20 +273,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             return sceneElement != null;
         }
 
+        public void UnValidSceneElement() {
+            sceneElement.UnValidate();
+        }
+        
         public void TriggerSceneElement() {
             sceneElement.CheckValidation();
         }
 
         public BlockedAttribute GetBlockedAttribute() {
             return blockedAttribute;
-        }
-        
-        public bool GetSceneElementPosition(Vector3 dropPosition, ref Vector3 position) {
-            if (Vector3.Distance(sceneElement.requestedPosition, dropPosition) <= sceneElement.tolerance) {
-                position = sceneElement.requestedPosition;
-                return true;
-            }
-            return false;
         }
 
         public void Trigger(bool on) {
