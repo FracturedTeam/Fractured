@@ -186,6 +186,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isGrabbed = true;
             
+            // TODO enlever la validation de scene position
+            
             transform.SetParent(PlayerController.Instance.interact.objectPos);
             TweenObjectOnPlayer();
 

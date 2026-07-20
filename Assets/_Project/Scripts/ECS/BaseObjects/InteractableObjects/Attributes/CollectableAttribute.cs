@@ -147,6 +147,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Debug.Log("[Collectable] Picked up object");
             
             SetInInventory();
+            
+            // TODO enlever la validation de scene position
 
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
         }
