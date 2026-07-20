@@ -18,13 +18,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public enum ValidationMethod {Position, GlassState, UseState}
         public ValidationMethod validationMethod;
         
-        public Vector3 requestedPosition;
+        public Collider requestedCollisionArea;
         public bool requestedVisibility;
         public bool requestedUseState;
-        public float tolerance = 4f;
             
         private Action onPlayerInteraction;
-
+        
         public void SetBaseObject(BaseObject baseObject) {
             this.baseObject = baseObject;
         }
@@ -75,11 +74,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     break;
             }
         }
-        
 
+        public void UnValidate() {
+            IsValidated = false;
+        }
+        
         private void PositionValidation() {
-            var distanceToLocation = Vector3.Distance(requestedPosition, transform.position);
-            IsValidated = distanceToLocation <= tolerance;
+            if (requestedCollisionArea.TryGetComponent(out SphereCollider collider)) {
+                var distanceToLocation = Vector3.Distance(requestedCollisionArea.transform.position, transform.position);
+                IsValidated = distanceToLocation <= collider.radius;
+                return;
+            }
+            
+            IsValidated = requestedCollisionArea.bounds.Contains(transform.position);
         }
 
         private void UsableValidation() {

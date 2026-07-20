@@ -22,7 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
 
-        private BlockedAttribute blockedAttribute;
+        private LockedAttribute blockedAttribute;
         private SceneElement sceneElement;
         
         [Header("Object Name")]
@@ -172,7 +172,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 else SetInteract(false);
 
-                if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
+                if (TryGetComponent(out LockedAttribute blocked)) blockedAttribute = blocked;
 
                 if (TryGetComponent(out SceneElement scene)) {
                     sceneElement = scene;
@@ -273,20 +273,16 @@ namespace _Project.Scripts.ECS.BaseObjects
             return sceneElement != null;
         }
 
+        public void UnValidSceneElement() {
+            sceneElement.UnValidate();
+        }
+        
         public void TriggerSceneElement() {
             sceneElement.CheckValidation();
         }
 
-        public BlockedAttribute GetBlockedAttribute() {
+        public LockedAttribute GetBlockedAttribute() {
             return blockedAttribute;
-        }
-        
-        public bool GetSceneElementPosition(Vector3 dropPosition, ref Vector3 position) {
-            if (Vector3.Distance(sceneElement.requestedPosition, dropPosition) <= sceneElement.tolerance) {
-                position = sceneElement.requestedPosition;
-                return true;
-            }
-            return false;
         }
 
         public void Trigger(bool on) {

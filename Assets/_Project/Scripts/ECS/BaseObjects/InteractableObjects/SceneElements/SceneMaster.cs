@@ -77,7 +77,7 @@ namespace _Project.Scripts.ECS {
             
             foreach (var element in elements) {
                 if (element.validationMethod is SceneElement.ValidationMethod.Position) {
-                    element.transform.position = element.requestedPosition;
+                    element.transform.position = element.requestedCollisionArea.transform.position;
                 }
 
                 if (element.validationMethod is SceneElement.ValidationMethod.UseState) {
