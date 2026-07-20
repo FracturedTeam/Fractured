@@ -33,10 +33,10 @@ namespace _Project.Scripts.Player.Camera {
             countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
         }
         
-        void OnDisable() {
-            countdownTimer.OnTimerStop -= GameInitializer.Instance.RepositionGlass;
-            countdownTimer.Dispose();
-        }
+        // void OnDisable() {
+        //     countdownTimer.OnTimerStop -= GameInitializer.Instance.RepositionGlass;
+        //     countdownTimer.Dispose();
+        // }
         
         private void Update() {
             DetectPlayer();
