@@ -1,7 +1,11 @@
+using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Key = _Project.Scripts.Player.Key;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class InventoryManager : MonoBehaviour {
@@ -41,6 +45,8 @@ namespace _Project.Scripts.UI.Gameplay {
             EventBus<AddKeyEvent>.Register(addKeyEventBinding);
             removeKeyEventBinding = new EventBinding<RemoveKeyEvent>(RemoveKey);
             EventBus<RemoveKeyEvent>.Register(removeKeyEventBinding);
+
+            InputsBrain.Instance.OnInventoryOpen += OpenInventory;
         }
 
         private void OnDisable() {
@@ -50,7 +56,13 @@ namespace _Project.Scripts.UI.Gameplay {
             EventBus<AddKeyEvent>.Deregister(addKeyEventBinding);
             EventBus<RemoveKeyEvent>.Deregister(removeKeyEventBinding);
             
+            InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
+            
             openInventoryTween.Kill();
+        }
+
+        private void OpenInventory(InputAction.CallbackContext context) {
+            OpenInventory();
         }
         
         public void OpenInventory() {

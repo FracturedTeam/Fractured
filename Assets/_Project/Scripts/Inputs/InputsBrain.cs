@@ -1,9 +1,10 @@
 using System;
+using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Inputs {
-    public class InputsBrain : MonoBehaviour {
+    public class InputsBrain : PersistentSingleton<InputsBrain> {
         private InputSystem_Actions inputs;
 
         public event Action<Vector2> OnPlayerMove = delegate { };
@@ -11,8 +12,12 @@ namespace _Project.Scripts.Inputs {
         public event Action<InputAction.CallbackContext> OnSecondaryInteract = delegate { };
         public event Action<float> OnLockUp = delegate { };
         public event Action<float> OnLockRight = delegate { };
+        
+        public event Action<InputAction.CallbackContext> OnInventoryOpen = delegate { };
+        public event Action<InputAction.CallbackContext> OnShardA = delegate { };
+        public event Action<InputAction.CallbackContext> OnShardB = delegate { };
     
-        private void Awake() {
+        public void Awake() {
             inputs = new InputSystem_Actions();
         }
 
@@ -26,6 +31,12 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.LockUp.performed += LockUp;
             inputs.Player.LockRight.performed += LockRight;
         
+            inputs.Player.OpenInventory.performed += OpenInventory;
+            inputs.Player.AShard.performed += ShardA;
+            inputs.Player.AShard.canceled += ShardA;
+            inputs.Player.BShard.performed += ShardB;
+            inputs.Player.BShard.canceled += ShardB;
+            
             inputs.Enable();
         }
 
@@ -38,6 +49,12 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.SecondaryInteract.canceled -= SecondaryInteract;
             inputs.Player.LockUp.performed -= LockUp;
             inputs.Player.LockRight.performed -= LockRight;
+            
+            inputs.Player.OpenInventory.performed -= OpenInventory;
+            inputs.Player.AShard.performed -= ShardA;
+            inputs.Player.AShard.canceled -= ShardA;
+            inputs.Player.BShard.performed -= ShardB;
+            inputs.Player.BShard.canceled -= ShardB;
             
             inputs.Disable();
         }
@@ -62,5 +79,16 @@ namespace _Project.Scripts.Inputs {
             OnLockRight.Invoke(context.ReadValue<float>());
         }
 
+        private void OpenInventory(InputAction.CallbackContext context) {
+            OnInventoryOpen.Invoke(context);
+        }
+
+        private void ShardA(InputAction.CallbackContext context) {
+            OnShardA.Invoke(context);
+        }
+
+        private void ShardB(InputAction.CallbackContext context) {
+            OnShardB.Invoke(context);
+        }
     }
 }

@@ -1,7 +1,9 @@
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -9,6 +11,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Header("Padlock Attribute")]
         [SerializeField] private int requiredCode;
         [SerializeField] private bool doInteractImmediately;
+
+        private readonly CountdownTimer timerUp = new(0.15f);
+        private readonly CountdownTimer timerRight = new(0.15f);
         
         private bool isUsingLock;
 
@@ -76,9 +81,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void ProcessInputUp(float input) {
-            if(!isUsingLock) return;
+            if(!isUsingLock || timerUp.IsRunning) return;
             
-            var add = input > 0 ? 1 : -1;
+            timerUp.Start();
+            
+            var add = input > 0.25f ? 1 : input < -0.25f ? -1 : 0;
             
             switch (selectedDigit) {
                 case 0:
@@ -107,9 +114,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void ProcessInputRight(float input) {
-            if(!isUsingLock) return;
+            if(!isUsingLock || timerRight.IsRunning) return;
             
-            var select = input > 0 ? 1 : -1;
+            timerRight.Start();
+            
+            var select = input > 0.25f ? 1 : input < -0.25f ? -1 : 0;
             selectedDigit += select;
             
             if(selectedDigit > 3) selectedDigit = 0;
@@ -117,13 +126,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void BindInputs() {
-            PlayerController.Instance.movement.GetInputs().OnLockUp += ProcessInputUp;
-            PlayerController.Instance.movement.GetInputs().OnLockRight += ProcessInputRight;
+            InputsBrain.Instance.OnLockUp += ProcessInputUp;
+            InputsBrain.Instance.OnLockRight += ProcessInputRight;
         }
 
         private void UnbindInputs() {
-            PlayerController.Instance.movement.GetInputs().OnLockUp -= ProcessInputUp;
-            PlayerController.Instance.movement.GetInputs().OnLockRight -= ProcessInputRight;
+            InputsBrain.Instance.OnLockUp -= ProcessInputUp;
+            InputsBrain.Instance.OnLockRight -= ProcessInputRight;
         }
 
         private void OnGUI() {

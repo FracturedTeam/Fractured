@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.ECS
@@ -78,25 +80,27 @@ namespace _Project.Scripts.ECS
         [HideInInspector] public Fragment visualShard;
         [HideInInspector] public ParticleSystem visualParticles;
 
+        [SerializeField] private float gamepadSensitivity = 10;
+        
         private Camera mainCamera;
         private Image shardSprite;
         private PolygonCollider2D polygonCollider2D;
         private Vector2 mousePosition;
 
         private bool isHeld;
+        private bool heldWithGamepad;
+        
         private bool isOnTop;
 
 
         private bool initialized = false;
         private bool canInteract = true;
 
-        private void Start()
-        {
+        private void Start() {
             Initialize();
         }
 
-        private void Initialize()
-        {
+        private void Initialize() {
             if (!initialized) {
                 mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
@@ -149,7 +153,13 @@ namespace _Project.Scripts.ECS
             //     if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
             // }
 
-            transform.position += (Vector3)eventData.delta; 
+            MoveGlass(eventData.delta);
+        }
+        
+        private void MoveGlass(Vector2 delta) {
+            if (heldWithGamepad) delta *= gamepadSensitivity;
+            
+            transform.position += (Vector3)delta; 
             
             transform.position = new Vector3(
                 Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, Screen.width - shardSprite.rectTransform.sizeDelta.x/2),
@@ -191,7 +201,7 @@ namespace _Project.Scripts.ECS
             if(shard) Destroy(shard.gameObject);
         }
         
-        internal void ChangeHoldingState(bool isOn) {
+        internal void ChangeHoldingState(bool isOn, bool holdWithGamepad) {
             if (!canInteract) return;
             // if (!canEditAnywhere) {
             //     if (!GameInitializer.Instance.InEditableArea() && isOn) {
@@ -201,6 +211,19 @@ namespace _Project.Scripts.ECS
             // }
 
             isHeld = isOn;
+            heldWithGamepad = holdWithGamepad;
+
+            if (heldWithGamepad) {
+                if (isOn) {
+                    InputsBrain.Instance.OnPlayerMove += MoveGlass;
+                    PlayerController.Instance.FreezeController(true);
+                }
+                else {
+                    InputsBrain.Instance.OnPlayerMove -= MoveGlass;
+                    PlayerController.Instance.FreezeController(false);
+                }
+            }
+            
             if (isOn) GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassSound);
         }
         
