@@ -27,23 +27,25 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private float forwardTime;
         private bool mouseOnFrame = false;
+        private bool isAtOriginalPos;
 
         private Tween tween;
-        // private Vector3 initialPosition;
+        private Camera cam;
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
+            if (text) text.text = "";
             
             if(TryGetComponent(out Collider col)) collider = col;
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
             text?.DOFade(0, 0);
-            if (text) text.text = "";
+            cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
         }
 
         private void Update() {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && !isAtOriginalPos) return;
 
             if (isSelected) mouseOnFrame = true;
             
@@ -55,11 +57,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
+            if (Mathf.Approximately(forwardTime, 0))
+                isAtOriginalPos = true;
             
             if (!isSelected && !master.IsAFrameSelected) {
-                var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
                 var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-                
                 transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * forwardTime) * forwardDir;
             }
         }
@@ -91,22 +93,24 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnPointerEnter(PointerEventData eventData) {
             if(!canBeInteracted || master.IsAFrameSelected) return;
-            
-            mouseOnFrame = true;
-            text?.DOFade(1, 0.5f);
-            
+
+            ChangeState(true);
             Debug.Log($"OnPointerEnter {eventData.position}");
         }
 
         public void OnPointerExit(PointerEventData eventData) {
             if(!canBeInteracted) return;
-            
-            mouseOnFrame = false;
-            text?.DOFade(0, .5f);
-            
+
+            ChangeState(false);
             Debug.Log($"OnPointerExit {eventData.position}");
         }
-        
+
+        public void ChangeState(bool isHovering)
+        {
+            mouseOnFrame = isHovering;
+            text?.DOFade(isHovering ? 1 : 0, .5f);
+        }
+
         public void OnDrag(PointerEventData eventData) {
             if(!isSelected) return;
             
@@ -140,7 +144,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private Vector3 GetMousePosition(PointerEventData eventData) {
-            var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
             var screenPosition = cam.WorldToScreenPoint(transform.position);
             
             var newPos = cam.ScreenToWorldPoint(new Vector3(

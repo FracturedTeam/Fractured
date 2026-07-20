@@ -7,6 +7,7 @@ using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -56,7 +57,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void UseMemoryFrame() {
             if(!IsMemoryCompleted) isUsingMemoryFrame = !isUsingMemoryFrame;
-            else isUsingMemoryFrame = false;
+            else
+            {
+                isUsingMemoryFrame = false;
+                foreach (var frame in frames)
+                    frame.ChangeState(false);
+            }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             
