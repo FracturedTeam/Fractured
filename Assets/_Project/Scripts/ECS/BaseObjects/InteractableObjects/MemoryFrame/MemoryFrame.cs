@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,9 +11,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Collider collider;
         
         [Header("Painting Settings")]
-        public int requiredPosition;
-        public Material revealedMat;
-        public MeshRenderer paintingMesh;
+        [SerializeField]
+        internal int requiredPosition;
+        [SerializeField] MemoryFrameScriptable data;
+        [SerializeField] MeshRenderer paintingMesh;
+        [SerializeField] private TMP_Text text;
         
         private int currentPos;
         private bool isUnlocked;
@@ -35,6 +38,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
+            text?.DOFade(0, 0);
+            if (text) text.text = "";
         }
 
         private void Update() {
@@ -88,6 +93,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(!canBeInteracted || master.IsAFrameSelected) return;
             
             mouseOnFrame = true;
+            text?.DOFade(1, 0.5f);
             
             Debug.Log($"OnPointerEnter {eventData.position}");
         }
@@ -96,6 +102,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(!canBeInteracted) return;
             
             mouseOnFrame = false;
+            text?.DOFade(0, .5f);
             
             Debug.Log($"OnPointerExit {eventData.position}");
         }
@@ -214,7 +221,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Unlock() {
             isUnlocked = true;
-            paintingMesh.material = revealedMat;
+            paintingMesh.material = data.material;
+            if (text) text.text = data.infoText;
         }
 
         public void CanBeInteracted(bool can) {
