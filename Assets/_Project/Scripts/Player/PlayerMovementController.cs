@@ -53,13 +53,9 @@ namespace _Project.Scripts.Player {
         private Vector3 moveDir; // Inputs joueur de direction
         public Vector3 PreviousMoveDir { get; private set; } // Keep last inputs joueur de direction
         private Vector3 slopeMoveDir; // Si le joueur est sur une slope
-    
         
-        [Space]
         private Vector3 rawMoveDir; // Inputs joueur de direction
-        [Space]
         private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
-        [Space]
         private Vector3 newForwardDir, newRightDir;
         private bool newCamDirBuffer;
     
@@ -361,6 +357,10 @@ namespace _Project.Scripts.Player {
 
         public Rigidbody GetRigidbody() {
             return rb;
+        }
+
+        public InputsBrain GetInputs() {
+            return inputsBrain;
         }
 
         #endregion

@@ -66,6 +66,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
+        private void OnDisable() {
+            tween.Kill();
+        }
+
         // Mouse event
         public void OnPointerDown(PointerEventData eventData) {
             if(!canBeInteracted) return;
@@ -170,53 +174,192 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void SetFramePositions(int closest) {
-            switch (GetCurrentPosition()) {
-                case 0:
-                    // See if it is closer to position 1 or 2
+            int framesAmount = master.GetSlots().Length;
+
+            if (framesAmount == 2) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
                         currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(0);
+                    }
+                    break;
+                
+                case 1: // See if it is closer to position 0 or 2
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
+                    }
+                    break;
+                
+                default:
+                    // No options here
+                    break;
+                }
+            }
+            else if (framesAmount == 3) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
+                    if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
+                        currentPos = closest;
+                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
-                        currentPos = closest;
                         frame1.SetNewPosition(0);
                         frame2.SetNewPosition(1);
                     }
                     break;
-                case 1:
-                    // See if it is closer to position 0 or 2
+                
+                case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
-                        var frame1 = master.GetFrame(0);
                         currentPos = closest;
-                        frame1.SetNewPosition(1);
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
-                        var frame2 = master.GetFrame(2);
                         currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
                         frame2.SetNewPosition(1);
                     }
                     break;
-                case 2:
-                    // See if it is closer to position 0 or 1
+                
+                case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
+                        currentPos = closest;
+                        
                         var frame0 = master.GetFrame(0);
                         var frame1 = master.GetFrame(1);
-                        currentPos = closest;
                         frame0.SetNewPosition(1);
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
                         currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(2);
                     }
                     break;
                 default:
                     // No options here
                     break;
+                }
+            }
+            else if (framesAmount == 4) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
+                    if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(0);
+                    }
+                    else if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame1.SetNewPosition(0);
+                        frame2.SetNewPosition(1);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        var frame3 = master.GetFrame(3);
+                        frame1.SetNewPosition(0);
+                        frame2.SetNewPosition(1);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                
+                case 1: // See if it is closer to position 0 or 2
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
+                    }
+                    else if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        frame2.SetNewPosition(1);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        var frame3 = master.GetFrame(3);
+                        frame2.SetNewPosition(1);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                
+                case 2: // See if it is closer to position 0 or 1
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        var frame1 = master.GetFrame(1);
+                        frame0.SetNewPosition(1);
+                        frame1.SetNewPosition(2);
+                    }
+                    else if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(2);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame3 = master.GetFrame(3);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                case 3:
+                    if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    else if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame1.SetNewPosition(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    else if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame0.SetNewPosition(1);
+                        frame1.SetNewPosition(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    break;
+                default:
+                    // No options here
+                    break;
+                }
             }
         }
         public int GetCurrentPosition() => currentPos;
@@ -230,6 +373,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void CanBeInteracted(bool can) {
             canBeInteracted = can;
+            if(!can)
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }
     }
 }

@@ -186,6 +186,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isGrabbed = true;
             
+            if(baseObject.HasSceneElement())
+                baseObject.UnValidSceneElement();
+            
             transform.SetParent(PlayerController.Instance.interact.objectPos);
             TweenObjectOnPlayer();
 
@@ -330,13 +333,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
                 
             var pos = playerPos + dir.normalized * (boundExtent.z * 2 + 0.4f);
-            pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
-
-            var elementPos = new Vector3();
-            if (baseObject.HasSceneElement() && baseObject.GetSceneElementPosition(pos, ref elementPos)) {
-                return elementPos;
-            }
-            
+            //pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
+            pos.y = groundLevel.point.y;
             return pos;
         }
 

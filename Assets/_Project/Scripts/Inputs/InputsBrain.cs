@@ -9,6 +9,8 @@ namespace _Project.Scripts.Inputs {
         public event Action<Vector2> OnPlayerMove = delegate { };
         public event Action<InputAction.CallbackContext> OnInteract = delegate { };
         public event Action<InputAction.CallbackContext> OnSecondaryInteract = delegate { };
+        public event Action<float> OnLockUp = delegate { };
+        public event Action<float> OnLockRight = delegate { };
     
         private void Awake() {
             inputs = new InputSystem_Actions();
@@ -21,6 +23,8 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.Interact.canceled += Interact;
             inputs.Player.SecondaryInteract.performed += SecondaryInteract;
             inputs.Player.SecondaryInteract.canceled += SecondaryInteract;
+            inputs.Player.LockUp.performed += LockUp;
+            inputs.Player.LockRight.performed += LockRight;
         
             inputs.Enable();
         }
@@ -32,6 +36,8 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.Interact.canceled -= Interact;
             inputs.Player.SecondaryInteract.performed -= SecondaryInteract;
             inputs.Player.SecondaryInteract.canceled -= SecondaryInteract;
+            inputs.Player.LockUp.performed -= LockUp;
+            inputs.Player.LockRight.performed -= LockRight;
             
             inputs.Disable();
         }
@@ -46,6 +52,14 @@ namespace _Project.Scripts.Inputs {
 
         private void SecondaryInteract(InputAction.CallbackContext context) {
             OnSecondaryInteract.Invoke(context);
+        }
+
+        private void LockUp(InputAction.CallbackContext context) {
+            OnLockUp.Invoke(context.ReadValue<float>());
+        }
+
+        private void LockRight(InputAction.CallbackContext context) {
+            OnLockRight.Invoke(context.ReadValue<float>());
         }
 
     }

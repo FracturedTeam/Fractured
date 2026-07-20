@@ -66,23 +66,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             
-            if (isUsingMemoryFrame) {
-                frameCamera.Priority = 2;
-                PlayerController.Instance.interact.SetIsFocus(true, baseObject);
-                PlayerController.Instance.FreezeController(true);
+            frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
+            PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
+            PlayerController.Instance.FreezeController(isUsingMemoryFrame);
 
-                foreach (var frame in frames) {
-                    frame.CanBeInteracted(true);
-                }
-            }
-            else {
-                frameCamera.Priority = 0;
-                PlayerController.Instance.interact.SetIsFocus(false);
-                PlayerController.Instance.FreezeController(false);
-                
-                foreach (var frame in frames) {
-                    frame.CanBeInteracted(false);
-                }
+            foreach (var frame in frames) {
+                frame.CanBeInteracted(isUsingMemoryFrame);
             }
         }
 

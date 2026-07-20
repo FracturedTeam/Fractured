@@ -40,7 +40,8 @@ namespace _Project.Scripts.GameServices {
             else {
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.CreateNewSave();
-                    _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                    if(!SceneManager.GetSceneByName(GameSceneSettings.Instance.levelArt).isLoaded)
+                        _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 }
                 
                 
