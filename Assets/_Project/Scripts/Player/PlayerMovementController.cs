@@ -31,6 +31,8 @@ namespace _Project.Scripts.Player {
         [Header("Camera Settings")]
         [SerializeField] UnityEngine.Camera cam;
         [SerializeField] private bool alternateCameraDirection;
+        [SerializeField, Range(0f, 1f)] private float amountOfAlternateDirection = 0f;
+        [SerializeField] private float timeToSwitchToNewDir = 2f;
     
         private PlayerController player;
     
@@ -135,23 +137,25 @@ namespace _Project.Scripts.Player {
             lerpCameraDirTime -= Time.deltaTime;
             if(lerpCameraDirTime < 0) newCamDirBuffer = false;
 
+            var lerpTime = lerpCameraDirTime / timeToSwitchToNewDir;
+            
             var alternateForward = new Vector3();
             if (alternateCameraDirection) {
                 var camToPlayerDir = transform.position - cam.transform.position;
                 alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
+                alternateForward = Vector3.Lerp(newForwardDir, alternateForward, amountOfAlternateDirection);
             }
 
-            if (!alternateCameraDirection) {
-                forwardDir = Vector3.Lerp(alternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpCameraDirTime);
-                rightDir = Vector3.Lerp(newRightDir, rightDir, lerpCameraDirTime);
+            if (moveDir != Vector3.zero) {
+                forwardDir = Vector3.Lerp(alternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
+                rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
-
-            if (moveDir != Vector3.zero) return;
-            
-            forwardDir = alternateCameraDirection ? alternateForward : newForwardDir;
-            rightDir = newRightDir;
-            newCamDirBuffer = false;
-            lerpCameraDirTime = -1;
+            else {
+                forwardDir = alternateCameraDirection ? alternateForward : newForwardDir;
+                rightDir = newRightDir;
+                newCamDirBuffer = false;
+                lerpCameraDirTime = -1;
+            }
         }
 
         private void UpdateCameraDir() {
@@ -159,7 +163,7 @@ namespace _Project.Scripts.Player {
             newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
 
             newCamDirBuffer = true;
-            lerpCameraDirTime = 2f;
+            lerpCameraDirTime = timeToSwitchToNewDir;
         }
 
         private void MeshRotation() {
