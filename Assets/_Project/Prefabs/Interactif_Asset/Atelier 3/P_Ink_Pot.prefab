@@ -133,10 +133,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: f0508f8d-faac-4766-870b-4daad222fc61
 --- !u!114 &1932381204785187447
 MonoBehaviour:
@@ -152,6 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
   itemSprite: {fileID: 21300000, guid: 1af162df6012d9c4d8d454beed860b9d, type: 3}
   particles: {fileID: 0}
+  isAKey: 0
+  isOneTimeUse: 0
+  keyID: 0
 --- !u!114 &3577918075405268049
 MonoBehaviour:
   m_ObjectHideFlags: 0
