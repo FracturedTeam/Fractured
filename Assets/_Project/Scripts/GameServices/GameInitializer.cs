@@ -141,11 +141,11 @@ namespace _Project.Scripts.GameServices {
             fadeTimer = InEditableArea() ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
                 fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
             
-            screenEffectMat.SetFloat("_Progression", fadeTimer);
+            //screenEffectMat.SetFloat("_Progression", fadeTimer);
         }
         
-        private void OnDestroy() {
-            screenEffectMat.SetFloat("_Progression", 0f);
+        private void OnDisable() {
+            //screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
@@ -238,6 +238,11 @@ namespace _Project.Scripts.GameServices {
             foreach (var shard in shardService.shards) {
                 shard.Set3DShard();
             }
+        }
+        
+        public void SetShardsOnOff(bool isOn) {
+            foreach (var shard in shardService.shards)
+                shard.SetUp3dShard(isOn);
         }
         
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>

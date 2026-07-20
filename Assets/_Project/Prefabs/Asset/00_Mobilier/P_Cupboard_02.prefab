@@ -95,7 +95,48 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6966272346644689949}
+    - targetCorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4131446569446949371}
+    - targetCorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5325384787271184094}
+    - targetCorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3150594290629413016}
+    - targetCorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7750828381131864507}
+    - targetCorrespondingSourceObject: {fileID: -8859352440785599970, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2448875702363021221}
   m_SourcePrefab: {fileID: 100100000, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+--- !u!1 &1321921556571232833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8859352440785599970, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+  m_PrefabInstance: {fileID: 1681295400320899167}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2448875702363021221
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321921556571232833}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0167239, y: 3.4843266, z: 0.10313814}
+  m_Center: {x: -0.50836146, y: 0, z: -0.0015690628}
 --- !u!1 &1987284339417490702 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
@@ -117,3 +158,127 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
+--- !u!1 &2343414471170709627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
+  m_PrefabInstance: {fileID: 1681295400320899167}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4131446569446949371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343414471170709627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: Dresser
+  hudTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  data:
+    <Guid>k__BackingField: 
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
+  <Guid>k__BackingField: 29c06e32-1861-452b-ad11-894481b70cd1
+--- !u!114 &5325384787271184094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343414471170709627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
+  oneTimeUse: 1
+  hasObjectInside: 1
+  objectsInside:
+  - {fileID: 0}
+  eventOnActivation:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1321921556571232833}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  eventOnDeactivation:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3150594290629413016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343414471170709627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: GlassText, Assembly-CSharp
+          m_MethodName: Appear
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 1
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
+--- !u!65 &7750828381131864507
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343414471170709627}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.9619708, y: 4.8820424, z: 1.9198844}
+  m_Center: {x: 0, y: 2.435931, z: 0}

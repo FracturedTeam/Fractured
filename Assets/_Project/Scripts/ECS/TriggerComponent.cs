@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(BaseObject))] 
 public class TriggerComponent : MonoBehaviour
@@ -36,6 +39,49 @@ public class TriggerComponent : MonoBehaviour
             customEvent.Call();
         }
     }
+
+    #region editor
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(TriggerComponent))]
+    public class TriggerComponentDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+
+            EditorGUI.BeginChangeCheck();
+
+            /// Label Field
+            position.height = EditorGUIUtility.singleLineHeight;
+            EditorGUI.LabelField(position, label);
+
+            /// Property Field
+            SerializedProperty unityEventProp = property.FindPropertyRelative("unityEvent");
+            position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            position.height = EditorGUI.GetPropertyHeight(unityEventProp);
+            EditorGUI.PropertyField(position, unityEventProp);
+
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
+
+            EditorGUI.EndProperty();
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            /// Height of the label
+            float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            /// Height of the property
+            height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("unityEvent"));
+            return height;
+        }
+    }
+    
+#endif 
+    
+    #endregion
+    
 }
 
 [Serializable]

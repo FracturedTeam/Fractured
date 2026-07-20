@@ -234,9 +234,9 @@ namespace _Project.Scripts.Player {
                 }
                 return;
             }
-
-        // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
-        if (potentialInteraction == currentInteraction) potentialInteraction = null;
+        
+            // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
+            if (potentialInteraction == currentInteraction) potentialInteraction = null;
 
         }
 

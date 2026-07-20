@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.49
+      value: 25.23823
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.12
+      value: 8.404571
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.19
+      value: -1.1672776
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
       propertyPath: m_LocalRotation.w
@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d9e0a4734202cf948892f5b1fb04c4b0, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -883198674935211317, guid: e088b4c70aa5a87438cb85b2bcc061de, type: 3}
     - target: {fileID: 919132149155446097, guid: 0de9cee38dd10c644a15252e2c15bf42, type: 3}
       propertyPath: m_Icon
       value: 
@@ -105,8 +109,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5605273, y: 0.19085984, z: 0.79968745}
-  m_Center: {x: 0.000000029802322, y: 0.095429875, z: 0.000000029802322}
+  m_Size: {x: 0.70320845, y: 0.15504695, z: 1.0889179}
+  m_Center: {x: -0.030804887, y: 0.062504716, z: -0.019156456}
 --- !u!114 &7122356920695655110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,10 +128,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 4c3d4ca1-038b-4707-b341-b9045079f119
 --- !u!114 &2095209732193568980
 MonoBehaviour:
@@ -143,6 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
   itemSprite: {fileID: 21300000, guid: d26b8266172b6af409cfc022cc2690d2, type: 3}
   particles: {fileID: 0}
+  isAKey: 0
+  isOneTimeUse: 0
+  keyID: 0
 --- !u!114 &6219788556954946187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.SceneElement
   validationMethod: 0
-  requestedPosition: {x: 0, y: 2, z: 3}
+  requestedPosition: {x: -2, y: 0, z: -5}
   requestedVisibility: 0
   requestedUseState: 0
+  tolerance: 3

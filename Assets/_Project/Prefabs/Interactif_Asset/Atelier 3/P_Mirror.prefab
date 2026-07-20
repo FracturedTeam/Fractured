@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.92
+      value: 0.746
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2
+      value: 3.41
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.011
+      value: -6.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -107,7 +107,7 @@ PrefabInstance:
       addedObject: {fileID: 3187940564464373167}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9091424160298877569}
+      addedObject: {fileID: 4253228604220701554}
   m_SourcePrefab: {fileID: 100100000, guid: a0de777ea4ce35f418c2e15dbca0ae6f, type: 3}
 --- !u!1 &4736022686876030384 stripped
 GameObject:
@@ -129,12 +129,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.62, y: 2.59, z: 0.29}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.62, y: 2.59, z: 2.0966265}
+  m_Center: {x: 0, y: 0, z: 0.88668793}
 --- !u!114 &4832804587046367387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,10 +152,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 62d89de9-3d0b-4c48-8529-7dbb31234901
 --- !u!114 &3187940564464373167
 MonoBehaviour:
@@ -186,7 +189,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     times: 1
-    noLimit: 0
   OnCollisionTriggerEnter: []
   OnCollisionTriggerExit: []
   OnHideReveal: []
@@ -197,7 +199,7 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
---- !u!114 &9091424160298877569
+--- !u!114 &4253228604220701554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,3 +211,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  oneTimeUse: 1

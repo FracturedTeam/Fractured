@@ -133,6 +133,12 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop.Remove(shard);
         }
         
+        public void SetColor(ColorEnum color)
+        {
+            objectColor = color;
+            //Set the correct material
+        }
+        
         public void Tick(float deltaTime) {
             if (!objectInside || objectOut) return;
 
@@ -217,6 +223,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         private void SetVisibility(bool isUnder) {
             if (objectColor == ColorEnum.Both) IsVisible = !isUnder;
             else IsVisible = isUnder;
+            
+            if(baseObject.HasSceneElement())
+                baseObject.TriggerSceneElement();
+            
             baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnHideReveal);
             
             if (baseObject.GetObjectType is ObjectType.Moveable) {
@@ -238,9 +248,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
             else GameInitializer.Instance.PlayRevealSound(transform.position);
-            
-            if(baseObject.HasSceneElement())
-                baseObject.TriggerSceneElement();
         }
         
         private void ActivateObjectInside(bool isUnder) {
