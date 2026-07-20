@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,9 +11,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Collider collider;
         
         [Header("Painting Settings")]
-        public int requiredPosition;
-        public Material revealedMat;
-        public MeshRenderer paintingMesh;
+        [SerializeField]
+        internal int requiredPosition;
+        [SerializeField] MemoryFrameScriptable data;
+        [SerializeField] MeshRenderer paintingMesh;
+        [SerializeField] private TMP_Text text;
         
         private int currentPos;
         private bool isUnlocked;
@@ -24,21 +27,25 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private float forwardTime;
         private bool mouseOnFrame = false;
+        private bool isAtOriginalPos;
 
         private Tween tween;
-        // private Vector3 initialPosition;
+        private Camera cam;
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
+            if (text) text.text = "";
             
             if(TryGetComponent(out Collider col)) collider = col;
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
+            text?.DOFade(0, 0);
+            cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
         }
 
         private void Update() {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted && !isAtOriginalPos) return;
 
             if (isSelected) mouseOnFrame = true;
             
@@ -50,13 +57,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
+            if (Mathf.Approximately(forwardTime, 0))
+                isAtOriginalPos = true;
             
             if (!isSelected && !master.IsAFrameSelected) {
-                var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
                 var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-                
                 transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * forwardTime) * forwardDir;
             }
+        }
+
+        private void OnDisable() {
+            tween.Kill();
         }
 
         // Mouse event
@@ -86,20 +97,24 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnPointerEnter(PointerEventData eventData) {
             if(!canBeInteracted || master.IsAFrameSelected) return;
-            
-            mouseOnFrame = true;
-            
+
+            ChangeState(true);
             Debug.Log($"OnPointerEnter {eventData.position}");
         }
 
         public void OnPointerExit(PointerEventData eventData) {
             if(!canBeInteracted) return;
-            
-            mouseOnFrame = false;
-            
+
+            ChangeState(false);
             Debug.Log($"OnPointerExit {eventData.position}");
         }
-        
+
+        public void ChangeState(bool isHovering)
+        {
+            mouseOnFrame = isHovering;
+            text?.DOFade(isHovering ? 1 : 0, .5f);
+        }
+
         public void OnDrag(PointerEventData eventData) {
             if(!isSelected) return;
             
@@ -133,7 +148,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private Vector3 GetMousePosition(PointerEventData eventData) {
-            var cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
             var screenPosition = cam.WorldToScreenPoint(transform.position);
             
             var newPos = cam.ScreenToWorldPoint(new Vector3(
@@ -160,53 +174,192 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void SetFramePositions(int closest) {
-            switch (GetCurrentPosition()) {
-                case 0:
-                    // See if it is closer to position 1 or 2
+            int framesAmount = master.GetSlots().Length;
+
+            if (framesAmount == 2) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
                         currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(0);
+                    }
+                    break;
+                
+                case 1: // See if it is closer to position 0 or 2
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
+                    }
+                    break;
+                
+                default:
+                    // No options here
+                    break;
+                }
+            }
+            else if (framesAmount == 3) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
+                    if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
+                        currentPos = closest;
+                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
-                        currentPos = closest;
                         frame1.SetNewPosition(0);
                         frame2.SetNewPosition(1);
                     }
                     break;
-                case 1:
-                    // See if it is closer to position 0 or 2
+                
+                case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
-                        var frame1 = master.GetFrame(0);
                         currentPos = closest;
-                        frame1.SetNewPosition(1);
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
-                        var frame2 = master.GetFrame(2);
                         currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
                         frame2.SetNewPosition(1);
                     }
                     break;
-                case 2:
-                    // See if it is closer to position 0 or 1
+                
+                case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
+                        currentPos = closest;
+                        
                         var frame0 = master.GetFrame(0);
                         var frame1 = master.GetFrame(1);
-                        currentPos = closest;
                         frame0.SetNewPosition(1);
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
                         currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(2);
                     }
                     break;
                 default:
                     // No options here
                     break;
+                }
+            }
+            else if (framesAmount == 4) {
+                switch (GetCurrentPosition()) {
+                case 0: // See if it is closer to position 1 or 2
+                    if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(0);
+                    }
+                    else if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame1.SetNewPosition(0);
+                        frame2.SetNewPosition(1);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        var frame3 = master.GetFrame(3);
+                        frame1.SetNewPosition(0);
+                        frame2.SetNewPosition(1);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                
+                case 1: // See if it is closer to position 0 or 2
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        frame0.SetNewPosition(1);
+                    }
+                    else if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        frame2.SetNewPosition(1);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        var frame3 = master.GetFrame(3);
+                        frame2.SetNewPosition(1);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                
+                case 2: // See if it is closer to position 0 or 1
+                    if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        var frame1 = master.GetFrame(1);
+                        frame0.SetNewPosition(1);
+                        frame1.SetNewPosition(2);
+                    }
+                    else if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        frame1.SetNewPosition(2);
+                    }
+                    else if (closest == 3) {
+                        currentPos = closest;
+                        
+                        var frame3 = master.GetFrame(3);
+                        frame3.SetNewPosition(2);
+                    }
+                    break;
+                case 3:
+                    if (closest == 2) {
+                        currentPos = closest;
+                        
+                        var frame2 = master.GetFrame(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    else if (closest == 1) {
+                        currentPos = closest;
+                        
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame1.SetNewPosition(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    else if (closest == 0) {
+                        currentPos = closest;
+                        
+                        var frame0 = master.GetFrame(0);
+                        var frame1 = master.GetFrame(1);
+                        var frame2 = master.GetFrame(2);
+                        frame0.SetNewPosition(1);
+                        frame1.SetNewPosition(2);
+                        frame2.SetNewPosition(3);
+                    }
+                    break;
+                default:
+                    // No options here
+                    break;
+                }
             }
         }
         public int GetCurrentPosition() => currentPos;
@@ -214,11 +367,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Unlock() {
             isUnlocked = true;
-            paintingMesh.material = revealedMat;
+            paintingMesh.material = data.material;
+            if (text) text.text = data.infoText;
         }
 
         public void CanBeInteracted(bool can) {
             canBeInteracted = can;
+            if(!can)
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }
     }
 }

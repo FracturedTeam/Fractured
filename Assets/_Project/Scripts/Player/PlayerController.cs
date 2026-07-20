@@ -27,7 +27,6 @@ namespace _Project.Scripts.Player {
             data.position = transform.position;
         }
         
-        
         // InputsBrain inputsBrain;
         StateMachine stateMachine;
 
@@ -144,8 +143,6 @@ namespace _Project.Scripts.Player {
         private void Update() {
             stateMachine.Update();
 
-            //if (cinemachineBrain.IsBlending) GameInitializer.Instance.RepositionGlass();
-            
 			#if UNITY_EDITOR
             if(transform.position.y < -10)
                 transform.position = new Vector3(transform.position.x, 10, transform.position.z);

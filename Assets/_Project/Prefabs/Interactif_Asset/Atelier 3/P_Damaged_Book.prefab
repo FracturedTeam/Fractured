@@ -108,6 +108,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
   itemSprite: {fileID: 21300000, guid: 352a525a62ed94d4eb89980f8c2abc33, type: 3}
   particles: {fileID: 0}
+  isAKey: 0
+  isOneTimeUse: 0
+  keyID: 0
 --- !u!114 &2643231406002317915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,10 +128,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 4ced6da9-7592-4b45-8eec-73b50df506fc
 --- !u!114 &3109593960901024564
 MonoBehaviour:
@@ -143,10 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.SceneElement
   validationMethod: 0
-  requestedPosition: {x: 17.75, y: 10, z: 3.5}
+  requestedCollisionArea: {fileID: 0}
   requestedVisibility: 0
   requestedUseState: 0
-  tolerance: 3
 --- !u!65 &6983445251161966877
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,5 +171,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5541333, y: 0.16860294, z: 0.7917023}
-  m_Center: {x: 0.0068320036, y: 0.08430143, z: -0.000000044703484}
+  m_Size: {x: 0.5541333, y: 0.16860296, z: 0.7917024}
+  m_Center: {x: 0.0068339114, y: 0.08430239, z: -0.00000004472576}

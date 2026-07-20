@@ -1,6 +1,7 @@
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEditor;
+using UnityEngine;
 
 namespace _Project.Scripts.Editor {
     [CustomEditor(typeof(SceneElement))]
@@ -17,8 +18,7 @@ namespace _Project.Scripts.Editor {
                 EditorGUILayout.LabelField("Position Validation", EditorStyles.boldLabel);
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
-                scene.requestedPosition = EditorGUILayout.Vector3Field("Position", scene.requestedPosition);
-                scene.tolerance =  EditorGUILayout.FloatField("Tolerance", scene.tolerance);
+                scene.requestedCollisionArea = (Collider)EditorGUILayout.ObjectField("Collision Area", scene.requestedCollisionArea, typeof(Collider), true);
                 
                 EditorUtility.SetDirty(target);
                 

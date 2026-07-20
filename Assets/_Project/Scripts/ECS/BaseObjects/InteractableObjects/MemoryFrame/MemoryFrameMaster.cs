@@ -7,6 +7,7 @@ using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -56,27 +57,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void UseMemoryFrame() {
             if(!IsMemoryCompleted) isUsingMemoryFrame = !isUsingMemoryFrame;
-            else isUsingMemoryFrame = false;
+            else
+            {
+                isUsingMemoryFrame = false;
+                foreach (var frame in frames)
+                    frame.ChangeState(false);
+            }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             
-            if (isUsingMemoryFrame) {
-                frameCamera.Priority = 2;
-                PlayerController.Instance.interact.SetIsFocus(true, baseObject);
-                PlayerController.Instance.FreezeController(true);
+            frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
+            PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
+            PlayerController.Instance.FreezeController(isUsingMemoryFrame);
 
-                foreach (var frame in frames) {
-                    frame.CanBeInteracted(true);
-                }
-            }
-            else {
-                frameCamera.Priority = 0;
-                PlayerController.Instance.interact.SetIsFocus(false);
-                PlayerController.Instance.FreezeController(false);
-                
-                foreach (var frame in frames) {
-                    frame.CanBeInteracted(false);
-                }
+            foreach (var frame in frames) {
+                frame.CanBeInteracted(isUsingMemoryFrame);
             }
         }
 
