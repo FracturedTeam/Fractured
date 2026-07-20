@@ -22,7 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
 
-        private BlockedAttribute blockedAttribute;
+        private LockedAttribute blockedAttribute;
         private SceneElement sceneElement;
         
         [Header("Object Name")]
@@ -172,7 +172,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 else SetInteract(false);
 
-                if (TryGetComponent(out BlockedAttribute blocked)) blockedAttribute = blocked;
+                if (TryGetComponent(out LockedAttribute blocked)) blockedAttribute = blocked;
 
                 if (TryGetComponent(out SceneElement scene)) {
                     sceneElement = scene;
@@ -281,7 +281,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             sceneElement.CheckValidation();
         }
 
-        public BlockedAttribute GetBlockedAttribute() {
+        public LockedAttribute GetBlockedAttribute() {
             return blockedAttribute;
         }
 
