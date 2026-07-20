@@ -8,7 +8,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [Header("Blocked Attribute")]
         [SerializeField] private int ID;
         [SerializeField] private bool doInteractImmediately;
-
+        
         public override void OnInteract(IInteractable interactable) {
             var failed = true;
             foreach (var key in PlayerController.Instance.inventory.keys) {
