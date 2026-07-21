@@ -1,23 +1,47 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Player;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class TransitionManager : MonoBehaviour
 {
     [SerializeField] private TransitionPosition pos1;
     [SerializeField] private TransitionPosition pos2;
-    [SerializeField] private Material mat;
+    [SerializeField] private List<Material> mat;
+    private bool secondColor;
 
     private void Update()
     {
+        
         if(pos1 && pos2)
         {
             var dist = Vector3.Distance(pos1.transform.position, pos2.transform.position);
-            var i = Mathf.Clamp(PlayerController.Instance.transform.position.z, pos1.transform.position.z,
-                pos2.transform.position.z);
             
-            print(-(i/dist));
-            mat.SetFloat("_ActGlobalTransition", Mathf.Clamp(-(i/dist), 0, 1));
+            var current = ((pos2.transform.position.z -PlayerController.Instance.transform.position.z)/dist);
+            
+            switch (current)
+            {
+                case > .5f when !secondColor:
+                {
+                    secondColor = true;
+                    foreach (var material in mat)
+                        material.SetFloat("_CURRENTACT", pos1.act);
+                    break;
+                }
+                case < .5f when secondColor:
+                {
+                    secondColor = false;
+                    foreach (var material in mat)
+                        material.SetFloat("_CURRENTACT", pos2.act);
+                    break;
+                }
+            }
+            
+            foreach (var material in mat)
+                material.SetFloat("_ActGlobalTransition", Mathf.Clamp(current < .5f ? current * 2 : 2 * (1-current) , 0 ,  1 ));
+           
             
         }
     }
