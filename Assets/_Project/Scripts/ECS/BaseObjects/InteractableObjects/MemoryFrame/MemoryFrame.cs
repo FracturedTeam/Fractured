@@ -78,7 +78,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             master.SetFrameSelected(true);
             collider.enabled = false;
             
-            Debug.Log($"OnPointerDown {eventData.position}");
+            Debug.Log($"OnPointerDown");
         }
 
         public void OnPointerUp(PointerEventData eventData) {
@@ -92,21 +92,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             // var closest = GetClosetPosition();
             // SetFramePositions(closest);
             
-            Debug.Log($"OnPointerUp {eventData.position}");
+            Debug.Log($"OnPointerUp");
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
             if(!canBeInteracted || master.IsAFrameSelected) return;
 
             ChangeState(true);
-            Debug.Log($"OnPointerEnter {eventData.position}");
         }
 
         public void OnPointerExit(PointerEventData eventData) {
             if(!canBeInteracted) return;
 
             ChangeState(false);
-            Debug.Log($"OnPointerExit {eventData.position}");
         }
 
         public void ChangeState(bool isHovering)
@@ -176,6 +174,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void SetFramePositions(int closest) {
             int framesAmount = master.GetSlots().Length;
 
+            Debug.Log("There is : " + framesAmount + " frames");
+            
             if (framesAmount == 2) {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
@@ -205,16 +205,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
-                        currentPos = closest;
-                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
+                        
+                        currentPos = closest;
                         frame1.SetNewPosition(0);
                         frame2.SetNewPosition(1);
                     }
@@ -222,32 +223,36 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
+                        var frame0 = master.GetFrame(0);
+                        
                         currentPos = closest;
                         
-                        var frame0 = master.GetFrame(0);
                         frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
+                        var frame2 = master.GetFrame(2);
+                        
                         currentPos = closest;
                         
-                        var frame2 = master.GetFrame(2);
                         frame2.SetNewPosition(1);
                     }
                     break;
                 
                 case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
-                        currentPos = closest;
-                        
                         var frame0 = master.GetFrame(0);
                         var frame1 = master.GetFrame(1);
+                        
+                        currentPos = closest;
+                        
                         frame0.SetNewPosition(1);
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(2);
                     }
                     break;
@@ -260,25 +265,28 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
-                        currentPos = closest;
-                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
+                        
+                        currentPos = closest;
+                        
                         frame1.SetNewPosition(0);
                         frame2.SetNewPosition(1);
                     }
                     else if (closest == 3) {
-                        currentPos = closest;
-                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
                         var frame3 = master.GetFrame(3);
+                        
+                        currentPos = closest;
+                        
                         frame1.SetNewPosition(0);
                         frame2.SetNewPosition(1);
                         frame3.SetNewPosition(2);
@@ -287,22 +295,25 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
+                        var frame0 = master.GetFrame(0);
+                        
                         currentPos = closest;
                         
-                        var frame0 = master.GetFrame(0);
                         frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
+                        var frame2 = master.GetFrame(2);
+                        
                         currentPos = closest;
                         
-                        var frame2 = master.GetFrame(2);
                         frame2.SetNewPosition(1);
                     }
                     else if (closest == 3) {
-                        currentPos = closest;
-                        
                         var frame2 = master.GetFrame(2);
                         var frame3 = master.GetFrame(3);
+                        
+                        currentPos = closest;
+                        
                         frame2.SetNewPosition(1);
                         frame3.SetNewPosition(2);
                     }
@@ -310,47 +321,53 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
-                        currentPos = closest;
-                        
                         var frame0 = master.GetFrame(0);
                         var frame1 = master.GetFrame(1);
+                        
+                        currentPos = closest;
+                        
                         frame0.SetNewPosition(1);
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
+                        var frame1 = master.GetFrame(1);
+                        
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrame(1);
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 3) {
+                        var frame3 = master.GetFrame(3);
+                        
                         currentPos = closest;
                         
-                        var frame3 = master.GetFrame(3);
                         frame3.SetNewPosition(2);
                     }
                     break;
                 case 3:
                     if (closest == 2) {
+                        var frame2 = master.GetFrame(2);
+                        
                         currentPos = closest;
                         
-                        var frame2 = master.GetFrame(2);
                         frame2.SetNewPosition(3);
                     }
                     else if (closest == 1) {
-                        currentPos = closest;
-                        
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
+                        
+                        currentPos = closest;
+                        
                         frame1.SetNewPosition(2);
                         frame2.SetNewPosition(3);
                     }
                     else if (closest == 0) {
-                        currentPos = closest;
-                        
                         var frame0 = master.GetFrame(0);
                         var frame1 = master.GetFrame(1);
                         var frame2 = master.GetFrame(2);
+                        
+                        currentPos = closest;
+                        
                         frame0.SetNewPosition(1);
                         frame1.SetNewPosition(2);
                         frame2.SetNewPosition(3);

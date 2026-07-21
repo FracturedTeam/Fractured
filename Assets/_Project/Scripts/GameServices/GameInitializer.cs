@@ -8,6 +8,7 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
@@ -25,7 +26,7 @@ namespace _Project.Scripts.GameServices {
         private ShardService shardService;
         private SaveService saveService;
         private AudioService audioService;
-
+        
         [Header("Save service")] 
         [SerializeField] private bool deleteSaveOnPay;
         
@@ -212,16 +213,14 @@ namespace _Project.Scripts.GameServices {
         }
         
         public void AddShards(Glass[] shards) {
-            var newShards = new List<Glass>();
             foreach (var shard in shards) {
                 var s = Instantiate(shard, HudManager.Instance.glassHolder);
-                newShards.Add(s);
+                shardService.AddShards(s, shard.GetColor is ColorEnum.ColorA);
             }
             
-            shardService.AddShards(newShards.ToArray());
             saveService.SetRuntimeShard(shardService.shards);
         }
-
+        
         public void ResetAllInteractable() {
             EmptyShards();
             foreach (var interactable in shardService.interactables)

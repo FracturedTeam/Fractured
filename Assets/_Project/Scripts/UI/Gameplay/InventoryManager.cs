@@ -1,18 +1,23 @@
+using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Key = _Project.Scripts.Player.Key;
 
 namespace _Project.Scripts.UI.Gameplay {
-    public class InventoryManager : MonoBehaviour {
-
+    public class InventoryManager : MonoBehaviour { 
         private bool isOpen = false;
         
         [Header("Item Display Settings")]
         [SerializeField] private RectTransform itemDisplay;
+        [SerializeField] private RectTransform itemHighlight;
         [SerializeField] private Vector3 closePosition;
         [SerializeField] private Vector3 openPosition;
         [SerializeField] private ItemHolder[] itemHolder;
+        [SerializeField] private CanvasGroup itemGroup;
         
         [Header("Key Settings")]
         [SerializeField] private RectTransform keyDisplay;
@@ -20,11 +25,13 @@ namespace _Project.Scripts.UI.Gameplay {
         
         Tweener openInventoryTween;
         
-        private EventBinding<AddItemEvent> addItemEventBinding;
-        private EventBinding<RemoveItemEvent> removeItemEventBinding;
-        private EventBinding<AddKeyEvent> addKeyEventBinding;
-        private EventBinding<RemoveKeyEvent> removeKeyEventBinding;
+        private EventBinding<ProcessItemEvent> addItemEventBinding;
+        private EventBinding<ProcessKeyEvent> addKeyEventBinding;
+        private EventBinding<ShowInventoryEvent> showInventoryEventBinding;
+        private EventBinding<SelectItemEvent> selectItemEventBinding;
 
+        private ItemHolder selectedItem;
+        
         private void Start() {
             foreach (var item in itemHolder) {
                 item.SetInventory(this);
@@ -32,51 +39,93 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void OnEnable() {
-            addItemEventBinding = new EventBinding<AddItemEvent>(AddItem);
-            EventBus<AddItemEvent>.Register(addItemEventBinding);
-            removeItemEventBinding = new EventBinding<RemoveItemEvent>(RemoveItem);
-            EventBus<RemoveItemEvent>.Register(removeItemEventBinding);
+            addItemEventBinding = new EventBinding<ProcessItemEvent>(ProcessItem);
+            EventBus<ProcessItemEvent>.Register(addItemEventBinding);
             
-            addKeyEventBinding  = new EventBinding<AddKeyEvent>(AddKey);
-            EventBus<AddKeyEvent>.Register(addKeyEventBinding);
-            removeKeyEventBinding = new EventBinding<RemoveKeyEvent>(RemoveKey);
-            EventBus<RemoveKeyEvent>.Register(removeKeyEventBinding);
+            addKeyEventBinding  = new EventBinding<ProcessKeyEvent>(ProcessKey);
+            EventBus<ProcessKeyEvent>.Register(addKeyEventBinding);
+
+            showInventoryEventBinding = new EventBinding<ShowInventoryEvent>(ShowInventory);
+            EventBus<ShowInventoryEvent>.Register(showInventoryEventBinding);
+
+            selectItemEventBinding = new EventBinding<SelectItemEvent>(SelectItem);
+            EventBus<SelectItemEvent>.Register(selectItemEventBinding);
+            
+            InputsBrain.Instance.OnInventoryOpen += OpenInventory;
+            InputsBrain.Instance.OnSecondaryInteract += HoldItemGamepad;
         }
 
         private void OnDisable() {
-            EventBus<AddItemEvent>.Deregister(addItemEventBinding);
-            EventBus<RemoveItemEvent>.Deregister(removeItemEventBinding);
+            EventBus<ProcessItemEvent>.Deregister(addItemEventBinding);
+            EventBus<ProcessKeyEvent>.Deregister(addKeyEventBinding);
+            EventBus<ShowInventoryEvent>.Deregister(showInventoryEventBinding);
+            EventBus<SelectItemEvent>.Deregister(selectItemEventBinding);
             
-            EventBus<AddKeyEvent>.Deregister(addKeyEventBinding);
-            EventBus<RemoveKeyEvent>.Deregister(removeKeyEventBinding);
+            InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
+            InputsBrain.Instance.OnSecondaryInteract -= HoldItemGamepad;
             
             openInventoryTween.Kill();
         }
+
+        private void OpenInventory(InputAction.CallbackContext context) {
+            OpenInventory();
+        }
         
         public void OpenInventory() {
+            if(!itemGroup.interactable) return;
             isOpen = !isOpen;
             
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
         }
 
+        private void ShowInventory(ShowInventoryEvent evt) {
+            itemGroup.DOFade(evt.doShow ? 1f : 0f, 0.5f);
+            itemGroup.interactable = evt.doShow;
+            itemGroup.blocksRaycasts = evt.doShow;
+            itemHighlight.gameObject.SetActive(evt.doShow);
+            
+            if (!evt.doShow) isOpen = false;
+            openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
+        }
+        
         #region Items
-        private void AddItem(AddItemEvent evt) {
+
+        private void ProcessItem(ProcessItemEvent evt) {
+            if(evt.isAddingItem) AddItem(evt.item);
+            else RemoveItem(evt.item);
+        }
+        
+        private void AddItem(Item evt) {
             foreach (var item in itemHolder) {
                 if (item.gameObject.activeSelf) continue;
                 
                 item.gameObject.SetActive(true);
-                item.SetItem(evt.item);
+                item.SetItem(evt);
                 break;
             }
         }
 
-        private void RemoveItem(RemoveItemEvent evt) {
+        private void RemoveItem(Item evt) {
             foreach (var item in itemHolder) {
-                if (item.worldItem == evt.item.worldItem) {
+                if (item.worldItem == evt.worldItem) {
                     item.gameObject.SetActive(false);
                     item.ResetItem();
                     break;
                 }
+            }
+        }
+        
+        private void SelectItem(SelectItemEvent evt) {
+            SetHighlight(evt.selectedItem);
+        }
+
+        private void SetHighlight(Item wantedItem) {
+            selectedItem = GetItem(wantedItem);
+            if (selectedItem) {
+                itemHighlight.position = selectedItem.transform.position;
+            }
+            else {
+                itemHighlight.gameObject.SetActive(false);
             }
         }
 
@@ -88,42 +137,74 @@ namespace _Project.Scripts.UI.Gameplay {
                 }
             }
         }
-     #endregion
 
-        private void AddKey(AddKeyEvent evt) {
-            foreach (var key in keyHolder) {
-                if (key.gameObject.activeSelf) continue;
-                
-                key.gameObject.SetActive(true);
-                key.SetKey(evt.key);
-                break;
+        private void HoldItemGamepad(InputAction.CallbackContext context) {
+            if(InputsBrain.Instance.IsKeyboardControl) return;
+            if (context.performed) {
+                if(selectedItem == null) return;
+                if(isOpen || selectedItem.isHeld)
+                    selectedItem.HeldItem();
             }
         }
 
-        private void RemoveKey(RemoveKeyEvent evt) {
+        private ItemHolder GetItem(Item wantedItem) {
+            foreach (var item in itemHolder) {
+                if (item.worldItem == wantedItem.worldItem) {
+                    return item;
+                }
+            }
+            
+            return null;
+        }
+        
+     #endregion
+
+        #region Key
+    
+        private void ProcessKey(ProcessKeyEvent evt) {
+            if(evt.isAddingKey) AddKey(evt.key);
+            else RemoveKey(evt.key);
+        }
+        
+        private void AddKey(Key evt) {
             foreach (var key in keyHolder) {
-                if (key.ID == evt.key.ID) {
+                if (key.gameObject.activeSelf) continue;
+                   
+                key.gameObject.SetActive(true);
+                key.SetKey(evt);
+                break;
+            }
+        }
+    
+        private void RemoveKey(Key evt) {
+            foreach (var key in keyHolder) {
+                if (key.ID == evt.ID) {
                     key.gameObject.SetActive(false);
                     key.ResetKey();
                     break;
                 }
             }
         }
+    
+        #endregion
+        
     }
 
-    public struct AddItemEvent : IEvent {
+    public struct ProcessItemEvent : IEvent {
         public Item item;
-    }
-
-    public struct RemoveItemEvent : IEvent {
-        public Item item;
+        public bool isAddingItem;
     }
     
-    public struct AddKeyEvent : IEvent {
+    public struct ProcessKeyEvent : IEvent {
         public Key key;
+        public bool isAddingKey;
     }
 
-    public struct RemoveKeyEvent : IEvent {
-        public Key key;
+    public struct ShowInventoryEvent : IEvent {
+        public bool doShow;
+    }
+
+    public struct SelectItemEvent : IEvent {
+        public Item selectedItem;
     }
 }

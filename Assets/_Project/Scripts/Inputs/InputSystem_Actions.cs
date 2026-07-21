@@ -123,7 +123,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""LockUp"",
                     ""type"": ""Value"",
                     ""id"": ""7c76e84f-66b8-4732-8502-887f315004d0"",
-                    ""expectedControlType"": ""Integer"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -132,10 +132,46 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""LockRight"",
                     ""type"": ""Value"",
                     ""id"": ""870caf09-b7ce-4c52-bed2-ab513a6755c2"",
-                    ""expectedControlType"": ""Integer"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""AShard"",
+                    ""type"": ""Button"",
+                    ""id"": ""94107432-b22a-40c8-9339-6840dd5c4787"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BShard"",
+                    ""type"": ""Button"",
+                    ""id"": ""84d3d304-0f16-40a1-9b3f-a708151eefe2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""919800d5-d732-48f7-9eb5-5979b640ba8a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventorySelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c775da8-65b1-4f9e-9823-aca99802c6ae"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -250,7 +286,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""Keyboard"",
                     ""id"": ""0eb00548-fffb-4cdf-ad1c-84184c859a72"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -283,7 +319,40 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""Gamepad"",
+                    ""id"": ""373686b0-6257-4d96-8e77-af7f174129e4"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockUp"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""12489e00-0271-454d-8d32-8a8ab85cde60"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LockUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""df80e5db-0bf2-4241-8264-8e41cc51ca56"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LockUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
                     ""id"": ""a443b4be-105a-463e-8a79-6d2d482472f8"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -312,6 +381,105 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""LockRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""9611a4b9-4f0b-4075-bbf2-b1f0137e408a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockRight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""49d3e22e-610d-41b8-b327-f4297d287481"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""9bc2cf6d-4dba-448b-9b86-8672343ca534"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31198feb-c5e4-4923-9ec2-c183b29daa95"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""AShard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""242e4f11-19df-4d7f-877a-f98f4392f3e4"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""BShard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4cef774-92ed-433c-ac30-873cae6fb7df"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""OpenInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""54a7b65c-1e9a-4946-8631-a54a640f874e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventorySelect"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d1abec2e-a8ca-47cd-8a06-659387fdc104"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InventorySelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""114d702b-eed1-4d28-8ae6-8842e11efa10"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InventorySelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -992,6 +1160,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_SecondaryInteract = m_Player.FindAction("SecondaryInteract", throwIfNotFound: true);
         m_Player_LockUp = m_Player.FindAction("LockUp", throwIfNotFound: true);
         m_Player_LockRight = m_Player.FindAction("LockRight", throwIfNotFound: true);
+        m_Player_AShard = m_Player.FindAction("AShard", throwIfNotFound: true);
+        m_Player_BShard = m_Player.FindAction("BShard", throwIfNotFound: true);
+        m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
+        m_Player_InventorySelect = m_Player.FindAction("InventorySelect", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1097,6 +1269,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SecondaryInteract;
     private readonly InputAction m_Player_LockUp;
     private readonly InputAction m_Player_LockRight;
+    private readonly InputAction m_Player_AShard;
+    private readonly InputAction m_Player_BShard;
+    private readonly InputAction m_Player_OpenInventory;
+    private readonly InputAction m_Player_InventorySelect;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1128,6 +1304,22 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/LockRight".
         /// </summary>
         public InputAction @LockRight => m_Wrapper.m_Player_LockRight;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/AShard".
+        /// </summary>
+        public InputAction @AShard => m_Wrapper.m_Player_AShard;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/BShard".
+        /// </summary>
+        public InputAction @BShard => m_Wrapper.m_Player_BShard;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/OpenInventory".
+        /// </summary>
+        public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/InventorySelect".
+        /// </summary>
+        public InputAction @InventorySelect => m_Wrapper.m_Player_InventorySelect;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1169,6 +1361,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @LockRight.started += instance.OnLockRight;
             @LockRight.performed += instance.OnLockRight;
             @LockRight.canceled += instance.OnLockRight;
+            @AShard.started += instance.OnAShard;
+            @AShard.performed += instance.OnAShard;
+            @AShard.canceled += instance.OnAShard;
+            @BShard.started += instance.OnBShard;
+            @BShard.performed += instance.OnBShard;
+            @BShard.canceled += instance.OnBShard;
+            @OpenInventory.started += instance.OnOpenInventory;
+            @OpenInventory.performed += instance.OnOpenInventory;
+            @OpenInventory.canceled += instance.OnOpenInventory;
+            @InventorySelect.started += instance.OnInventorySelect;
+            @InventorySelect.performed += instance.OnInventorySelect;
+            @InventorySelect.canceled += instance.OnInventorySelect;
         }
 
         /// <summary>
@@ -1195,6 +1399,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @LockRight.started -= instance.OnLockRight;
             @LockRight.performed -= instance.OnLockRight;
             @LockRight.canceled -= instance.OnLockRight;
+            @AShard.started -= instance.OnAShard;
+            @AShard.performed -= instance.OnAShard;
+            @AShard.canceled -= instance.OnAShard;
+            @BShard.started -= instance.OnBShard;
+            @BShard.performed -= instance.OnBShard;
+            @BShard.canceled -= instance.OnBShard;
+            @OpenInventory.started -= instance.OnOpenInventory;
+            @OpenInventory.performed -= instance.OnOpenInventory;
+            @OpenInventory.canceled -= instance.OnOpenInventory;
+            @InventorySelect.started -= instance.OnInventorySelect;
+            @InventorySelect.performed -= instance.OnInventorySelect;
+            @InventorySelect.canceled -= instance.OnInventorySelect;
         }
 
         /// <summary>
@@ -1659,6 +1875,34 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLockRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "AShard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAShard(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BShard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBShard(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "InventorySelect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInventorySelect(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

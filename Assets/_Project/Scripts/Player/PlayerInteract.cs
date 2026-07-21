@@ -20,8 +20,6 @@ namespace _Project.Scripts.Player {
     }
     
     public class PlayerInteract : MonoBehaviour {
-        private InputsBrain inputsBrain;
-
         [SerializeField] public Transform objectPos;
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
@@ -75,9 +73,6 @@ namespace _Project.Scripts.Player {
         #region Initialization
 
         private void Awake() {
-            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
-
             if(TryGetComponent(out PlayerController _player)) player = _player;
             else Debug.LogWarning("[PlayerController] No PlayerController found");
             
@@ -91,12 +86,13 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnEnable() {
-            inputsBrain.OnInteract += Interact;
-            inputsBrain.OnSecondaryInteract += SecondaryInteract;
+            InputsBrain.Instance.OnInteract += Interact;
+            InputsBrain.Instance.OnSecondaryInteract += SecondaryInteract;
         }
 
         private void OnDisable() {
-            inputsBrain.OnInteract -= Interact;
+            InputsBrain.Instance.OnInteract -= Interact;
+            InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
         }
 
         #endregion
