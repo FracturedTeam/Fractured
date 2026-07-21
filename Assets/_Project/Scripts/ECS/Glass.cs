@@ -88,7 +88,6 @@ namespace _Project.Scripts.ECS
         private Vector2 mousePosition;
 
         private bool isHeld;
-        private bool heldWithGamepad;
         
         private bool isOnTop;
 
@@ -157,7 +156,7 @@ namespace _Project.Scripts.ECS
         }
         
         private void MoveGlass(Vector2 delta) {
-            if (heldWithGamepad) delta *= gamepadSensitivity;
+            if (!InputsBrain.Instance.IsKeyboardControl) delta *= gamepadSensitivity;
             
             transform.position += (Vector3)delta; 
             
@@ -211,9 +210,8 @@ namespace _Project.Scripts.ECS
             // }
 
             isHeld = isOn;
-            heldWithGamepad = holdWithGamepad;
 
-            if (heldWithGamepad) {
+            if (!InputsBrain.Instance.IsKeyboardControl) {
                 if (isOn) {
                     InputsBrain.Instance.OnPlayerMove += MoveGlass;
                     PlayerController.Instance.FreezeController(true);

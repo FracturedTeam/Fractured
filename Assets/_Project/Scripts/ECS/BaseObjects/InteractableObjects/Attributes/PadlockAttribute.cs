@@ -12,8 +12,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] private int requiredCode;
         [SerializeField] private bool doInteractImmediately;
 
-        private readonly CountdownTimer timerUp = new(0.15f);
-        private readonly CountdownTimer timerRight = new(0.15f);
+        private readonly CountdownTimer timerUp = new(0.1f);
+        private readonly CountdownTimer timerRight = new(0.1f);
         
         private bool isUsingLock;
 
