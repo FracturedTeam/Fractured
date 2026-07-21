@@ -4,6 +4,7 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.UI;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -65,6 +66,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
+            HudManager.Instance.SetActiveMemoryButton(isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
