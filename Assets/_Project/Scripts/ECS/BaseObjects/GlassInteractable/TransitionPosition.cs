@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class TransitionPosition : MonoBehaviour
 {
-    [SerializeField] private int act;
+    [SerializeField] public int act;
 }
