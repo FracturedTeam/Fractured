@@ -53,6 +53,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private Image memoryImage;
         [SerializeField] private Image memoryLine;
         [SerializeField] private GlassDocument glassDocument;
+        [SerializeField] private Button confirmMemoryButton;
         
         private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<DocumentEvent> documentEventBinding;
@@ -87,6 +88,7 @@ namespace _Project.Scripts.UI
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
             glassDocument.gameObject.SetActive(false);
+            confirmMemoryButton.GetComponent<CanvasGroup>().alpha = 0;
         }
 
         private void OnEnable() {
