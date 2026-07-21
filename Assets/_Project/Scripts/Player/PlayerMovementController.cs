@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.Timers;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace _Project.Scripts.Player {
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerMovementController : MonoBehaviour
     {
-        private InputsBrain inputsBrain;
+        // private InputsBrain inputsBrain;
         private Rigidbody rb;
 
         [SerializeField] public PlayerConfiguration playerConfig;
@@ -70,8 +71,8 @@ namespace _Project.Scripts.Player {
         public void Awake() {
         
             // Get every component needed
-            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
+            // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
+            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
             if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
@@ -84,11 +85,11 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnEnable() {
-            inputsBrain.OnPlayerMove += SetDir;
+            InputsBrain.Instance.OnPlayerMove += SetDir;
         }
 
         private void OnDisable() {
-            inputsBrain.OnPlayerMove -= SetDir;
+            InputsBrain.Instance.OnPlayerMove -= SetDir;
         }
 
         private void SetDir(Vector2 moveInput) {
@@ -357,10 +358,6 @@ namespace _Project.Scripts.Player {
 
         public Rigidbody GetRigidbody() {
             return rb;
-        }
-
-        public InputsBrain GetInputs() {
-            return inputsBrain;
         }
 
         #endregion

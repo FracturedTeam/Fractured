@@ -1,6 +1,5 @@
 using System;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
@@ -11,7 +10,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player {
     
-    [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
+    [RequireComponent(typeof(PlayerMovementController))]
     public class PlayerController : Singleton<PlayerController>{
         [SerializeField, HideInInspector] private PlayerData data;
         
