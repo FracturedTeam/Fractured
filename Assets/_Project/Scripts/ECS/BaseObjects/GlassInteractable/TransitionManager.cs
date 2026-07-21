@@ -27,14 +27,14 @@ public class TransitionManager : MonoBehaviour
                 {
                     secondColor = true;
                     foreach (var material in mat)
-                        material.SetFloat("_CURRENTACT", pos1.act);
+                        material.SetFloat("_CurrentAct", pos1.act+1);
                     break;
                 }
                 case < .5f when secondColor:
                 {
                     secondColor = false;
                     foreach (var material in mat)
-                        material.SetFloat("_CURRENTACT", pos2.act);
+                        material.SetFloat("_CurrentAct", pos2.act+1);
                     break;
                 }
             }
