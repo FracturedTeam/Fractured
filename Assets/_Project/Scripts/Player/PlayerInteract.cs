@@ -149,12 +149,7 @@ namespace _Project.Scripts.Player {
         }
 
         private void DropObject() {
-            Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
-            
-            // if(potentialInteraction != null)
-            //     currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
-            // else
-                currentInteraction?.OnInteract(ObjectInteraction.Drop);
+            currentInteraction?.OnInteract(ObjectInteraction.Drop);
         }
         #endregion
 
@@ -321,8 +316,6 @@ namespace _Project.Scripts.Player {
         public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
             currentInteraction = interaction;
-            
-            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
         
         public void SetDropObject() {
@@ -349,7 +342,7 @@ namespace _Project.Scripts.Player {
             if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out CollectableAttribute collectable))
-                return CanInteract && /*!HasObject && currentInteraction == null &&*/ collectable.CanBeGrab();
+                return CanInteract && collectable.CanBeGrab();
             
             return false;
         }
