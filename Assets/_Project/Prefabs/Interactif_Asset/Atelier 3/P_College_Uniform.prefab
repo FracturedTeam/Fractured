@@ -52,10 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.SceneElement
   validationMethod: 1
-  requestedPosition: {x: 0, y: 0, z: 0}
+  requestedCollisionArea: {fileID: 0}
   requestedVisibility: 0
   requestedUseState: 0
-  tolerance: 4
 --- !u!114 &5857996584680167284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,10 +72,13 @@ MonoBehaviour:
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
     <Guid>k__BackingField: 
-    Position: {x: 0, y: 0, z: 0}
-    ObjectCompletion: 0
-    CanBeInteractedWith: 0
-    ObjectOutOfBox: 0
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
   <Guid>k__BackingField: 05ddadb9-cf89-4db1-85a8-5bd961d868f7
 --- !u!114 &5787172872469683831
 MonoBehaviour:
@@ -129,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  oneTimeUse: 0
 --- !u!65 &6935257666991688726
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -148,8 +151,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000001, y: 0.99999994, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.48886853, y: 2.1646798, z: 1.4272407}
+  m_Center: {x: 0.005027467, y: -1.0208315, z: 0.04282013}
 --- !u!23 &4123775049672928641
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -206,7 +209,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2329482735111101459}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -1690321967974987199, guid: bef29bc7cf47de04aaeb4af85c285e96, type: 3}
 --- !u!114 &2379933640077392653
 MonoBehaviour:
   m_ObjectHideFlags: 0
