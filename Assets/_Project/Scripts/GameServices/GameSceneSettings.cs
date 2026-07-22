@@ -16,7 +16,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private CinemachineCamera roomCamera;
         
         [Header("Puzzle Objects")]
-        [SerializeField] public Glass[] glassShards;
+        [HideInInspector] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] public List<SceneMaster> sceneMasters;
         

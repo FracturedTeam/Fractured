@@ -77,6 +77,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdateSelectedItem(float input) {
+            if(items.Count == 0) return;
+            
             if (items.Count <= 1) {
                 itemIndex = 0;
                 EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});

@@ -117,7 +117,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetCollider(false);
             
             if(particles) particles.Stop();
-            Debug.LogWarning("[Collectable] Complete object");
         }
 
         public void ResetObject() {
@@ -144,12 +143,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void OnPickedUp() {
-            Debug.Log("[Collectable] Picked up object");
-            
             SetInInventory();
             
-            // TODO enlever la validation de scene position
-
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
         }
 

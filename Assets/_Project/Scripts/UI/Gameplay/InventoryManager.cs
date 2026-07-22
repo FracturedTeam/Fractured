@@ -76,6 +76,7 @@ namespace _Project.Scripts.UI.Gameplay {
             isOpen = !isOpen;
             
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
+            itemHighlight.gameObject.SetActive(!InputsBrain.Instance.IsKeyboardControl); 
         }
 
         private void ShowInventory(ShowInventoryEvent evt) {

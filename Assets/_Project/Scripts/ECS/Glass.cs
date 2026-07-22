@@ -156,7 +156,10 @@ namespace _Project.Scripts.ECS
         }
         
         private void MoveGlass(Vector2 delta) {
-            if (!InputsBrain.Instance.IsKeyboardControl) delta *= gamepadSensitivity;
+            if (!InputsBrain.Instance.IsKeyboardControl) {
+                delta *= gamepadSensitivity;
+                if(!PlayerController.Instance.IsFrozen()) PlayerController.Instance.FreezeController(true);
+            }
             
             transform.position += (Vector3)delta; 
             
@@ -200,14 +203,8 @@ namespace _Project.Scripts.ECS
             if(shard) Destroy(shard.gameObject);
         }
         
-        internal void ChangeHoldingState(bool isOn, bool holdWithGamepad) {
+        internal void ChangeHoldingState(bool isOn) {
             if (!canInteract) return;
-            // if (!canEditAnywhere) {
-            //     if (!GameInitializer.Instance.InEditableArea() && isOn) {
-            //         GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassFailedSound);
-            //         return;
-            //     }
-            // }
 
             isHeld = isOn;
 
