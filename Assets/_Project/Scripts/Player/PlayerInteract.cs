@@ -159,21 +159,21 @@ namespace _Project.Scripts.Player {
         }
         
         public void HandleUpdate(Vector3 playerDir) {
-            if (isFocus) return;
-            
             HandleInteractRotation(playerDir);
 
             if (validationInputHold) {
                 validationInputTime += Time.deltaTime;
 
-                if (validationInputTime >= 1 && currentInteraction) {
-                    if (currentInteraction.GetObjectType is ObjectType.MemoryFrame) {
-                        currentInteraction.OnInteract(ObjectInteraction.Validate);
+                if (validationInputTime >= 1 && potentialInteraction) {
+                    if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame) {
+                        potentialInteraction.OnInteract(ObjectInteraction.Validate);
                         validationInputHold = false;
                         validationInputTime = 0;
                     }
                 }
             }
+            
+            if (isFocus) return;
             
             HandleInteraction();
             SetPlayerInteraction();
