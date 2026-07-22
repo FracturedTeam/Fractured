@@ -12,7 +12,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
 
         private bool isInitialized;
-
         private bool isInspecting;
 
         [SerializeField] private GlassDocumentScriptableObject glassDocument; 

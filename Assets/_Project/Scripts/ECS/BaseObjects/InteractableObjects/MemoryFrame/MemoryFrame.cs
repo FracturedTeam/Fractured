@@ -83,8 +83,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isSelected = true;
             master.SetFrameSelected(true);
             collider.enabled = false;
-            
-            Debug.Log($"OnPointerDown");
         }
 
         public void OnPointerUp(PointerEventData eventData) {
@@ -94,11 +92,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             master.SetFrameSelected(false);
             mouseOnFrame = false;
             collider.enabled = true;
-            
-            // var closest = GetClosetPosition();
-            // SetFramePositions(closest);
-            
-            Debug.Log($"OnPointerUp");
         }
 
         public void OnGamepadSelect(bool isSelected) {
@@ -223,26 +216,26 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         private void SetFramePositions(int closest) {
-            int framesAmount = master.GetSlots().Length;
+            var framesAmount = master.GetSlots().Length;
 
-            Debug.Log("There is : " + framesAmount + " frames");
-            
             if (framesAmount == 2) {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
+                        var frame1 = master.GetFrameAtPos(1);
+                        
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrameAtPos(1);
                         frame1.SetNewPosition(0);
                     }
                     break;
                 
                 case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
+                        var frame0 = master.GetFrameAtPos(0);
+                        
                         currentPos = closest;
                         
-                        var frame0 = master.GetFrameAtPos(0);
                         frame0.SetNewPosition(1);
                     }
                     break;

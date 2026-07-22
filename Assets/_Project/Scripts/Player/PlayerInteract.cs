@@ -110,7 +110,7 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
-                potentialInteraction = null;
+                // potentialInteraction = null;
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
@@ -159,6 +159,8 @@ namespace _Project.Scripts.Player {
         }
         
         public void HandleUpdate(Vector3 playerDir) {
+            if (isFocus) return;
+            
             HandleInteractRotation(playerDir);
 
             if (validationInputHold) {
@@ -355,7 +357,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && potentialInteraction.GetObjectType is not ObjectType.None;
+            return CanInteract && potentialInteraction && potentialInteraction.GetObjectType is not ObjectType.None;
         }
 
         public bool IsCarrying() {
@@ -386,7 +388,7 @@ namespace _Project.Scripts.Player {
             this.isFocus = isFocus;
             
             if (isFocus)
-                currentInteraction = obj;
+                potentialInteraction = obj;
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
