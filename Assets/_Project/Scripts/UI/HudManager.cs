@@ -91,6 +91,8 @@ namespace _Project.Scripts.UI
             specialUI.GetGroup.alpha = 0;
             glassDocument.gameObject.SetActive(false);
             confirmMemoryButton.alpha = 0;
+            SetActiveMemoryButton(false);
+            memoryDialogue.text = "";
         }
 
         private void OnEnable() {
@@ -198,16 +200,16 @@ namespace _Project.Scripts.UI
             
         }
                 
-        public void SetMemoryDialogue(string dialogue, int pos)
+        public void SetMemoryDialogue(string dialogue, Vector3 pos)
         {
+            memoryDialogue.DOFade(dialogue == "" ? 0 : 1, 0.5f);
+            if(dialogue == "") return;
             memoryDialogue.text = dialogue;
-            memoryDialogue.alignment = pos switch
-            {
-                0 => TextAlignmentOptions.Left,
-                1 => TextAlignmentOptions.Center,
-                _ => TextAlignmentOptions.Right
-            };
+             var newPos = PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(pos);
+             newPos = new Vector3(newPos.x, newPos.y - 425);
+             memoryDialogue.gameObject.transform.position = newPos;
         }
+        
         #region InteractionHUD
 
         private void ShowInteraction(InteractEvent e) {
