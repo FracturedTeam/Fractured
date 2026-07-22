@@ -67,13 +67,10 @@ namespace _Project.Scripts.Player {
         private float currentDrag = 0f;
 
         private float lerpCameraDirTime;
+
+        private readonly CountdownTimer switchCameraBuffer = new(0.15f);
         
         public void Awake() {
-        
-            // Get every component needed
-            // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
-        
             if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
             else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
@@ -95,6 +92,10 @@ namespace _Project.Scripts.Player {
         private void SetDir(Vector2 moveInput) {
             moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
             rawMoveDir = moveInput;
+            
+            if (!InputsBrain.Instance.IsKeyboardControl && moveInput != Vector2.zero && !switchCameraBuffer.IsRunning) {
+                switchCameraBuffer.Start();
+            }
         }
 
         public void SetSpeed(PlayerSpeedEnum speed) {
@@ -147,7 +148,7 @@ namespace _Project.Scripts.Player {
                 forwardDir = Vector3.Lerp(alternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
                 rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
-            else {
+            else if (!switchCameraBuffer.IsRunning) {
                 forwardDir = alternateCameraDirection ? alternateForward : newForwardDir;
                 rightDir = newRightDir;
                 newCamDirBuffer = false;
@@ -304,14 +305,6 @@ namespace _Project.Scripts.Player {
     
         #endregion
 
-        // private void OnDrawGizmos() {
-        //     Gizmos.matrix = Matrix4x4.identity;
-        //     
-        //     Gizmos.color = Color.red;
-        //     Gizmos.DrawLine(feetPosition.position, feetPosition.position + mesh.forward * lowerHit);
-        //     Gizmos.DrawLine(feetPosition.position + Vector3.up * stepHeight, feetPosition.position + Vector3.up * stepHeight + mesh.forward * upperHit);
-        // }
-
         #region Settes/Helpers
 
         public void SetPosition(Vector3 position, Direction dir) {
@@ -337,7 +330,7 @@ namespace _Project.Scripts.Player {
         public void SetKinematic(bool doFreeze) {
             rb.isKinematic = doFreeze;
         }
-
+        
         public float GetSpeedRatio() {
             if (player.IsUsingDoor()) return 0;
             return CurrentSpeed / CurrentMaxSpeed;

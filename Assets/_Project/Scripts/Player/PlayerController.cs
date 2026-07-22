@@ -173,6 +173,7 @@ namespace _Project.Scripts.Player {
         public void FixedUpdateMovement() => movement.HandleFixedUpdate();
         public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
         public void FreezeController(bool doFreeze) => movement.SetKinematic(doFreeze);
+        public bool IsFrozen() => movement.IsPlayerFrozen();
         public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
         public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
         public Vector3 GetForwardDir() => movement.mesh.forward;
