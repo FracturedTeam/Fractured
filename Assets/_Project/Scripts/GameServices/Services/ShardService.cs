@@ -125,11 +125,14 @@ namespace _Project.Scripts.GameServices.Services {
                     BShard.ChangeHoldingState(false, true);
                 AShard.ChangeHoldingState(true, true);
                 currentGlass = AShard;
+                
+                GameInitializer.Instance.SetGamepadColor(GameInitializer.Instance.GetCurrentShardAColor());
             }
 
             if (ctx.canceled && AShard) {
                 AShard.ChangeHoldingState(false, true);
                 currentGlass = null;
+                GameInitializer.Instance.SetGamepadColor(GameInitializer.Instance.GetCurrentChapterColor());
             }
         }
 
@@ -139,11 +142,14 @@ namespace _Project.Scripts.GameServices.Services {
                 if(AShard)
                     AShard.ChangeHoldingState(false, true);
                 currentGlass = BShard;
+                
+                GameInitializer.Instance.SetGamepadColor(GameInitializer.Instance.GetCurrentShardBColor());
             }
 
             if (ctx.canceled && BShard) {
                 BShard.ChangeHoldingState(false, true);
                 currentGlass = null;
+                GameInitializer.Instance.SetGamepadColor(GameInitializer.Instance.GetCurrentChapterColor());
             }
         }
         

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -8,7 +5,6 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Inputs;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
@@ -16,6 +12,7 @@ using FMOD.Studio;
 using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -26,6 +23,7 @@ namespace _Project.Scripts.GameServices {
         private ShardService shardService;
         private SaveService saveService;
         private AudioService audioService;
+        private RumbleService rumbleService;
         
         [Header("Save service")] 
         [SerializeField] private bool deleteSaveOnPay;
@@ -44,8 +42,24 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material chapter2B;
         [SerializeField] private Material chapter3A;
         [SerializeField] private Material chapter3B;
+
+        [Header("Gamepad Color Settings")]
+        [SerializeField] private Color chapter1Color;
+        [SerializeField] private Color chapter2Color;
+        [SerializeField] private Color chapter3Color;
+        [Space]
+        [SerializeField] private Color chapter1ShardAColor;
+        [SerializeField] private Color chapter1ShardBColor;
+        [Space]
+        [SerializeField] private Color chapter2ShardAColor;
+        [SerializeField] private Color chapter2ShardBColor;
+        [Space]
+        [SerializeField] private Color chapter3ShardAColor;
+        [SerializeField] private Color chapter3ShardBColor;
         
         private float fadeTimer = 0.0f;
+        
+        private int CurrentChapter = 1;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -67,16 +81,16 @@ namespace _Project.Scripts.GameServices {
             shardService = new ShardService();
             saveService = new SaveService(shardService, deleteSaveOnPay);
             audioService = new AudioService(audioBank);
+            rumbleService = new RumbleService(Gamepad.current);
             
             //Then register the game systems
             gameSystems.Register(shardService);
             gameSystems.Register(saveService);
             gameSystems.Register(audioService);
+            gameSystems.Register(rumbleService);
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
-            saveService.Initialize();
-            audioService.Initialize();
         }
 
         public Material GetCurrentFragmentMaterial(bool isA, int chapter)
@@ -328,6 +342,41 @@ namespace _Project.Scripts.GameServices {
         public void SetVolume(int index, float volume) {
             audioService.SetSound(index, volume);
         }
+        #endregion
+
+        #region RumbleService
+
+        public void RumblePulse(float lowFrequency, float highFrequency, float duration) => rumbleService.RumblePulse(lowFrequency, highFrequency, duration);
+        public void RumblePulseColor(float lowFrequency, float highFrequency, float duration, Color color) => rumbleService.RumblePulseAndColor(lowFrequency, highFrequency, duration, color);
+        public void SetGamepadColor(Color color) => rumbleService.SetGamepadColor(color);
+        
+        public Color GetCurrentChapterColor() {
+            return CurrentChapter switch {
+                1 => chapter1Color,
+                2 => chapter2Color,
+                3 => chapter3Color,
+                _ => Color.white
+            };
+        }
+        
+        public Color GetCurrentShardAColor() {
+            return CurrentChapter switch {
+                1 => chapter1ShardAColor,
+                2 => chapter2ShardAColor,
+                3 => chapter3ShardAColor,
+                _ => Color.white
+            };
+        }
+        
+        public Color GetCurrentShardBColor() {
+            return CurrentChapter switch {
+                1 => chapter1ShardBColor,
+                2 => chapter2ShardBColor,
+                3 => chapter3ShardBColor,
+                _ => Color.white
+            };
+        }
+        
         #endregion
        
     }

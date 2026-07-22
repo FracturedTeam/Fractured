@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -91,7 +92,11 @@ namespace _Project.Scripts.Inputs {
         }
         
         private void PlayerMove(InputAction.CallbackContext context) => OnPlayerMove.Invoke(context.ReadValue<Vector2>());
-        private void Interact(InputAction.CallbackContext context) => OnInteract.Invoke(context);
+        private void Interact(InputAction.CallbackContext context) {
+            OnInteract.Invoke(context);
+            GameInitializer.Instance.RumblePulse(1f, 1f, 0.5f);
+        }
+
         private void SecondaryInteract(InputAction.CallbackContext context) => OnSecondaryInteract.Invoke(context);
         private void LockUp(InputAction.CallbackContext context) => OnLockUp.Invoke(context.ReadValue<float>());
         private void LockRight(InputAction.CallbackContext context) => OnLockRight.Invoke(context.ReadValue<float>());
