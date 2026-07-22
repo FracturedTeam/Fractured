@@ -219,11 +219,11 @@ namespace _Project.Scripts.Player {
                 if (!potentialInteraction) return;
 
                 var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
-                var dir = (transform.TransformPoint(boxCollider.center) - transform.position).normalized;
+                var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
                 var dist = Vector3.Distance(transform.TransformPoint(boxCollider.center), transform.position);
                 
                 var hasHit = Physics.Raycast(transform.position, dir, out wallInBetween, dist, wallLayerMask);
-                if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider()) {
+                if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider() as BoxCollider) {
                     potentialInteraction = null;
                 }
                 return;
