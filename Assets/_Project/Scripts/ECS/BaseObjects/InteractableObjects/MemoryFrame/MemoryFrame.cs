@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using DG.Tweening;
 using TMPro;
@@ -21,6 +22,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private int currentPos;
         private bool isUnlocked;
         private bool canBeInteracted;
+        private bool gamepadControlled;
 
         private bool isSelected;
         
@@ -31,7 +33,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isAtOriginalPos;
 
         private Tween tween;
-        private Camera cam;
+        private Transform cam;
+        
+        private readonly CountdownTimer gamepadTimer = new(0.25f);
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
@@ -42,10 +46,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
             text?.DOFade(0, 0);
-            cam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+            cam = master.frameCamera.transform;
         }
 
         private void Update() {
+            if(gamepadControlled) return;
             if(!canBeInteracted && !isAtOriginalPos) return;
 
             if (isSelected) mouseOnFrame = true;
@@ -62,7 +67,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 isAtOriginalPos = true;
             
             if (!isSelected && !master.IsAFrameSelected) {
-                var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
                 transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * forwardTime) * forwardDir;
             }
         }
@@ -73,7 +78,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         // Mouse event
         public void OnPointerDown(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted || gamepadControlled) return;
             
             isSelected = true;
             master.SetFrameSelected(true);
@@ -83,7 +88,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnPointerUp(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted || gamepadControlled) return;
             
             isSelected = false;
             master.SetFrameSelected(false);
@@ -96,14 +101,49 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             Debug.Log($"OnPointerUp");
         }
 
+        public void OnGamepadSelect(bool isSelected) {
+            ChangeState(isSelected);
+            
+            this.isSelected = isSelected;
+            master.SetFrameSelected(isSelected);
+            
+            if (isSelected) {
+                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos) - 0.5f * forwardDir, 0.5f);
+            }
+            else
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
+        }
+
+        public void OnGamepadMove(Vector2 delta) {
+            if(!isSelected || gamepadTimer.IsRunning) return;
+            
+            var closest = currentPos;
+            if (delta.x > 0.15f) {
+                closest++;
+                if (closest >= master.GetSlots().Length)
+                    closest = 0;
+                gamepadTimer.Start();
+            }
+            else if (delta.x < -0.15f) {
+                closest--;
+                if(closest < 0)
+                    closest = master.GetSlots().Length - 1;
+                gamepadTimer.Start();
+            }
+            
+            SetFramePositions(closest);
+            SetNewPosition(closest);
+        }
+        
         public void OnPointerEnter(PointerEventData eventData) {
-            if(!canBeInteracted || master.IsAFrameSelected) return;
+            if(!canBeInteracted || master.IsAFrameSelected || gamepadControlled) return;
 
             ChangeState(true);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            if(!canBeInteracted) return;
+            if(!canBeInteracted || gamepadControlled) return;
 
             ChangeState(false);
         }
@@ -115,9 +155,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnDrag(PointerEventData eventData) {
-            if(!isSelected) return;
-            
-            transform.position = GetMousePosition(eventData);
+            if(!isSelected || gamepadControlled) return;
+
+            UpdateFramePosition(eventData.delta);
+        }
+
+        private void UpdateFramePosition(Vector2 delta) {
+            transform.position = GetMousePosition(delta);
             var closest = GetClosetPosition();
             
             if (closest != currentPos) {
@@ -146,17 +190,18 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return index;
         }
         
-        private Vector3 GetMousePosition(PointerEventData eventData) {
-            var screenPosition = cam.WorldToScreenPoint(transform.position);
+        private Vector3 GetMousePosition(Vector2 delta) {
+            var outputCam = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+            var screenPosition = outputCam.WorldToScreenPoint(transform.position);
             
-            var newPos = cam.ScreenToWorldPoint(new Vector3(
-                screenPosition.x + eventData.delta.x, 
-                screenPosition.y + eventData.delta.y, 
+            var newPos = outputCam.ScreenToWorldPoint(new Vector3(
+                screenPosition.x + delta.x, 
+                screenPosition.y + delta.y, 
                 screenPosition.z
             ));
             
-            var rightDir = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
-            var forwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+            var rightDir = Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized;
+            var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
             
             var horizontal = Vector3.Dot(newPos, rightDir);
             var depth = Vector3.Dot(newPos, forwardDir);
@@ -166,10 +211,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void SetNewPosition(int newPos) {
-            if(currentPos == newPos) return;
+            if(currentPos == newPos && !gamepadControlled) return;
 
             currentPos = newPos;
-            tween = transform.DOMove(master.GetCurrentSlotPosition(newPos), 0.5f);
+            if (isSelected) {
+                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos) - 0.5f * forwardDir, 0.5f);
+            }
+            else
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }
         
         private void SetFramePositions(int closest) {
@@ -183,7 +233,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     if (closest == 1) {
                         currentPos = closest;
                         
-                        var frame1 = master.GetFrame(1);
+                        var frame1 = master.GetFrameAtPos(1);
                         frame1.SetNewPosition(0);
                     }
                     break;
@@ -192,7 +242,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     if (closest == 0) {
                         currentPos = closest;
                         
-                        var frame0 = master.GetFrame(0);
+                        var frame0 = master.GetFrameAtPos(0);
                         frame0.SetNewPosition(1);
                     }
                     break;
@@ -206,15 +256,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
-                        var frame1 = master.GetFrame(1);
-                        var frame2 = master.GetFrame(2);
+                        var frame1 = master.GetFrameAtPos(1);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         frame1.SetNewPosition(0);
@@ -224,14 +274,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
-                        var frame0 = master.GetFrame(0);
+                        var frame0 = master.GetFrameAtPos(0);
                         
                         currentPos = closest;
                         
                         frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
-                        var frame2 = master.GetFrame(2);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
@@ -241,8 +291,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
-                        var frame0 = master.GetFrame(0);
-                        var frame1 = master.GetFrame(1);
+                        var frame0 = master.GetFrameAtPos(0);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
@@ -250,7 +300,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
@@ -266,15 +316,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 switch (GetCurrentPosition()) {
                 case 0: // See if it is closer to position 1 or 2
                     if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
                         frame1.SetNewPosition(0);
                     }
                     else if (closest == 2) {
-                        var frame1 = master.GetFrame(1);
-                        var frame2 = master.GetFrame(2);
+                        var frame1 = master.GetFrameAtPos(1);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
@@ -282,9 +332,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         frame2.SetNewPosition(1);
                     }
                     else if (closest == 3) {
-                        var frame1 = master.GetFrame(1);
-                        var frame2 = master.GetFrame(2);
-                        var frame3 = master.GetFrame(3);
+                        var frame1 = master.GetFrameAtPos(1);
+                        var frame2 = master.GetFrameAtPos(2);
+                        var frame3 = master.GetFrameAtPos(3);
                         
                         currentPos = closest;
                         
@@ -296,22 +346,22 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 1: // See if it is closer to position 0 or 2
                     if (closest == 0) {
-                        var frame0 = master.GetFrame(0);
+                        var frame0 = master.GetFrameAtPos(0);
                         
                         currentPos = closest;
                         
                         frame0.SetNewPosition(1);
                     }
                     else if (closest == 2) {
-                        var frame2 = master.GetFrame(2);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
                         frame2.SetNewPosition(1);
                     }
                     else if (closest == 3) {
-                        var frame2 = master.GetFrame(2);
-                        var frame3 = master.GetFrame(3);
+                        var frame2 = master.GetFrameAtPos(2);
+                        var frame3 = master.GetFrameAtPos(3);
                         
                         currentPos = closest;
                         
@@ -322,8 +372,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 case 2: // See if it is closer to position 0 or 1
                     if (closest == 0) {
-                        var frame0 = master.GetFrame(0);
-                        var frame1 = master.GetFrame(1);
+                        var frame0 = master.GetFrameAtPos(0);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
@@ -331,14 +381,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
+                        var frame1 = master.GetFrameAtPos(1);
                         
                         currentPos = closest;
                         
                         frame1.SetNewPosition(2);
                     }
                     else if (closest == 3) {
-                        var frame3 = master.GetFrame(3);
+                        var frame3 = master.GetFrameAtPos(3);
                         
                         currentPos = closest;
                         
@@ -347,15 +397,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     break;
                 case 3:
                     if (closest == 2) {
-                        var frame2 = master.GetFrame(2);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
                         frame2.SetNewPosition(3);
                     }
                     else if (closest == 1) {
-                        var frame1 = master.GetFrame(1);
-                        var frame2 = master.GetFrame(2);
+                        var frame1 = master.GetFrameAtPos(1);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
@@ -363,9 +413,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         frame2.SetNewPosition(3);
                     }
                     else if (closest == 0) {
-                        var frame0 = master.GetFrame(0);
-                        var frame1 = master.GetFrame(1);
-                        var frame2 = master.GetFrame(2);
+                        var frame0 = master.GetFrameAtPos(0);
+                        var frame1 = master.GetFrameAtPos(1);
+                        var frame2 = master.GetFrameAtPos(2);
                         
                         currentPos = closest;
                         
@@ -389,8 +439,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (text) text.text = data.infoText;
         }
 
-        public void CanBeInteracted(bool can) {
+        public void CanBeInteracted(bool can, bool isGamepadControlled) {
             canBeInteracted = can;
+            gamepadControlled = isGamepadControlled;
             if(!can)
                 tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }

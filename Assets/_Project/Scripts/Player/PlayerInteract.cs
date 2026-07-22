@@ -215,9 +215,10 @@ namespace _Project.Scripts.Player {
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
                 if (!potentialInteraction) return;
-                
-                var dir = (potentialInteraction.transform.position - transform.position).normalized;
-                var dist = Vector3.Distance(potentialInteraction.transform.position, transform.position);
+
+                var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
+                var dir = (transform.TransformPoint(boxCollider.center) - transform.position).normalized;
+                var dist = Vector3.Distance(transform.TransformPoint(boxCollider.center), transform.position);
                 
                 var hasHit = Physics.Raycast(transform.position, dir, out wallInBetween, dist, wallLayerMask);
                 if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider()) {
