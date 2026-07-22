@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.UI;
 using DG.Tweening;
 using TMPro;
 using Unity.Cinemachine;
@@ -110,7 +111,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void ChangeState(bool isHovering)
         {
             mouseOnFrame = isHovering;
-            text?.DOFade(isHovering ? 1 : 0, .5f);
+            HudManager.Instance.SetMemoryDialogue(data.infoText, GetClosetPosition());
         }
 
         public void OnDrag(PointerEventData eventData) {
