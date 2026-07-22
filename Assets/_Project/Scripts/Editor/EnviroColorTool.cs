@@ -19,6 +19,7 @@ public class EnviroColorTool : EditorWindow
         
         EditorGUILayout.LabelField("ActGlobalTransition");
         transition = EditorGUILayout.Slider(transition, 0, 1);
+        
         if (GUILayout.Button("View"))
         {
             Shader.SetGlobalFloat("_ActGlobalTransition", transition);
