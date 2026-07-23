@@ -134,25 +134,25 @@ public class EnviroColorTool : EditorWindow
     
     public class Profil : ScriptableObject
     {
-        internal int act = 1;
-        internal float transition = 0;
+        public  int act = 1;
+        public  float transition = 0;
 
-        internal Color act1_Color_A;
-        internal Vector2 act1_Color_A_Location = new Vector2(0f,0.5f);
-        internal Color act1_Color_B;
-        internal Vector2 act1_Color_B_Location = new Vector2(0.5f, 1f);
-        internal Color act1_Color_C;
+        public  Color act1_Color_A;
+        public  Vector2 act1_Color_A_Location = new Vector2(0f,0.5f);
+        public  Color act1_Color_B;
+        public  Vector2 act1_Color_B_Location = new Vector2(0.5f, 1f);
+        public  Color act1_Color_C;
 
-        internal Color act2_Color_A;
-        internal Vector2 act2_Color_A_Location = new Vector2(0f, 0.5f);
-        internal Color act2_Color_B;
-        internal Vector2 act2_Color_B_Location = new Vector2(0.5f, 1f);
-        internal Color act2_Color_C;
+        public  Color act2_Color_A;
+        public  Vector2 act2_Color_A_Location = new Vector2(0f, 0.5f);
+        public  Color act2_Color_B;
+        public  Vector2 act2_Color_B_Location = new Vector2(0.5f, 1f);
+        public  Color act2_Color_C;
 
-        internal Color act3_Color_A;
-        internal Vector2 act3_Color_A_Location = new Vector2(0f, 0.5f);
-        internal Color act3_Color_B;
-        internal Vector2 act3_Color_B_Location = new Vector2(0.5f, 1f);
-        internal Color act3_Color_C;
+        public  Color act3_Color_A;
+        public  Vector2 act3_Color_A_Location = new Vector2(0f, 0.5f);
+        public  Color act3_Color_B;
+        public  Vector2 act3_Color_B_Location = new Vector2(0.5f, 1f);
+        public  Color act3_Color_C;
     }
 }
