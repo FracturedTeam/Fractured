@@ -19,11 +19,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] MeshRenderer paintingMesh;
         
         private int currentPos;
-        private bool isUnlocked;
+        internal bool isUnlocked;
         private bool canBeInteracted;
         private bool gamepadControlled;
 
-        private bool isSelected;
+        internal bool isSelected;
         private bool isCorrectPosition;
 
         private float forwardTime;
@@ -89,6 +89,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             mouseOnFrame = false;
             collider.enabled = true;
         }
+        
 
         public void OnGamepadSelect(bool isSelected) {
             ChangeState(isSelected);
@@ -141,6 +142,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         {
             mouseOnFrame = isHovering;
             HudManager.Instance.SetMemoryDialogue(isHovering? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
+
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -425,12 +427,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isUnlocked = true;
             paintingMesh.material = data.material;
         }
+        
 
         public void CanBeInteracted(bool can, bool isGamepadControlled) {
             canBeInteracted = can;
             gamepadControlled = isGamepadControlled;
             if(!can)
-                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
+            {
+                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+                transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * -1) * forwardDir;
+            }
         }
     }
 }

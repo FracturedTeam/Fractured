@@ -49,6 +49,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if(IsMemoryCompleted) return;
             
@@ -72,7 +73,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            HudManager.Instance.SetActiveMemoryButton(IsMemoryCompleted);
+            HudManager.Instance.SetActiveMemoryButton(CheckMemoryUnlocked());
+            HudManager.Instance.SetMemoryDialogue("", new Vector3());
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
@@ -166,6 +168,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(frame.GetCurrentPosition() == index) return frame;
             }
             return null;
+        }
+
+        public bool CheckMemoryUnlocked()
+        {
+            foreach (var frame in frames)
+                if (!frame.isUnlocked)
+                    return false;
+            return true;
         }
         
         public BaseObject GetBaseObject() {

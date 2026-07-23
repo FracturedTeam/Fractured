@@ -202,14 +202,13 @@ namespace _Project.Scripts.UI
                 
         public void SetMemoryDialogue(string dialogue, Vector3 pos)
         {
-            memoryDialogue.DOFade(dialogue == "" ? 0 : 1, 0.5f);
+            memoryDialogue.DOFade(dialogue == "" ? 0 : 1, .5f);
             if(dialogue == "") return;
             memoryDialogue.text = dialogue;
              var newPos = PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(pos);
              newPos = new Vector3(newPos.x, newPos.y - 425);
              memoryDialogue.gameObject.transform.position = newPos;
         }
-        
         #region InteractionHUD
 
         private void ShowInteraction(InteractEvent e) {
@@ -293,7 +292,6 @@ namespace _Project.Scripts.UI
             // }
 
         #endregion
-        
     }
 
     public struct DocumentEvent : IEvent
