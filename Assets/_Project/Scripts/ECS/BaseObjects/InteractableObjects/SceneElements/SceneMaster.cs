@@ -114,6 +114,7 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().leaveMemorySound);
             GameInitializer.Instance.SetMemoryLoop(false);
             GameInitializer.Instance.AddShards(glassShards);
             

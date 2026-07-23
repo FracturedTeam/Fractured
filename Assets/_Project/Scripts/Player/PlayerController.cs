@@ -29,7 +29,7 @@ namespace _Project.Scripts.Player {
         // InputsBrain inputsBrain;
         StateMachine stateMachine;
 
-        [Header("Cinemachine Brain")]
+        [Header("Cine Machine Brain")]
         public CinemachineBrain cinemachineBrain;
         
         public PlayerMovementController movement { get; private set; }
