@@ -98,7 +98,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6966272346644689949}
+      addedObject: {fileID: 935936753565559188}
     - targetCorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4131446569446949371}
@@ -201,22 +201,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
   m_PrefabInstance: {fileID: 1681295400320899167}
   m_PrefabAsset: {fileID: 0}
---- !u!111 &6966272346644689949
-Animation:
+--- !u!95 &935936753565559188
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987284339417490702}
   m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 5f7a37ccb66b264428ff191efd8c438c, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 5f8f9e8c68be6314695a4e1b98f7ab4c, type: 2}
+  m_CullingMode: 0
   m_UpdateMode: 0
-  m_CullingType: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2343414471170709627 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4021804943160885284, guid: 23f36f659af6ddf42862a4b15ea24fd8, type: 3}
@@ -266,16 +272,16 @@ MonoBehaviour:
   eventOnActivation:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1321921556571232833}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 935936753565559188}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Open
           m_BoolArgument: 0
         m_CallState: 2
   eventOnDeactivation:
