@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 216978422781066849}
   - component: {fileID: 9006967089802969567}
   - component: {fileID: 4994839556853688716}
+  - component: {fileID: 9194239713120839868}
   m_Layer: 0
   m_Name: P_GameServices
   m_TagString: Untagged
@@ -56,6 +57,15 @@ MonoBehaviour:
   chapter2B: {fileID: 0}
   chapter3A: {fileID: 0}
   chapter3B: {fileID: 0}
+  chapter1Color: {r: 0.8584906, g: 0, b: 0, a: 1}
+  chapter2Color: {r: 0, g: 0.18856287, b: 1, a: 1}
+  chapter3Color: {r: 1, g: 0.7817019, b: 0, a: 1}
+  chapter1ShardAColor: {r: 1, g: 0.8000001, b: 0, a: 1}
+  chapter1ShardBColor: {r: 1, g: 0, b: 0.91147995, a: 1}
+  chapter2ShardAColor: {r: 0, g: 0, b: 0, a: 0}
+  chapter2ShardBColor: {r: 0, g: 0, b: 0, a: 0}
+  chapter3ShardAColor: {r: 0, g: 0, b: 0, a: 0}
+  chapter3ShardBColor: {r: 0, g: 0, b: 0, a: 0}
   debugSystemInitializer: {fileID: 9006967089802969567}
   initializeDebugger: 1
 --- !u!114 &9006967089802969567
@@ -87,3 +97,16 @@ MonoBehaviour:
   state: Soon on Steam
   largeImage: 
   largeText: Fractured
+--- !u!114 &9194239713120839868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950453177977461828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513574940e2185f4c8517ce0d0aacc1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Inputs.InputsBrain
+  AutoUnparentOnAwake: 1

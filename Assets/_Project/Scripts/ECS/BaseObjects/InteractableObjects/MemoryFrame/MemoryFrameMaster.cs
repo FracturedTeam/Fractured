@@ -1,13 +1,13 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
-using DG.Tweening;
+using _Project.Scripts.UI;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -15,7 +15,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
 
         [Header("Memory Frame")]
-        [SerializeField] private CinemachineCamera frameCamera;
+        [SerializeField] public CinemachineCamera frameCamera;
         [SerializeField] private Transform[] frameSlots;
         [SerializeField] private MemoryFrame[] frames;
         
@@ -25,6 +25,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public bool IsMemoryCompleted { get; private set; }
         
         public bool IsAFrameSelected { get; private set; }
+
+        private int selectedFrameIndex;
+        private MemoryFrame selectedFrame;
         
         public void Initialize() {
             if (!isInitialized) {
@@ -39,6 +42,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
                 
                 baseObject.SetInteract(true);
+
+                selectedFrame = GetFrameAtPos(selectedFrameIndex);
                 
                 isInitialized = true;
             }
@@ -56,6 +61,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void UseMemoryFrame() {
+            var gamepadControlled = !InputsBrain.Instance.IsKeyboardControl;
+            
             if(!IsMemoryCompleted) isUsingMemoryFrame = !isUsingMemoryFrame;
             else
             {
@@ -65,14 +72,55 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
+            HudManager.Instance.SetActiveMemoryButton(isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
 
             foreach (var frame in frames) {
-                frame.CanBeInteracted(isUsingMemoryFrame);
+                frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
             }
+
+            if (gamepadControlled) {
+                if (isUsingMemoryFrame) {
+                    InputsBrain.Instance.OnInventorySelect += SwitchSelectedFrame;
+                    InputsBrain.Instance.OnPlayerMove += MoveSelectedFrame;
+                    
+                    selectedFrame.OnGamepadSelect(true);
+                }
+                else {
+                    InputsBrain.Instance.OnInventorySelect -= SwitchSelectedFrame;
+                    InputsBrain.Instance.OnPlayerMove -= MoveSelectedFrame;
+                    
+                    selectedFrame.OnGamepadSelect(false);
+                }
+            }
+        }
+
+        private void SwitchSelectedFrame(InputAction.CallbackContext ctx) {
+            selectedFrame.OnGamepadSelect(false);
+            selectedFrameIndex = selectedFrame.GetCurrentPosition();
+            
+            if (ctx.ReadValue<float>() > 0) {
+                selectedFrameIndex++;
+                if (selectedFrameIndex >= frames.Length) {
+                    selectedFrameIndex = 0;
+                }
+            }
+            else {
+                selectedFrameIndex--;
+                if (selectedFrameIndex < 0) {
+                    selectedFrameIndex = frames.Length - 1;
+                }
+            }
+
+            selectedFrame = GetFrameAtPos(selectedFrameIndex);
+            selectedFrame.OnGamepadSelect(true);
+        }
+
+        private void MoveSelectedFrame(Vector2 delta) {
+            selectedFrame.OnGamepadMove(delta);
         }
 
         private void DoValidation() {
@@ -113,7 +161,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             return frameSlots;
         }
         
-        public MemoryFrame GetFrame(int index) {
+        public MemoryFrame GetFrameAtPos(int index) {
             foreach (var frame in frames) {
                 if(frame.GetCurrentPosition() == index) return frame;
             }

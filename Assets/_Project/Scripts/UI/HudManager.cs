@@ -9,6 +9,7 @@ using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,6 +54,8 @@ namespace _Project.Scripts.UI
         [SerializeField] private Image memoryImage;
         [SerializeField] private Image memoryLine;
         [SerializeField] private GlassDocument glassDocument;
+        [SerializeField] private TMP_Text memoryDialogue;
+        [SerializeField] private CanvasGroup confirmMemoryButton;
         
         private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<DocumentEvent> documentEventBinding;
@@ -87,6 +90,7 @@ namespace _Project.Scripts.UI
             interactionUI2.GetGroup.alpha = 0;
             specialUI.GetGroup.alpha = 0;
             glassDocument.gameObject.SetActive(false);
+            confirmMemoryButton.alpha = 0;
         }
 
         private void OnEnable() {
@@ -184,6 +188,26 @@ namespace _Project.Scripts.UI
             transitionMaterial.SetFloat("_Progression",  0);
         }
 
+        public void SetActiveMemoryButton(bool isOn)
+        {
+            confirmMemoryButton.DOFade(isOn ? 1 : 0, isOn ? 0.5f : 0);
+        }
+        
+        public void SetMemoryButton(float percent)
+        {
+            
+        }
+                
+        public void SetMemoryDialogue(string dialogue, int pos)
+        {
+            memoryDialogue.text = dialogue;
+            memoryDialogue.alignment = pos switch
+            {
+                0 => TextAlignmentOptions.Left,
+                1 => TextAlignmentOptions.Center,
+                _ => TextAlignmentOptions.Right
+            };
+        }
         #region InteractionHUD
 
         private void ShowInteraction(InteractEvent e) {

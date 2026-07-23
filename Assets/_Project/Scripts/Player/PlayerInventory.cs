@@ -2,14 +2,32 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.UI.Gameplay;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Player {
     public class PlayerInventory : MonoBehaviour {
         public List<Item> items;
         public List<Key> keys;
+
+        private int itemIndex;
+        
+        private void Start() {
+            EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
+        }
+
+        void OnEnable() {
+            InputsBrain.Instance.OnInventorySelect += InventorySelect;
+        }
+
+        void OnDisable() {
+            InputsBrain.Instance.OnInventorySelect -= InventorySelect;
+        }
+        
+        #region Key
 
         public void OnKeyPickUp(CollectableAttribute key) {
             var newKey = new Key{
@@ -20,7 +38,7 @@ namespace _Project.Scripts.Player {
             };
             keys.Add(newKey);
             
-            EventBus<AddKeyEvent>.Raise(new AddKeyEvent{key = newKey});
+            EventBus<ProcessKeyEvent>.Raise(new ProcessKeyEvent{key = newKey, isAddingKey = true});
         }
 
         public void OnKeyUsed(int keyID) {
@@ -39,7 +57,7 @@ namespace _Project.Scripts.Player {
         private bool IsRequestedKey(int index, int keyID) {
             if (keys[index].ID == keyID) {
                 if (keys[index].oneTimeUse) {
-                    EventBus<RemoveKeyEvent>.Raise(new RemoveKeyEvent{key = keys[index]});
+                    EventBus<ProcessKeyEvent>.Raise(new ProcessKeyEvent(){key = keys[index], isAddingKey = false});
                     keys[index].collect.SetHasBeenUse();
                     keys.RemoveAt(index);
                 }
@@ -49,8 +67,39 @@ namespace _Project.Scripts.Player {
             
             return false;
         }
+
+        #endregion
+
+        #region Item
+
+        private void InventorySelect(InputAction.CallbackContext ctx) {
+            UpdateSelectedItem(ctx.ReadValue<float>());
+        }
+
+        private void UpdateSelectedItem(float input) {
+            if(items.Count == 0) return;
+            
+            if (items.Count <= 1) {
+                itemIndex = 0;
+                EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
+                return;
+            }
+            
+            if (input > 0) { // Up
+                itemIndex++;
+                if(itemIndex >= items.Count) itemIndex = 0;
+            }
+            else if (input < 0) { // Down
+                itemIndex--;
+                if(itemIndex < 0) itemIndex = items.Count - 1;
+            }
+            
+            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
+        }
         
         public void OnItemPickedUp(CollectableAttribute item) {
+            if(items.Count == 0) itemIndex = 0;
+            
             var newItem = new Item {
                 itemName = item.GetBaseObject().name,
                 Icon = item.itemSprite,
@@ -58,19 +107,26 @@ namespace _Project.Scripts.Player {
             };
             items.Add(newItem);
             
-            EventBus<AddItemEvent>.Raise(new AddItemEvent{item = newItem});
+            EventBus<ProcessItemEvent>.Raise(new ProcessItemEvent{item = newItem, isAddingItem = true});
+            EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
+            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
         }
 
         public void OnItemDropped(BaseObject collectable) {
             for (var i = 0; i < items.Capacity; i++) {
                 if (items[i].worldItem == collectable) {
-                    EventBus<RemoveItemEvent>.Raise(new RemoveItemEvent{item = items[i]});
+                    EventBus<ProcessItemEvent>.Raise(new ProcessItemEvent{item = items[i], isAddingItem = false});
                     items.RemoveAt(i);
+                    
+                    EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
+                    if (items.Count > 1) UpdateSelectedItem(-1);
                     break;
                 }
             }
-            
         }
+
+        #endregion
+        
     }
     
     [Serializable]

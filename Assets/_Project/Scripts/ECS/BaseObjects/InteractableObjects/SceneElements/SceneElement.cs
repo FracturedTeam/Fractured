@@ -11,7 +11,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             get => isValidated;
             private set {
                 isValidated = value;
-                masterValidation.CheckForValidation();
+                if(masterValidation)
+                    masterValidation.CheckForValidation();
+                else 
+                    Debug.LogError($"{gameObject.name} does not have a scene master register");
             }
         }
 

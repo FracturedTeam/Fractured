@@ -20,8 +20,6 @@ namespace _Project.Scripts.Player {
     }
     
     public class PlayerInteract : MonoBehaviour {
-        private InputsBrain inputsBrain;
-
         [SerializeField] public Transform objectPos;
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
@@ -75,9 +73,6 @@ namespace _Project.Scripts.Player {
         #region Initialization
 
         private void Awake() {
-            if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
-
             if(TryGetComponent(out PlayerController _player)) player = _player;
             else Debug.LogWarning("[PlayerController] No PlayerController found");
             
@@ -91,12 +86,13 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnEnable() {
-            inputsBrain.OnInteract += Interact;
-            inputsBrain.OnSecondaryInteract += SecondaryInteract;
+            InputsBrain.Instance.OnInteract += Interact;
+            InputsBrain.Instance.OnSecondaryInteract += SecondaryInteract;
         }
 
         private void OnDisable() {
-            inputsBrain.OnInteract -= Interact;
+            InputsBrain.Instance.OnInteract -= Interact;
+            InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
         }
 
         #endregion
@@ -114,7 +110,7 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
-                potentialInteraction = null;
+                // potentialInteraction = null;
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
@@ -153,12 +149,7 @@ namespace _Project.Scripts.Player {
         }
 
         private void DropObject() {
-            Debug.Log($"[PlayerInteract] Dropping {currentInteraction?.name} on {potentialInteraction?.name}");
-            
-            // if(potentialInteraction != null)
-            //     currentInteraction?.OnInteract(ObjectInteraction.Drop, potentialInteraction.GetInteract);
-            // else
-                currentInteraction?.OnInteract(ObjectInteraction.Drop);
+            currentInteraction?.OnInteract(ObjectInteraction.Drop);
         }
         #endregion
 
@@ -173,14 +164,16 @@ namespace _Project.Scripts.Player {
             if (validationInputHold) {
                 validationInputTime += Time.deltaTime;
 
-                if (validationInputTime >= 1 && currentInteraction) {
-                    if (currentInteraction.GetObjectType is ObjectType.MemoryFrame) {
-                        currentInteraction.OnInteract(ObjectInteraction.Validate);
+                if (validationInputTime >= 1 && potentialInteraction) {
+                    if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame) {
+                        potentialInteraction.OnInteract(ObjectInteraction.Validate);
                         validationInputHold = false;
                         validationInputTime = 0;
                     }
                 }
             }
+            
+            if (isFocus) return;
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -224,12 +217,13 @@ namespace _Project.Scripts.Player {
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
                 if (!potentialInteraction) return;
-                
-                var dir = (potentialInteraction.transform.position - transform.position).normalized;
-                var dist = Vector3.Distance(potentialInteraction.transform.position, transform.position);
+
+                var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
+                var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
+                var dist = Vector3.Distance(transform.TransformPoint(boxCollider.center), transform.position);
                 
                 var hasHit = Physics.Raycast(transform.position, dir, out wallInBetween, dist, wallLayerMask);
-                if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider()) {
+                if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider() as BoxCollider) {
                     potentialInteraction = null;
                 }
                 return;
@@ -325,8 +319,6 @@ namespace _Project.Scripts.Player {
         public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
             currentInteraction = interaction;
-            
-            Debug.Log($"[PlayerInteract] Grabbing {potentialInteraction.name}");
         }
         
         public void SetDropObject() {
@@ -353,7 +345,7 @@ namespace _Project.Scripts.Player {
             if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out CollectableAttribute collectable))
-                return CanInteract && /*!HasObject && currentInteraction == null &&*/ collectable.CanBeGrab();
+                return CanInteract && collectable.CanBeGrab();
             
             return false;
         }
@@ -365,7 +357,7 @@ namespace _Project.Scripts.Player {
         }
 
         private bool CanContextualInteract() {
-            return CanInteract && potentialInteraction.GetObjectType is not ObjectType.None;
+            return CanInteract && potentialInteraction && potentialInteraction.GetObjectType is not ObjectType.None;
         }
 
         public bool IsCarrying() {
@@ -396,7 +388,7 @@ namespace _Project.Scripts.Player {
             this.isFocus = isFocus;
             
             if (isFocus)
-                currentInteraction = obj;
+                potentialInteraction = obj;
         }
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {

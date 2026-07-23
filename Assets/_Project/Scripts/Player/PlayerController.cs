@@ -1,6 +1,5 @@
 using System;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
@@ -11,7 +10,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player {
     
-    [RequireComponent(typeof(InputsBrain), typeof(PlayerMovementController))]
+    [RequireComponent(typeof(PlayerMovementController))]
     public class PlayerController : Singleton<PlayerController>{
         [SerializeField, HideInInspector] private PlayerData data;
         
@@ -174,6 +173,7 @@ namespace _Project.Scripts.Player {
         public void FixedUpdateMovement() => movement.HandleFixedUpdate();
         public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
         public void FreezeController(bool doFreeze) => movement.SetKinematic(doFreeze);
+        public bool IsFrozen() => movement.IsPlayerFrozen();
         public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
         public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
         public Vector3 GetForwardDir() => movement.mesh.forward;

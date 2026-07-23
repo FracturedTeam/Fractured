@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.Inputs;
+using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +12,9 @@ namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
         public List<Glass> shards {get; private set;}
+        private Glass AShard;
+        private Glass BShard;
+        
         private Glass currentGlass;
         private Glass onTopGlass;
         
@@ -24,6 +29,9 @@ namespace _Project.Scripts.GameServices.Services {
             shards = new List<Glass>();
             PlayerInEditableArea = false;
             UpdateInteractableObjects();
+
+            InputsBrain.Instance.OnShardA += GrabShardA;
+            InputsBrain.Instance.OnShardB += GrabShardB;
         }
 
         private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
@@ -48,7 +56,7 @@ namespace _Project.Scripts.GameServices.Services {
             interactables.AddRange(_interactable);
             shards.AddRange(_shards);
             
-            Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
+            //Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
             UpdateInteractableObjects();
         }
         
@@ -73,7 +81,7 @@ namespace _Project.Scripts.GameServices.Services {
         ///Handles player input on the shards & grab priority
         private void HandleShardMovement()
         {
-            if(shards.Count>0 && onTopGlass==null)
+            if(shards.Count > 0 && onTopGlass ==null)
                 onTopGlass = shards.Last();
             
             //Input is gather here and movement is handle here - So if the shard is not reference, it can't be moved or activate
@@ -111,6 +119,34 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
+        private void GrabShardA(InputAction.CallbackContext ctx) {
+            if (ctx.performed && currentGlass != AShard && AShard) {
+                if(BShard)
+                    BShard.ChangeHoldingState(false);
+                AShard.ChangeHoldingState(true);
+                currentGlass = AShard;
+            }
+
+            if (ctx.canceled && AShard) {
+                AShard.ChangeHoldingState(false);
+                currentGlass = null;
+            }
+        }
+
+        private void GrabShardB(InputAction.CallbackContext ctx) {
+            if (ctx.performed && currentGlass != BShard && BShard) {
+                BShard.ChangeHoldingState(true);
+                if(AShard)
+                    AShard.ChangeHoldingState(false);
+                currentGlass = BShard;
+            }
+
+            if (ctx.canceled && BShard) {
+                BShard.ChangeHoldingState(false);
+                currentGlass = null;
+            }
+        }
+        
         public void RepopulateBaseObjet(BaseObject[] obj) {
             interactables.Clear();
             interactables.AddRange(obj);
@@ -118,24 +154,16 @@ namespace _Project.Scripts.GameServices.Services {
             UpdateInteractableObjects();
         }
         
-        public void AddShards(Glass[] newShards) {
-            shards.AddRange(newShards);
-        }
-        
-        public void SetEditableArea(bool inArea) {
-            PlayerInEditableArea = inArea;
-        }
-        
-        public void SetRedEditableArea(bool inArea) {
-            PlayerInRedEditableArea = inArea;
-        }
-
-        public void SetBlueEditableArea(bool inArea) {
-            PlayerInBlueEditableArea = inArea;
+        public void AddShards(Glass newShards, bool isA) {
+            shards.Add(newShards);
+            if(isA) AShard = newShards;
+            else BShard = newShards;
         }
 
         public void ClearAll() {
             shards.Clear();
+            AShard = null;
+            BShard = null;
             shardsInteractable.Clear();
             interactables.Clear();
         }
@@ -143,6 +171,8 @@ namespace _Project.Scripts.GameServices.Services {
         public void Dispose() {
             shardsInteractable.Clear();
             shards.Clear();
+            InputsBrain.Instance.OnShardA -= GrabShardA;
+            InputsBrain.Instance.OnShardB -= GrabShardB;
         }
         
         public int ShardCount => shards.Count;
