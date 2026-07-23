@@ -94,7 +94,7 @@ namespace _Project.Scripts.GameServices.Services {
                         continue;
                     
                     currentGlass = shard;
-                    currentGlass.ChangeHoldingState(true, false);
+                    currentGlass.ChangeHoldingState(true);
 
                     if (!shards.Contains(currentGlass))
                         return;
@@ -114,7 +114,7 @@ namespace _Project.Scripts.GameServices.Services {
                 }
             }
             else if (Mouse.current.leftButton.wasReleasedThisFrame && currentGlass) {
-                currentGlass.ChangeHoldingState(false, false);
+                currentGlass.ChangeHoldingState(false);
                 currentGlass = null;
             }
         }
@@ -122,27 +122,27 @@ namespace _Project.Scripts.GameServices.Services {
         private void GrabShardA(InputAction.CallbackContext ctx) {
             if (ctx.performed && currentGlass != AShard && AShard) {
                 if(BShard)
-                    BShard.ChangeHoldingState(false, true);
-                AShard.ChangeHoldingState(true, true);
+                    BShard.ChangeHoldingState(false);
+                AShard.ChangeHoldingState(true);
                 currentGlass = AShard;
             }
 
             if (ctx.canceled && AShard) {
-                AShard.ChangeHoldingState(false, true);
+                AShard.ChangeHoldingState(false);
                 currentGlass = null;
             }
         }
 
         private void GrabShardB(InputAction.CallbackContext ctx) {
             if (ctx.performed && currentGlass != BShard && BShard) {
-                BShard.ChangeHoldingState(true, true);
+                BShard.ChangeHoldingState(true);
                 if(AShard)
-                    AShard.ChangeHoldingState(false, true);
+                    AShard.ChangeHoldingState(false);
                 currentGlass = BShard;
             }
 
             if (ctx.canceled && BShard) {
-                BShard.ChangeHoldingState(false, true);
+                BShard.ChangeHoldingState(false);
                 currentGlass = null;
             }
         }
@@ -159,18 +159,6 @@ namespace _Project.Scripts.GameServices.Services {
             if(isA) AShard = newShards;
             else BShard = newShards;
         }
-        
-        // public void SetEditableArea(bool inArea) {
-        //     PlayerInEditableArea = inArea;
-        // }
-        //
-        // public void SetRedEditableArea(bool inArea) {
-        //     PlayerInRedEditableArea = inArea;
-        // }
-        //
-        // public void SetBlueEditableArea(bool inArea) {
-        //     PlayerInBlueEditableArea = inArea;
-        // }
 
         public void ClearAll() {
             shards.Clear();
