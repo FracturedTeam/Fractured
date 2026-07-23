@@ -137,25 +137,18 @@ namespace _Project.Scripts.ECS
             Set3DShard();
         }
 
-        public void SetUp3dShard(bool isVisible = true)
-        {
+        public void SetUp3dShard(bool isVisible = true) {
             shard.gameObject.SetActive(isVisible);
         }
 
         public void OnDrag(PointerEventData eventData) {
-            if(!canInteract) return;
-            if(!isHeld) return;
-            if(MemoryManager.Instance.isInMemory) return;
-
-            // if (!GameInitializer.Instance.InEditableArea() && !canEditAnywhere) {
-            //     if(color2D is ColorEnum.Blue && !GameInitializer.Instance.InBlueEditableArea()) return;
-            //     if(color2D is ColorEnum.Red && !GameInitializer.Instance.InRedEditableArea()) return;
-            // }
-
             MoveGlass(eventData.delta);
         }
         
         private void MoveGlass(Vector2 delta) {
+            if(!canInteract && !isHeld) return;
+            if(PlayerController.Instance.interact.IsInMemory || PlayerController.Instance.interact.IsFocus) return;
+            
             if (!InputsBrain.Instance.IsKeyboardControl) {
                 delta *= gamepadSensitivity;
                 if(!PlayerController.Instance.IsFrozen()) PlayerController.Instance.FreezeController(true);
@@ -165,7 +158,8 @@ namespace _Project.Scripts.ECS
             
             transform.position = new Vector3(
                 Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, Screen.width - shardSprite.rectTransform.sizeDelta.x/2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, Screen.height  - shardSprite.rectTransform.sizeDelta.y/2));
+                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, Screen.height  - shardSprite.rectTransform.sizeDelta.y/2)
+                );
 
             Set3DShard();
         }

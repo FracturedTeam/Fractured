@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryFrame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler {
         private MemoryFrameMaster master;
-        private Collider collider;
+        private Collider col;
         
         [Header("Painting Settings")]
         [SerializeField]
@@ -41,7 +41,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             this.master = master;
             if (text) text.text = "";
             
-            if(TryGetComponent(out Collider col)) collider = col;
+            if(TryGetComponent(out Collider col)) this.col = col;
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
@@ -82,7 +82,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isSelected = true;
             master.SetFrameSelected(true);
-            collider.enabled = false;
+            col.enabled = false;
         }
 
         public void OnPointerUp(PointerEventData eventData) {
@@ -91,7 +91,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isSelected = false;
             master.SetFrameSelected(false);
             mouseOnFrame = false;
-            collider.enabled = true;
+            col.enabled = true;
         }
 
         public void OnGamepadSelect(bool isSelected) {
@@ -424,7 +424,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         public int GetCurrentPosition() => currentPos;
-        public void SetCurrentPosition(int newPos) => currentPos = newPos;
+        public void SetCurrentPosition(int newPos) {
+            currentPos = newPos;
+            transform.position = master.GetCurrentSlotPosition(currentPos);
+        }
 
         public void Unlock() {
             isUnlocked = true;

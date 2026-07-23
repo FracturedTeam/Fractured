@@ -8,7 +8,7 @@ namespace _Project.Scripts.Player.Camera {
     public class CameraControlTrigger : MonoBehaviour
     {
         public CustomInspectorObjects customInspectorObjects;
-        private Collider collider;
+        private Collider col;
         private bool isPlayerIn;
 
         private Collider[] playerCollider = new Collider[1];
@@ -19,11 +19,11 @@ namespace _Project.Scripts.Player.Camera {
         private readonly CountdownTimer countdownTimer = new (0.1f);
         
         private void Start() {
-            collider = GetComponent<Collider>();
+            col = GetComponent<Collider>();
             extentSize = new Vector3(
-                collider.bounds.size.x * transform.lossyScale.x, 
-                collider.bounds.size.y * transform.lossyScale.y, 
-                collider.bounds.size.z * transform.lossyScale.z
+                col.bounds.size.x * transform.lossyScale.x, 
+                col.bounds.size.y * transform.lossyScale.y, 
+                col.bounds.size.z * transform.lossyScale.z
             );
             
             mask =  LayerMask.GetMask("Player");
