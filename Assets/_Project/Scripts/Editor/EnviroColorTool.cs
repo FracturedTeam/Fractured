@@ -39,11 +39,11 @@ public class EnviroColorTool : EditorWindow
     
     void OnGUI()
     {
-        Profil profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Scripts/Editor/ColorProfil.asset");
+        Profil profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
         if (profil == null)
         {
             profil = ScriptableObject.CreateInstance<Profil>();
-            AssetDatabase.CreateAsset(profil, "Assets/_Project/Scripts/Editor/ColorProfil.asset");
+            AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
         }
         
         EditorGUILayout.LabelField("Act");
