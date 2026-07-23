@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEngine.UIElements;
 
 public class EnviroColorTool : EditorWindow
@@ -125,9 +126,9 @@ public class EnviroColorTool : EditorWindow
             Shader.SetGlobalVector("_ACT3_Color_B_Location", profil.act3_Color_B_Location);
             Shader.SetGlobalColor("_ACT3_Color_C", profil.act3_Color_C);
 
-            AssetDatabase.SaveAssets();
             EditorUtility.SetDirty(profil);
-            AssetDatabase.SaveAssetIfDirty(profil);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
     
