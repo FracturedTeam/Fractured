@@ -44,6 +44,7 @@ public class EnviroColorTool : EditorWindow
         {
             profil = ScriptableObject.CreateInstance<Profil>();
             AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
+            Debug.Log("new");
         }
         
         EditorGUILayout.LabelField("Act");
