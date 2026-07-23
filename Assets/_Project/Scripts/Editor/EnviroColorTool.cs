@@ -6,7 +6,7 @@ public class EnviroColorTool : EditorWindow
 {
     private static Profil profil;
     
-    static int clones = 1;
+    static int act = 1;
     static float transition = 0;
 
     static Color act1_Color_A;
@@ -48,7 +48,7 @@ public class EnviroColorTool : EditorWindow
         }
         
         EditorGUILayout.LabelField("Act");
-        profil.clones = EditorGUILayout.IntSlider(profil.clones,1,3); 
+        profil.act = EditorGUILayout.IntSlider(profil.act,1,3); 
         
         EditorGUILayout.LabelField("ActGlobalTransition");
         profil.transition = EditorGUILayout.Slider(profil.transition, 0, 1);
@@ -105,7 +105,7 @@ public class EnviroColorTool : EditorWindow
         if (GUILayout.Button("View"))
         {
             Shader.SetGlobalFloat("_ActGlobalTransition", profil.transition);
-            Shader.SetGlobalFloat("_CurrentAct", profil.clones);
+            Shader.SetGlobalFloat("_CurrentAct", profil.act);
 
             Shader.SetGlobalColor("_ACT1_Color_A", profil.act1_Color_A);
             Shader.SetGlobalVector("_ACT1_Color_A_Location", profil.act1_Color_A_Location);
@@ -125,13 +125,15 @@ public class EnviroColorTool : EditorWindow
             Shader.SetGlobalVector("_ACT3_Color_B_Location", profil.act3_Color_B_Location);
             Shader.SetGlobalColor("_ACT3_Color_C", profil.act3_Color_C);
 
+            AssetDatabase.SaveAssets();
             EditorUtility.SetDirty(profil);
+            AssetDatabase.SaveAssetIfDirty(profil);
         }
     }
     
     public class Profil : ScriptableObject
     {
-        internal int clones = 1;
+        internal int act = 1;
         internal float transition = 0;
 
         internal Color act1_Color_A;
