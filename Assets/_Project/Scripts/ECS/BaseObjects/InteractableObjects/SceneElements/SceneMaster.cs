@@ -35,7 +35,6 @@ namespace _Project.Scripts.ECS {
         
         private bool hasSceneBeenValidated;
         private bool isSceneValid;
-        private bool isViewingMemory;
         
         public bool IsSceneValidated {
             get => isSceneValid;
@@ -88,7 +87,6 @@ namespace _Project.Scripts.ECS {
             // Timer start
             validationDelay.Start();
             
-            isViewingMemory = true;
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().enterMemorySound);
             
             PlayerController.Instance.FreezeController(true);
@@ -117,8 +115,6 @@ namespace _Project.Scripts.ECS {
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().leaveMemorySound);
             GameInitializer.Instance.SetMemoryLoop(false);
             GameInitializer.Instance.AddShards(glassShards);
-            
-            isViewingMemory = false;
             
             InputsBrain.Instance.OnInteract -= LeaveMemory;
         }
