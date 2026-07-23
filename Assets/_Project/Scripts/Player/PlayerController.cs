@@ -78,7 +78,7 @@ namespace _Project.Scripts.Player {
             var locomotionState = new PlayerLocomotionState(this, animator);
             var fallState = new PlayerFallState(this, animator);
             var carryState = new PlayerCarryState(this, animator);
-            //var memoryState = new PlayerMemoryState(this, animator);
+            var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
             var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
@@ -88,7 +88,7 @@ namespace _Project.Scripts.Player {
             var dropObject = new DropObjectState(this, animator, dropObjectClip);
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
-            //var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
+            var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
             
             //Define all states transitions
             //Locomotion State
@@ -110,10 +110,10 @@ namespace _Project.Scripts.Player {
             At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));*/
             
             //Memory State
-            // At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            // At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory()));
-            // At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory()));
-            // At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
+            At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory));
+            At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory));
+            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory));
+            At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
             At(locomotionState, doorState, new FuncPredicate(() => interact.triggerDoor));
@@ -183,6 +183,7 @@ namespace _Project.Scripts.Player {
         #region Interaction Helper/Setter
         public void UpdateInteraction() => interact.HandleUpdate(movement.PreviousMoveDir);
         public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
+        public void SetInMemory(bool inMemory) => interact.SetInMemory(inMemory);
         public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
         public void SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
         public void SetShardTriggered(bool triggeredShard) => interact.triggerShard = triggeredShard;

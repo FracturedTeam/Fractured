@@ -50,7 +50,8 @@ namespace _Project.Scripts.Player {
         private LayerMask wallLayerMask;
         
         private bool isFocus = false;
-
+        public bool IsInMemory { get; private set; }
+        
         private bool validationInputHold;
         private float validationInputTime;
         
@@ -390,6 +391,8 @@ namespace _Project.Scripts.Player {
             if (isFocus)
                 potentialInteraction = obj;
         }
+        
+        public void SetInMemory(bool inMemory) => IsInMemory = inMemory;
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);

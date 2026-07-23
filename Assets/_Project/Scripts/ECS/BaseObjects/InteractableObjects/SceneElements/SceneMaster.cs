@@ -3,9 +3,14 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
+using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.ECS {
     public class SceneMaster : MonoBehaviour {
@@ -22,9 +27,16 @@ namespace _Project.Scripts.ECS {
         [SerializeField] public Glass[] glassShards;
         [SerializeField] private GlassText worldText;
 
-        private bool hasSceneBeenValidated;
+        [Header("Animation Elements")]
+        [SerializeField] private Sprite memorySprite;
+        [SerializeField] private DialogueScriptableObject dialogue;
         
+        private readonly CountdownTimer validationDelay = new(1.25f);
+        
+        private bool hasSceneBeenValidated;
         private bool isSceneValid;
+        private bool isViewingMemory;
+        
         public bool IsSceneValidated {
             get => isSceneValid;
             private set {
@@ -37,6 +49,11 @@ namespace _Project.Scripts.ECS {
 
         private void Start() {
             SetMasterToSceneElement();
+            validationDelay.OnTimerStop += DisplayMemoryOnDelay;
+        }
+
+        private void OnDisable() {
+            validationDelay.OnTimerStop -= DisplayMemoryOnDelay;
         }
 
         private void Update() {
@@ -67,11 +84,44 @@ namespace _Project.Scripts.ECS {
             
             frame.Unlock();
             worldText?.Appear();
-            GameInitializer.Instance.AddShards(glassShards);
             
-            Debug.Log("Scene has been validated");
+            // Timer start
+            validationDelay.Start();
+            
+            isViewingMemory = true;
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().enterMemorySound);
+            
+            PlayerController.Instance.FreezeController(true);
+            PlayerController.Instance.SetInteraction(false);
+            PlayerController.Instance.SetInMemory(true);
         }
 
+        private void DisplayMemoryOnDelay() {
+            GameInitializer.Instance.SetMemoryLoop(true);
+            MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
+            
+            HudManager.Instance.SetText(dialogue);
+            HudManager.InteractionSetPosition(new Vector3(Screen.width -100, Screen.height -100, 0));
+
+            InputsBrain.Instance.OnInteract += LeaveMemory;
+        }
+
+        private void LeaveMemory(InputAction.CallbackContext ctx) {
+            PlayerController.Instance.FreezeController(false);
+            PlayerController.Instance.SetInteraction(true);
+            PlayerController.Instance.SetInMemory(false);
+            
+            MemoryManager.Instance.SetMemory(false);
+            HudManager.Instance.ResetText();
+            
+            GameInitializer.Instance.SetMemoryLoop(false);
+            GameInitializer.Instance.AddShards(glassShards);
+            
+            isViewingMemory = false;
+            
+            InputsBrain.Instance.OnInteract -= LeaveMemory;
+        }
+        
         public void LoadCompleteScene() {
             ValidSceneElement();
             

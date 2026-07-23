@@ -15,7 +15,6 @@ namespace _Project.Scripts.GameServices.Services {
         public string SaveName;
         public string CurrentScene;
         public PlayerData PlayerData;
-        public SavedMemory memory;
         public List<SceneData> SceneDatas;
     }
     
@@ -84,7 +83,6 @@ namespace _Project.Scripts.GameServices.Services {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
                 SceneDatas = new List<SceneData>(),
-                memory = new SavedMemory ()
             };
         }
         
@@ -121,7 +119,6 @@ namespace _Project.Scripts.GameServices.Services {
                 // Bind des data
                 if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time in the save file
                     GameSceneSettings.Instance.BindData(true);
-                if(MemoryManager.HasInstance) MemoryManager.Instance.SaveData(GameData.memory);
                 PlayerController.Instance.SaveData(GameData.PlayerData); // Lui donner accès au shard Service (Pourquoi ? j'ai oublié)
                 
                 //Save Interactable
@@ -202,9 +199,6 @@ namespace _Project.Scripts.GameServices.Services {
             
             GameSceneSettings.Instance.SetSceneData(GameData.SceneDatas[index]);
             GameSceneSettings.Instance.BindData(false);
-            
-            if(MemoryManager.HasInstance)
-                MemoryManager.Instance.Load(GameData.memory);
             
             foreach (var interactable in shardService.interactables) {
                 interactable.Load();

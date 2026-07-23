@@ -424,7 +424,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         public int GetCurrentPosition() => currentPos;
-        public void SetCurrentPosition(int newPos) => currentPos = newPos;
+        public void SetCurrentPosition(int newPos) {
+            currentPos = newPos;
+            transform.position = master.GetCurrentSlotPosition(currentPos);
+        }
 
         public void Unlock() {
             isUnlocked = true;
