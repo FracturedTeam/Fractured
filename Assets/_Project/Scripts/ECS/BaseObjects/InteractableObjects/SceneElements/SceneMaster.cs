@@ -85,7 +85,8 @@ namespace _Project.Scripts.ECS {
             worldText?.Appear();
             
             // Timer start
-            validationDelay.Start();
+            if(!validationDelay.IsRunning)
+                validationDelay.Start();
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().enterMemorySound);
             
@@ -105,6 +106,10 @@ namespace _Project.Scripts.ECS {
         }
 
         private void LeaveMemory(InputAction.CallbackContext ctx) {
+            if(!ctx.performed) return;
+            
+            InputsBrain.Instance.OnInteract -= LeaveMemory;
+            
             PlayerController.Instance.FreezeController(false);
             PlayerController.Instance.SetInteraction(true);
             PlayerController.Instance.SetInMemory(false);
@@ -116,7 +121,6 @@ namespace _Project.Scripts.ECS {
             GameInitializer.Instance.SetMemoryLoop(false);
             GameInitializer.Instance.AddShards(glassShards);
             
-            InputsBrain.Instance.OnInteract -= LeaveMemory;
         }
         
         public void LoadCompleteScene() {
