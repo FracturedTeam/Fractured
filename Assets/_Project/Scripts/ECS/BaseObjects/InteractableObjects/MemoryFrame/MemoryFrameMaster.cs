@@ -28,6 +28,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private int selectedFrameIndex;
         private MemoryFrame selectedFrame;
+        private MemoryHUD hud;
         
         public void Initialize() {
             if (!isInitialized) {
@@ -44,6 +45,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
 
                 selectedFrame = GetFrameAtPos(selectedFrameIndex);
+
+                hud = HudManager.Instance.memory;
                 
                 isInitialized = true;
             }
@@ -73,8 +76,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            HudManager.Instance.SetActiveMemoryButton(CheckMemoryUnlocked());
-            HudManager.Instance.SetMemoryDialogue("", new Vector3());
+            hud.SetActiveMemoryButton(CheckMemoryUnlocked());
+            hud.SetMemoryDialogue("", new Vector3());
             HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;

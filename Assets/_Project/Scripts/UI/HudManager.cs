@@ -19,19 +19,14 @@ namespace _Project.Scripts.UI
     {
         [Header("HUD")]
         [field:SerializeField] public Transform glassHolder {get; private set;}
-
         public InteractionHUD interact;
+        public MemoryHUD memory;
         
-        [Header("Memory")]
-        [SerializeField] private CanvasGroup memoryHUD;
-        [SerializeField] private Image memoryImage;
-        [SerializeField] private Image memoryLine;
+        [Header("Glass")]
         [SerializeField] private GlassDocument glassDocument;
-        [SerializeField] private TMP_Text memoryDialogue;
-        [SerializeField] private CanvasGroup confirmMemoryButton;
+      
         
         private EventBinding<DocumentEvent> documentEventBinding;
-       // private EventBinding<MemoryEvent> memoryEventBinding;
         private Tweener memoryTween;
         
         [Header("Dialogue")]
@@ -58,24 +53,19 @@ namespace _Project.Scripts.UI
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
             glassDocument.gameObject.SetActive(false);
-            confirmMemoryButton.alpha = 0;
-            SetActiveMemoryButton(false);
-            memoryDialogue.text = "";
+            
             interact = GetComponent<InteractionHUD>();
+            memory = GetComponent<MemoryHUD>();
         }
 
         private void OnEnable() {
             documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
             EventBus<DocumentEvent>.Register(documentEventBinding);
-            //memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
-            //EventBus<MemoryEvent>.Register(memoryEventBinding);
         }
 
         private void OnDisable() {
             EventBus<DocumentEvent>.Deregister(documentEventBinding);
-            //EventBus<MemoryEvent>.Deregister(memoryEventBinding);
             memoryTween?.Kill();
-            
             textTimer.OnTimerStop  -= ResetText;
         }
 
@@ -153,39 +143,6 @@ namespace _Project.Scripts.UI
             
             transitionMaterial.SetFloat("_Progression",  0);
         }
-
-        public void SetActiveMemoryButton(bool isOn)
-        {
-            confirmMemoryButton.DOFade(isOn ? 1 : 0, isOn ? 0.5f : 0);
-        }
-        
-        public void SetMemoryButton(float percent)
-        {
-            
-        }
-                
-        public void SetMemoryDialogue(string dialogue, Vector3 pos)
-        {
-            memoryDialogue.DOFade(dialogue == "" ? 0 : 1, .5f);
-            if(dialogue == "") return;
-            memoryDialogue.text = dialogue;
-             var newPos = PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(pos);
-             newPos = new Vector3(newPos.x, newPos.y - 425);
-             memoryDialogue.gameObject.transform.position = newPos;
-        }
-        #region InteractionHUD
-
-
-            // private void ShowMemory(MemoryEvent e) {
-            //     memoryTween.Kill();
-            //     
-            //     memoryImage.sprite = e.memory;
-            //     memoryImage.sprite = e.memoryLine;
-            //     
-            //     memoryTween = memoryHUD.DOFade(e.showMemory ? 1f : 0f, 0.25f);
-            // }
-
-        #endregion
     }
 
     public struct DocumentEvent : IEvent
