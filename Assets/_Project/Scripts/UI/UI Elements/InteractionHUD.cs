@@ -15,7 +15,6 @@ public class InteractionHUD : MonoBehaviour
     [Header("Interaction Texts")] 
     [SerializeField] private string grab = "Pick up";
     [SerializeField] private string obtainShard = "Break the frame";
-    [SerializeField] private string enterMemory = "View Memory";
     [SerializeField] private string leaveMemory = "Leave";
     [SerializeField] private string useDoor = "Enter";
     [SerializeField] private string useKey = "Unlock the door";
@@ -24,10 +23,6 @@ public class InteractionHUD : MonoBehaviour
     [SerializeField] private string needKey = "Door locked";
     [SerializeField] private string needSomethingElse = "[E] to interact";
     [SerializeField] private string dialogueInteraction = "";
-    [SerializeField] private string enterPressurePlate = "[E] to interact";
-    [SerializeField] private string leavePressurePlate = "[E] to leave";
-    [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
-    [SerializeField] private string pickObjectPressurePlate = "Hold [E] to pick up";
     private bool forceHide;
         
     [Header("Interaction Image")] 
@@ -70,7 +65,6 @@ public class InteractionHUD : MonoBehaviour
                 interactionUI.GetInteractionText.text = e.Interaction switch {
                     Interaction.Grab => $"{grab} {e.ObjectName}",
                     Interaction.ObtainShard => $"{obtainShard}",
-                    Interaction.EnterMemory => $"{enterMemory}",
                     Interaction.LeaveMemory => $"{leaveMemory}",
                     Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
                     Interaction.UseKey =>  $"{useKey}",
@@ -79,10 +73,6 @@ public class InteractionHUD : MonoBehaviour
                     Interaction.NeedKey  => $"{needKey}",
                     Interaction.NeedSomethingElse => $"{needSomethingElse}",
                     Interaction.Dialogue => $"{dialogueInteraction}",
-                    Interaction.EnterPressurePlate => $"{enterPressurePlate}",
-                    Interaction.LeavePressurePlate => $"{leavePressurePlate}",
-                    Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
-                    Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
                     _ => "Not supported"
                 };
                 
