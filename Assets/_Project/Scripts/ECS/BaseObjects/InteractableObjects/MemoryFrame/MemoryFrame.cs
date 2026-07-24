@@ -140,7 +140,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void ChangeState(bool isHovering)
         {
             mouseOnFrame = isHovering;
-            HudManager.Instance.SetMemoryDialogue(isHovering? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
+            HudManager.Instance.SetMemoryDialogue(isHovering && isUnlocked ? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
         }
 
         public void OnDrag(PointerEventData eventData) {
