@@ -18,37 +18,9 @@ namespace _Project.Scripts.UI
     public class HudManager : PersistentSingleton<HudManager>
     {
         [Header("HUD")]
-        [SerializeField] private GameObject interactionParent;
-        [SerializeField] private InteractionPopUp interactionUI;
-        [SerializeField] private InteractionPopUp interactionUI2;
-        [SerializeField] private InteractionPopUp specialUI;
         [field:SerializeField] public Transform glassHolder {get; private set;}
 
-        [Header("Interaction Texts")] 
-        [SerializeField] private string grab = "Pick up";
-        [SerializeField] private string obtainShard = "Break the frame";
-        [SerializeField] private string enterMemory = "View Memory";
-        [SerializeField] private string leaveMemory = "Leave";
-        [SerializeField] private string useDoor = "Enter";
-        [SerializeField] private string useKey = "Unlock the door";
-        [SerializeField] private string useFragment = "Put";
-        [SerializeField] private string needFragment = "[E] to interact";
-        [SerializeField] private string needKey = "Door locked";
-        [SerializeField] private string needSomethingElse = "[E] to interact";
-        [SerializeField] private string dialogueInteraction = "";
-        [SerializeField] private string enterPressurePlate = "[E] to interact";
-        [SerializeField] private string leavePressurePlate = "[E] to leave";
-        [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
-        [SerializeField] private string pickObjectPressurePlate = "Hold [E] to pick up";
-        private bool forceHide;
-        
-        [Header("Interaction Image")] 
-        [SerializeField] private Sprite spriteNormal;
-        [SerializeField] private Sprite spriteGlass;
-        [SerializeField] private Sprite spriteUseDoor;
-        [SerializeField] private Sprite spriteKey;
-        [SerializeField] private Sprite spriteUp;
-        [SerializeField] private Sprite spriteDown;
+        public InteractionHUD interact;
         
         [Header("Memory")]
         [SerializeField] private CanvasGroup memoryHUD;
@@ -58,10 +30,8 @@ namespace _Project.Scripts.UI
         [SerializeField] private TMP_Text memoryDialogue;
         [SerializeField] private CanvasGroup confirmMemoryButton;
         
-        private EventBinding<InteractEvent> interactEventBinding;
         private EventBinding<DocumentEvent> documentEventBinding;
        // private EventBinding<MemoryEvent> memoryEventBinding;
-        private Tweener interactTween;
         private Tweener memoryTween;
         
         [Header("Dialogue")]
@@ -87,18 +57,14 @@ namespace _Project.Scripts.UI
         private void Start() {
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
-            interactionUI.GetGroup.alpha = 0;
-            interactionUI2.GetGroup.alpha = 0;
-            specialUI.GetGroup.alpha = 0;
             glassDocument.gameObject.SetActive(false);
             confirmMemoryButton.alpha = 0;
             SetActiveMemoryButton(false);
             memoryDialogue.text = "";
+            interact = GetComponent<InteractionHUD>();
         }
 
         private void OnEnable() {
-            interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
-            EventBus<InteractEvent>.Register(interactEventBinding); 
             documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
             EventBus<DocumentEvent>.Register(documentEventBinding);
             //memoryEventBinding = new EventBinding<MemoryEvent>(ShowMemory);
@@ -106,11 +72,8 @@ namespace _Project.Scripts.UI
         }
 
         private void OnDisable() {
-            EventBus<InteractEvent>.Deregister(interactEventBinding);
             EventBus<DocumentEvent>.Deregister(documentEventBinding);
             //EventBus<MemoryEvent>.Deregister(memoryEventBinding);
-            
-            interactTween?.Kill();
             memoryTween?.Kill();
             
             textTimer.OnTimerStop  -= ResetText;
@@ -212,86 +175,6 @@ namespace _Project.Scripts.UI
         }
         #region InteractionHUD
 
-        private void ShowInteraction(InteractEvent e) {
-                interactTween.Kill();
-                if(forceHide)
-                    return;
-
-                if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-                    interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
-                    interactionUI2.GetGroup.DOFade(0f, 0.25f);
-                    return;
-                }
-                
-                interactionUI.GetInteractionText.text = e.Interaction switch {
-                    Interaction.Grab => $"{grab} {e.ObjectName}",
-                    Interaction.ObtainShard => $"{obtainShard}",
-                    Interaction.EnterMemory => $"{enterMemory}",
-                    Interaction.LeaveMemory => $"{leaveMemory}",
-                    Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
-                    Interaction.UseKey =>  $"{useKey}",
-                    Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
-                    Interaction.NeedFragment => $"{needFragment}",
-                    Interaction.NeedKey  => $"{needKey}",
-                    Interaction.NeedSomethingElse => $"{needSomethingElse}",
-                    Interaction.Dialogue => $"{dialogueInteraction}",
-                    Interaction.EnterPressurePlate => $"{enterPressurePlate}",
-                    Interaction.LeavePressurePlate => $"{leavePressurePlate}",
-                    Interaction.PutObjectOnPressurePlate => $"{putObjectPressurePlate}",
-                    Interaction.PickObjectOnPressurePlate => $"{pickObjectPressurePlate}",
-                    _ => "Not supported"
-                };
-                
-
-                if (e.Interaction == Interaction.EnterMemory)
-                {
-                    interactionUI2.GetInteractionText.text = $"{pickObjectPressurePlate}";
-                    interactionUI2.GetInteractionImage.sprite = spriteUp;
-                }
-                interactionUI2.GetGroup.DOFade(e is { Interaction: Interaction.EnterMemory, ShowInteraction: true }  ? 1f : 0f, 0.25f);
-                
-                interactionUI.GetInteractionImage.sprite = e.Interaction switch
-                {
-                    Interaction.Grab => spriteNormal,
-                    Interaction.PickObjectOnPressurePlate => spriteUp,
-                    Interaction.ObtainShard => spriteGlass,
-                    Interaction.UseDoor => spriteUseDoor,
-                    Interaction.UseKey => spriteKey,
-                    Interaction.UseFragment => spriteDown,
-                    Interaction.NeedFragment => spriteGlass,
-                    Interaction.NeedKey => spriteKey,
-                    _ => spriteNormal
-                };
-                
-                interactTween = interactionUI.GetGroup.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
-            }
-
-
-            public void EventInteraction(Vector3 position, string text, Sprite logo )
-            {
-                if(forceHide)
-                    return;
-                specialUI.transform.position =  position;
-                specialUI.GetInteractionText.text = text;
-                specialUI.GetInteractionImage.sprite = logo;
-                specialUI.GetGroup.DOFade( 1f , 0.25f);
-            }
-
-            public void StopEventInteraction()
-            {
-                specialUI.GetGroup.DOFade(0f, 0.25f);
-            }
-
-            public void ForceInteractHUDVisibility(bool isOn)
-            {
-                interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
-                forceHide = !isOn;
-            }
-
-            public static void InteractionSetPosition(Vector3 position)
-            {
-                Instance.interactionParent.transform.position = position;
-            }
 
             // private void ShowMemory(MemoryEvent e) {
             //     memoryTween.Kill();

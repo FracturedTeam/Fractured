@@ -17,7 +17,6 @@ namespace _Project.Scripts.ECS.BaseObjects
         public GlassInteractable GetGlassInteract { get; private set; }
         public GlassText GetTextInteractable { get; private set; }
         public IInteractable GetInteract  { get; set; }
-        public TutorialElement  GetTutorialElement { get; set; }
         public TriggerComponent  GetTrigger { get; set; }
         public ObjectType GetObjectType { get; set; }
         public LockedState GetLockState { get; set; }
@@ -163,8 +162,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!IsInitialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
-                if(TryGetComponent(typeof(TutorialElement), out var t))
-                    GetTutorialElement = t as TutorialElement;
                 if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
                 if(TryGetComponent(typeof(GlassText), out var gt))
                     GetTextInteractable = gt as GlassText;
@@ -283,12 +280,6 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public LockedAttribute GetBlockedAttribute() {
             return blockedAttribute;
-        }
-
-        public void Trigger(bool on) {
-            if (!GetTutorialElement) return;
-            if(on) GetTutorialElement.TriggerEventStart();
-            else GetTutorialElement.TriggerEventStop();
         }
     }
 

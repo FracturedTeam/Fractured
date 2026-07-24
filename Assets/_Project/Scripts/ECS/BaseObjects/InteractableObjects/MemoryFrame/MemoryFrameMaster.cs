@@ -75,7 +75,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             HudManager.Instance.SetActiveMemoryButton(CheckMemoryUnlocked());
             HudManager.Instance.SetMemoryDialogue("", new Vector3());
-            HudManager.Instance.ForceInteractHUDVisibility(!isUsingMemoryFrame);
+            HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);

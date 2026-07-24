@@ -79,7 +79,6 @@ namespace _Project.Scripts.GameServices {
 
             await UnloadSceneAsync();
             GameInitializer.Instance.EmptyAll();
-            HudManager.Instance.StopEventInteraction();
             
             await LoadSceneAsync(scene);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
@@ -155,8 +154,6 @@ namespace _Project.Scripts.GameServices {
                 GameInitializer.Instance.SaveData();
                 
                 await FadeToBlack();
-                
-                HudManager.Instance.StopEventInteraction();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
