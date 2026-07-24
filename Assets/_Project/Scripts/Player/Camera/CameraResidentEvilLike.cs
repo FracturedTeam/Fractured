@@ -4,22 +4,40 @@ using UnityEngine;
 namespace _Project.Scripts.Player.Camera {
     [ExecuteAlways, SaveDuringPlay, AddComponentMenu("Cinemachine/Extensions/Resident Evil Like Camera")]
     public class CameraResidentEvilLike : CinemachineExtension {
-        [Header("Max Rotation Offset Per Side (degrees)")]
-        public float maxYawLeft    = 15f;
-        public float maxYawRight   = 15f;
-        public float maxPitchUp    = 10f;
-        public float maxPitchDown  = 10f;
-
-        [Header("Smoothing")]
-        [Tooltip("How fast the camera rotates toward the target offset.")]
-        public float rotationSpeed = 5f;
-        [Tooltip("How fast the camera returns to rest when player re-enters deadzone.")]
-        public float returnSpeed   = 3f;
+        [Header("Camera Rotation")]
+        [SerializeField] private float maxYawRight;
+        [SerializeField] private float maxYawLeft;
+        [Space]
+        [SerializeField] private float maxPitchUp;
+        [SerializeField] private float maxPitchDown;
+        
+        [Header("Tampon Size")]
+        [SerializeField, Range(0,1)] private float tamponSizeX;
+        [SerializeField, Range(0,1)] private float tamponSizeY;
+        
+        [Header("Rotation Speed")]
+        [SerializeField] private float rotationSpeedX;
+        [SerializeField] private float rotationSpeedY;
+        
+        [Header("Return Speed")]
+        [SerializeField] private float returnSpeed;
 
         private float initialYaw;
         private float initialPitch;
-
-        private float lerpTime = 0;
+        
+        private float xLerpTime = 0;
+        private float yLerpTime = 0;
+        
+        private float deadZoneX;
+        private float deadZoneY;
+        private float screenPosX;
+        private float screenPosY;
+        
+        private float offsetX;
+        private float offsetY;
+        
+        private bool lerpX = false;
+        private bool lerpY = false;
         
         protected override void Awake() {
             base.Awake();
@@ -37,6 +55,11 @@ namespace _Project.Scripts.Player.Camera {
 
             var composer = vcam.GetComponent<CinemachineRotationComposer>();
             if(composer == null) return;
+
+            deadZoneX = composer.Composition.DeadZone.Size.x;
+            deadZoneY = composer.Composition.DeadZone.Size.y;
+            screenPosX = composer.Composition.ScreenPosition.x;
+            screenPosY = composer.Composition.ScreenPosition.y;
             
             var brain = CinemachineCore.FindPotentialTargetBrain(vcam);
             var outputCam = brain.OutputCamera;
@@ -45,15 +68,37 @@ namespace _Project.Scripts.Player.Camera {
             
             var behindCam = screenPos.z < 0f;
 
-            var offsetX = behindCam ? 0f : (screenPos.x - Screen.width * 0.5f) / (Screen.width * 0.5f);
-            var offsetY = behindCam ? 0f : (screenPos.y - Screen.height * 0.5f) / (Screen.height * 0.5f);
+            var x = behindCam ? 0f : (screenPos.x - Screen.width * 0.5f) / (Screen.width * 0.5f);
+            var y = behindCam ? 0f : (screenPos.y - Screen.height * 0.5f) / (Screen.height * 0.5f);
+
+            CalculateOffset(x, y, composer, deltaTime);
             
-            // Move Screen Position in compensation of being outside the deadzone
-            // Move the camera also to turn it
+            state.RawOrientation = Quaternion.Euler(initialPitch + offsetY, initialYaw + offsetX, 0);
+        }
+
+        private void CalculateOffset(float x, float y, CinemachineRotationComposer composer, float deltaTime) {
+            if (y > deadZoneY || y < -deadZoneY) {
+                lerpY = true;
+            }
+            else if (y > -deadZoneY + tamponSizeY &&  y < deadZoneY - tamponSizeY) {
+                lerpY = false;
+            }
             
-            // I think there is something to find for having a good result but will need some work
+            if (x > deadZoneX || x < -deadZoneX) {
+                lerpX = true;
+            }
+            else if (x > -deadZoneX + tamponSizeX &&  x < deadZoneX - tamponSizeX) {
+                lerpX = false;
+            }
+
+            xLerpTime = lerpX ? xLerpTime + deltaTime * rotationSpeedX : xLerpTime - deltaTime * returnSpeed;
+            xLerpTime = Mathf.Clamp(xLerpTime, 0, 1);
             
-            state.RawOrientation = Quaternion.Euler(initialPitch, initialYaw, 0);
+            yLerpTime = lerpY ? yLerpTime +  deltaTime * rotationSpeedY : yLerpTime - deltaTime * returnSpeed;
+            yLerpTime = Mathf.Clamp(yLerpTime, 0, 1);
+            
+            offsetX = Mathf.Lerp(0,  x > 0 ? maxYawRight : -maxYawLeft, xLerpTime);
+            offsetY =  Mathf.Lerp(0,  y < 0 ? maxPitchUp : -maxPitchDown, yLerpTime);
         }
     }
 }
