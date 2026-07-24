@@ -58,8 +58,6 @@ namespace _Project.Scripts.Player.Camera {
 
             deadZoneX = composer.Composition.DeadZone.Size.x;
             deadZoneY = composer.Composition.DeadZone.Size.y;
-            screenPosX = composer.Composition.ScreenPosition.x;
-            screenPosY = composer.Composition.ScreenPosition.y;
             
             var brain = CinemachineCore.FindPotentialTargetBrain(vcam);
             var outputCam = brain.OutputCamera;
