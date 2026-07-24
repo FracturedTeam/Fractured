@@ -40,6 +40,7 @@ namespace _Project.Scripts.UI
         [SerializeField] private string leavePressurePlate = "[E] to leave";
         [SerializeField] private string putObjectPressurePlate = "[E] to put object on";
         [SerializeField] private string pickObjectPressurePlate = "Hold [E] to pick up";
+        private bool forceHide;
         
         [Header("Interaction Image")] 
         [SerializeField] private Sprite spriteNormal;
@@ -213,6 +214,8 @@ namespace _Project.Scripts.UI
 
         private void ShowInteraction(InteractEvent e) {
                 interactTween.Kill();
+                if(forceHide)
+                    return;
 
                 if (!e.ShowInteraction || e.Interaction == Interaction.None) {
                     interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
@@ -266,6 +269,8 @@ namespace _Project.Scripts.UI
 
             public void EventInteraction(Vector3 position, string text, Sprite logo )
             {
+                if(forceHide)
+                    return;
                 specialUI.transform.position =  position;
                 specialUI.GetInteractionText.text = text;
                 specialUI.GetInteractionImage.sprite = logo;
@@ -275,6 +280,12 @@ namespace _Project.Scripts.UI
             public void StopEventInteraction()
             {
                 specialUI.GetGroup.DOFade(0f, 0.25f);
+            }
+
+            public void ForceInteractHUDVisibility(bool isOn)
+            {
+                interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
+                forceHide = !isOn;
             }
 
             public static void InteractionSetPosition(Vector3 position)

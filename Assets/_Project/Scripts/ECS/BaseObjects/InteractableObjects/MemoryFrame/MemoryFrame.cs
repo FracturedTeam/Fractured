@@ -46,12 +46,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void Update() {
-            if(gamepadControlled) return;
-            if(!canBeInteracted && !isAtOriginalPos) return;
 
+            if(gamepadControlled) return;
+            
             if (isSelected) mouseOnFrame = true;
             
-            if (mouseOnFrame) {
+            if (mouseOnFrame && canBeInteracted) {
                 forwardTime += Time.deltaTime * 5f;
             }
             else {
@@ -59,8 +59,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
-            if (Mathf.Approximately(forwardTime, 0))
-                isAtOriginalPos = true;
+            isAtOriginalPos = Mathf.Approximately(forwardTime, 0);
             
             if (!isSelected && !master.IsAFrameSelected) {
                 var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
@@ -142,7 +141,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         {
             mouseOnFrame = isHovering;
             HudManager.Instance.SetMemoryDialogue(isHovering? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
-
         }
 
         public void OnDrag(PointerEventData eventData) {

@@ -69,12 +69,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             {
                 isUsingMemoryFrame = false;
                 foreach (var frame in frames)
-                    frame.ChangeState(false);
+                    frame.isSelected = false;
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
             HudManager.Instance.SetActiveMemoryButton(CheckMemoryUnlocked());
             HudManager.Instance.SetMemoryDialogue("", new Vector3());
+            HudManager.Instance.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
@@ -82,6 +83,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             foreach (var frame in frames) {
                 frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
+                frame.isSelected = false;
+                frame.ChangeState(false);
             }
 
             if (gamepadControlled) {
