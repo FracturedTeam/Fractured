@@ -19,15 +19,11 @@ namespace _Project.Scripts.UI
     {
         [Header("HUD")]
         [field:SerializeField] public Transform glassHolder {get; private set;}
-        public InteractionHUD interact;
-        public MemoryHUD memory;
+        public InteractionHUD interact {get; private set;}
+        public MemoryHUD memory {get; private set;}
         
-        [Header("Glass")]
-        [SerializeField] private GlassDocument glassDocument;
-      
         
         private EventBinding<DocumentEvent> documentEventBinding;
-        private Tweener memoryTween;
         
         [Header("Dialogue")]
         [SerializeField] private SubtitleText subtitleText;
@@ -37,7 +33,7 @@ namespace _Project.Scripts.UI
         [Header("Glass Animation")]
         [SerializeField] private Fragment fragment;
         [SerializeField] private ParticleSystem spawningParticles;  
-        
+        [SerializeField] private GlassDocument glassDocument;
         [SerializeField] private int currentShardsSpawning;
         [SerializeField] private float firstHalfTime = 1.0f;
         [SerializeField] private float secondHalfTime = 0.5f;
@@ -65,7 +61,6 @@ namespace _Project.Scripts.UI
 
         private void OnDisable() {
             EventBus<DocumentEvent>.Deregister(documentEventBinding);
-            memoryTween?.Kill();
             textTimer.OnTimerStop  -= ResetText;
         }
 
