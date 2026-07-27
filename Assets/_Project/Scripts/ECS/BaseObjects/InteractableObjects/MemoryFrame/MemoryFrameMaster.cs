@@ -37,8 +37,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetObjectType = ObjectType.MemoryFrame;
 
                 for (var i = 0; i < frameSlots.Length; i++) {
-                    frames[i].SetCurrentPosition(i);
                     frames[i].Initialize(this);
+                    frames[i].SetCurrentPosition(i);
                 }
                 
                 baseObject.SetInteract(true);
@@ -72,7 +72,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            HudManager.Instance.SetActiveMemoryButton(isUsingMemoryFrame);
+            HudManager.Instance.SetActiveMemoryButton(IsMemoryCompleted);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);

@@ -49,8 +49,9 @@ namespace _Project.Scripts.Player {
         private RaycastHit wallInBetween;
         private LayerMask wallLayerMask;
         
-        private bool isFocus = false;
-
+        public bool IsFocus { get; private set; }
+        public bool IsInMemory { get; private set; }
+        
         private bool validationInputHold;
         private float validationInputTime;
         
@@ -173,7 +174,7 @@ namespace _Project.Scripts.Player {
                 }
             }
             
-            if (isFocus) return;
+            if (IsFocus) return;
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -385,11 +386,13 @@ namespace _Project.Scripts.Player {
         }
 
         public void SetIsFocus(bool isFocus, BaseObject obj = null) {
-            this.isFocus = isFocus;
+            this.IsFocus = isFocus;
             
             if (isFocus)
                 potentialInteraction = obj;
         }
+        
+        public void SetInMemory(bool inMemory) => IsInMemory = inMemory;
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);

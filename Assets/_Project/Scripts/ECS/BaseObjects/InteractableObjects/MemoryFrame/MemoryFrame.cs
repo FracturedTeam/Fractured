@@ -10,14 +10,13 @@ using UnityEngine.EventSystems;
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class MemoryFrame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler {
         private MemoryFrameMaster master;
-        private Collider collider;
+        private Collider col;
         
         [Header("Painting Settings")]
         [SerializeField]
         internal int requiredPosition;
         [SerializeField] MemoryFrameScriptable data;
         [SerializeField] MeshRenderer paintingMesh;
-        [SerializeField] private TMP_Text text;
         
         private int currentPos;
         private bool isUnlocked;
@@ -25,7 +24,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool gamepadControlled;
 
         private bool isSelected;
-        
         private bool isCorrectPosition;
 
         private float forwardTime;
@@ -39,13 +37,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
-            if (text) text.text = "";
             
-            if(TryGetComponent(out Collider col)) collider = col;
+            if(TryGetComponent(out Collider col)) this.col = col;
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
-            text?.DOFade(0, 0);
             cam = master.frameCamera.transform;
         }
 
@@ -82,7 +78,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             isSelected = true;
             master.SetFrameSelected(true);
-            collider.enabled = false;
+            col.enabled = false;
         }
 
         public void OnPointerUp(PointerEventData eventData) {
@@ -91,7 +87,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isSelected = false;
             master.SetFrameSelected(false);
             mouseOnFrame = false;
-            collider.enabled = true;
+            col.enabled = true;
         }
 
         public void OnGamepadSelect(bool isSelected) {
@@ -144,7 +140,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void ChangeState(bool isHovering)
         {
             mouseOnFrame = isHovering;
-            HudManager.Instance.SetMemoryDialogue(data.infoText, GetClosetPosition());
+            HudManager.Instance.SetMemoryDialogue(isHovering? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -179,7 +175,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     index = i;
                 }
             }
-            
             return index;
         }
         
@@ -424,12 +419,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
         public int GetCurrentPosition() => currentPos;
-        public void SetCurrentPosition(int newPos) => currentPos = newPos;
+        public void SetCurrentPosition(int newPos) {
+            currentPos = newPos;
+            transform.position = master.GetCurrentSlotPosition(currentPos);
+        }
 
         public void Unlock() {
             isUnlocked = true;
             paintingMesh.material = data.material;
-            if (text) text.text = data.infoText;
         }
 
         public void CanBeInteracted(bool can, bool isGamepadControlled) {
