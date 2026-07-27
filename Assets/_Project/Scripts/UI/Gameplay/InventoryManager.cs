@@ -60,9 +60,11 @@ namespace _Project.Scripts.UI.Gameplay {
             EventBus<ProcessKeyEvent>.Deregister(addKeyEventBinding);
             EventBus<ShowInventoryEvent>.Deregister(showInventoryEventBinding);
             EventBus<SelectItemEvent>.Deregister(selectItemEventBinding);
-            
-            InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
-            InputsBrain.Instance.OnSecondaryInteract -= HoldItemGamepad;
+
+            if (InputsBrain.HasInstance) {
+                InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
+                InputsBrain.Instance.OnSecondaryInteract -= HoldItemGamepad;
+            }
             
             openInventoryTween.Kill();
         }
