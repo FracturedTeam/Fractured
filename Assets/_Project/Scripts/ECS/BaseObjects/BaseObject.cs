@@ -263,9 +263,8 @@ namespace _Project.Scripts.ECS.BaseObjects
             return meshRenderer;
         }
 
-        public Vector2 GetUIPosition(bool special = false) {
-            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + 
-                   (special ? new Vector3(hudSpecialTransformPoint.x, hudSpecialTransformPoint.y + 5) : new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5));
+        public Vector2 GetUIPosition() {
+            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5);
         }
 
         public bool HasSceneElement() {
