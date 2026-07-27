@@ -24,7 +24,8 @@ namespace _Project.Scripts.Player {
         }
 
         void OnDisable() {
-            InputsBrain.Instance.OnInventorySelect -= InventorySelect;
+            if(InputsBrain.HasInstance)
+                InputsBrain.Instance.OnInventorySelect -= InventorySelect;
         }
         
         #region Key

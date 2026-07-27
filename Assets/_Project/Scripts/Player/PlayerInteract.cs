@@ -97,8 +97,10 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnDisable() {
-            InputsBrain.Instance.OnInteract -= Interact;
-            InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
+            if (InputsBrain.HasInstance) {
+                InputsBrain.Instance.OnInteract -= Interact;
+                InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
+            }
         }
 
         #endregion

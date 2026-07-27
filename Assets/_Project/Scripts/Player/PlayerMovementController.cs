@@ -86,7 +86,8 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnDisable() {
-            InputsBrain.Instance.OnPlayerMove -= SetDir;
+            if(InputsBrain.HasInstance)
+                InputsBrain.Instance.OnPlayerMove -= SetDir;
         }
 
         private void SetDir(Vector2 moveInput) {
