@@ -28,6 +28,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private int selectedFrameIndex;
         private MemoryFrame selectedFrame;
+        private MemoryHUD hud;
         
         public void Initialize() {
             if (!isInitialized) {
@@ -44,11 +45,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
 
                 selectedFrame = GetFrameAtPos(selectedFrameIndex);
+
+                hud = HudManager.Instance.memory;
                 
                 isInitialized = true;
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if(IsMemoryCompleted) return;
             
@@ -68,11 +72,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             {
                 isUsingMemoryFrame = false;
                 foreach (var frame in frames)
-                    frame.ChangeState(false);
+                    frame.isSelected = false;
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            HudManager.Instance.SetActiveMemoryButton(isUsingMemoryFrame);
+            hud.SetActiveMemoryButton(CheckMemoryUnlocked());
+            hud.SetMemoryDialogue("", new Vector3());
+            HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
@@ -81,6 +87,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             foreach (var frame in frames) {
                 frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
+                frame.isSelected = false;
+                frame.ChangeState(false);
             }
 
             if (gamepadControlled) {
@@ -167,6 +175,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(frame.GetCurrentPosition() == index) return frame;
             }
             return null;
+        }
+
+        public bool CheckMemoryUnlocked()
+        {
+            foreach (var frame in frames)
+                if (!frame.isUnlocked)
+                    return false;
+            return true;
         }
         
         public BaseObject GetBaseObject() {
