@@ -24,6 +24,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
+        private InteractionHUD hud;
         
         //Pre allocate space for collider (10 will be completely sufficient)
         private readonly Collider[] results = new Collider[10];
@@ -84,6 +85,7 @@ namespace _Project.Scripts.Player {
             interactCooldown = new CountdownTimer(0.5f);
             
             wallLayerMask = LayerMask.GetMask("Wall");
+            hud = HudManager.Instance.interact;
         }
 
         private void OnEnable() {
@@ -209,7 +211,6 @@ namespace _Project.Scripts.Player {
                             }
                         }
                     }
-
                     break;
                 default:
                     potentialInteraction = null;
@@ -251,7 +252,7 @@ namespace _Project.Scripts.Player {
             }
 
             if (potentialInteraction && player.cinemachineBrain.OutputCamera)
-                HudManager.InteractionSetPosition( potentialInteraction.GetUIPosition());
+                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update

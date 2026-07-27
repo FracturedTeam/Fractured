@@ -17,15 +17,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         internal int requiredPosition;
         [SerializeField] MemoryFrameScriptable data;
         [SerializeField] MeshRenderer paintingMesh;
-        [SerializeField] private TMP_Text text;
         
         private int currentPos;
-        private bool isUnlocked;
+        internal bool isUnlocked;
         private bool canBeInteracted;
         private bool gamepadControlled;
 
-        private bool isSelected;
-        
+        internal bool isSelected;
         private bool isCorrectPosition;
 
         private float forwardTime;
@@ -39,23 +37,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public void Initialize(MemoryFrameMaster master) {
             this.master = master;
-            if (text) text.text = "";
             
             if(TryGetComponent(out Collider col)) this.col = col;
             else throw new ArgumentNullException($"[MemoryFrame] does not have a collider component");
             
             gameObject.layer = LayerMask.NameToLayer("Interactable");
-            text?.DOFade(0, 0);
             cam = master.frameCamera.transform;
         }
 
         private void Update() {
-            if(gamepadControlled) return;
-            if(!canBeInteracted && !isAtOriginalPos) return;
 
+            if(gamepadControlled) return;
+            
             if (isSelected) mouseOnFrame = true;
             
-            if (mouseOnFrame) {
+            if (mouseOnFrame && canBeInteracted) {
                 forwardTime += Time.deltaTime * 5f;
             }
             else {
@@ -63,8 +59,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             forwardTime = Mathf.Clamp(forwardTime, 0, 1);
-            if (Mathf.Approximately(forwardTime, 0))
-                isAtOriginalPos = true;
+            isAtOriginalPos = Mathf.Approximately(forwardTime, 0);
             
             if (!isSelected && !master.IsAFrameSelected) {
                 var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
@@ -93,6 +88,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             mouseOnFrame = false;
             col.enabled = true;
         }
+        
 
         public void OnGamepadSelect(bool isSelected) {
             ChangeState(isSelected);
@@ -144,7 +140,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void ChangeState(bool isHovering)
         {
             mouseOnFrame = isHovering;
-            HudManager.Instance.SetMemoryDialogue(data.infoText, GetClosetPosition());
+            HudManager.Instance.memory.SetMemoryDialogue(isHovering && isUnlocked ? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
         }
 
         public void OnDrag(PointerEventData eventData) {
@@ -179,7 +175,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     index = i;
                 }
             }
-            
             return index;
         }
         
@@ -432,14 +427,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Unlock() {
             isUnlocked = true;
             paintingMesh.material = data.material;
-            if (text) text.text = data.infoText;
         }
+        
 
         public void CanBeInteracted(bool can, bool isGamepadControlled) {
             canBeInteracted = can;
             gamepadControlled = isGamepadControlled;
             if(!can)
-                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
+            {
+                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
+                transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * -1) * forwardDir;
+            }
         }
     }
 }
