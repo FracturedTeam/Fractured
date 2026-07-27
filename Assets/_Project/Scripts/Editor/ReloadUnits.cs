@@ -133,9 +133,7 @@ public class DialogueEditor : EditorWindow
                   AssetDatabase.SaveAssets();
                   AssetDatabase.Refresh();
               }
-              
           }
-          
       }
   }
 
