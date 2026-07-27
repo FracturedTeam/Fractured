@@ -76,6 +76,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
+            PlayerController.Instance.interact.SetGlassInteraction(!isUsingMemoryFrame);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
 
             foreach (var frame in frames) {

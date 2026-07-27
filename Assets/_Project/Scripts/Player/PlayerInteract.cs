@@ -51,6 +51,7 @@ namespace _Project.Scripts.Player {
         
         public bool IsFocus { get; private set; }
         public bool IsInMemory { get; private set; }
+        public bool CanGlassInteract { get; private set; }
         
         private bool validationInputHold;
         private float validationInputTime;
@@ -386,10 +387,14 @@ namespace _Project.Scripts.Player {
         }
 
         public void SetIsFocus(bool isFocus, BaseObject obj = null) {
-            this.IsFocus = isFocus;
+            IsFocus = isFocus;
             
             if (isFocus)
                 potentialInteraction = obj;
+        }
+
+        public void SetGlassInteraction(bool canInteract) {
+            CanGlassInteract = canInteract;   
         }
         
         public void SetInMemory(bool inMemory) => IsInMemory = inMemory;
