@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
@@ -110,10 +111,6 @@ public class DialogueEditor : EditorWindow
               }
           }
           
-          //EditorUtility.SetDirty(profil);
-          
-          
-         
       }
   }
 
@@ -146,4 +143,13 @@ public class DialogueEditor : EditorWindow
       }
       return newElement;
   }
+  private DialogueScriptableObject CreateBasicTextScriptableObject(string[] dataLines, int i, string[] data)
+  {
+      DialogueScriptableObject newElement = CreateInstance<DialogueScriptableObject>();
+
+      newElement.dialogue = dataLines[i].Split(";")[8];
+      newElement.time = int.Parse(dataLines[i].Split(";")[6]);
+      return newElement;
+  }
+
 }
