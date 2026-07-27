@@ -46,12 +46,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void Update() {
-
-            if(gamepadControlled) return;
+            if(gamepadControlled || !canBeInteracted) return;
             
             if (isSelected) mouseOnFrame = true;
             
-            if (mouseOnFrame && canBeInteracted) {
+            if (mouseOnFrame) {
                 forwardTime += Time.deltaTime * 5f;
             }
             else {
@@ -434,10 +433,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             canBeInteracted = can;
             gamepadControlled = isGamepadControlled;
             if(!can)
-            {
-                var forwardDir = Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized;
-                transform.position = master.GetCurrentSlotPosition(currentPos) - (0.5f * -1) * forwardDir;
-            }
+                tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
         }
     }
 }

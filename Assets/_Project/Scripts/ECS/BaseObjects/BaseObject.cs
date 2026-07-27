@@ -162,7 +162,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             if(!IsInitialized) {
                 if (TryGetComponent(typeof(GlassInteractable), out var g))
                     GetGlassInteract = g as GlassInteractable;
-                if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
+                
+                if(TryGetComponent(out TriggerComponent trigger)) 
+                    GetTrigger = trigger;
+                
                 if(TryGetComponent(typeof(GlassText), out var gt))
                     GetTextInteractable = gt as GlassText;
                 

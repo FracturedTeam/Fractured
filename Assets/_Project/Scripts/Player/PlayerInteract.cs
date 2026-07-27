@@ -81,6 +81,8 @@ namespace _Project.Scripts.Player {
             
             Size = 0;
 
+            CanGlassInteract = true;
+
             usingLockedDoor = new CountdownTimer(TimerToUseDoor);
             usingDoor = new CountdownTimer(0.4f);
             interactCooldown = new CountdownTimer(0.5f);
