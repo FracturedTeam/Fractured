@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
@@ -19,9 +20,9 @@ public class DialogueEditor : EditorWindow
   public void OnGUI()
   {
       GUILayout.Label("Path to the datatable : ");
-      emplacement = GUILayout.TextField(emplacement, 25);
+      emplacement = GUILayout.TextField(emplacement, 128);
       GUILayout.Label("Path to the output folder :");
-      output = GUILayout.TextField(output, 25);
+      output = GUILayout.TextField(output, 128);
       
       if (GUILayout.Button("Reload"))
       {
@@ -51,9 +52,9 @@ public class DialogueEditor : EditorWindow
               soName += dataLines[i].Split(";")[0] == "Atelier 1" ? "_1" :  dataLines[i].Split(";")[0] == "Atelier 2" ? "_2" : "_3"; //Atelier
               soName += dataLines[i].Split(";")[1] == "Scene 1" ? "_1" :  dataLines[i].Split(";")[1] == "Scene 2" ? "_2" : "_3"; //Scene
               
-              if(dataLines[i].Split(";")[5] == "Dialogue")
+              if(dataLines[i].Split(";")[5] == "Thought")
               {
-                  soName += "_Dialogue" + $"_{dataLines[i].Split(";")[4]}";
+                  soName += "_Thought" + $"_{dataLines[i].Split(";")[4]}";
                   
                   if(File.Exists($"{output}{soName}.asset"))
                   {
@@ -108,12 +109,31 @@ public class DialogueEditor : EditorWindow
                   AssetDatabase.SaveAssets();
                   AssetDatabase.Refresh();
               }
+              
+              if(dataLines[i].Split(";")[5] == "Dialogue")
+              {
+                  soName += "_Dialogue" + $"_{dataLines[i].Split(";")[4]}";
+                  
+                  if(File.Exists($"{output}{soName}.asset"))
+                  {
+                      Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
+                      
+                      var currentData = (DialogueScriptableObject)AssetDatabase.LoadAssetAtPath($"{output}{soName}.asset", typeof(DialogueScriptableObject)) ;
+                      
+                      currentData.dialogue = dataLines[i].Split(";")[8];
+                      currentData.time = int.Parse(dataLines[i].Split(";")[6]);
+                      
+                      EditorUtility.SetDirty(currentData);
+                      AssetDatabase.SaveAssets();
+                      AssetDatabase.Refresh();
+                      return;
+                  }
+                  
+                  AssetDatabase.CreateAsset(CreateBasicTextScriptableObject(dataLines, i, data), $"{output}{soName}.asset");
+                  AssetDatabase.SaveAssets();
+                  AssetDatabase.Refresh();
+              }
           }
-          
-          //EditorUtility.SetDirty(profil);
-          
-          
-         
       }
   }
 
@@ -146,4 +166,13 @@ public class DialogueEditor : EditorWindow
       }
       return newElement;
   }
+  private DialogueScriptableObject CreateBasicTextScriptableObject(string[] dataLines, int i, string[] data)
+  {
+      DialogueScriptableObject newElement = CreateInstance<DialogueScriptableObject>();
+
+      newElement.dialogue = dataLines[i].Split(";")[8];
+      newElement.time = int.Parse(dataLines[i].Split(";")[6]);
+      return newElement;
+  }
+
 }
