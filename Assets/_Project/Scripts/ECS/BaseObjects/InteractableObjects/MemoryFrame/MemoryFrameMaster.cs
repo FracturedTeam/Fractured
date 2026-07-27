@@ -37,8 +37,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.GetObjectType = ObjectType.MemoryFrame;
 
                 for (var i = 0; i < frameSlots.Length; i++) {
-                    frames[i].SetCurrentPosition(i);
                     frames[i].Initialize(this);
+                    frames[i].SetCurrentPosition(i);
                 }
                 
                 baseObject.SetInteract(true);
