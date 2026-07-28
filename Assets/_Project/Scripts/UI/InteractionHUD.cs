@@ -52,55 +52,53 @@ public class InteractionHUD : MonoBehaviour
     }
 
     private void ShowInteraction(InteractEvent e) {
-        
          interactTween.Kill();
-                if(forceHide)
-                    return;
+         if(forceHide)
+             return;
+         
+         interactionUI.transform.position =  e.Position;
                 
-                if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-                    interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
-                    return;
-                }
+         if (!e.ShowInteraction || e.Interaction == Interaction.None) {
+             interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
+             return;
+         }
+        
                 
-                interactionUI.GetInteractionText.text = e.Interaction switch {
-                    Interaction.Grab => $"{grab} {e.ObjectName}",
-                    Interaction.ObtainShard => $"{obtainShard}",
-                    Interaction.LeaveMemory => $"{leaveMemory}",
-                    Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
-                    Interaction.UseKey =>  $"{useKey}",
-                    Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
-                    Interaction.NeedFragment => $"{needFragment}",
-                    Interaction.NeedKey  => $"{needKey}",
-                    Interaction.NeedSomethingElse => $"{needSomethingElse}",
-                    Interaction.Dialogue => $"{dialogueInteraction}",
-                    _ => "Not supported"
-                };
+         interactionUI.GetInteractionText.text = e.Interaction switch {
+             Interaction.Grab => $"{grab} {e.ObjectName}",
+             Interaction.ObtainShard => $"{obtainShard}",
+             Interaction.LeaveMemory => $"{leaveMemory}",
+             Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
+             Interaction.UseKey =>  $"{useKey}",
+             Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
+             Interaction.NeedFragment => $"{needFragment}",
+             Interaction.NeedKey  => $"{needKey}",
+             Interaction.NeedSomethingElse => $"{needSomethingElse}",
+             Interaction.Dialogue => $"{dialogueInteraction}",
+             _ => "Not supported"
+         };
                 
-                interactionUI.GetInteractionImage.sprite = e.Interaction switch
-                {
-                    Interaction.Grab => spriteNormal,
-                    Interaction.PickObjectOnPressurePlate => spriteUp,
-                    Interaction.ObtainShard => spriteGlass,
-                    Interaction.UseDoor => spriteUseDoor,
-                    Interaction.UseKey => spriteKey,
-                    Interaction.UseFragment => spriteDown,
-                    Interaction.NeedFragment => spriteGlass,
-                    Interaction.NeedKey => spriteKey,
-                    _ => spriteNormal
-                };
+         interactionUI.GetInteractionImage.sprite = e.Interaction switch
+         {
+             Interaction.Grab => spriteNormal,
+             Interaction.PickObjectOnPressurePlate => spriteUp,
+             Interaction.ObtainShard => spriteGlass,
+             Interaction.UseDoor => spriteUseDoor,
+             Interaction.UseKey => spriteKey,
+             Interaction.UseFragment => spriteDown,
+             Interaction.NeedFragment => spriteGlass,
+             Interaction.NeedKey => spriteKey,
+             _ => spriteNormal
+         };
                 
-                interactTween = interactionUI.GetGroup.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
-            }
+         interactTween = interactionUI.GetGroup.DOFade( 1f, 0.25f);
+    }
+    
+    
     public void ForceInteractHUDVisibility(bool isOn)
     {
-        interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
+       interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
         forceHide = !isOn;
-    }
-
-    public void InteractionSetPosition(Vector3 position)
-    {
-        if(interactionUI.transform.position != position)
-            interactionUI.transform.position = position;
     }
 
 }

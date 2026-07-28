@@ -100,8 +100,6 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
             
             HudManager.Instance.SetText(dialogue);
-            HudManager.Instance.interact.InteractionSetPosition(new Vector3(Screen.width -100, Screen.height -100, 0));
-
             InputsBrain.Instance.OnInteract += LeaveMemory;
         }
 
