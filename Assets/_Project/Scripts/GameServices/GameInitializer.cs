@@ -64,6 +64,7 @@ namespace _Project.Scripts.GameServices {
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool initializeDebugger = true;
+        private ShardDebugService shardDebugService;
         #endif
         
         protected override void Awake() {
@@ -130,7 +131,7 @@ namespace _Project.Scripts.GameServices {
 
             var scenes = GetScenes();
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
-            var shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
+            shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
             debugSystem.Register(shardDebugService);
 
             var cameras = GetCameras();
@@ -216,10 +217,15 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void PopulateLevel(BaseObject[] baseObjects, Glass[] shards) {
+        public void PopulateLevel(BaseObject[] baseObjects) {
             shardService.RepopulateBaseObjet(baseObjects);
-            if(shards.Length > 0)
-                AddShards(shards);
+            
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if(!initializeDebugger) return;
+            var scenes = GetScenes();
+            var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
+            shardDebugService.UpdateSceneDebug(scenes, frameMaster);
+            #endif
         }
         
         public BaseObject[] GetInteractable() {

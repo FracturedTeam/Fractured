@@ -52,6 +52,7 @@ namespace _Project.Scripts.Player {
         
         public bool IsFocus { get; private set; }
         public bool IsInMemory { get; private set; }
+        public bool CanGlassInteract { get; private set; }
         
         private bool validationInputHold;
         private float validationInputTime;
@@ -80,11 +81,17 @@ namespace _Project.Scripts.Player {
             
             Size = 0;
 
+            CanGlassInteract = true;
+
             usingLockedDoor = new CountdownTimer(TimerToUseDoor);
             usingDoor = new CountdownTimer(0.4f);
             interactCooldown = new CountdownTimer(0.5f);
             
             wallLayerMask = LayerMask.GetMask("Wall");
+        }
+
+        private void Start()
+        {
             hud = HudManager.Instance.interact;
         }
 
@@ -94,8 +101,10 @@ namespace _Project.Scripts.Player {
         }
 
         private void OnDisable() {
-            InputsBrain.Instance.OnInteract -= Interact;
-            InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
+            if (InputsBrain.HasInstance) {
+                InputsBrain.Instance.OnInteract -= Interact;
+                InputsBrain.Instance.OnSecondaryInteract -= SecondaryInteract;
+            }
         }
 
         #endregion
@@ -250,9 +259,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
                 return;
             }
-
-            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
-                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
@@ -308,6 +314,12 @@ namespace _Project.Scripts.Player {
                 Interaction = interactionType,
                 ObjectName = potentialInteraction?.ObjectName
             });
+
+            if (!hud) 
+                hud = HudManager.Instance.interact;
+
+            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
+                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
         
         public void SetInteract(bool interact) {
@@ -387,10 +399,14 @@ namespace _Project.Scripts.Player {
         }
 
         public void SetIsFocus(bool isFocus, BaseObject obj = null) {
-            this.IsFocus = isFocus;
+            IsFocus = isFocus;
             
             if (isFocus)
                 potentialInteraction = obj;
+        }
+
+        public void SetGlassInteraction(bool canInteract) {
+            CanGlassInteract = canInteract;   
         }
         
         public void SetInMemory(bool inMemory) => IsInMemory = inMemory;

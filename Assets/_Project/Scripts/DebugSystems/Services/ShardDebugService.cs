@@ -10,8 +10,8 @@ namespace _Project.Scripts.DebugSystems.Services {
 
         private readonly ShardService shardService;
         private readonly DebugUIState debugUIState;
-        private readonly SceneMaster[] sceneMasters;
-        private readonly MemoryFrameMaster frameMaster;
+        private SceneMaster[] sceneMasters;
+        private MemoryFrameMaster frameMaster;
         
         public ShardDebugService(ShardService shard, DebugUIState debugUI, SceneMaster[] sceneMasters,  MemoryFrameMaster frameMaster) {
             shardService = shard;
@@ -24,6 +24,11 @@ namespace _Project.Scripts.DebugSystems.Services {
         }
 
         public void Tick() {
+        }
+
+        public void UpdateSceneDebug(SceneMaster[] sceneMasters,  MemoryFrameMaster frameMaster) {
+            this.sceneMasters = sceneMasters;
+            this.frameMaster = frameMaster;
         }
 
         public void DrawDebugGUI() {
@@ -67,13 +72,6 @@ namespace _Project.Scripts.DebugSystems.Services {
             
             GUILayout.Label("Shards", sectionStyle);
             GUILayout.Label($"{shardService.ShardCount} Shards loaded", debugStyle);
-            // GUILayout.Label($"Player in editable area : {shardService.PlayerInEditableArea}", debugStyle);
-            // if (GUILayout.Button($"Edit shard anywhere : {editShardAnywhere}", buttonStyle)) {
-            //     editShardAnywhere = !editShardAnywhere;
-            //     foreach (var shard in shardService.shards) {
-            //         shard.SetEditAnywhere(editShardAnywhere);
-            //     }
-            // }
             
             GUILayout.Label("Interactable", sectionStyle);
             GUILayout.Label($"{shardService.InteractableCount} Interactable loaded", debugStyle);
@@ -94,21 +92,24 @@ namespace _Project.Scripts.DebugSystems.Services {
                     }
                 }
             }
-            
-            GUILayout.Label("Scenes", sectionStyle);
-            foreach (var scene in sceneMasters) {
-                GUILayout.Label($"Scene : {scene.gameObject.name}", debugStyle);
-                GUILayout.Label($"Is Scene Completed : {scene.IsSceneValidated}", debugStyle);
-                if (GUILayout.Button("Complete Scene", buttonStyle)) {
-                    scene.LoadCompleteScene();
+
+            if (sceneMasters != null) {
+                GUILayout.Label("Scenes", sectionStyle);
+                foreach (var scene in sceneMasters) {
+                    GUILayout.Label($"Scene : {scene.gameObject.name}", debugStyle);
+                    GUILayout.Label($"Is Scene Completed : {scene.IsSceneValidated}", debugStyle);
+                    if (GUILayout.Button("Complete Scene", buttonStyle)) {
+                        scene.LoadCompleteScene();
+                    }
                 }
             }
-            
-            
-            GUILayout.Label("Memory Frame", sectionStyle);
-            GUILayout.Label($"Is Memory Frame Completed : {frameMaster.IsMemoryCompleted}", debugStyle);
-            if (GUILayout.Button("Complete Memory Frame", buttonStyle)) {
-                frameMaster.DebugCompleteFrame();
+
+            if (frameMaster != null) {
+                GUILayout.Label("Memory Frame", sectionStyle);
+                GUILayout.Label($"Is Memory Frame Completed : {frameMaster.IsMemoryCompleted}", debugStyle);
+                if (GUILayout.Button("Complete Memory Frame", buttonStyle)) {
+                    frameMaster.DebugCompleteFrame();
+                }
             }
             
             

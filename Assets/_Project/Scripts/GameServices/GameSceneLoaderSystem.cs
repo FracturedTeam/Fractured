@@ -62,7 +62,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
             
             if (GameSceneSettings.HasInstance) {
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 
                 PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
                 
@@ -84,7 +84,7 @@ namespace _Project.Scripts.GameServices {
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
             
             if(GameSceneSettings.HasInstance)
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
             
             await Task.Delay(100);
             GameInitializer.Instance.LoadData();
@@ -191,7 +191,7 @@ namespace _Project.Scripts.GameServices {
                 await Task.Yield();
                 
                 if (GameSceneSettings.HasInstance) {
-                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray(), GameSceneSettings.Instance.glassShards);
+                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 }
 
                 if (newGameStarted) {
@@ -238,10 +238,10 @@ namespace _Project.Scripts.GameServices {
 
             newGameStarted = true;
             
-            _ = UnloadGameplaySceneAsync();
-            
-            if (!PlayerService.HasInstance) Instantiate(player);
             if (!HudManager.HasInstance) Instantiate(hudManager);
+            if (!PlayerService.HasInstance) Instantiate(player);
+            
+            _ = UnloadGameplaySceneAsync();
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             GameInitializer.Instance.InitializeDebugSystems();
