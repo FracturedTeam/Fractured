@@ -99,7 +99,8 @@ public class InteractionHUD : MonoBehaviour
 
     public void InteractionSetPosition(Vector3 position)
     {
-        interactionUI.transform.position = position;
+        if(interactionUI.transform.position != position)
+            interactionUI.transform.position = position;
     }
 
 }

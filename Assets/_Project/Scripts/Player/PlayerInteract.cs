@@ -88,6 +88,10 @@ namespace _Project.Scripts.Player {
             interactCooldown = new CountdownTimer(0.5f);
             
             wallLayerMask = LayerMask.GetMask("Wall");
+        }
+
+        private void Start()
+        {
             hud = HudManager.Instance.interact;
         }
 
@@ -255,9 +259,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = false;
                 return;
             }
-
-            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
-                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
 
         private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
@@ -313,6 +314,12 @@ namespace _Project.Scripts.Player {
                 Interaction = interactionType,
                 ObjectName = potentialInteraction?.ObjectName
             });
+
+            if (!hud) 
+                hud = HudManager.Instance.interact;
+
+            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
+                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
         
         public void SetInteract(bool interact) {
