@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEditor;
@@ -16,7 +15,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private CinemachineCamera roomCamera;
         
         [Header("Puzzle Objects")]
-        [HideInInspector] public Glass[] glassShards;
+        //[HideInInspector] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] public List<SceneMaster> sceneMasters;
         
@@ -59,7 +58,7 @@ namespace _Project.Scripts.GameServices {
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             
             if(saveInstance == null) saveInstance = GetComponent<SaveInstance>();
-            saveInstance.SetObjectData(baseObjects.ToArray(), glassShards, sceneMasters.ToArray());
+            saveInstance.SetObjectData(baseObjects.ToArray(), sceneMasters.ToArray());
         }
         #endif
     }

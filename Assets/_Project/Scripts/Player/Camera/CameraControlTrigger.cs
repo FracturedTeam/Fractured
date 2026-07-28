@@ -34,7 +34,6 @@ namespace _Project.Scripts.Player.Camera {
         }
         
         void OnDisable() {
-            countdownTimer.OnTimerStop -= GameInitializer.Instance.RepositionGlass;
             countdownTimer.Dispose();
         }
         
