@@ -67,11 +67,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3797495377152316588}
   m_SourcePrefab: {fileID: 100100000, guid: 09f8543011869544bbada907fde67436, type: 3}
---- !u!1 &5934723339400724859 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 236786513444050013, guid: 09f8543011869544bbada907fde67436, type: 3}
-  m_PrefabInstance: {fileID: 5842685472863474982}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9000538405001702020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
@@ -120,18 +115,23 @@ MonoBehaviour:
   eventOnActivation:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5934723339400724859}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+      - m_Target: {fileID: 9069806727590251415}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Open
           m_BoolArgument: 0
         m_CallState: 2
   eventOnDeactivation:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &9069806727590251415 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3227689300660051633, guid: 09f8543011869544bbada907fde67436, type: 3}
+  m_PrefabInstance: {fileID: 5842685472863474982}
+  m_PrefabAsset: {fileID: 0}
