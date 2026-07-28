@@ -112,7 +112,7 @@ public class EnviroColorTool : EditorWindow
 
     private void Awake()
     {
-        Profil profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
+        profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
         if (profil == null)
         {
             profil = ScriptableObject.CreateInstance<Profil>();
@@ -126,6 +126,14 @@ public class EnviroColorTool : EditorWindow
 
     private static void Set()
     { 
+        profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
+        if (profil == null)
+        {
+            profil = ScriptableObject.CreateInstance<Profil>();
+            AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
+            Debug.Log("create new profil");
+        }
+        
         Shader.SetGlobalFloat("_ActGlobalTransition", profil.transition);
         Shader.SetGlobalFloat("_CurrentAct", profil.act);
 
