@@ -17,6 +17,7 @@ namespace _Project.Scripts.Player {
         public bool ShowInteraction;
         public Interaction Interaction;
         public string ObjectName;
+        public Vector3 position;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -309,17 +310,15 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void RaiseInteraction() {
+            if (!hud) 
+                hud = HudManager.Instance.interact;
+            
             EventBus<InteractEvent>.Raise(new InteractEvent {
                 ShowInteraction = canInteract,
                 Interaction = interactionType,
-                ObjectName = potentialInteraction?.ObjectName
+                ObjectName = potentialInteraction?.ObjectName,
+                position = (Vector3)potentialInteraction?.GetUIPosition(),
             });
-
-            if (!hud) 
-                hud = HudManager.Instance.interact;
-
-            if (potentialInteraction && player.cinemachineBrain.OutputCamera)
-                hud?.InteractionSetPosition( potentialInteraction.GetUIPosition());
         }
         
         public void SetInteract(bool interact) {
