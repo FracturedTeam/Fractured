@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.32425943
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0000000070869146
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9459682
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000020674792
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -142.159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2627367594925917674, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -65,6 +65,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3404044313995173712, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7289500636338170646}
+    - targetCorrespondingSourceObject: {fileID: 3404044313995173712, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2374138384768745795}
   m_SourcePrefab: {fileID: 100100000, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
 --- !u!1 &2807771812254164862 stripped
 GameObject:
@@ -126,3 +129,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.BlockedAttribute
   ID: 41
   doInteractImmediately: 1
+--- !u!65 &2374138384768745795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2807771812254164862}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7108713, y: 1.2338325, z: 0.69687015}
+  m_Center: {x: 0.00000004470349, y: 0.61691624, z: -0.00000007450581}
