@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using UnityEditor;
 using UnityEngine;
 
@@ -82,13 +83,10 @@ namespace _Project.Scripts.GameServices {
         }
         
 #if UNITY_EDITOR
-        public void SetObjectData(BaseObject[] _baseObjects, Glass[] _shards, SceneMaster[] _masters) {
+        public void SetObjectData(BaseObject[] _baseObjects, SceneMaster[] _masters) {
             baseObjects = new List<BaseObject>();
             shards = new List<Glass>();
             masters = new List<SceneMaster>();
-            
-            // Set Shards
-            shards.AddRange(_shards); 
             
             //Set interactable
             baseObjects.AddRange(_baseObjects);
@@ -106,6 +104,15 @@ namespace _Project.Scripts.GameServices {
                 if (String.IsNullOrEmpty(scene.Guid)) { // Generate Object GUID
                     scene.GenerateGuid();
                 }
+                
+                if (scene.glassShards.Length > 0) {
+                    foreach (var glass in scene.glassShards) {
+                        if(String.IsNullOrEmpty(glass.Guid))
+                            glass.GenerateGuid();
+                        shards.Add(glass);
+                    }
+                }
+                
             }
             
             EditorUtility.SetDirty(this);
