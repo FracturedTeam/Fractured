@@ -12,7 +12,7 @@ namespace _Project.Scripts.UI
 {
     public class SubtitleText : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI text = new ();
+        [SerializeField] TextMeshProUGUI text;
         internal Vector2 TagPositions;
         private DialogueScriptableObject dialogue;
         public CanvasGroup textCanva;
