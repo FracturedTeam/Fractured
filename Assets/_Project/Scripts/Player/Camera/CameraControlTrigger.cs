@@ -42,6 +42,8 @@ namespace _Project.Scripts.Player.Camera {
         }
 
         private void DetectPlayer() {
+            if(Vector3.Distance(PlayerController.Instance.transform.position, transform.position) < 5f) return;
+            
             Size = Physics.OverlapBoxNonAlloc(transform.position, extentSize, playerCollider,
                 transform.rotation, mask);
             
