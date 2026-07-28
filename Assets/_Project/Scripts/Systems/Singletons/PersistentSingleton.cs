@@ -23,8 +23,6 @@ namespace _Project.Scripts.Systems.Singletons {
 
         protected virtual void Awake() {
             InitializeSingleton();
-            
-            Debug.Log(typeof(T).Name + " has been initialized");
         }
 
         protected virtual void InitializeSingleton() {

@@ -92,7 +92,7 @@ namespace _Project.Scripts.GameServices.Services {
                 MusicVolume = 1f,
                 SFXVolume = 1f,
                 ScreenResolutionIndex = -1,
-                FullScreenMode = (int)PlayerSettings.fullScreenMode,
+                //FullScreenMode = (int)PlayerSettings.fullScreenMode,
                 vSyncEnabled = true,
                 Brightness = 1,
                 SubtitleSize = 16
