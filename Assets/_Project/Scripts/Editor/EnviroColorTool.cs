@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -105,32 +106,58 @@ public class EnviroColorTool : EditorWindow
 
         if (GUILayout.Button("View"))
         {
-            Shader.SetGlobalFloat("_ActGlobalTransition", profil.transition);
-            Shader.SetGlobalFloat("_CurrentAct", profil.act);
-
-            Shader.SetGlobalColor("_ACT1_Color_A", profil.act1_Color_A);
-            Shader.SetGlobalVector("_ACT1_Color_A_Location", profil.act1_Color_A_Location);
-            Shader.SetGlobalColor("_ACT1_Color_B", profil.act1_Color_B);
-            Shader.SetGlobalVector("_ACT1_Color_B_Location", profil.act1_Color_B_Location);
-            Shader.SetGlobalColor("_ACT1_Color_C", profil.act1_Color_C);
-
-            Shader.SetGlobalColor("_ACT2_Color_A", profil.act2_Color_A);
-            Shader.SetGlobalVector("_ACT2_Color_A_Location", profil.act2_Color_A_Location);
-            Shader.SetGlobalColor("_ACT2_Color_B", profil.act2_Color_B);
-            Shader.SetGlobalVector("_ACT2_Color_B_Location", profil.act2_Color_B_Location);
-            Shader.SetGlobalColor("_ACT2_Color_C", profil.act2_Color_C);
-
-            Shader.SetGlobalColor("_ACT3_Color_A", profil.act3_Color_A);
-            Shader.SetGlobalVector("_ACT3_Color_A_Location", profil.act3_Color_A_Location);
-            Shader.SetGlobalColor("_ACT3_Color_B", profil.act3_Color_B);
-            Shader.SetGlobalVector("_ACT3_Color_B_Location", profil.act3_Color_B_Location);
-            Shader.SetGlobalColor("_ACT3_Color_C", profil.act3_Color_C);
-
-            EditorUtility.SetDirty(profil);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            Set();
         }
     }
-    
-   
+
+    private void Awake()
+    {
+        profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
+        if (profil == null)
+        {
+            profil = ScriptableObject.CreateInstance<Profil>();
+            AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
+            Debug.Log("create new profil");
+        }
+        
+        Set();
+    }
+
+
+    private static void Set()
+    { 
+        profil = AssetDatabase.LoadAssetAtPath<Profil>("Assets/_Project/Art/Shaders/ColorProfil.asset");
+        if (profil == null)
+        {
+            profil = ScriptableObject.CreateInstance<Profil>();
+            AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
+            Debug.Log("create new profil");
+        }
+        
+        Shader.SetGlobalFloat("_ActGlobalTransition", profil.transition);
+        Shader.SetGlobalFloat("_CurrentAct", profil.act);
+
+        Shader.SetGlobalColor("_ACT1_Color_A", profil.act1_Color_A);
+        Shader.SetGlobalVector("_ACT1_Color_A_Location", profil.act1_Color_A_Location);
+        Shader.SetGlobalColor("_ACT1_Color_B", profil.act1_Color_B);
+        Shader.SetGlobalVector("_ACT1_Color_B_Location", profil.act1_Color_B_Location);
+        Shader.SetGlobalColor("_ACT1_Color_C", profil.act1_Color_C);
+
+        Shader.SetGlobalColor("_ACT2_Color_A", profil.act2_Color_A);
+        Shader.SetGlobalVector("_ACT2_Color_A_Location", profil.act2_Color_A_Location);
+        Shader.SetGlobalColor("_ACT2_Color_B", profil.act2_Color_B);
+        Shader.SetGlobalVector("_ACT2_Color_B_Location", profil.act2_Color_B_Location);
+        Shader.SetGlobalColor("_ACT2_Color_C", profil.act2_Color_C);
+
+        Shader.SetGlobalColor("_ACT3_Color_A", profil.act3_Color_A);
+        Shader.SetGlobalVector("_ACT3_Color_A_Location", profil.act3_Color_A_Location);
+        Shader.SetGlobalColor("_ACT3_Color_B", profil.act3_Color_B);
+        Shader.SetGlobalVector("_ACT3_Color_B_Location", profil.act3_Color_B_Location);
+        Shader.SetGlobalColor("_ACT3_Color_C", profil.act3_Color_C);
+
+        EditorUtility.SetDirty(profil);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        
+    }
 }
