@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.EventBus;

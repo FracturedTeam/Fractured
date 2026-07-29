@@ -313,7 +313,7 @@ namespace _Project.Scripts.Player {
                 ShowInteraction = canInteract,
                 Interaction = interactionType,
                 ObjectName = potentialInteraction?.ObjectName,
-                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector2.zero
+                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector3.zero
             });
         }
         

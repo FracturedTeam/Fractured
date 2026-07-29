@@ -52,17 +52,20 @@ public class InteractionHUD : MonoBehaviour
     }
 
     private void ShowInteraction(InteractEvent e) {
+        
          interactTween.Kill();
          if(forceHide)
              return;
-         
-         interactionUI.transform.position =  e.Position;
                 
          if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-             interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
+             interactTween = interactionUI.GetGroup.DOFade(0f, 1f);
              return;
          }
-        
+         
+         if(e.Position != Vector3.zero)
+         {
+             interactionUI.transform.position = e.Position;
+         }
                 
          interactionUI.GetInteractionText.text = e.Interaction switch {
              Interaction.Grab => $"{grab} {e.ObjectName}",
@@ -91,7 +94,7 @@ public class InteractionHUD : MonoBehaviour
              _ => spriteNormal
          };
                 
-         interactTween = interactionUI.GetGroup.DOFade( 1f, 0.25f);
+         interactTween = interactionUI.GetGroup.DOFade( 1f, 1f);
     }
     
     
