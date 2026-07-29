@@ -11,14 +11,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         public override void OnInteract(IInteractable interactable) {
             var failed = true;
-            foreach (var key in PlayerController.Instance.inventory.keys) {
+            foreach (var key in PlayerController.Instance.Inventory.keys) {
                 if (key.ID == ID) {
                     failed = false;
                     
                     baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractSuccess);
                     baseObject.GetLockState = LockedState.Unlocked;
                     
-                    PlayerController.Instance.inventory.OnKeyUsed(key.ID);
+                    PlayerController.Instance.Inventory.OnKeyUsed(key.ID);
                     
                     if (!doInteractImmediately)  return;
                         switch (interactable.GetBaseObject().GetObjectType) {
