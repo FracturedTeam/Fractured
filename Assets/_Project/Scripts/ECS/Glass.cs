@@ -147,7 +147,7 @@ namespace _Project.Scripts.ECS
         
         private void MoveGlass(Vector2 delta) {
             if(!canInteract && !isHeld) return;
-            if(PlayerController.Instance.interact.IsInMemory || !PlayerController.Instance.interact.CanGlassInteract) return;
+            if(PlayerController.Instance.Interact.IsInMemory || !PlayerController.Instance.Interact.CanGlassInteract) return;
             
             if (!InputsBrain.Instance.IsKeyboardControl) {
                 delta *= gamepadSensitivity;
