@@ -132,30 +132,4 @@ public class GlassTextLink : MonoBehaviour
             
         return output.Replace(removeString, replace);
     }
-
-        /*
-
-        public void Link()
-        {
-            int linkIndex = TMP_TextUtilities.FindIntersectingLink(baseText, Mouse.current.position.value, camera);
-            if ((linkIndex == -1 && m_selectedLink != -1) || linkIndex != m_selectedLink)
-            {
-                m_selectedLink = -1;
-            }
-
-            if (linkIndex != -1 && linkIndex != m_selectedLink)
-            {
-                m_selectedLink = linkIndex;
-
-                TMP_LinkInfo linkInfo = baseText.textInfo.linkInfo[linkIndex];
-
-                // Debug.Log("Link ID: \"" + linkInfo.GetLinkID() + "\"   Link Text: \"" + linkInfo.GetLinkText() + "\""); // Example of how to retrieve the Link ID and Link Text.
-
-                Vector3 worldPointInRectangle;
-                RectTransformUtility.ScreenPointToWorldPointInRectangle(baseText.rectTransform, Mouse.current.position.value, camera, out worldPointInRectangle);
-
-                print(linkInfo.GetLinkID() == "id_01" ? "01" : "test"); // 100041637: // id_01
-            }
-        }
-        */
 }
