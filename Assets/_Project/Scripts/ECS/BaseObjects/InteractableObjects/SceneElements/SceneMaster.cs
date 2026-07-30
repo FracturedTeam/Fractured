@@ -100,7 +100,6 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
             
             HudManager.Instance.SetText(dialogue);
-
             InputsBrain.Instance.OnInteract += LeaveMemory;
         }
 
