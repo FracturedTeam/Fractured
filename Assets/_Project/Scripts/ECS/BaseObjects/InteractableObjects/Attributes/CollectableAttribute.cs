@@ -133,7 +133,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
@@ -150,17 +150,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void HoldObject() {
             isHeld = true;
-            transform.SetParent(PlayerController.Instance.interact.objectPos);
+            transform.SetParent(PlayerController.Instance.Interact.objectPos);
             transform.localPosition = Vector3.zero;
             baseObject.gameObject.SetActive(true);
             
-            PlayerController.Instance.interact.HoldObject(true, GetBaseObject());
+            PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
         }
         
         private void StopHolding() {
             baseObject.gameObject.SetActive(false);
             isHeld = false;
-            PlayerController.Instance.interact.HoldObject(false);
+            PlayerController.Instance.Interact.HoldObject(false);
         }
 
         private void OnDrop(IInteractable other) {
@@ -168,7 +168,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 if(ObstructedSpace()) {
                     Debug.Log("Space is Obstructed");
-                    PlayerController.Instance.interact.triggerFailedDrop = true;
+                    PlayerController.Instance.Interact.triggerFailedDrop = true;
                     return;
                 }
 
@@ -187,11 +187,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (isInInventory) {
                 isInInventory = false;
-                PlayerController.Instance.inventory.OnItemDropped(baseObject);
+                PlayerController.Instance.Inventory.OnItemDropped(baseObject);
             }
             
             isHeld = false;
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -212,11 +212,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if (isInInventory) {
                 isInInventory = false;
-                PlayerController.Instance.inventory.OnItemDropped(baseObject);
+                PlayerController.Instance.Inventory.OnItemDropped(baseObject);
             }
             
             isHeld = false;
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
         }
 
         public void SetInInventory() {
@@ -232,9 +232,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.UnValidSceneElement();
             
             if(isAKey)
-                PlayerController.Instance.inventory.OnKeyPickUp(this);
+                PlayerController.Instance.Inventory.OnKeyPickUp(this);
             else
-                PlayerController.Instance.inventory.OnItemPickedUp(this);
+                PlayerController.Instance.Inventory.OnItemPickedUp(this);
         }
 
         public void SetHasBeenUse() {
@@ -275,7 +275,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private bool ObstructedSpace() {
             var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
-            var dir = PlayerController.Instance.movement.mesh.forward;
+            var dir = PlayerController.Instance.Movement.mesh.forward;
 
             var maxDistance = 0.8f + boundCenter.z * 2f;
             
@@ -285,7 +285,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 GetGroundPos() {
             var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
-            var dir = PlayerController.Instance.movement.mesh.forward;
+            var dir = PlayerController.Instance.Movement.mesh.forward;
 
             var ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             var mask = ~(1 << ignoreLayer);

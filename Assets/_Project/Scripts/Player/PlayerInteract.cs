@@ -63,12 +63,13 @@ namespace _Project.Scripts.Player {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-                
                 canInteract = value;
-                EventBus<InteractEvent>.Raise(new InteractEvent {
-                    ShowInteraction = value,
-                    Interaction = interactionType
-                });
+
+                if (value == false) {
+                    EventBus<InteractEvent>.Raise(new InteractEvent {
+                        ShowInteraction = false
+                    });
+                }
             }
         }
         
@@ -194,7 +195,8 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if (!canPlayerInteract) return;
-
+            if(Time.frameCount % 4 != 0) return;
+            
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
@@ -256,7 +258,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
-                return;
             }
         }
 
@@ -327,11 +328,14 @@ namespace _Project.Scripts.Player {
         public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
             currentInteraction = interaction;
+            if(currentInteraction.GetInteract is MovableAttribute move)
+                player.PlayerIK.SetHoldingState(true, move.rightEdge, move.leftEdge);
         }
         
         public void SetDropObject() {
             HasObject = false;
             currentInteraction = null;
+            player.PlayerIK.SetHoldingState(false);
         }
         
         public void SetDropObjectDebug() {
