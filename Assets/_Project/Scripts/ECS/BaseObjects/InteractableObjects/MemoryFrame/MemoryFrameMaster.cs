@@ -81,8 +81,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
-            PlayerController.Instance.interact.SetIsFocus(isUsingMemoryFrame, baseObject);
-            PlayerController.Instance.interact.SetGlassInteraction(!isUsingMemoryFrame);
+            PlayerController.Instance.Interact.SetIsFocus(isUsingMemoryFrame, baseObject);
+            PlayerController.Instance.Interact.SetGlassInteraction(!isUsingMemoryFrame);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
 
             foreach (var frame in frames) {
