@@ -10,17 +10,18 @@ using UnityEngine.UIElements;
 public class DialogueEditor : EditorWindow
 {
     private string emplacement = "Assets/DialogueSheet.csv";
-    private string outputA1 = "Assets/";
-    private string outputA2 = "Assets/";
-    private string outputA3 = "Assets/";
-    private string outputA4 = "Assets/";
-    private string outputA5 = "Assets/";
-    private string outputT1 = "Assets/";
-    private string outputT2 = "Assets/";
-    private string outputT3 = "Assets/";
-    private string outputT4 = "Assets/";
+    private string outputA1 = "Assets/_Project/TextScriptable_Txt_At1";
+    private string outputA2 = "Assets/_Project/TextScriptable_Txt_At2";
+    private string outputA3 = "Assets/_Project/TextScriptable_Txt_At3";
+    private string outputA4 = "Assets/_Project/TextScriptable_Txt_At4";
+    private string outputA5 = "Assets/_Project/TextScriptable_Txt_At5";
+    private string outputT0 = "Assets/_Project/TextScriptable_Txt_Tran0";
+    private string outputT1 = "Assets/_Project/TextScriptable_Txt_Tran1_2";
+    private string outputT2 = "Assets/_Project/TextScriptable_Txt_Tran2_3";
+    private string outputT3 = "Assets/_Project/TextScriptable_Txt_Tran3_4";
+    private string outputT4 = "Assets/_Project/TextScriptable_Txt_Tran4_5";
     
-    private string otherEmplacement = "Assets/";
+    private string otherEmplacement = "Assets/_Project/TextScriptable_Txt_Other";
     [MenuItem("Window/Reload Dialogue")]
     public static void ShowMyEditor()
     {
@@ -44,6 +45,8 @@ public class DialogueEditor : EditorWindow
       GUILayout.Label("Path to the output folder Atelier 5 :");
       outputA5 = GUILayout.TextField(outputA5, 128);
       
+      GUILayout.Label("Path to the output folder Transition 0-1 :");
+      outputT0 = GUILayout.TextField(outputT0, 128);
       GUILayout.Label("Path to the output folder Transition 1-2 :");
       outputT1 = GUILayout.TextField(outputT1, 128);
       GUILayout.Label("Path to the output folder Transition 2-3 :");
@@ -85,6 +88,7 @@ public class DialogueEditor : EditorWindow
                   "Atelier 4" => "_4",
                   "Atelier 5" => "_5",
                   
+                  "Transition 0" => "_0T1",
                   "Transition 1-2" => "_1T2",
                   "Transition 2-3" => "_2T3",
                   "Transition 3-4" => "_3T4",
@@ -100,6 +104,7 @@ public class DialogueEditor : EditorWindow
                   "Atelier 4" => Directory.Exists(outputA4) ? outputA4 : otherEmplacement,
                   "Atelier 5" => Directory.Exists(outputA5) ? outputA5 : otherEmplacement,
                   
+                  "Transition 0" => Directory.Exists(outputT0) ? outputT0 : otherEmplacement,
                   "Transition 1-2" => Directory.Exists(outputT1) ? outputT1 : otherEmplacement,
                   "Transition 2-3" => Directory.Exists(outputT2) ? outputT2 : otherEmplacement,
                   "Transition 3-4" => Directory.Exists(outputT3) ? outputT3 : otherEmplacement,
