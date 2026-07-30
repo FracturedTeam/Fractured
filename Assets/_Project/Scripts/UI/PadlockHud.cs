@@ -16,23 +16,9 @@ public class PadlockHud : MonoBehaviour
 
     private void Start()
     { 
-        RoundPosition();
     }
 
-    public void RoundPosition()
-    {
-        foreach (var number in numbersTMP)
-        {
-            number.gameObject.GetComponent<RectTransform>().anchoredPosition = 
-                new Vector2(number.gameObject.GetComponent<RectTransform>().anchoredPosition.x, 
-                Mathf.Round(number.gameObject.GetComponent<RectTransform>().anchoredPosition.y /
-                            spaceBetweenCharacters) * spaceBetweenCharacters);
-
-            if (number.gameObject.GetComponent<RectTransform>().anchoredPosition.y == 0)
-                number.gameObject.GetComponent<RectTransform>().anchoredPosition =   
-                    new Vector2(number.gameObject.GetComponent<RectTransform>().anchoredPosition.x, spaceBetweenCharacters * 9);
-        }
-    }
+   
 
     public void SetPos(Vector2 newPos)
     {
