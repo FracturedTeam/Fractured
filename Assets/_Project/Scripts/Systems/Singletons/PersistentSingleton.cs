@@ -15,6 +15,7 @@ namespace _Project.Scripts.Systems.Singletons {
                     if (instance == null) {
                         var go = new GameObject(typeof(T).Name + " Auto-Generated");
                         instance = go.AddComponent<T>();
+                        Debug.Log("Persistent Singleton " + go.name);
                     }
                 }
                 return instance;
