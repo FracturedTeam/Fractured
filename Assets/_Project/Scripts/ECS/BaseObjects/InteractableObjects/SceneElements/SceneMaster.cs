@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
@@ -10,6 +11,7 @@ using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.ECS {
@@ -19,6 +21,7 @@ namespace _Project.Scripts.ECS {
         [Space]
         [SerializeField] private bool requiredPlayerPosition;
         [SerializeField] private Vector3 requiredPosition;
+        [SerializeField] internal UnityEvent OnSceneComplete;
         
         private bool isValidPlayerPosition;
         
@@ -30,6 +33,8 @@ namespace _Project.Scripts.ECS {
         [Header("Animation Elements")]
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private DialogueScriptableObject dialogue;
+        
+
         
         private readonly CountdownTimer validationDelay = new(1.25f);
         
@@ -81,6 +86,8 @@ namespace _Project.Scripts.ECS {
                 element.baseObject.SetGlassInteract(false);
             }
             
+            OnSceneComplete.Invoke();
+            
             frame.Unlock();
             worldText?.Appear();
             
@@ -100,7 +107,6 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
             
             HudManager.Instance.SetText(dialogue);
-
             InputsBrain.Instance.OnInteract += LeaveMemory;
         }
 

@@ -17,7 +17,7 @@ namespace _Project.Scripts.Player {
         public bool ShowInteraction;
         public Interaction Interaction;
         public string ObjectName;
-        public Vector3 position;
+        public Vector3 Position;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -123,7 +123,6 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
-                // potentialInteraction = null;
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
@@ -185,7 +184,6 @@ namespace _Project.Scripts.Player {
                     }
                 }
             }
-            
             if (IsFocus) return;
             
             HandleInteraction();
@@ -228,7 +226,7 @@ namespace _Project.Scripts.Player {
             }
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
-                if (!potentialInteraction) return;
+                if (!potentialInteraction || !potentialInteraction.transform) return;
 
                 var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
                 var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
@@ -310,14 +308,11 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void RaiseInteraction() {
-            if (!hud) 
-                hud = HudManager.Instance.interact;
-            
             EventBus<InteractEvent>.Raise(new InteractEvent {
                 ShowInteraction = canInteract,
                 Interaction = interactionType,
                 ObjectName = potentialInteraction?.ObjectName,
-                position = (Vector3)potentialInteraction?.GetUIPosition(),
+                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector3.zero
             });
         }
         

@@ -55,14 +55,16 @@ public class InteractionHUD : MonoBehaviour
         
          interactTween.Kill();
          if(forceHide)
-                    return;
-                
-         if(interactionUI.transform.position != e.position)
-             interactionUI.transform.position = e.position;
+             return;
                 
          if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-             interactTween = interactionUI.GetGroup.DOFade(0f, 0.25f);
+             interactTween = interactionUI.GetGroup.DOFade(0f, 1f);
              return;
+         }
+         
+         if(e.Position != Vector3.zero)
+         {
+             interactionUI.transform.position = e.Position;
          }
                 
          interactionUI.GetInteractionText.text = e.Interaction switch {
@@ -92,11 +94,14 @@ public class InteractionHUD : MonoBehaviour
              _ => spriteNormal
          };
                 
-         interactTween = interactionUI.GetGroup.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f);
+         interactTween = interactionUI.GetGroup.DOFade( 1f, 1f);
     }
+    
+    
     public void ForceInteractHUDVisibility(bool isOn)
     {
-        interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
+       interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
         forceHide = !isOn;
     }
+
 }

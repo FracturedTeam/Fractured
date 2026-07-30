@@ -71,9 +71,9 @@ public class GlassText : MonoBehaviour
     }
 
     [ContextMenu("Manually Appear")]
-    public void Appear()
+    public void Appear(bool isOn = true)
     {
-        SetAlpha( 1, 1);
+        SetAlpha( isOn ? 1 : 0, 1);
     }
 
     internal void OnInteract(bool isColliding, Glass shard)
