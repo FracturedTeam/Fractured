@@ -5,6 +5,7 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player.Camera;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
@@ -73,7 +74,7 @@ namespace _Project.Scripts.GameServices {
             InitializeGameSystems();
             
             //Shard Edition area Screen Effect
-            screenEffectMat.SetFloat("_Progression", 0f);
+            //screenEffectMat.SetFloat("_Progression", 0f);
         }
 
         private void InitializeGameSystems() {
@@ -149,19 +150,9 @@ namespace _Project.Scripts.GameServices {
         
         private void Update() {
             gameSystems.Tick();
-            
-            UpdateScreenEffect();
-        }
-
-        void UpdateScreenEffect() {
-            fadeTimer = InEditableArea() ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
-                fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
-            
-            //screenEffectMat.SetFloat("_Progression", fadeTimer);
         }
         
         private void OnDisable() {
-            //screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
@@ -219,6 +210,10 @@ namespace _Project.Scripts.GameServices {
 
         public void PopulateLevel(BaseObject[] baseObjects) {
             shardService.RepopulateBaseObjet(baseObjects);
+            var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
+            foreach (var cam in camSwitches) {
+                cam.Initialize();
+            }
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if(!initializeDebugger) return;

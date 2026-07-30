@@ -76,8 +76,8 @@ namespace _Project.Scripts.DebugSystems.Services {
             for(var i = 0; i < GameSceneLoaderSystem.Instance.allScenes.Length; i++) {
                 var s =  GameSceneLoaderSystem.Instance.allScenes[i];
                 if (GUILayout.Button($"Load : {s.SceneName}", buttonStyle)) {
-                    if (PlayerController.Instance.interact.HasObject)
-                        PlayerController.Instance.interact.SetDropObjectDebug();
+                    if (PlayerController.Instance.Interact.HasObject)
+                        PlayerController.Instance.Interact.SetDropObjectDebug();
                     _ = GameSceneLoaderSystem.Instance.LoadSceneFromDebug(s);
                 }
             }

@@ -18,6 +18,8 @@ namespace _Project.Scripts.Player.Camera {
         
         private readonly CountdownTimer countdownTimer = new (0.1f);
         
+        private bool isInitialized;
+        
         private void Start() {
             col = GetComponent<BoxCollider>();
             extentSize = new Vector3(
@@ -29,23 +31,26 @@ namespace _Project.Scripts.Player.Camera {
             mask =  LayerMask.GetMask("Player");
         }
 
-        void OnEnable() {
+        public void Initialize() {
             countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
+            isInitialized = true;
         }
         
-        void OnDisable() {
+        private void OnDisable() {
             countdownTimer.Dispose();
         }
         
         private void Update() {
+            if(!isInitialized) return;
+            
             DetectPlayer();
         }
 
         private void DetectPlayer() {
-            if(Vector3.Distance(PlayerController.Instance.transform.position, transform.position) < 5f) return;
+            if(Vector3.Distance(PlayerController.Instance.transform.position, transform.position) > 5f) return;
             
             Size = Physics.OverlapBoxNonAlloc(transform.position, extentSize, playerCollider,
-                transform.rotation, mask);
+                Quaternion.identity, mask);
             
             if(Size == 0 && !isPlayerIn)
                 return;
@@ -62,7 +67,7 @@ namespace _Project.Scripts.Player.Camera {
         }
 
         private void SwitchCamera() {
-            var exitDir = (PlayerController.Instance.transform.position - transform.position);
+            var exitDir = (playerCollider[0].transform.position - transform.position);
             var localExitDir = transform.InverseTransformDirection(exitDir);
             
             countdownTimer.Start();
