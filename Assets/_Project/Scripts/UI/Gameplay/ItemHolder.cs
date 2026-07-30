@@ -41,8 +41,8 @@ namespace _Project.Scripts.UI.Gameplay {
                 return;
             }
 
-            if (PlayerController.Instance.interact.IsCarrying()) {
-                if(PlayerController.Instance.interact.GetCurrentInteractable().GetObjectType is ObjectType.Moveable)
+            if (PlayerController.Instance.Interact.IsCarrying()) {
+                if(PlayerController.Instance.Interact.GetCurrentInteractable().GetObjectType is ObjectType.Moveable)
                     return;
                 
                 inventoryManager.StopHoldingObject();

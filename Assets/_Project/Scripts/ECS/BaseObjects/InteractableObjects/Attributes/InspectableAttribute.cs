@@ -39,13 +39,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             isInspecting = !isInspecting;
 
             if (isInspecting) {
-                PlayerController.Instance.interact.SetIsFocus(true, baseObject);
+                PlayerController.Instance.Interact.SetIsFocus(true, baseObject);
                 PlayerController.Instance.FreezeController(true);
                 
                 EventBus<DocumentEvent>.Raise(new DocumentEvent{isOn = true, document =glassDocument });
             }
             else {
-                PlayerController.Instance.interact.SetIsFocus(false);
+                PlayerController.Instance.Interact.SetIsFocus(false);
                 PlayerController.Instance.FreezeController(false);
                 
                 EventBus<DocumentEvent>.Raise(new DocumentEvent{isOn = false, document =glassDocument });

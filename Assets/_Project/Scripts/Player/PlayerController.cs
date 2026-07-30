@@ -16,7 +16,7 @@ namespace _Project.Scripts.Player {
         
         public void Load(PlayerData data) {
             this.data = data;
-            movement.SetPosition(data.position, Direction.Up);
+            Movement.SetPosition(data.position, Direction.Up);
         }
         
         public void SaveData(PlayerData data) {
@@ -32,9 +32,10 @@ namespace _Project.Scripts.Player {
         [Header("Cine Machine Brain")]
         public CinemachineBrain cinemachineBrain;
         
-        public PlayerMovementController movement { get; private set; }
-        public PlayerInteract interact { get; private set; }
-        public PlayerInventory inventory { get; private set; }
+        public PlayerMovementController Movement { get; private set; }
+        public PlayerInteract Interact { get; private set; }
+        public PlayerInventory Inventory { get; private set; }
+        public PlayerIK PlayerIK { get; private set; }
         
         [Header("Animations Settings")]
         [SerializeField] private Animator animator;
@@ -54,19 +55,18 @@ namespace _Project.Scripts.Player {
             stateMachine = new StateMachine();
             // quick fix for that art part, need rework for the steam version
             cinemachineBrain.gameObject.SetActive(false);
-                
-            // Get every component needed
-            // if(TryGetComponent(out InputsBrain _input)) inputsBrain = _input;
-            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
             
-            if(TryGetComponent(out PlayerMovementController _movement)) movement = _movement;
+            if(TryGetComponent(out PlayerMovementController movement)) Movement = movement;
             else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
             
-            if(TryGetComponent(out PlayerInteract _interact)) interact = _interact;
+            if(TryGetComponent(out PlayerInteract interact)) Interact = interact;
             else Debug.LogWarning("[PlayerController] No PlayerInteract found");
             
-            if(TryGetComponent(out PlayerInventory _inventory)) inventory = _inventory;
+            if(TryGetComponent(out PlayerInventory inventory)) Inventory = inventory;
             else Debug.LogWarning("[PlayerController] No PlayerInventory found");
+            
+            if(TryGetComponent(out PlayerIK ik)) PlayerIK = ik;
+            else Debug.LogWarning("[PlayerController] No Player IK found");
             
             //Define state machine
             DefineState();
@@ -92,41 +92,41 @@ namespace _Project.Scripts.Player {
             
             //Define all states transitions
             //Locomotion State
-            At(locomotionState, fallState, new FuncPredicate(() => !movement.IsGrounded() && !interact.IsCarrying()));
-            At(fallState, locomotionState, new FuncPredicate(() => movement.IsGrounded() && !interact.IsCarrying()));
+            At(locomotionState, fallState, new FuncPredicate(() => !Movement.IsGrounded() && !Interact.IsCarrying()));
+            At(fallState, locomotionState, new FuncPredicate(() => Movement.IsGrounded() && !Interact.IsCarrying()));
             
             //Carrying State
-            At(locomotionState, grabObject, new FuncPredicate(() => interact.IsCarrying()));
-            At(grabObject, carryState, new FuncPredicate(() => interact.IsCarrying() && grabObject.IsClipFinished()));
-            At(grabObject, locomotionState, new  FuncPredicate(() => !interact.IsCarrying() && grabObject.IsClipFinished()));
+            At(locomotionState, grabObject, new FuncPredicate(() => Interact.IsCarrying()));
+            At(grabObject, carryState, new FuncPredicate(() => Interact.IsCarrying() && grabObject.IsClipFinished()));
+            At(grabObject, locomotionState, new  FuncPredicate(() => !Interact.IsCarrying() && grabObject.IsClipFinished()));
             
-            At(carryState, dropObject, new FuncPredicate(() => !interact.IsCarrying()));
-            At(dropObject, locomotionState, new FuncPredicate(() => !interact.IsCarrying() && dropObject.IsClipFinished()));
+            At(carryState, dropObject, new FuncPredicate(() => !Interact.IsCarrying()));
+            At(dropObject, locomotionState, new FuncPredicate(() => !Interact.IsCarrying() && dropObject.IsClipFinished()));
             
-            At(carryState, failedDropObject, new FuncPredicate(() => interact.triggerFailedDrop));
-            At(failedDropObject, carryState, new FuncPredicate(() => !interact.triggerFailedDrop && failedDropObject.IsClipFinished()));
+            At(carryState, failedDropObject, new FuncPredicate(() => Interact.triggerFailedDrop));
+            At(failedDropObject, carryState, new FuncPredicate(() => !Interact.triggerFailedDrop && failedDropObject.IsClipFinished()));
             
             /*At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
             At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));*/
             
             //Memory State
-            At(locomotionState, memoryState, new FuncPredicate(() => interact.IsInMemory));
-            At(carryState, memoryState, new FuncPredicate(() => interact.IsInMemory));
-            At(memoryState, leaveMemory, new FuncPredicate(() => !interact.IsInMemory));
+            At(locomotionState, memoryState, new FuncPredicate(() => Interact.IsInMemory));
+            At(carryState, memoryState, new FuncPredicate(() => Interact.IsInMemory));
+            At(memoryState, leaveMemory, new FuncPredicate(() => !Interact.IsInMemory));
             At(leaveMemory, locomotionState, new FuncPredicate(() => leaveMemory.IsClipFinished()));
             
             //Using door state
-            At(locomotionState, doorState, new FuncPredicate(() => interact.triggerDoor));
-            At(doorState, locomotionState, new FuncPredicate(() => !interact.triggerDoor && doorState.animationExitTimer.IsFinished));
+            At(locomotionState, doorState, new FuncPredicate(() => Interact.triggerDoor));
+            At(doorState, locomotionState, new FuncPredicate(() => !Interact.triggerDoor && doorState.animationExitTimer.IsFinished));
             /*At(carryState, doorState, new FuncPredicate(() => interact.UsingLockedDoor()));
             At(doorState, carryState, new FuncPredicate(() => !interact.UsingLockedDoor() && interact.IsCarrying()));*/
             
             //Failed Door
-            At(locomotionState, failedDoor, new FuncPredicate(() => interact.UsingLockedDoor()));
-            At(failedDoor, locomotionState, new FuncPredicate(() => !interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
+            At(locomotionState, failedDoor, new FuncPredicate(() => Interact.UsingLockedDoor()));
+            At(failedDoor, locomotionState, new FuncPredicate(() => !Interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
             
             //Obtenir un éclat de verre
-            At(locomotionState, obtainShardState, new FuncPredicate(() => interact.triggerShard));
+            At(locomotionState, obtainShardState, new FuncPredicate(() => Interact.triggerShard));
             At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
             
             //Entering Room State
@@ -169,26 +169,26 @@ namespace _Project.Scripts.Player {
         
         #region Movement Helper/Setter
 
-        public void UpdateMovement() => movement.HandleUpdate();
-        public void FixedUpdateMovement() => movement.HandleFixedUpdate();
-        public float SetAnimatorSpeed() => movement.SetAnimatorSpeed();
-        public void FreezeController(bool doFreeze) => movement.SetKinematic(doFreeze);
-        public bool IsFrozen() => movement.IsPlayerFrozen();
-        public void SetMoveSpeed(PlayerSpeedEnum speed) => movement.SetSpeed(speed);
-        public float GetRotationSpeed() => movement.playerConfig.rotationSpeed;
-        public Vector3 GetForwardDir() => movement.mesh.forward;
-        public Rigidbody GetRigidbody() => movement.GetRigidbody();
+        public void UpdateMovement() => Movement.HandleUpdate();
+        public void FixedUpdateMovement() => Movement.HandleFixedUpdate();
+        public float SetAnimatorSpeed() => Movement.SetAnimatorSpeed();
+        public void FreezeController(bool doFreeze) => Movement.SetKinematic(doFreeze);
+        public bool IsFrozen() => Movement.IsPlayerFrozen();
+        public void SetMoveSpeed(PlayerSpeedEnum speed) => Movement.SetSpeed(speed);
+        public float GetRotationSpeed() => Movement.playerConfig.rotationSpeed;
+        public Vector3 GetForwardDir() => Movement.mesh.forward;
+        public Rigidbody GetRigidbody() => Movement.GetRigidbody();
         #endregion
         
         #region Interaction Helper/Setter
-        public void UpdateInteraction() => interact.HandleUpdate(movement.PreviousMoveDir);
-        public void SetInteraction(bool canInteract) => interact.SetInteract(canInteract);
-        public void SetInMemory(bool inMemory) => interact.SetInMemory(inMemory);
-        public void SetDoorTriggered(bool triggeredDoor) => interact.triggerDoor = triggeredDoor;
-        public void SetFailedDrop(bool hasFailed) => interact.triggerFailedDrop = hasFailed;
-        public void SetShardTriggered(bool triggeredShard) => interact.triggerShard = triggeredShard;
-        public bool IsUsingDoor() => interact.IsUsingDoor();
-        public bool GetFailedDrop() => interact.triggerFailedDrop;
+        public void UpdateInteraction() => Interact.HandleUpdate(Movement.PreviousMoveDir);
+        public void SetInteraction(bool canInteract) => Interact.SetInteract(canInteract);
+        public void SetInMemory(bool inMemory) => Interact.SetInMemory(inMemory);
+        public void SetDoorTriggered(bool triggeredDoor) => Interact.triggerDoor = triggeredDoor;
+        public void SetFailedDrop(bool hasFailed) => Interact.triggerFailedDrop = hasFailed;
+        public void SetShardTriggered(bool triggeredShard) => Interact.triggerShard = triggeredShard;
+        public bool IsUsingDoor() => Interact.IsUsingDoor();
+        public bool GetFailedDrop() => Interact.triggerFailedDrop;
         #endregion
     }
 

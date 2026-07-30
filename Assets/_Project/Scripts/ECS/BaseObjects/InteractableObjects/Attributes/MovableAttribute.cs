@@ -16,6 +16,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 boundExtent;
         private Vector3 boundCenter;
+
+        [Header("Edges")] 
+        [SerializeField] public Transform rightEdge;
+        [SerializeField] public Transform leftEdge;
         
         [Header("Particles")]
         [SerializeField] private ParticleSystem particles;
@@ -97,10 +101,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void Tick(float deltaTime) {
-            if (!PlayerController.HasInstance || !PlayerController.Instance.interact || PlayerController.Instance.interact.GetCurrentInteractable() == null) 
+            if (!PlayerController.HasInstance || !PlayerController.Instance.Interact || PlayerController.Instance.Interact.GetCurrentInteractable() == null) 
                 return;  //C'est infame mais je sais pas ce qui cause une null ref
 
-            if (PlayerController.Instance.interact.GetCurrentInteractable().GetInteract as MovableAttribute == this && !isGrabbed) {
+            if (PlayerController.Instance.Interact.GetCurrentInteractable().GetInteract as MovableAttribute == this && !isGrabbed) {
                 OnGrab();
             }
         }
@@ -132,7 +136,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
@@ -142,7 +146,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnGrab(IInteractable other = null) {
-            PlayerController.Instance.interact.SetGrabbedObject(baseObject);
+            PlayerController.Instance.Interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
             baseObject.SetRenderer(true);
@@ -152,7 +156,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(baseObject.HasSceneElement())
                 baseObject.UnValidSceneElement();
             
-            transform.SetParent(PlayerController.Instance.interact.objectPos);
+            transform.SetParent(PlayerController.Instance.Interact.objectPos);
             TweenObjectOnPlayer();
 
             //Call audio
@@ -163,7 +167,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (other == null) {
                 
                 if(ObstructedSpace()) {
-                    PlayerController.Instance.interact.triggerFailedDrop = true;
+                    PlayerController.Instance.Interact.triggerFailedDrop = true;
                     return;
                 }
 
@@ -182,7 +186,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -202,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject();
         }
         
         #region OtherMethods
@@ -235,7 +239,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private bool ObstructedSpace() {
             var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
-            var dir = PlayerController.Instance.movement.mesh.forward;
+            var dir = PlayerController.Instance.Movement.mesh.forward;
 
             var maxDistance = 0.8f + boundCenter.z * 2f;
             
@@ -245,7 +249,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private Vector3 GetGroundPos() {
             var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
-            var dir = PlayerController.Instance.movement.mesh.forward;
+            var dir = PlayerController.Instance.Movement.mesh.forward;
 
             var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
             var mask = ~(1 << ignoreLayer);
