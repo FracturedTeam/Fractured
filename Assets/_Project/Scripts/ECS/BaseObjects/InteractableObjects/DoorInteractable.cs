@@ -32,8 +32,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if(hasBeenInteracted) return;
             
-            if (PlayerController.Instance.interact.HasObject) {
-                PlayerController.Instance.interact.triggerFailedDrop = true;
+            if (PlayerController.Instance.Interact.HasObject) {
+                PlayerController.Instance.Interact.triggerFailedDrop = true;
                 return;
             }
             
@@ -41,7 +41,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             hasBeenInteracted = true;
             
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().openBigDoorSound, transform.position);
-            PlayerController.Instance.interact.TriggerBigDoor(sceneToLoad, transform.position);
+            PlayerController.Instance.Interact.TriggerBigDoor(sceneToLoad, transform.position);
         }
 
         public void Tick(float deltaTime) {

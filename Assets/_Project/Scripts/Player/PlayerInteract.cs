@@ -332,11 +332,14 @@ namespace _Project.Scripts.Player {
         public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
             currentInteraction = interaction;
+            if(currentInteraction.GetInteract is MovableAttribute move)
+                player.PlayerIK.SetHoldingState(true, move.rightEdge, move.leftEdge);
         }
         
         public void SetDropObject() {
             HasObject = false;
             currentInteraction = null;
+            player.PlayerIK.SetHoldingState(false);
         }
         
         public void SetDropObjectDebug() {
