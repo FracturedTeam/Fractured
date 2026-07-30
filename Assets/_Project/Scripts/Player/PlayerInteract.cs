@@ -65,10 +65,10 @@ namespace _Project.Scripts.Player {
                 if(canInteract == value) return;
                 
                 canInteract = value;
-                EventBus<InteractEvent>.Raise(new InteractEvent {
-                    ShowInteraction = value,
-                    Interaction = interactionType
-                });
+                // EventBus<InteractEvent>.Raise(new InteractEvent {
+                //     ShowInteraction = value,
+                //     Interaction = interactionType
+                // });
             }
         }
         
@@ -194,7 +194,8 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if (!canPlayerInteract) return;
-
+            if(Time.frameCount % 4 != 0) return;
+            
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
@@ -256,7 +257,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
-                return;
             }
         }
 
