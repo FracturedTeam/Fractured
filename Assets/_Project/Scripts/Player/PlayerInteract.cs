@@ -63,12 +63,13 @@ namespace _Project.Scripts.Player {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-                
                 canInteract = value;
-                // EventBus<InteractEvent>.Raise(new InteractEvent {
-                //     ShowInteraction = value,
-                //     Interaction = interactionType
-                // });
+
+                if (value == false) {
+                    EventBus<InteractEvent>.Raise(new InteractEvent {
+                        ShowInteraction = false
+                    });
+                }
             }
         }
         
