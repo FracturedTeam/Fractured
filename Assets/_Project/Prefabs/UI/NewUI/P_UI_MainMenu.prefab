@@ -32,11 +32,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6355406667241908664}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 483.3191, y: 0}
-  m_SizeDelta: {x: -359.2271, y: 459.9999}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1560, y: 1539.9999}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2443627049283546875
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 6355406667241908664}
   - component: {fileID: 1357851657340601035}
   - component: {fileID: 1301125416816110332}
+  - component: {fileID: 6067202835777633319}
   m_Layer: 5
   m_Name: P_UI_MainMenu
   m_TagString: Untagged
@@ -260,6 +261,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6067202835777633319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5551649623088258892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19820b9accdd71a4b8424a9e7bcba799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  openingTime: 2
+  closingTime: 1
 --- !u!1 &6567800482056838174
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +733,14 @@ PrefabInstance:
     - target: {fileID: 3335211740767436389, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: m_Name
       value: P_MainMenuButton (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3776689330175131225, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: m_SizeDelta.x

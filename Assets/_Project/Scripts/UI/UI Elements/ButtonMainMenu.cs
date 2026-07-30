@@ -5,22 +5,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
-    public class ButtonUI : MonoBehaviour {
-        [Header("General Settings")]
-        [SerializeField] private bool settingsButtons;
-        
+    public class ButtonMainMenu : MonoBehaviour{
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;
         [SerializeField] private Color blueColor;
         
         [Header("background Settings")]
-        [SerializeField] private Image backgroundImage;
-        [SerializeField] private Sprite backgroundNormal;
-        [SerializeField] private Sprite backgroundHover;
+        [SerializeField] private CanvasGroup hoverGroup;
         
         [Header("Pressed Settings")]
         [SerializeField] private CanvasGroup pressedGroup;
@@ -48,19 +42,17 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(hovering ? scale * multiplicator : scale, tweenTime).SetUpdate(true);
             
             buttonText.color = hovering ? blueColor : whiteColor;
-            backgroundImage.sprite = hovering ? backgroundHover: backgroundNormal;
+            hoverGroup.DOFade(hovering ? 0.36f : 0f, 0.3f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(false);
         }
         public void OnClicked() {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
-
-            if (!settingsButtons) {
-                button.enabled = false;
-                buttonText.color = blueColor;
-                backgroundImage.gameObject.SetActive(false);
-                pressedGroup.gameObject.SetActive(true);
-                pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
-            }
+            
+            button.enabled = false;
+            buttonText.color = blueColor;
+            hoverGroup.alpha = 0.36f;
+            pressedGroup.gameObject.SetActive(true);
+            pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
             
@@ -71,12 +63,6 @@ namespace _Project.Scripts.UI {
             yield return new WaitForSecondsRealtime(callbackTime);
             
             onClickPostTimer?.Invoke();
-            
-            if (settingsButtons) {
-                pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
-                buttonText.color = blueColor;
-                backgroundImage.gameObject.SetActive(true);
-            }
         }
 
         private void OnEnable() {
@@ -84,8 +70,8 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
             
             buttonText.color = whiteColor;
-            backgroundImage.sprite = backgroundNormal;
-            backgroundImage.gameObject.SetActive(true);
+            hoverGroup.alpha = 0f;
+            hoverGroup.gameObject.SetActive(true);
             pressedGroup.gameObject.SetActive(false);
             pressedGroup.alpha = 0;
             
