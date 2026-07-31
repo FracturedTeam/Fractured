@@ -5,6 +5,7 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player.Camera;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.UI;
@@ -13,6 +14,8 @@ using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -31,9 +34,8 @@ namespace _Project.Scripts.GameServices {
         [Header("Audio Bank")]
         [SerializeField] private AudioBank audioBank;
         
-        [Header("ScreenEffect")]
-        [SerializeField] private Material screenEffectMat;
-        private float fadeTime = 1.0f;
+        [Header("PostProcess")]
+        [SerializeField] private VolumeProfile postProcess;
 
         [Header("ShardMaterials")] 
         [SerializeField] private Material chapter1A;
@@ -73,7 +75,7 @@ namespace _Project.Scripts.GameServices {
             InitializeGameSystems();
             
             //Shard Edition area Screen Effect
-            screenEffectMat.SetFloat("_Progression", 0f);
+            //screenEffectMat.SetFloat("_Progression", 0f);
         }
 
         private void InitializeGameSystems() {
@@ -149,19 +151,9 @@ namespace _Project.Scripts.GameServices {
         
         private void Update() {
             gameSystems.Tick();
-            
-            UpdateScreenEffect();
-        }
-
-        void UpdateScreenEffect() {
-            fadeTimer = InEditableArea() ? Mathf.Clamp(fadeTimer + Time.deltaTime, 0, fadeTime):
-                fadeTimer = Mathf.Clamp(fadeTimer - Time.deltaTime, 0, fadeTime);
-            
-            //screenEffectMat.SetFloat("_Progression", fadeTimer);
         }
         
         private void OnDisable() {
-            //screenEffectMat.SetFloat("_Progression", 0f);
             gameSystems.Dispose();
         }
 
@@ -219,6 +211,10 @@ namespace _Project.Scripts.GameServices {
 
         public void PopulateLevel(BaseObject[] baseObjects) {
             shardService.RepopulateBaseObjet(baseObjects);
+            var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
+            foreach (var cam in camSwitches) {
+                cam.Initialize();
+            }
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if(!initializeDebugger) return;
@@ -338,9 +334,9 @@ namespace _Project.Scripts.GameServices {
         {
             return index switch
             {
-                0 => GetSettings.MainVolume,
-                1 => GetSettings.MusicVolume,
-                2 => GetSettings.SFXVolume,
+                0 => GetSettings.mainVolume,
+                1 => GetSettings.sfxVolume,
+                2 => GetSettings.musicVolume,
                 _ => 0
             };
         }
@@ -384,6 +380,38 @@ namespace _Project.Scripts.GameServices {
         }
         
         #endregion
-       
+
+        public int GetPostProcess(int index) {
+            return index switch {
+                0 => GetSettings.brightness,
+                1 => GetSettings.contrast,
+            };
+        }
+
+        public ColorAdjustments GetColorAdjustments() {
+            postProcess.TryGet(out ColorAdjustments colorAdjustments);
+            return colorAdjustments;
+        }
+
+        public VolumeProfile GetVolumeProfile() {
+            return postProcess;
+        }
+        
+        public void SetPostProcess(int index, int value) {
+            postProcess.TryGet(out ColorAdjustments color);
+
+            switch (index) {
+                case 0:
+                    color.postExposure.value = value;
+                    GetSettings.brightness = value;
+                    break;
+                case 1:
+                    color.contrast.value = value;
+                    GetSettings.contrast = value;
+                    break;
+            }
+            
+            SaveSettings();
+        }
     }
 }

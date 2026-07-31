@@ -63,12 +63,13 @@ namespace _Project.Scripts.Player {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-                
                 canInteract = value;
-                EventBus<InteractEvent>.Raise(new InteractEvent {
-                    ShowInteraction = value,
-                    Interaction = interactionType
-                });
+
+                if (value == false) {
+                    EventBus<InteractEvent>.Raise(new InteractEvent {
+                        ShowInteraction = false
+                    });
+                }
             }
         }
         
@@ -123,7 +124,6 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
-                // potentialInteraction = null;
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
@@ -195,7 +195,8 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if (!canPlayerInteract) return;
-
+            if(Time.frameCount % 4 != 0) return;
+            
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
@@ -257,7 +258,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
-                return;
             }
         }
 
