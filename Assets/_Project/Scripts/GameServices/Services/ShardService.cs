@@ -67,6 +67,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
+            if(Time.frameCount % 4 != 0) return;
+            
             foreach (var glassInteractable in shardsInteractable) {
                 SetShardState(glassInteractable);
             }

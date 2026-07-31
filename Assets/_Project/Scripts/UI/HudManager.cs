@@ -19,6 +19,7 @@ namespace _Project.Scripts.UI
         [field:SerializeField] public Transform glassHolder {get; private set;}
         public InteractionHUD interact {get; private set;}
         public MemoryHUD memory {get; private set;}
+        public PadlockHud padLock {get; private set;}
         
         
         private EventBinding<DocumentEvent> documentEventBinding;
@@ -50,6 +51,7 @@ namespace _Project.Scripts.UI
             
             interact = GetComponent<InteractionHUD>();
             memory = GetComponent<MemoryHUD>();
+            padLock = GetComponent<PadlockHud>();
         }
 
         private void OnEnable() {

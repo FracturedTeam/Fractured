@@ -198,6 +198,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void Update() {
+            if(Time.frameCount % 2 != 0) return;
+            
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
         }

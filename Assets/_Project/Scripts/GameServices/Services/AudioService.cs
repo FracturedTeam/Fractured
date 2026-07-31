@@ -52,26 +52,21 @@ namespace _Project.Scripts.GameServices.Services {
             settingData = GameInitializer.Instance.GetSettings;
         }
 
-        public void Tick()
-        {
-            
-        }
+        public void Tick() { }
 
-        public void SetSound(int index, float newValue)
-        {
-            switch (index)
-            {
+        public void SetSound(int index, float newValue) {
+            switch (index) {
                 case 0:
                     masterBus.setVolume(newValue);
-                    settingData.MainVolume = newValue;
+                    settingData.mainVolume = newValue;
                     break;
                 case 1:
-                    musicBus.setVolume(newValue);
-                    settingData.MusicVolume = newValue;
+                    sfxBus.setVolume(newValue);
+                    settingData.sfxVolume = newValue;
                     break;
                 case 2:
-                    sfxBus.setVolume(newValue);
-                    settingData.SFXVolume = newValue;
+                    musicBus.setVolume(newValue);
+                    settingData.musicVolume = newValue;
                     break;
             }
             
