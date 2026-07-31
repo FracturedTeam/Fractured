@@ -36,7 +36,7 @@ namespace _Project.Scripts.UI {
             allResolutions = Screen.resolutions;
             
             var options = new List<string>();
-            var savedIndex = settingData.ScreenResolutionIndex;
+            var savedIndex = settingData.screenResolutionIndex;
             var currentIndex = savedIndex;
 
             for (var i = 0; i < allResolutions.Length; i++) {
@@ -64,7 +64,7 @@ namespace _Project.Scripts.UI {
                 "Windowed"
             });
 
-            var saved = settingData.FullScreenMode;
+            var saved = settingData.fullScreenMode;
             fullscreenDropDown.value = saved;
             fullscreenDropDown.RefreshShownValue();
             fullscreenDropDown.onValueChanged.AddListener(OnFullscreenChanged);
@@ -85,14 +85,14 @@ namespace _Project.Scripts.UI {
             var res = allResolutions[index];
             Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
             
-            settingData.ScreenResolutionIndex = index;
+            settingData.screenResolutionIndex = index;
             GameInitializer.Instance.SaveSettings();
         }
     
         private void OnFullscreenChanged(int index) {
             Screen.fullScreenMode = (FullScreenMode)index;
             
-            settingData.FullScreenMode = index;
+            settingData.fullScreenMode = index;
             GameInitializer.Instance.SaveSettings();
         }
 

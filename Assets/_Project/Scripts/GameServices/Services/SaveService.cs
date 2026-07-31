@@ -20,14 +20,15 @@ namespace _Project.Scripts.GameServices.Services {
     
     [Serializable]
     public class SettingData {
-        public float MainVolume;
-        public float MusicVolume;
-        public float SFXVolume;
-        public int ScreenResolutionIndex;
-        public int FullScreenMode;
+        public float mainVolume;
+        public float musicVolume;
+        public float sfxVolume;
+        public int screenResolutionIndex;
+        public int fullScreenMode;
         public bool vSyncEnabled;
-        public float Brightness;
-        public int SubtitleSize;
+        public int brightness;
+        public int contrast;
+        public int subtitleSize;
     }
     
     public class SaveService : IGameSystem {
@@ -88,14 +89,13 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void NewSettings() {
             SettingData = new SettingData() { 
-                MainVolume = 1f, 
-                MusicVolume = 1f,
-                SFXVolume = 1f,
-                ScreenResolutionIndex = -1,
-                //FullScreenMode = (int)PlayerSettings.fullScreenMode,
+                mainVolume = 1f, 
+                musicVolume = 1f,
+                sfxVolume = 1f,
+                screenResolutionIndex = -1,
                 vSyncEnabled = true,
-                Brightness = 1,
-                SubtitleSize = 16
+                brightness = (int)GameInitializer.Instance.GetColorAdjustments().postExposure.value,
+                contrast = (int)GameInitializer.Instance.GetColorAdjustments().contrast.value
             };
         }
         

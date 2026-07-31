@@ -14,6 +14,8 @@ using FMODUnity;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -32,9 +34,8 @@ namespace _Project.Scripts.GameServices {
         [Header("Audio Bank")]
         [SerializeField] private AudioBank audioBank;
         
-        [Header("ScreenEffect")]
-        [SerializeField] private Material screenEffectMat;
-        private float fadeTime = 1.0f;
+        [Header("PostProcess")]
+        [SerializeField] private VolumeProfile postProcess;
 
         [Header("ShardMaterials")] 
         [SerializeField] private Material chapter1A;
@@ -333,9 +334,9 @@ namespace _Project.Scripts.GameServices {
         {
             return index switch
             {
-                0 => GetSettings.MainVolume,
-                1 => GetSettings.MusicVolume,
-                2 => GetSettings.SFXVolume,
+                0 => GetSettings.mainVolume,
+                1 => GetSettings.sfxVolume,
+                2 => GetSettings.musicVolume,
                 _ => 0
             };
         }
@@ -379,6 +380,34 @@ namespace _Project.Scripts.GameServices {
         }
         
         #endregion
-       
+
+        public int GetPostProcess(int index) {
+            return index switch {
+                0 => GetSettings.brightness,
+                1 => GetSettings.contrast,
+            };
+        }
+
+        public ColorAdjustments GetColorAdjustments() {
+            postProcess.TryGet(out ColorAdjustments colorAdjustments);
+            return colorAdjustments;
+        }
+        
+        public void SetPostProcess(int index, int value) {
+            postProcess.TryGet(out ColorAdjustments color);
+
+            switch (index) {
+                case 0:
+                    color.postExposure.value = value;
+                    GetSettings.brightness = value;
+                    break;
+                case 1:
+                    color.contrast.value = value;
+                    GetSettings.contrast = value;
+                    break;
+            }
+            
+            SaveSettings();
+        }
     }
 }
