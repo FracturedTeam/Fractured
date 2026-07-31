@@ -3,11 +3,9 @@ using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
-using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
