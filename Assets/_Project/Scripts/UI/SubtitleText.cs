@@ -33,8 +33,7 @@ namespace _Project.Scripts.UI
                 tween = textCanva.DOFade(0, 0.5f);
                 textCanva.blocksRaycasts = false;
                 textCanva.interactable = false;
-            
-                //text.text = "";
+                
                 dialogue = null;
                 return;
             }

@@ -64,7 +64,7 @@ namespace _Project.Scripts.GameServices {
             if (GameSceneSettings.HasInstance) {
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 
-                PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+                PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
                 
                 // GameInitializer.Instance.SaveData();
                 // PlayerController.Instance.triggerEnterRoom = true;
@@ -90,7 +90,7 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.LoadData();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
-            PlayerController.Instance.movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+            PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
         }
         
 #endif
@@ -158,7 +158,7 @@ namespace _Project.Scripts.GameServices {
                 await LoadSceneAsync(sceneSettings.levelDesign);
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
-                PlayerController.Instance.movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
+                PlayerController.Instance.Movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
                 await Task.Yield();
                 PlayerController.Instance.triggerEnterRoom = true;
 

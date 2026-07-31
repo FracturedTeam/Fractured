@@ -17,7 +17,7 @@ namespace _Project.Scripts.Player {
         public bool ShowInteraction;
         public Interaction Interaction;
         public string ObjectName;
-        public Vector3 position;
+        public Vector3 Position;
     }
     
     public class PlayerInteract : MonoBehaviour {
@@ -63,12 +63,13 @@ namespace _Project.Scripts.Player {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-                
                 canInteract = value;
-                EventBus<InteractEvent>.Raise(new InteractEvent {
-                    ShowInteraction = value,
-                    Interaction = interactionType
-                });
+
+                if (value == false) {
+                    EventBus<InteractEvent>.Raise(new InteractEvent {
+                        ShowInteraction = false
+                    });
+                }
             }
         }
         
@@ -123,7 +124,6 @@ namespace _Project.Scripts.Player {
                 DropObject();
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
-                // potentialInteraction = null;
             }
             else
                 Debug.Log("[PlayerInteract] No object to interact with...");
@@ -185,7 +185,6 @@ namespace _Project.Scripts.Player {
                     }
                 }
             }
-            
             if (IsFocus) return;
             
             HandleInteraction();
@@ -196,7 +195,8 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if (!canPlayerInteract) return;
-
+            if(Time.frameCount % 4 != 0) return;
+            
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
@@ -228,7 +228,7 @@ namespace _Project.Scripts.Player {
             }
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
-                if (!potentialInteraction) return;
+                if (!potentialInteraction || !potentialInteraction.transform) return;
 
                 var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
                 var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
@@ -258,7 +258,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
-                return;
             }
         }
 
@@ -310,14 +309,11 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void RaiseInteraction() {
-            if (!hud) 
-                hud = HudManager.Instance.interact;
-            
             EventBus<InteractEvent>.Raise(new InteractEvent {
                 ShowInteraction = canInteract,
                 Interaction = interactionType,
                 ObjectName = potentialInteraction?.ObjectName,
-                position = (Vector3)potentialInteraction?.GetUIPosition(),
+                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector3.zero
             });
         }
         
@@ -332,11 +328,14 @@ namespace _Project.Scripts.Player {
         public void SetGrabbedObject(BaseObject interaction) {
             HasObject = true;
             currentInteraction = interaction;
+            if(currentInteraction.GetInteract is MovableAttribute move)
+                player.PlayerIK.SetHoldingState(true, move.rightEdge, move.leftEdge);
         }
         
         public void SetDropObject() {
             HasObject = false;
             currentInteraction = null;
+            player.PlayerIK.SetHoldingState(false);
         }
         
         public void SetDropObjectDebug() {

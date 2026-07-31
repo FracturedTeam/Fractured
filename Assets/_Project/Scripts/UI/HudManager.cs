@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.EventBus;
@@ -21,6 +19,7 @@ namespace _Project.Scripts.UI
         [field:SerializeField] public Transform glassHolder {get; private set;}
         public InteractionHUD interact {get; private set;}
         public MemoryHUD memory {get; private set;}
+        public PadlockHud padLock {get; private set;}
         
         
         private EventBinding<DocumentEvent> documentEventBinding;
@@ -52,6 +51,7 @@ namespace _Project.Scripts.UI
             
             interact = GetComponent<InteractionHUD>();
             memory = GetComponent<MemoryHUD>();
+            padLock = GetComponent<PadlockHud>();
         }
 
         private void OnEnable() {

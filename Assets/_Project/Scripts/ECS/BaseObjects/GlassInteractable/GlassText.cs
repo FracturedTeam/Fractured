@@ -74,6 +74,12 @@ public class GlassText : MonoBehaviour
     public void Appear()
     {
         SetAlpha( 1, 1);
+    }    
+    
+    [ContextMenu("Manually Disappear")]
+    public void Disappear()
+    {
+        SetAlpha( 0, 1);
     }
 
     internal void OnInteract(bool isColliding, Glass shard)

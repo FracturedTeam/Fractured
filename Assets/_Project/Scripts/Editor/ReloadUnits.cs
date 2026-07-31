@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using _Project.Scripts.ScriptableObjects;
@@ -9,7 +10,18 @@ using UnityEngine.UIElements;
 public class DialogueEditor : EditorWindow
 {
     private string emplacement = "Assets/DialogueSheet.csv";
-    private string output = "Assets/";
+    private string outputA1 = "Assets/_Project/TextScriptable_Txt_At1";
+    private string outputA2 = "Assets/_Project/TextScriptable_Txt_At2";
+    private string outputA3 = "Assets/_Project/TextScriptable_Txt_At3";
+    private string outputA4 = "Assets/_Project/TextScriptable_Txt_At4";
+    private string outputA5 = "Assets/_Project/TextScriptable_Txt_At5";
+    private string outputT0 = "Assets/_Project/TextScriptable_Txt_Tran0";
+    private string outputT1 = "Assets/_Project/TextScriptable_Txt_Tran1_2";
+    private string outputT2 = "Assets/_Project/TextScriptable_Txt_Tran2_3";
+    private string outputT3 = "Assets/_Project/TextScriptable_Txt_Tran3_4";
+    private string outputT4 = "Assets/_Project/TextScriptable_Txt_Tran4_5";
+    
+    private string otherEmplacement = "Assets/_Project/TextScriptable_Txt_Other";
     [MenuItem("Window/Reload Dialogue")]
     public static void ShowMyEditor()
     {
@@ -21,8 +33,31 @@ public class DialogueEditor : EditorWindow
   {
       GUILayout.Label("Path to the datatable : ");
       emplacement = GUILayout.TextField(emplacement, 128);
-      GUILayout.Label("Path to the output folder :");
-      output = GUILayout.TextField(output, 128);
+      
+      GUILayout.Label("Path to the output folder Atelier 1 :");
+      outputA1 = GUILayout.TextField(outputA1, 128);
+      GUILayout.Label("Path to the output folder Atelier 2 :");
+      outputA2 = GUILayout.TextField(outputA2, 128);
+      GUILayout.Label("Path to the output folder Atelier 3 :");
+      outputA3 = GUILayout.TextField(outputA3, 128);
+      GUILayout.Label("Path to the output folder Atelier 4 :");
+      outputA4 = GUILayout.TextField(outputA4, 128);
+      GUILayout.Label("Path to the output folder Atelier 5 :");
+      outputA5 = GUILayout.TextField(outputA5, 128);
+      
+      GUILayout.Label("Path to the output folder Transition 0-1 :");
+      outputT0 = GUILayout.TextField(outputT0, 128);
+      GUILayout.Label("Path to the output folder Transition 1-2 :");
+      outputT1 = GUILayout.TextField(outputT1, 128);
+      GUILayout.Label("Path to the output folder Transition 2-3 :");
+      outputT2 = GUILayout.TextField(outputT2, 128);
+      GUILayout.Label("Path to the output folder Transition 3-4 :");
+      outputT3 = GUILayout.TextField(outputT3, 128);
+      GUILayout.Label("Path to the output folder Transition 4-5 :");
+      outputT4 = GUILayout.TextField(outputT4, 128);
+      
+      GUILayout.Label("Path to the output folder other :");
+      otherEmplacement = GUILayout.TextField(otherEmplacement, 128);
       
       if (GUILayout.Button("Reload"))
       {
@@ -31,12 +66,7 @@ public class DialogueEditor : EditorWindow
               Debug.LogError("ERROR : no unit sheet found");
               return;
           }
-          if(!Directory.Exists(output))
-          {
-              Debug.LogError("ERROR : output folder does not exist or is incorrect");
-              return;
-          }
-          
+         
           var dataset = (TextAsset)AssetDatabase.LoadAssetAtPath(emplacement, typeof(TextAsset)) ;
           var dataLines = dataset.text.Split('\n');
           var dataCol =dataset.text.Split(";");
@@ -49,7 +79,39 @@ public class DialogueEditor : EditorWindow
               if(dataLines[i].Split(";").Length < 5) return;
 
               var soName = "SO";
-              soName += dataLines[i].Split(";")[0] == "Atelier 1" ? "_1" :  dataLines[i].Split(";")[0] == "Atelier 2" ? "_2" : "_3"; //Atelier
+
+              soName += (dataLines[i].Split(";")[0]) switch //Atelier
+              {
+                  "Atelier 1" => "_1",
+                  "Atelier 2" => "_2",
+                  "Atelier 3" => "_3",
+                  "Atelier 4" => "_4",
+                  "Atelier 5" => "_5",
+                  
+                  "Transition 0" => "_0T1",
+                  "Transition 1-2" => "_1T2",
+                  "Transition 2-3" => "_2T3",
+                  "Transition 3-4" => "_3T4",
+                  "Transition 4-5" => "_4T5",
+                  _ => throw new ArgumentOutOfRangeException()
+              };
+              
+              var output= (dataLines[i].Split(";")[0]) switch //Atelier
+              {
+                  "Atelier 1" => Directory.Exists(outputA1) ? outputA1 : otherEmplacement,
+                  "Atelier 2" => Directory.Exists(outputA2) ? outputA2 : otherEmplacement,
+                  "Atelier 3" => Directory.Exists(outputA3) ? outputA3 : otherEmplacement,
+                  "Atelier 4" => Directory.Exists(outputA4) ? outputA4 : otherEmplacement,
+                  "Atelier 5" => Directory.Exists(outputA5) ? outputA5 : otherEmplacement,
+                  
+                  "Transition 0" => Directory.Exists(outputT0) ? outputT0 : otherEmplacement,
+                  "Transition 1-2" => Directory.Exists(outputT1) ? outputT1 : otherEmplacement,
+                  "Transition 2-3" => Directory.Exists(outputT2) ? outputT2 : otherEmplacement,
+                  "Transition 3-4" => Directory.Exists(outputT3) ? outputT3 : otherEmplacement,
+                  "Transition 4-5" => Directory.Exists(outputT4) ? outputT4 : otherEmplacement,
+                  _ => otherEmplacement
+              };
+              
               soName += dataLines[i].Split(";")[1] == "Scene 1" ? "_1" :  dataLines[i].Split(";")[1] == "Scene 2" ? "_2" : "_3"; //Scene
               
               if(dataLines[i].Split(";")[5] == "Thought")

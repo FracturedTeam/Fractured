@@ -42,8 +42,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             GameInitializer.Instance.SetShardsOnOff(!isUsingLock);
 
-            PlayerController.Instance.interact.SetIsFocus(isUsingLock, baseObject);
-            PlayerController.Instance.interact.SetGlassInteraction(!isUsingLock);
+            PlayerController.Instance.Interact.SetIsFocus(isUsingLock, baseObject);
+            PlayerController.Instance.Interact.SetGlassInteraction(!isUsingLock);
             PlayerController.Instance.FreezeController(isUsingLock);
             
             if(isUsingLock) BindInputs();
@@ -58,8 +58,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
                 GameInitializer.Instance.SetShardsOnOff(!isUsingLock);
 
-                PlayerController.Instance.interact.SetIsFocus(isUsingLock, baseObject);
-                PlayerController.Instance.interact.SetGlassInteraction(!isUsingLock);
+                PlayerController.Instance.Interact.SetIsFocus(isUsingLock, baseObject);
+                PlayerController.Instance.Interact.SetGlassInteraction(!isUsingLock);
                 PlayerController.Instance.FreezeController(isUsingLock);
                 
                 UnbindInputs();

@@ -222,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2987042429224346427}
   - component: {fileID: 1428985839186558677}
+  - component: {fileID: 5142792117425029539}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -299,10 +300,40 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.5
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5142792117425029539}
+        m_TargetAssemblyTypeName: _Project.Scripts.UI.SliderUI, Assembly-CSharp
+        m_MethodName: OnSliderValueChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5142792117425029539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3051860556521809645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bdaaaf2fc14d2fb35960934e39e9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.SliderUI
+  hoverGroup: {fileID: 7810559083395182504}
+  easeType: 27
+  percentText: {fileID: 7498558918174107799}
+  optionType: 0
+  volumeType: 0
+  graphicsType: 0
 --- !u!1 &3801309509332605849
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +702,10 @@ PrefabInstance:
     - target: {fileID: 4265382514466001243, guid: 36baf33f04466fd4e862d19e710792cc, type: 3}
       propertyPath: m_Name
       value: P_SettingsBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 4265382514466001243, guid: 36baf33f04466fd4e862d19e710792cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8280984873143670184, guid: 36baf33f04466fd4e862d19e710792cc, type: 3}
       propertyPath: m_Pivot.x

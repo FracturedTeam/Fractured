@@ -55,7 +55,6 @@ namespace _Project.Scripts.Player {
         public Vector3 PreviousMoveDir { get; private set; } // Keep last inputs joueur de direction
         private Vector3 slopeMoveDir; // Si le joueur est sur une slope
         
-        private Vector3 rawMoveDir; // Inputs joueur de direction
         private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
         private Vector3 newForwardDir, newRightDir;
         private bool newCamDirBuffer;
@@ -69,6 +68,10 @@ namespace _Project.Scripts.Player {
         private float lerpCameraDirTime;
 
         private readonly CountdownTimer switchCameraBuffer = new(0.15f);
+
+        private bool isGrounded;
+        private bool isOnSlope;
+        private bool isAgainstWall;
         
         public void Awake() {
             if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
@@ -92,7 +95,6 @@ namespace _Project.Scripts.Player {
 
         private void SetDir(Vector2 moveInput) {
             moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
-            rawMoveDir = moveInput;
             
             if (!InputsBrain.Instance.IsKeyboardControl && moveInput != Vector2.zero && !switchCameraBuffer.IsRunning) {
                 switchCameraBuffer.Start();
@@ -115,12 +117,13 @@ namespace _Project.Scripts.Player {
             
             MeshRotation();
             CheckMethods();
-            UpdateDrag();
 
             HandleCamera();
         }
 
         private void HandleCamera() {
+            if(Time.frameCount % 4 != 0) return;
+            
             UpdateMoveDir();
 
             var forwardAngle = Vector3.Dot(newForwardDir, Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized);
@@ -184,7 +187,7 @@ namespace _Project.Scripts.Player {
             HandleAcceleration();
             HandlingSlope();
 
-            if (IsGrounded()) {
+            if (isGrounded) {
                 CurrentFallSpeed = 0;
                 currentTimeToFall = 0;
             }
@@ -196,7 +199,7 @@ namespace _Project.Scripts.Player {
         }
 
         private void HandleTimeBeforeMoving() {
-            if (IsAgainstWall()) {
+            if (isAgainstWall) {
                 TimeBeforeMoving = 0;
                 return;
             }
@@ -221,7 +224,7 @@ namespace _Project.Scripts.Player {
         }
 
         private void HandleAcceleration() {
-            if (moveDir.magnitude > 0 && TimeBeforeMoving >= playerConfig.timeBeforeMoving && !IsAgainstWall()) {
+            if (moveDir.magnitude > 0 && TimeBeforeMoving >= playerConfig.timeBeforeMoving && !isAgainstWall) {
                 AccelTime += Time.deltaTime;
                 DecelTime -= Time.deltaTime;
             
@@ -246,61 +249,61 @@ namespace _Project.Scripts.Player {
         }
 
         private void HandlingSlope() {
-            rb.useGravity = !IsOnSlope();
+            rb.useGravity = !isOnSlope;
 
-            if (!IsOnSlope()) {
+            if (!isOnSlope) {
                 currentSlopeMult = 1;
                 return;
             }
 
             currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
-            // if (IsClimbingSlope())
-            //     currentSlopeMult = Mathf.Lerp(1, playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
-            // else 
-            //     currentSlopeMult = 1 + Mathf.Lerp(0, 1 - playerConfig.maxSlopeDecreaseSpeed, CurrentSlopeAngle / playerConfig.maxSlopeAngle);
-        }
-
-        private void UpdateDrag() {
-            if(IsGrounded() && !Mathf.Approximately(currentDrag, playerConfig.groundDrag)) {
-                currentDrag = playerConfig.groundDrag;
-                rb.linearDamping = currentDrag;
-            }
-            else if (!IsGrounded() && !Mathf.Approximately(currentDrag, playerConfig.airDrag)) {
-                currentDrag = playerConfig.airDrag;
-                rb.linearDamping = playerConfig.airDrag;
-            }
         }
 
         #region ApplyMovementForces
 
         public void HandleFixedUpdate() {
-            if(rb.isKinematic) return;
-            
-            if (player.IsUsingDoor()) return;
+            if (rb.isKinematic || player.IsUsingDoor()) return;
 
-            if(moveDir.magnitude > 0)
-                StepStairs();
+            isGrounded = IsGrounded();
+            isOnSlope = IsOnSlope();
+            isAgainstWall = IsAgainstWall();
             
-            if (!IsGrounded())
+            UpdateDrag();
+            StepStairs();
+            
+            if (!isGrounded)
                 rb.AddForce(Vector3.down * CurrentFallSpeed, ForceMode.Acceleration);
         
             PlayerMove();
         }
 
+        private void UpdateDrag() {
+            if(isGrounded && currentDrag != playerConfig.groundDrag) {
+                currentDrag = playerConfig.groundDrag;
+                rb.linearDamping = currentDrag;
+            }
+            else if (!isGrounded && currentDrag != playerConfig.airDrag) {
+                currentDrag = playerConfig.airDrag;
+                rb.linearDamping = playerConfig.airDrag;
+            }
+        }
+        
         private void StepStairs() {
-            if (Physics.Raycast(feetPosition.position + Vector3.up * 0.1f, mesh.forward, lowerHit)) {
-                if (!Physics.Raycast(feetPosition.position + Vector3.up * stepHeight, mesh.forward, upperHit)) {
-                    rb.position -= new Vector3(0f, -stepHeigtSmoothing * Time.fixedDeltaTime, 0f);
-                }
+            if(moveDir.magnitude == 0) return;
+
+            if (!Physics.Raycast(feetPosition.position + Vector3.up * 0.1f, mesh.forward, lowerHit)) return;
+            
+            if (!Physics.Raycast(feetPosition.position + Vector3.up * stepHeight, mesh.forward, upperHit)) {
+                rb.position -= new Vector3(0f, -stepHeigtSmoothing * Time.fixedDeltaTime, 0f);
             }
         }
 
         private void PlayerMove() {
-            if (!IsGrounded())
+            if (!isGrounded)
                 rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult * playerConfig.airMoveMult), ForceMode.Acceleration);
-            else if (!IsOnSlope())
+            else if (!isOnSlope)
                 rb.AddForce(PreviousMoveDir.normalized * (CurrentSpeed * playerConfig.moveMult), ForceMode.Acceleration);
-            else if(IsGrounded() && IsOnSlope())
+            else if(isGrounded && isOnSlope)
                 rb.AddForce(slopeMoveDir.normalized * (CurrentSpeed * currentSlopeMult * playerConfig.moveMult), ForceMode.Acceleration);
         }
     
@@ -340,7 +343,7 @@ namespace _Project.Scripts.Player {
         public float SetAnimatorSpeed() {
             if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
-            if (moveDir.magnitude > 0 && !IsAgainstWall()) 
+            if (moveDir.magnitude > 0 && !isAgainstWall) 
                 return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, LerpTime);
         
             return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, LerpTime);
@@ -376,7 +379,7 @@ namespace _Project.Scripts.Player {
                     return angle <= playerConfig.maxSlopeAngle && angle != 0;
                 }
             }
-
+        
             CurrentSlopeAngle = 0;
             return false;
         }
@@ -389,13 +392,12 @@ namespace _Project.Scripts.Player {
         }
         
         private bool IsAgainstWall() {
-            var dir = moveDir.normalized;
-            if (IsOnSlope()) dir = slopeMoveDir;
+            var dir = isOnSlope ? slopeMoveDir : moveDir.normalized;
             
-            var groundLayer = LayerMask.GetMask("Walkable");
+            var walkable = LayerMask.GetMask("Walkable");
             
-            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f, ~groundLayer);
-
+            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f, ~walkable);
+        
             if (!hit.collider) return false;
             if(hit.collider.isTrigger) return false;
             
