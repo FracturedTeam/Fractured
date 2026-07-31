@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
     public class ButtonMainMenu : MonoBehaviour{
@@ -32,13 +33,19 @@ namespace _Project.Scripts.UI {
         private Vector3 scale;
         private Tweener tweener;
         
+        private Image backgroundImg;
+        
         private void Awake() {
             scale = transform.localScale;
             if(TryGetComponent(typeof(EventTrigger), out var btn))
                 button = (EventTrigger)btn;
+            if(TryGetComponent(out Image img))
+                backgroundImg = img;
         }
 
         public void OnHover(bool hovering) {
+            if(!button.enabled) hovering = false;
+            
             tweener = transform.DOScale(hovering ? scale * multiplicator : scale, tweenTime).SetUpdate(true);
             
             buttonText.color = hovering ? blueColor : whiteColor;
@@ -50,7 +57,8 @@ namespace _Project.Scripts.UI {
             
             button.enabled = false;
             buttonText.color = blueColor;
-            hoverGroup.alpha = 0.36f;
+            backgroundImg.enabled = false;
+            hoverGroup.DOFade(0, 0.15f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(true);
             pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
             
@@ -68,7 +76,7 @@ namespace _Project.Scripts.UI {
         private void OnEnable() {
             //sometimes the OnHover false of the disable doesn't work, this fixes it 
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
-            
+            backgroundImg.enabled = true;
             buttonText.color = whiteColor;
             hoverGroup.alpha = 0f;
             hoverGroup.gameObject.SetActive(true);

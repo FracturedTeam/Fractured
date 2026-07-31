@@ -13,6 +13,7 @@ namespace _Project.Scripts.UI {
         [Header("Display Settings")]
         [SerializeField] private DropDownUI fullscreenDropDown;
         [SerializeField] private DropDownUI resolutionDropDown;
+        [SerializeField] private DropDownUI qualityDropDown;
         [SerializeField] private Toggle vSync;
         [SerializeField] private Toggle depthOfField;
         [SerializeField] private Toggle chromaticAberration;
@@ -22,11 +23,13 @@ namespace _Project.Scripts.UI {
         private SettingData settingData;
         
         void Start() {
-            if (GameInitializer.HasInstance)
-                settingData = GameInitializer.Instance.GetSettings;
+            if (!GameInitializer.HasInstance) return;
+            
+            settingData = GameInitializer.Instance.GetSettings;
             
             InitResolutionsDropdown();
             InitFullscreenDropdown();
+            InitQualityDropdown();
             InitVSyncToggle();
             InitChromaticToggle();
             InitDOFToggle();
@@ -176,16 +179,31 @@ namespace _Project.Scripts.UI {
         private void InitFullscreenDropdown() {
             fullscreenDropDown.ClearOptions();
             fullscreenDropDown.AddOptions(new List<string> { 
-                "Exclusive Fullscreen",
-                "Fullscreen Window",
+                "Windowed",
                 "Maximized Window",
-                "Windowed"
+                "Fullscreen Window",
+                "Exclusive Fullscreen"
             });
 
-            var saved = settingData?.fullScreenMode ?? 0;
+            var saved = settingData?.fullScreenMode ?? 3;
             fullscreenDropDown.value = saved;
             fullscreenDropDown.OnValueChanged += OnFullscreenChanged;
             fullscreenDropDown.RefreshShownValue();
+        }
+
+        private void InitQualityDropdown() {
+            qualityDropDown.ClearOptions();
+            qualityDropDown.AddOptions(new List<string> {
+                "Low",
+                "Medium",
+                "High",
+                "Ultra"
+            });
+
+            var saved = settingData?.quality ?? 3;
+            qualityDropDown.value = saved;
+            qualityDropDown.OnValueChanged += OnQualityChanged;
+            qualityDropDown.RefreshShownValue();
         }
 
         void InitVSyncToggle() {
@@ -229,6 +247,13 @@ namespace _Project.Scripts.UI {
             Screen.fullScreenMode = (FullScreenMode)index;
             
             settingData.fullScreenMode = index;
+            GameInitializer.Instance.SaveSettings();
+        }
+        
+        private void OnQualityChanged(int index) {
+            QualitySettings.SetQualityLevel(index, true);
+            
+            settingData.quality = index;
             GameInitializer.Instance.SaveSettings();
         }
 

@@ -25,6 +25,7 @@ namespace _Project.Scripts.GameServices.Services {
         public float sfxVolume;
         public int screenResolutionIndex;
         public int fullScreenMode;
+        public int quality;
         public bool vSyncEnabled;
         public int brightness;
         public int contrast;
