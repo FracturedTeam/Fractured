@@ -28,6 +28,8 @@ namespace _Project.Scripts.GameServices.Services {
         public bool vSyncEnabled;
         public int brightness;
         public int contrast;
+        public bool dof;
+        public bool chromaticAberration;
         public int subtitleSize;
     }
     

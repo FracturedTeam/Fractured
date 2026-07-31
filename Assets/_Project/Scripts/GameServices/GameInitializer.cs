@@ -392,6 +392,10 @@ namespace _Project.Scripts.GameServices {
             postProcess.TryGet(out ColorAdjustments colorAdjustments);
             return colorAdjustments;
         }
+
+        public VolumeProfile GetVolumeProfile() {
+            return postProcess;
+        }
         
         public void SetPostProcess(int index, int value) {
             postProcess.TryGet(out ColorAdjustments color);
