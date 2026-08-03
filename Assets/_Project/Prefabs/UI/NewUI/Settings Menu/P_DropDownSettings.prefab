@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 5007281406282792486}
   - component: {fileID: 5116540746529378645}
   - component: {fileID: 7322349300094361919}
+  - component: {fileID: 6424809035132407784}
   m_Layer: 5
   m_Name: Arrow Rigth
   m_TagString: Untagged
@@ -279,6 +280,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6424809035132407784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239638938936868010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c666a967dd042a6898395d43161e16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.ArrowUI
+  hoverImage: {fileID: 7322349300094361919}
+  normalSprite: {fileID: -983566069, guid: eba97016a018315478d1b03a94f18002, type: 3}
+  hoverSprite: {fileID: -387031455, guid: eba97016a018315478d1b03a94f18002, type: 3}
+  isRightArrow: 1
+  parentDropDownUI: {fileID: 914954222203298746}
 --- !u!1 &3590862342595675045
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6316782953635861114}
+  - component: {fileID: 914954222203298746}
   m_Layer: 5
   m_Name: DropdownMenu
   m_TagString: Untagged
@@ -317,6 +336,28 @@ RectTransform:
   m_AnchoredPosition: {x: -125, y: 0}
   m_SizeDelta: {x: -125, y: 50}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &914954222203298746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590862342595675045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b903aa8a0134a55a11bb8a142253ed1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.DropDownUI
+  settingText: {fileID: 3834077966360842736}
+  hoverGroup: {fileID: 3874099753669361070}
+  easeType: 27
+  selectedItems:
+  - {fileID: 2098197458794891903}
+  - {fileID: 3552459783672883386}
+  - {fileID: 6860599999698695169}
+  - {fileID: 2219194093129238790}
+  - {fileID: 1088969286912555664}
+  - {fileID: 6525074477402978318}
 --- !u!1 &4246028078433110474
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +594,7 @@ GameObject:
   - component: {fileID: 2102366017944223170}
   - component: {fileID: 2894428264679588104}
   - component: {fileID: 1557459156601491269}
+  - component: {fileID: 5575136958381435994}
   m_Layer: 5
   m_Name: Arrow Left
   m_TagString: Untagged
@@ -617,6 +659,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5575136958381435994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939021543027257089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c666a967dd042a6898395d43161e16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.ArrowUI
+  hoverImage: {fileID: 1557459156601491269}
+  normalSprite: {fileID: -983566069, guid: eba97016a018315478d1b03a94f18002, type: 3}
+  hoverSprite: {fileID: -387031455, guid: eba97016a018315478d1b03a94f18002, type: 3}
+  isRightArrow: 0
+  parentDropDownUI: {fileID: 914954222203298746}
 --- !u!1 &6530142604260801514
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +776,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8145206415836119227}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -728,7 +787,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1815505567377462260
@@ -753,7 +812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
