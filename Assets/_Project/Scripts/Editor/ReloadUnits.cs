@@ -10,18 +10,19 @@ using UnityEngine.UIElements;
 public class DialogueEditor : EditorWindow
 {
     private string emplacement = "Assets/DialogueSheet.csv";
-    private string outputA1 = "Assets/_Project/TextScriptable_Txt_At1";
-    private string outputA2 = "Assets/_Project/TextScriptable_Txt_At2";
-    private string outputA3 = "Assets/_Project/TextScriptable_Txt_At3";
-    private string outputA4 = "Assets/_Project/TextScriptable_Txt_At4";
-    private string outputA5 = "Assets/_Project/TextScriptable_Txt_At5";
-    private string outputT0 = "Assets/_Project/TextScriptable_Txt_Tran0";
-    private string outputT1 = "Assets/_Project/TextScriptable_Txt_Tran1_2";
-    private string outputT2 = "Assets/_Project/TextScriptable_Txt_Tran2_3";
-    private string outputT3 = "Assets/_Project/TextScriptable_Txt_Tran3_4";
-    private string outputT4 = "Assets/_Project/TextScriptable_Txt_Tran4_5";
+    private string outputA1 = "Assets/_Project/TextScriptable/Txt_At1/";
+    private string outputA2 = "Assets/_Project/TextScriptable/Txt_At2/";
+    private string outputA3 = "Assets/_Project/TextScriptable/Txt_At3/";
+    private string outputA4 = "Assets/_Project/TextScriptable/Txt_At4/";
+    private string outputA5 = "Assets/_Project/TextScriptable/Txt_At5/";
+    private string outputT0 = "Assets/_Project/TextScriptable/Txt_Tran0/";
+    private string outputT1 = "Assets/_Project/TextScriptable/Txt_Tran1_2/";
+    private string outputT2 = "Assets/_Project/TextScriptable/Txt_Tran2_3/";
+    private string outputT3 = "Assets/_Project/TextScriptable/Txt_Tran3_4/";
+    private string outputT4 = "Assets/_Project/TextScriptable/Txt_Tran4_5/";
     
-    private string otherEmplacement = "Assets/_Project/TextScriptable_Txt_Other";
+    private string otherEmplacement = "Assets/_Project/TextScriptable/Txt_Other";
+    private string memoryMaterialEmplacement = "Assets/";
     [MenuItem("Window/Reload Dialogue")]
     public static void ShowMyEditor()
     {
@@ -32,7 +33,10 @@ public class DialogueEditor : EditorWindow
   public void OnGUI()
   {
       GUILayout.Label("Path to the datatable : ");
-      emplacement = GUILayout.TextField(emplacement, 128);
+      emplacement = GUILayout.TextField(emplacement, 128);      
+      
+      GUILayout.Label("Path to the Memory Materials : ");
+      memoryMaterialEmplacement = GUILayout.TextField(memoryMaterialEmplacement, 128);
       
       GUILayout.Label("Path to the output folder Atelier 1 :");
       outputA1 = GUILayout.TextField(outputA1, 128);
@@ -140,6 +144,30 @@ public class DialogueEditor : EditorWindow
                   AssetDatabase.Refresh();
               }
               
+              if(dataLines[i].Split(";")[5] == "Memory")
+              {
+                  soName += "_Memory" + $"_{dataLines[i].Split(";")[4]}";
+                  
+                  if(File.Exists($"{output}{soName}.asset"))
+                  {
+                      Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
+                      
+                      var currentData = (MemoryFrameScriptable)AssetDatabase.LoadAssetAtPath($"{output}{soName}.asset", typeof(GlassTextScriptableObject)) ;
+                      
+                      currentData.infoText = dataLines[i].Split(";")[8]; //Normal Text
+                      currentData.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split(";")[12]}");
+                      
+                      EditorUtility.SetDirty(currentData);
+                      AssetDatabase.SaveAssets();
+                      AssetDatabase.Refresh();
+                      return;
+                  }
+                  
+                  AssetDatabase.CreateAsset(CreateMemoryScriptableObject(dataLines, i, data), $"{output}{soName}.asset");
+                  AssetDatabase.SaveAssets();
+                  AssetDatabase.Refresh();
+              }
+              
               if(dataLines[i].Split(";")[5] == "Inspect")
               {
                   soName += "_Inspect"+ $"_{dataLines[i].Split(";")[4]}";
@@ -234,6 +262,16 @@ public class DialogueEditor : EditorWindow
 
       newElement.dialogue = dataLines[i].Split(";")[8];
       newElement.time = int.Parse(dataLines[i].Split(";")[6]);
+      newElement.next = AssetDatabase.LoadAssetAtPath<DialogueScriptableObject>($"{dataLines[i].Split(";")[13]}");
+      return newElement;
+  }
+  
+  private MemoryFrameScriptable CreateMemoryScriptableObject(string[] dataLines, int i, string[] data)
+  {
+      MemoryFrameScriptable newElement = CreateInstance<MemoryFrameScriptable>();
+
+      newElement.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split(";")[12]}");
+      newElement.infoText = dataLines[i].Split(";")[8];
       return newElement;
   }
 
