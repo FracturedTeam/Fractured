@@ -17,6 +17,7 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
     {
         hud = HudManager.Instance.padLock;
         trans = GetComponent<RectTransform>();
+        text = GetComponentInChildren<TMP_Text>();
         SetCharacterPosition(0);
     }
     
@@ -60,7 +61,7 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
         if (!hud)
             hud = HudManager.Instance.padLock;
         
-        hud.SetSelected(this, true);
+        hud?.SetSelected(this, true);
     }
 
     public void SetSelectionState(bool isSelected)
@@ -70,6 +71,6 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        hud.SetSelected(this, false);
+        hud?.SetSelected(this, false);
     }
 }
