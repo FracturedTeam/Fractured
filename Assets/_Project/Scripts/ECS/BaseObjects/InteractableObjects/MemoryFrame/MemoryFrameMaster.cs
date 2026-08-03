@@ -150,6 +150,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.SetInteract(false);
             
             UseMemoryFrame();
+            HudManager.Instance.memory.SetActiveMemoryButton(false);
             
             GameInitializer.Instance.EmptyShards();
             GameInitializer.Instance.ResetGlassInteractable();
