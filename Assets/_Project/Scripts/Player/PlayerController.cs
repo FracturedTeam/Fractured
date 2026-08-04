@@ -140,7 +140,7 @@ namespace _Project.Scripts.Player {
         }
 
         private void Update() {
-            stateMachine.Update();
+            stateMachine?.Update();
 
 			#if UNITY_EDITOR
             if(transform.position.y < -10)
@@ -149,11 +149,11 @@ namespace _Project.Scripts.Player {
         }
         
         void FixedUpdate() {
-            stateMachine.FixedUpdate();
+            stateMachine?.FixedUpdate();
         }
         
-        void At(IState from, IState to, IPredicate condition) => stateMachine.AddTransition(from, to, condition);
-        void Any(IState to, IPredicate condition) => stateMachine.AddAnyTransition(to, condition);
+        void At(IState from, IState to, IPredicate condition) => stateMachine?.AddTransition(from, to, condition);
+        void Any(IState to, IPredicate condition) => stateMachine?.AddAnyTransition(to, condition);
         
         public bool IsCurrentState<TState>() where TState : IState {
             return stateMachine.IsCurrentState<TState>();
@@ -164,7 +164,7 @@ namespace _Project.Scripts.Player {
         }
 
         public IState GetCurrentState() {
-            return stateMachine.CurrentState;
+            return stateMachine?.CurrentState;
         }
         
         #region Movement Helper/Setter
@@ -181,7 +181,7 @@ namespace _Project.Scripts.Player {
         #endregion
         
         #region Interaction Helper/Setter
-        public void UpdateInteraction() => Interact.HandleUpdate(Movement.PreviousMoveDir);
+        public void UpdateInteraction() => Interact?.HandleUpdate(Movement.PreviousMoveDir);
         public void SetInteraction(bool canInteract) => Interact.SetInteract(canInteract);
         public void SetInMemory(bool inMemory) => Interact.SetInMemory(inMemory);
         public void SetDoorTriggered(bool triggeredDoor) => Interact.triggerDoor = triggeredDoor;
