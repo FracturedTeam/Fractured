@@ -27,8 +27,10 @@ namespace _Project.Scripts.Player.Camera {
                 col.bounds.size.y, 
                 col.bounds.size.z
             );
-            
             mask =  LayerMask.GetMask("Player");
+            
+            if(!isInitialized)
+                Initialize();
         }
 
         public void Initialize() {
@@ -42,7 +44,6 @@ namespace _Project.Scripts.Player.Camera {
         
         private void Update() {
             if(!isInitialized) return;
-            
             DetectPlayer();
         }
 
