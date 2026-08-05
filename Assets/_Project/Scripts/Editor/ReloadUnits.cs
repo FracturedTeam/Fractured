@@ -130,7 +130,7 @@ public class DialogueEditor : EditorWindow
           {
               soName += "_Thought" + $"_{dataLines[i].Split("	")[4]}";
                   
-              if(File.Exists($"{output}{soName}.asset"))
+              if(File.Exists($"{output}/{soName}.asset"))
               {
                   Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
                       
@@ -156,7 +156,7 @@ public class DialogueEditor : EditorWindow
           {
               soName += "_Memory" + $"_{dataLines[i].Split("	")[4]}";
                   
-              if(File.Exists($"{output}{soName}.asset"))
+              if(File.Exists($"{output}/{soName}.asset"))
               {
                   Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
                       
@@ -180,7 +180,7 @@ public class DialogueEditor : EditorWindow
           {
               soName += "_Inspect"+ $"_{dataLines[i].Split("	")[4]}";
                   
-              if(File.Exists($"{output}{soName}.asset"))
+              if(File.Exists($"{output}/{soName}.asset"))
               {
                   Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
                       
@@ -212,7 +212,7 @@ public class DialogueEditor : EditorWindow
           {
               soName += "_Dialogue" + $"_{dataLines[i].Split("	")[4]}";
                   
-              if(File.Exists($"{output}{soName}.asset"))
+              if(File.Exists($"{output}/{soName}.asset"))
               {
                   Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
                       

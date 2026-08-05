@@ -5,8 +5,8 @@ using UnityEngine;
 namespace _Project.Scripts.Audio {
     public class StepTrigger : MonoBehaviour {
         public void StepSound() {
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().playerFootstepSound, transform.position);
+            if(GameInitializer.HasInstance)
+                GameInitializer.Instance?.PlaySound3D(GameInitializer.Instance.GetBank().playerFootstepSound, transform.position);
         }
-        
     }
 }

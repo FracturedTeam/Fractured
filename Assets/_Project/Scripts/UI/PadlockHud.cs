@@ -19,13 +19,18 @@ public class PadlockHud : MonoBehaviour
     private void Start()
     {
         codeObject.DOFade( 0, 0);
+        codeObject.gameObject.SetActive(false);
     }
 
     public void SetCurrent(PadlockAttribute newLock)
     {
+        codeObject.gameObject.SetActive(true);
         codeObject.DOFade(newLock ? 1 : 0, 0.5f);
         if(!newLock)
+        {
+            Invoke(nameof(Start), 0.5f);
             return;
+        }
 
         codeObject.transform.position =
             PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(newLock.transform.position) + (Vector3)newLock.offset;
@@ -35,6 +40,7 @@ public class PadlockHud : MonoBehaviour
 
     public void ScrollInput(int newCode, LockCharacter newSelected)
     {
+        if(!current) return;
         HudManager.Instance.padLock.SetSelected(newSelected, true);
         
         var index = newSelected == characters[0] ? 0 :

@@ -120,7 +120,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             currentCode = firstDigit * 1000 + secondDigit * 100 + thirdDigit * 10 + fourthDigit;
-            print(currentCode);
             HudManager.Instance.padLock.UpdateCode();
             TryUnlock();
         }
