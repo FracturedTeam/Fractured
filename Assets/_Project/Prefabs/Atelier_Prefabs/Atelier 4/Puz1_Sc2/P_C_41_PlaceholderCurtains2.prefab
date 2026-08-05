@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5122619514553704900}
   - component: {fileID: 3330876058450905180}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Closed Curtains
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1908860338540999069}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.5}
+  m_LocalPosition: {x: 0, y: 4, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 4893177428229673926}
   - component: {fileID: 259852666938447835}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Closed Curtains
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -386,7 +386,7 @@ Transform:
   m_GameObject: {fileID: 6963151660842771290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalPosition: {x: 0, y: 4, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -722,7 +722,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2216782697351398783}
   - component: {fileID: 2098619311548026099}
-  - component: {fileID: -8596224733272169320}
   - component: {fileID: 2326368863724805653}
   - component: {fileID: 9157687117930959306}
   - component: {fileID: -3089604219312543872}
@@ -775,27 +774,6 @@ MonoBehaviour:
     isUsed: 0
     objectOutOfGlass: 0
   <Guid>k__BackingField: 
---- !u!114 &-8596224733272169320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7982322263504784109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
-  oneTimeUse: 0
-  hasObjectInside: 0
-  objectsInside: []
-  eventOnActivation:
-    m_PersistentCalls:
-      m_Calls: []
-  eventOnDeactivation:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &2326368863724805653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -811,12 +789,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.25, y: 7, z: 4}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.46, y: 4, z: 0}
 --- !u!114 &9157687117930959306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,7 +823,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    times: 0
+    times: 1
   OnCollisionTriggerEnter: []
   OnCollisionTriggerExit: []
   OnHideReveal: []
@@ -868,4 +846,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
-  oneTimeUse: 0
+  oneTimeUse: 1

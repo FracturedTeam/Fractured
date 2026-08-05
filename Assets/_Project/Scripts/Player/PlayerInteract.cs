@@ -25,8 +25,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
-        private InteractionHUD hud;
-        
+
         //Pre allocate space for collider (10 will be completely sufficient)
         private readonly Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
@@ -63,12 +62,13 @@ namespace _Project.Scripts.Player {
             get => canInteract;
             private set {
                 if(canInteract == value) return;
-                
                 canInteract = value;
-                EventBus<InteractEvent>.Raise(new InteractEvent {
-                    ShowInteraction = value,
-                    Interaction = interactionType
-                });
+
+                if (value == false) {
+                    EventBus<InteractEvent>.Raise(new InteractEvent {
+                        ShowInteraction = false
+                    });
+                }
             }
         }
         
@@ -89,11 +89,6 @@ namespace _Project.Scripts.Player {
             interactCooldown = new CountdownTimer(0.5f);
             
             wallLayerMask = LayerMask.GetMask("Wall");
-        }
-
-        private void Start()
-        {
-            hud = HudManager.Instance.interact;
         }
 
         private void OnEnable() {
@@ -194,7 +189,8 @@ namespace _Project.Scripts.Player {
 
         void HandleInteraction() {
             if (!canPlayerInteract) return;
-
+            if(Time.frameCount % 4 != 0) return;
+            
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
@@ -256,7 +252,6 @@ namespace _Project.Scripts.Player {
                 CanInteract = canPlayerInteract && Size > 0;
             else {
                 CanInteract = false;
-                return;
             }
         }
 

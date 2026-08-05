@@ -19,7 +19,7 @@ namespace _Project.Scripts.UI
         [field:SerializeField] public Transform glassHolder {get; private set;}
         public InteractionHUD interact {get; private set;}
         public MemoryHUD memory {get; private set;}
-        
+        public PadlockHud padLock {get; private set;}
         
         private EventBinding<DocumentEvent> documentEventBinding;
         
@@ -43,13 +43,20 @@ namespace _Project.Scripts.UI
         private readonly List<ParticleSystem> freeParticles = new List<ParticleSystem>();
         private readonly List<Fragment> freeFragment = new List<Fragment>();
 
-        private void Start() {
+        protected override void Awake() {
+            base.Awake();
+            
+            if (FindAnyObjectByType<HudManager>() != this)
+               Destroy(gameObject);
+                
+            
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
             glassDocument.gameObject.SetActive(false);
             
             interact = GetComponent<InteractionHUD>();
             memory = GetComponent<MemoryHUD>();
+            padLock = GetComponent<PadlockHud>();
         }
 
         private void OnEnable() {
@@ -109,7 +116,6 @@ namespace _Project.Scripts.UI
             shard.visualParticles = currentParticle;
             freeParticles.Remove(currentParticle);
             currentParticle.gameObject.SetActive(true);
-            
             
             currentFrag = freeFragment[^1];
             shard.visualShard = currentFrag;

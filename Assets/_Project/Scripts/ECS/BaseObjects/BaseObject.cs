@@ -166,15 +166,15 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if(TryGetComponent(out TriggerComponent trigger)) 
                     GetTrigger = trigger;
                 
-                if(TryGetComponent(typeof(GlassText), out var gt))
-                    GetTextInteractable = gt as GlassText;
-                
                 if(TryGetComponent(out IInteractable interactable)) 
                     GetInteract = interactable;
                 else SetInteract(false);
 
                 if (TryGetComponent(out LockedAttribute blocked)) 
                     blockedAttribute = blocked;
+                
+                if(TryGetComponent(typeof(GlassText), out var gt))
+                    GetTextInteractable = gt as GlassText;
 
                 if (TryGetComponent(out SceneElement scene)) {
                     sceneElement = scene;
@@ -198,6 +198,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void Update() {
+            if(Time.frameCount % 2 != 0) return;
+            
             GetInteract?.Tick(Time.deltaTime);
             GetGlassInteract?.Tick(Time.deltaTime);
         }

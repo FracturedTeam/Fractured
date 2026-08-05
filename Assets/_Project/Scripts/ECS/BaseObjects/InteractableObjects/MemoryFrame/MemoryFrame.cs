@@ -144,7 +144,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnDrag(PointerEventData eventData) {
             if(!isSelected || gamepadControlled) return;
-
+            
             UpdateFramePosition(eventData.delta);
         }
 

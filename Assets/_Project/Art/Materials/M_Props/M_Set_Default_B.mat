@@ -24,10 +24,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Set_Default_B
-  m_Shader: {fileID: 4800000, guid: 0c8875584c9252c4bab6300ea429ff4c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5d71a16cea2af0e429a8fada747cf1ca, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _CURRENTACT_ACT_1
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -35,6 +36,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
+    RenderType: Opaque
   disabledShaderPasses:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
@@ -175,12 +177,14 @@ Material:
     - _Blend: 0
     - _BlendMode: 0
     - _BlendModePreserveSpecular: 1
+    - _CURRENTACT: 0
     - _CastShadows: 1
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _Cull: 2
     - _CullMode: 2
     - _CullModeForward: 2
+    - _CustomRoughness: 1
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
@@ -188,6 +192,8 @@ Material:
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
     - _DiffusionProfileHash: 0
+    - _DisableAllGradients: 0
+    - _DisableGradientMap: 0
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -221,6 +227,7 @@ Material:
     - _Ior: 1.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
+    - _LightingGradientMapInfluence: 0
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 2
@@ -288,13 +295,16 @@ Material:
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
+    - _UseCustomRoughness: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
     - _Visible: 1
     - _WorkflowMode: 1
+    - _X_Gradient: 0
     - _X_GradientEndPosition: 1
     - _X_GradientIntensity: 0
     - _X_GradientStartPosition: 0
+    - _Y_Gradient: 0
     - _Y_GradientEndPosition: 0.5474218
     - _Y_GradientIntensity: 0
     - _Y_GradientStartPosition: 0
@@ -304,10 +314,26 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
+    - _Z_Gradient: 0
     - _Z_GradientEndPosition: 1
     - _Z_GradientIntensity: 0
     - _Z_GradientStartPosition: 0
     m_Colors:
+    - _ACT1_Color_A: {r: 0, g: 0, b: 0, a: 1}
+    - _ACT1_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _ACT1_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _ACT1_Color_B_Location: {r: 0.5, g: 1, b: 0, a: 0}
+    - _ACT1_Color_C: {r: 1, g: 1, b: 1, a: 1}
+    - _ACT2_Color_A: {r: 0, g: 0, b: 0, a: 1}
+    - _ACT2_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _ACT2_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _ACT2_Color_B_Location: {r: 0.5, g: 1, b: 0, a: 0}
+    - _ACT2_Color_C: {r: 1, g: 1, b: 1, a: 1}
+    - _ACT3_Color_A: {r: 0, g: 0, b: 0, a: 1}
+    - _ACT3_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _ACT3_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _ACT3_Color_B_Location: {r: 0.5, g: 1, b: 0, a: 0}
+    - _ACT3_Color_C: {r: 1, g: 1, b: 1, a: 1}
     - _AOColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     - _AOLevels: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
@@ -319,6 +345,8 @@ Material:
     - _Color23Levels: {r: 0.5, g: 1, b: 0, a: 0}
     - _Color2_3Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Color3: {r: 0.9555159, g: 0.43921566, b: 1, a: 1}
+    - _Color_1_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color_2_Location: {r: 0.5, g: 1, b: 0, a: 0}
     - _Colors_1_2_Levels: {r: 0.02, g: 0.08, b: 0, a: 0}
     - _Colors_2_3_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Colors_3_4_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
