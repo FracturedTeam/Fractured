@@ -196,7 +196,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
         }
-        
+
+        private void Start()
+        {
+            if(!IsInitialized)
+                Initialize();
+        }
+
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
             

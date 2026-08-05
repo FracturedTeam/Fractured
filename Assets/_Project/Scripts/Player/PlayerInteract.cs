@@ -225,6 +225,9 @@ namespace _Project.Scripts.Player {
                 if (!potentialInteraction || !potentialInteraction.transform) return;
 
                 var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
+
+                if (boxCollider == null) return;
+                
                 var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
                 var dist = Vector3.Distance(transform.TransformPoint(boxCollider.center), transform.position);
                 
@@ -232,6 +235,7 @@ namespace _Project.Scripts.Player {
                 if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider() as BoxCollider) {
                     potentialInteraction = null;
                 }
+
                 return;
             }
         
