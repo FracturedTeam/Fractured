@@ -40,7 +40,7 @@ public class GlassText : MonoBehaviour
         }
 
         ForceSet();
-        SetAlpha(isVisibleFromStart && currentTextScriptableObject ? 1 : 0);
+        SetAlpha(isVisibleFromStart ? 1 : 0);
     }
 
     [ContextMenu("Set Texts")]
@@ -189,9 +189,9 @@ public class GlassText : MonoBehaviour
                     if (currentTextScriptableObject.bothText.Length == 0)
                     {
                         baseText.SetText(currentTextScriptableObject.baseText);
-                        fragAText.SetText("");
-                        fragBText.SetText("");
-                        bothText.SetText("");
+                        fragAText.SetText(currentTextScriptableObject.baseText);
+                        fragBText.SetText(currentTextScriptableObject.baseText);
+                        bothText.SetText(currentTextScriptableObject.baseText);
                         return;
                     }
                     //Case 1001 - Both

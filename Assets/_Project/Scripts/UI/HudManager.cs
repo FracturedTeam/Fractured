@@ -45,6 +45,11 @@ namespace _Project.Scripts.UI
 
         protected override void Awake() {
             base.Awake();
+            
+            if (FindAnyObjectByType<HudManager>() != this)
+               Destroy(gameObject);
+                
+            
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
             glassDocument.gameObject.SetActive(false);

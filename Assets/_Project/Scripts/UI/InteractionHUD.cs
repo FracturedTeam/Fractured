@@ -19,11 +19,10 @@ public class InteractionHUD : MonoBehaviour
     [SerializeField] private string useDoor = "Enter";
     [SerializeField] private string useKey = "Unlock the door";
     [SerializeField] private string useFragment = "Put";
-    [SerializeField] private string needFragment = "[E] to interact";
+    [SerializeField] private string needFragment = "interact";
     [SerializeField] private string needKey = "Door locked";
-    [SerializeField] private string needSomethingElse = "[E] to interact";
+    [SerializeField] private string needSomethingElse = "interact";
     [SerializeField] private string dialogueInteraction = "";
-    private bool forceHide;
         
     [Header("Interaction Image")] 
     [SerializeField] private Sprite spriteNormal;
@@ -32,8 +31,7 @@ public class InteractionHUD : MonoBehaviour
     [SerializeField] private Sprite spriteKey;
     [SerializeField] private Sprite spriteUp;
     [SerializeField] private Sprite spriteDown;
-
-
+    
     private void Start()
     {
         interactionUI.GetGroup.alpha = 0;
@@ -54,8 +52,6 @@ public class InteractionHUD : MonoBehaviour
     private void ShowInteraction(InteractEvent e) {
         
          interactTween.Kill();
-         if(forceHide)
-             return;
                 
          if (!e.ShowInteraction || e.Interaction == Interaction.None) {
              interactTween = interactionUI.GetGroup.DOFade(0f, 1f);
@@ -93,15 +89,11 @@ public class InteractionHUD : MonoBehaviour
              Interaction.NeedKey => spriteKey,
              _ => spriteNormal
          };
-                
+        
          interactTween = interactionUI.GetGroup.DOFade( 1f, 1f);
     }
-    
-    
-    public void ForceInteractHUDVisibility(bool isOn)
+    public void ForceInteractHUDVisibility(bool showPopUp)
     {
-       interactionUI.GetGroup.DOFade(isOn ? 1 : 0, 0);
-        forceHide = !isOn;
+        interactionUI.gameObject.SetActive(showPopUp);
     }
-
 }
