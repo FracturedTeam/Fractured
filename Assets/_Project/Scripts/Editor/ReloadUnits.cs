@@ -69,8 +69,6 @@ public class DialogueEditor : EditorWindow
       }
   }
 
-
-
   private void Reload()
   {
       if(!AssetDatabase.LoadAssetAtPath(emplacement, typeof(TextAsset)))
@@ -129,11 +127,10 @@ public class DialogueEditor : EditorWindow
           if(dataLines[i].Split("	")[5] == "Thought")
           {
               soName += "_Thought" + $"_{dataLines[i].Split("	")[4]}";
-              Debug.Log($"{soName}");
                   
               if(File.Exists($"{output}/{soName}.asset"))
               {
-                  Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
+                  Debug.LogWarning($"Asset Modified at {output}/{soName}.asset, beware of type mismatch on scripts");
                       
                   var currentData = (GlassTextScriptableObject)AssetDatabase.LoadAssetAtPath($"{output}/{soName}.asset", typeof(GlassTextScriptableObject)) ;
                       
@@ -156,7 +153,6 @@ public class DialogueEditor : EditorWindow
           if(dataLines[i].Split("	")[5] == "Memory")
           {
               soName += "_Memory" + $"_{dataLines[i].Split("	")[4]}";
-              Debug.Log($"{soName}");
                   
               if(File.Exists($"{output}/{soName}.asset"))
               {
@@ -172,7 +168,10 @@ public class DialogueEditor : EditorWindow
                       currentData.material = dataLines[i].Split("	")[12] == ""
                           ? null
                           : AssetDatabase.LoadAssetAtPath<Material>(
-                              $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
+                              $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat");
+                      
+                      Debug.Log(AssetDatabase.LoadAssetAtPath<Material>(
+                          $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}"));
 
                       EditorUtility.SetDirty(currentData);
                       AssetDatabase.SaveAssets();
@@ -189,7 +188,6 @@ public class DialogueEditor : EditorWindow
           if(dataLines[i].Split("	")[5] == "Inspect")
           {
               soName += "_Inspect"+ $"_{dataLines[i].Split("	")[4]}";
-              Debug.Log($"{soName}");
                   
               if(File.Exists($"{output}/{soName}.asset"))
               {
@@ -222,7 +220,6 @@ public class DialogueEditor : EditorWindow
           if(dataLines[i].Split("	")[5] == "Dialogue")
           {
               soName += "_Dialogue" + $"_{dataLines[i].Split("	")[4]}";
-              Debug.Log($"{soName}");
                   
               if(File.Exists($"{output}/{soName}.asset"))
               {
@@ -288,8 +285,13 @@ public class DialogueEditor : EditorWindow
   {
       MemoryFrameScriptable newElement = CreateInstance<MemoryFrameScriptable>();
 
-      newElement.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
+      newElement.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat");
       newElement.infoText = dataLines[i].Split("	")[8];
+      
+      Debug.Log(AssetDatabase.LoadAssetAtPath<Material>(
+          $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat"));     
+      Debug.Log($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
+      Debug.Log($"{dataLines[i].Split("	")[12]}");
       return newElement;
   }
 
