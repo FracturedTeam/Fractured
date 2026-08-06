@@ -28,23 +28,23 @@ namespace _Project.Scripts.GameServices.Services {
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
             PlayerInEditableArea = false;
-            UpdateInteractableObjects();
-
+            //UpdateInteractableObjects();
             InputsBrain.Instance.OnShardA += GrabShardA;
             InputsBrain.Instance.OnShardB += GrabShardB;
+            
         }
 
-        private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
-            if (interactables.Count != 0)
+        private void UpdateInteractableObjects() //Update the shards interactable List and Initialize its components
+        {
+            Debug.Log(shardsInteractable.Count);
+            if (interactables.Count == 0) return;
+            foreach (var interactable in interactables)
             {
-                foreach (var interactable in interactables)
-                {
-                    interactable.Initialize();
-                    if (interactable.GetGlass)
-                    {
-                        shardsInteractable.Add(interactable);
-                    }
-                }
+                Debug.Log(interactable.GetType().Name);
+                interactable.Initialize();
+                if (interactable.GetGlass)
+                    shardsInteractable.Add(interactable);
+                Debug.Log(shardsInteractable.Count);
             }
         }
 
@@ -68,7 +68,6 @@ namespace _Project.Scripts.GameServices.Services {
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             if(Time.frameCount % 4 != 0) return;
-            
             foreach (var glassInteractable in shardsInteractable) {
                 SetShardState(glassInteractable);
             }
@@ -76,6 +75,7 @@ namespace _Project.Scripts.GameServices.Services {
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
+                Debug.Log(shard.GetType().Name);
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }

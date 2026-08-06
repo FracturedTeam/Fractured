@@ -227,6 +227,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
+            print($"base object interacted  {name} with {shard} shard");
             if(canGlassInteractWith)
                 GetGlassInteract.OnShardUpdated(isOn, shard);
         }

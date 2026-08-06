@@ -79,6 +79,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         private void InitializeGameSystems() {
+            Debug.Log("Initializing Game Systems");
             //Create all the game systems
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();
@@ -210,6 +211,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void PopulateLevel(BaseObject[] baseObjects) {
+            print(baseObjects.Length + " added");
             shardService.RepopulateBaseObjet(baseObjects);
             var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
             foreach (var cam in camSwitches) {
@@ -228,7 +230,8 @@ namespace _Project.Scripts.GameServices {
             return shardService.interactables.ToArray();
         }
         
-        public void AddShards(Glass[] shards) {
+        public void AddShards(Glass[] shards)
+        {
             foreach (var shard in shards) {
                 var s = Instantiate(shard, HudManager.Instance.glassHolder);
                 shardService.AddShards(s, shard.GetColor is ColorEnum.ColorA);
@@ -260,8 +263,10 @@ namespace _Project.Scripts.GameServices {
                 shard.SetUp3dShard(isOn);
         }
         
+        /*
         public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
             shardService.PopulateService(_interactable,  _shards);
+            */
 
         public void SetEditableArea(bool inArea, ColorEnum color) {
             // switch (color) {

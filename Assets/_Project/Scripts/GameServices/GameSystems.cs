@@ -18,7 +18,10 @@ namespace _Project.Scripts.GameServices {
         public void Initialize() {
             try {
                 foreach (var system in systems.Values)
+                {
+                    Debug.Log($"[GameSystems] Initializing {system.GetType().Name}");
                     system.Initialize();
+                }
                 Debug.Log($"[GameSystems] {systems.Count} GameSystems initialized");
             }
             catch (Exception ex) {
