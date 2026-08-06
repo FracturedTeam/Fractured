@@ -1683,7 +1683,7 @@ MonoBehaviour:
   glassShards: []
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: acc18b4c6133b1348953d55ecd250505, type: 3}
-  dialogue: {fileID: 11400000, guid: 4165f7d0d5f78e0498976a47cf3e1823, type: 2}
+  dialogue: {fileID: 11400000, guid: e98bc7fbe23fd6943abf269cc09aa81a, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -2086,7 +2086,7 @@ MonoBehaviour:
   - {fileID: 2876331274215893355, guid: def82c894b9ec854d931268fcda4f28a, type: 3}
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: 8f80987bed2c8654ba46fbb66de6cfec, type: 3}
-  dialogue: {fileID: 11400000, guid: 9320e481405fb464f8ed432d33740892, type: 2}
+  dialogue: {fileID: 11400000, guid: 1fedad3dc3561324a93c640333590444, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -2508,7 +2508,7 @@ MonoBehaviour:
   - {fileID: 5111022831278564656, guid: d1d1967d9810fd64282d5b7ea58085ad, type: 3}
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: fb91573c8a19e25479d3a378125e402e, type: 3}
-  dialogue: {fileID: 11400000, guid: bc7a6b16c19e7e546b0a2177606b6bf3, type: 2}
+  dialogue: {fileID: 11400000, guid: 1caf2c71ed496984fb59570cc9f61aef, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -6269,13 +6269,15 @@ MonoBehaviour:
   - actions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 7366467abb9b9104f94febcd7159d3f3, type: 2}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 0
+        - m_Target: {fileID: 2128095935}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 11400000, guid: 7366467abb9b9104f94febcd7159d3f3, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -6399,13 +6401,15 @@ MonoBehaviour:
   - actions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 48f3a0c467b515d439f4ffbc416aaa5a, type: 2}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 0
+        - m_Target: {fileID: 443265046116025337}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 11400000, guid: 48f3a0c467b515d439f4ffbc416aaa5a, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
