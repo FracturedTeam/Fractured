@@ -31,20 +31,16 @@ namespace _Project.Scripts.GameServices.Services {
             //UpdateInteractableObjects();
             InputsBrain.Instance.OnShardA += GrabShardA;
             InputsBrain.Instance.OnShardB += GrabShardB;
-            
         }
 
         private void UpdateInteractableObjects() //Update the shards interactable List and Initialize its components
         {
-            Debug.Log(shardsInteractable.Count);
             if (interactables.Count == 0) return;
             foreach (var interactable in interactables)
             {
-                Debug.Log(interactable.GetType().Name);
                 interactable.Initialize();
                 if (interactable.GetGlass)
                     shardsInteractable.Add(interactable);
-                Debug.Log(shardsInteractable.Count);
             }
         }
 

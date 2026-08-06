@@ -211,7 +211,6 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void PopulateLevel(BaseObject[] baseObjects) {
-            print(baseObjects.Length + " added");
             shardService.RepopulateBaseObjet(baseObjects);
             var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
             foreach (var cam in camSwitches) {
