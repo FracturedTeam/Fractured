@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEditor;
@@ -254,6 +255,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+        }
+
+        public void SetDialogue(DialogueScriptableObject dialogue)
+        {
+            HudManager.Instance.SetText(dialogue);
         }
         
         public Collider GetCollider() => objectCollider;
