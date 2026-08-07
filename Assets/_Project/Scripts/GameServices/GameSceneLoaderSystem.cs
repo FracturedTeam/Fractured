@@ -32,7 +32,6 @@ namespace _Project.Scripts.GameServices {
         private void Start() {
             scenesToLoad = new List<SceneField>();
             SceneManager.sceneLoaded += OnSceneLoaded;
-
             if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
@@ -44,12 +43,11 @@ namespace _Project.Scripts.GameServices {
                         _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 }
                 
-                
                 if (!PlayerService.HasInstance) Instantiate(player);
                 if (!HudManager.HasInstance) Instantiate(hudManager);
             
                 GameInitializer.Instance.InitializeDebugSystems();
-
+                
                 StartCoroutine(SetSceneWithDelay());
             }
             #endif
@@ -58,12 +56,11 @@ namespace _Project.Scripts.GameServices {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         IEnumerator SetSceneWithDelay() {
             yield return new WaitForNextFrameUnit();
-
+         
             GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
-            
             if (GameSceneSettings.HasInstance) {
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 
+                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
                 
                 // GameInitializer.Instance.SaveData();

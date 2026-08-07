@@ -1622,6 +1622,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1652611988}
+  - {fileID: 1516375633}
   - {fileID: 166753867}
   - {fileID: 1232210633}
   - {fileID: 1812245660}
@@ -1683,7 +1684,7 @@ MonoBehaviour:
   glassShards: []
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: acc18b4c6133b1348953d55ecd250505, type: 3}
-  dialogue: {fileID: 11400000, guid: 4165f7d0d5f78e0498976a47cf3e1823, type: 2}
+  dialogue: {fileID: 11400000, guid: e98bc7fbe23fd6943abf269cc09aa81a, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -2086,7 +2087,7 @@ MonoBehaviour:
   - {fileID: 2876331274215893355, guid: def82c894b9ec854d931268fcda4f28a, type: 3}
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: 8f80987bed2c8654ba46fbb66de6cfec, type: 3}
-  dialogue: {fileID: 11400000, guid: 9320e481405fb464f8ed432d33740892, type: 2}
+  dialogue: {fileID: 11400000, guid: 1fedad3dc3561324a93c640333590444, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -2508,7 +2509,7 @@ MonoBehaviour:
   - {fileID: 5111022831278564656, guid: d1d1967d9810fd64282d5b7ea58085ad, type: 3}
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: fb91573c8a19e25479d3a378125e402e, type: 3}
-  dialogue: {fileID: 11400000, guid: bc7a6b16c19e7e546b0a2177606b6bf3, type: 2}
+  dialogue: {fileID: 11400000, guid: 1caf2c71ed496984fb59570cc9f61aef, type: 2}
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -4514,6 +4515,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1001 &1516375632
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 493070420}
+    m_Modifications:
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.19684
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.48171043
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.25125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988382695392522534, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+      propertyPath: m_Name
+      value: P_SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+--- !u!4 &1516375633 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2368546089697211265, guid: cd0bd06994a2578448b1c5351172834d, type: 3}
+  m_PrefabInstance: {fileID: 1516375632}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1542212710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6269,13 +6332,15 @@ MonoBehaviour:
   - actions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 7366467abb9b9104f94febcd7159d3f3, type: 2}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 0
+        - m_Target: {fileID: 2128095935}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 11400000, guid: 7366467abb9b9104f94febcd7159d3f3, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -6399,13 +6464,15 @@ MonoBehaviour:
   - actions:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 48f3a0c467b515d439f4ffbc416aaa5a, type: 2}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 0
+        - m_Target: {fileID: 443265046116025337}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgument: {fileID: 11400000, guid: 48f3a0c467b515d439f4ffbc416aaa5a, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

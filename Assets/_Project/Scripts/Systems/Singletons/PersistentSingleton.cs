@@ -10,14 +10,15 @@ namespace _Project.Scripts.Systems.Singletons {
 
         public static T Instance {
             get {
-                if (instance == null) {
-                    instance = FindAnyObjectByType<T>();
-                    if (instance == null) {
-                        var go = new GameObject(typeof(T).Name + " Auto-Generated");
-                        instance = go.AddComponent<T>();
-                        Debug.Log("Persistent Singleton " + go.name);
-                    }
-                }
+                if (instance != null) return instance;
+                
+                instance = FindAnyObjectByType<T>();
+                
+                if (instance != null) return instance;
+                
+                var go = new GameObject(typeof(T).Name + " Auto-Generated");
+                instance = go.AddComponent<T>();
+                Debug.Log("Persistent Singleton " + go.name);
                 return instance;
             }
         }

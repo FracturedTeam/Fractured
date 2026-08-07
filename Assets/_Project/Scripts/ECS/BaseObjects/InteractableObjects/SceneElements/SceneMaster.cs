@@ -34,8 +34,6 @@ namespace _Project.Scripts.ECS {
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private DialogueScriptableObject dialogue;
         
-
-        
         private readonly CountdownTimer validationDelay = new(1.25f);
         
         private bool hasSceneBeenValidated;
@@ -62,14 +60,15 @@ namespace _Project.Scripts.ECS {
 
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
+
+            if (!requiredPlayerPosition) return;
             
-            if (requiredPlayerPosition) {
-                var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
-                if (isValidPlayerPosition != dist <= 2) {
-                    isValidPlayerPosition = dist <= 2;
-                    CheckForValidation();
-                }
-            }
+            var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
+            
+            if (isValidPlayerPosition == dist <= 2) return;
+                
+            isValidPlayerPosition = dist <= 2;
+            CheckForValidation();
         }
 
         private void SetMasterToSceneElement() {
@@ -149,15 +148,15 @@ namespace _Project.Scripts.ECS {
         public void CheckForValidation() {
             var everyElementIsValid = true;
             
-            foreach (var element in elements) {
-                if (!element.IsValidated) {
-                    everyElementIsValid = false;
-                    break;
-                }
+            foreach (var element in elements)
+            {
+                if (element.IsValidated) 
+                    continue;
+                
+                everyElementIsValid = false;
+                break;
             }
-            
             if(requiredPlayerPosition && !isValidPlayerPosition) everyElementIsValid = false;
-            
             IsSceneValidated = everyElementIsValid;
         }
         

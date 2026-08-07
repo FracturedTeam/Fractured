@@ -69,8 +69,6 @@ public class DialogueEditor : EditorWindow
       }
   }
 
-
-
   private void Reload()
   {
       if(!AssetDatabase.LoadAssetAtPath(emplacement, typeof(TextAsset)))
@@ -132,7 +130,7 @@ public class DialogueEditor : EditorWindow
                   
               if(File.Exists($"{output}/{soName}.asset"))
               {
-                  Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
+                  Debug.LogWarning($"Asset Modified at {output}/{soName}.asset, beware of type mismatch on scripts");
                       
                   var currentData = (GlassTextScriptableObject)AssetDatabase.LoadAssetAtPath($"{output}/{soName}.asset", typeof(GlassTextScriptableObject)) ;
                       
@@ -144,7 +142,7 @@ public class DialogueEditor : EditorWindow
                   EditorUtility.SetDirty(currentData);
                   AssetDatabase.SaveAssets();
                   AssetDatabase.Refresh();
-                  return;
+                  continue;
               }
                   
               AssetDatabase.CreateAsset(CreateGlassTextScriptableObject(dataLines, i, data), $"{output}/{soName}.asset");
@@ -161,14 +159,25 @@ public class DialogueEditor : EditorWindow
                   Debug.LogWarning($"Asset Modified at {output}{soName}.asset, beware of type mismatch on scripts");
                       
                   var currentData = (MemoryFrameScriptable)AssetDatabase.LoadAssetAtPath($"{output}/{soName}.asset", typeof(GlassTextScriptableObject)) ;
+                  if(currentData)
+                  {
+                      currentData.infoText = dataLines[i] != null
+                                             && dataLines[i].Split("	").Length >= 8
+                          ? dataLines[i].Split("	")[8]
+                          : ""; //Normal Text
+                      currentData.material = dataLines[i].Split("	")[12] == ""
+                          ? null
+                          : AssetDatabase.LoadAssetAtPath<Material>(
+                              $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat");
                       
-                  currentData.infoText = dataLines[i].Split("	")[8]; //Normal Text
-                  currentData.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
-                      
-                  EditorUtility.SetDirty(currentData);
-                  AssetDatabase.SaveAssets();
-                  AssetDatabase.Refresh();
-                  return;
+                      Debug.Log(AssetDatabase.LoadAssetAtPath<Material>(
+                          $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}"));
+
+                      EditorUtility.SetDirty(currentData);
+                      AssetDatabase.SaveAssets();
+                      AssetDatabase.Refresh();
+                      continue;
+                  }
               }
                   
               AssetDatabase.CreateAsset(CreateMemoryScriptableObject(dataLines, i, data), $"{output}/{soName}.asset");
@@ -198,7 +207,7 @@ public class DialogueEditor : EditorWindow
                   EditorUtility.SetDirty(currentData);
                   AssetDatabase.SaveAssets();
                   AssetDatabase.Refresh();
-                  return;
+                  continue;
               }
                   
               AssetDatabase.CreateAsset(CreateGlassDocumentScriptableObjectElement(dataLines, i, data), $"{output}/{soName}.asset");
@@ -219,12 +228,12 @@ public class DialogueEditor : EditorWindow
                   var currentData = (DialogueScriptableObject)AssetDatabase.LoadAssetAtPath($"{output}/{soName}.asset", typeof(DialogueScriptableObject)) ;
                       
                   currentData.dialogue = dataLines[i].Split("	")[8];
-                  currentData.time = int.Parse(dataLines[i].Split("	")[6]);
+                  currentData.time = float.Parse(dataLines[i].Split("	")[6]);
                       
                   EditorUtility.SetDirty(currentData);
                   AssetDatabase.SaveAssets();
                   AssetDatabase.Refresh();
-                  return;
+                  continue;
               }
                   
               AssetDatabase.CreateAsset(CreateBasicTextScriptableObject(dataLines, i, data), $"{output}/{soName}.asset");
@@ -276,8 +285,13 @@ public class DialogueEditor : EditorWindow
   {
       MemoryFrameScriptable newElement = CreateInstance<MemoryFrameScriptable>();
 
-      newElement.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
+      newElement.material = AssetDatabase.LoadAssetAtPath<Material>($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat");
       newElement.infoText = dataLines[i].Split("	")[8];
+      
+      Debug.Log(AssetDatabase.LoadAssetAtPath<Material>(
+          $"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}.mat"));     
+      Debug.Log($"{memoryMaterialEmplacement}{dataLines[i].Split("	")[12]}");
+      Debug.Log($"{dataLines[i].Split("	")[12]}");
       return newElement;
   }
 
