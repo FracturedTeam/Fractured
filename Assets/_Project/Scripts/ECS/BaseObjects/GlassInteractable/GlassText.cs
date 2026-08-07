@@ -110,9 +110,9 @@ public class GlassText : MonoBehaviour
                     
                     //Case 0001 - Both
                     {
-                        baseText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
-                        fragAText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
-                        fragBText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
+                        baseText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both);
+                        fragAText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both);
+                        fragBText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both);
                         bothText.SetText(currentTextScriptableObject.bothText);
                         return;
                     }

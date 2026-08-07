@@ -56,7 +56,6 @@ namespace _Project.Scripts.GameServices.Services {
             UpdateInteractableObjects();
         }
         
-        
         public void Tick() {
             HandleShardMovement();
             UpdateGlassInteraction(); //Expensive methods
