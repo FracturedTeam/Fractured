@@ -14,11 +14,13 @@ namespace _Project.Scripts.UI {
         
         [Header("Visuals")]
         [SerializeField] private TextMeshProUGUI backBtt; 
-        [SerializeField] private TextMeshProUGUI selectBtt; 
+        [SerializeField] private TextMeshProUGUI selectBtt;
         
         private void Start() {
             if (InputsBrain.HasInstance)
                 InputsBrain.Instance.OnGamepadControlled += DisplayGamepad;
+            
+            UpdateDisplay(true);
         }
 
         private void OnDisable() {
@@ -31,6 +33,10 @@ namespace _Project.Scripts.UI {
             selectBtt.text = isGamepad ? $"Select {southBtt}" : "Select [Left Click]";
             
             selectBtt.gameObject.SetActive(isGamepad);
+        }
+
+        public void UpdateDisplay(bool isInMainMenu) {
+            backBtt.gameObject.SetActive(!isInMainMenu);   
         }
     }
 }

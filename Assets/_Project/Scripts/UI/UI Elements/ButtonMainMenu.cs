@@ -25,6 +25,8 @@ namespace _Project.Scripts.UI {
         [SerializeField] private float callbackTime = 0.5f;
         [SerializeField] private float tweenTime = 0.25f;
         [SerializeField] private float multiplicator = 1.15f;
+        [SerializeField] private MenuManager menuManager;
+        [SerializeField] private MenuAnimation openedMenu;
         
         [Header("Event On Clicked")]
         public UnityEvent onClickPostTimer;
@@ -70,6 +72,7 @@ namespace _Project.Scripts.UI {
         private IEnumerator CallClickPostTimer() { 
             yield return new WaitForSecondsRealtime(callbackTime);
             
+            menuManager?.UpdateCurrentMenu(openedMenu);
             onClickPostTimer?.Invoke();
         }
 

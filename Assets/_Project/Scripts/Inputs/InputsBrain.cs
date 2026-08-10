@@ -20,6 +20,8 @@ namespace _Project.Scripts.Inputs {
         public event Action<InputAction.CallbackContext> OnInventorySelect = delegate { };
         
         public event Action<bool> OnGamepadControlled = delegate { };
+        public event Action OnBackBtt = delegate { };
+        public event Action OnSelectBtt = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
@@ -44,6 +46,9 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.performed += ShardB;
             inputs.Player.BShard.canceled += ShardB;
             inputs.Player.InventorySelect.performed += InventorySelect;
+
+            inputs.UI.Select.performed += OnSelect;
+            inputs.UI.Back.performed += OnBack;
             
             InputSystem.onActionChange += InputActionChangeCallback;
             OnGamepadControlled.Invoke(false);
@@ -67,6 +72,9 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.performed -= ShardB;
             inputs.Player.BShard.canceled -= ShardB;
             inputs.Player.InventorySelect.performed -= InventorySelect;
+            
+            inputs.UI.Select.performed -= OnSelect;
+            inputs.UI.Back.performed -= OnBack;
             
             InputSystem.onActionChange -= InputActionChangeCallback;
             
@@ -104,5 +112,7 @@ namespace _Project.Scripts.Inputs {
         private void ShardB(InputAction.CallbackContext context) => OnShardB.Invoke(context);
         private void InventorySelect(InputAction.CallbackContext context) => OnInventorySelect.Invoke(context);
         
+        private void OnSelect(InputAction.CallbackContext context) => OnSelectBtt.Invoke();
+        private void OnBack(InputAction.CallbackContext context) => OnBackBtt.Invoke();
     }
 }
