@@ -363,6 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19820b9accdd71a4b8424a9e7bcba799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.MenuAnimation
+  PreviousMenu: {fileID: 0}
+  menuType: 1
   openingTime: 1
   closingTime: 0.75
 --- !u!1001 &971816839871776275
@@ -423,14 +425,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8857789657110478882}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
@@ -438,15 +452,31 @@ PrefabInstance:
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuAnimation, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
       propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622961237882774509, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3776689330175131225, guid: 391c6fac1f8af8f49bc1ce647d391876, type: 3}

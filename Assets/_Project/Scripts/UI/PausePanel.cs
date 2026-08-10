@@ -1,53 +1,46 @@
-using System.Collections.Generic;
-using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.UI
 {
-    public class PausePanel : MonoBehaviour
-    {
-        [SerializeField] private InputAction menuAction;
-        [SerializeField] private GameObject menu;
-        [SerializeField] private GameObject mainMenuPanel;
-        [SerializeField] private List<GameObject> panels;
+    public class PausePanel : MonoBehaviour {
+        
+        [SerializeField] private CanvasGroup menuGroup;
+        [SerializeField] private Animator menuAnimator;
+        [SerializeField] private ButtonUI[] buttons;
+        
         private bool gameIsPaused;
 
-        private void Awake()
-        {
-            menuAction.performed += OnEscapePressed;
-            ReSet();
+        private void OnEnable() {
+            InputsBrain.Instance.OnPause += OnEscapePressed;
         }
 
-        private void OnEnable()
-        {
-            menuAction.Enable();
+        private void OnDisable() {
+            InputsBrain.Instance.OnPause -= OnEscapePressed;
         }
 
-        private void OnDisable()
-        {
-            menuAction.Disable();
-        }
-
-        private void OnEscapePressed(InputAction.CallbackContext context)
-        {
+        private void OnEscapePressed() {
             ChangeState();
         }
 
-        public void ChangeState()
-        {
+        public void ChangeState() {
             gameIsPaused = !gameIsPaused;
             Time.timeScale = gameIsPaused ? 0 : 1;
-            menu.SetActive(gameIsPaused);
-            ReSet();
-        }
+            
+            
+            menuGroup.interactable = gameIsPaused;
+            menuGroup.blocksRaycasts = gameIsPaused;
+            menuGroup.DOFade(gameIsPaused ? 1 : 0, .3f).SetUpdate(true);
 
-        private void ReSet()
-        {
-            mainMenuPanel.SetActive(gameIsPaused);
-            foreach (var panel in panels)
-                panel.SetActive(false);
+            menuAnimator.Play(gameIsPaused ? "A_PauseMenu_IN" : "A_PauseMenu_OUT");
+
+            if (gameIsPaused) {
+                foreach (var btt in buttons) {
+                    btt.Enable();
+                }
+            }
         }
 
         public void LoadMenu() {
