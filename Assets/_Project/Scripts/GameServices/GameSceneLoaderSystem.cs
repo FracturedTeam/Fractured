@@ -189,6 +189,7 @@ namespace _Project.Scripts.GameServices {
                 
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
+                    GameInitializer.Instance.UpdateDebugCameras();
                 }
 
                 if (newGameStarted) {

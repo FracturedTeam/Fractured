@@ -29,7 +29,7 @@ namespace _Project.Scripts.Player.Camera {
             );
             mask =  LayerMask.GetMask("Player");
             
-            if(!isInitialized)
+            if(!isInitialized && GameInitializer.HasInstance)
                 Initialize();
         }
 
