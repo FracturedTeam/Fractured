@@ -67,6 +67,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool initializeDebugger = true;
         private ShardDebugService shardDebugService;
+        private CameraDebugService cameraDebugService;
         #endif
         
         protected override void Awake() {
@@ -137,8 +138,7 @@ namespace _Project.Scripts.GameServices {
             shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
             debugSystem.Register(shardDebugService);
 
-            var cameras = GetCameras();
-            var cameraDebugService = new CameraDebugService(debugUIState, cameras);
+            cameraDebugService = new CameraDebugService(debugUIState, GetCameras());
             debugSystem.Register(cameraDebugService);
             
             var generalDebug =  new GeneralDebugService(debugUIState, saveService);
@@ -195,6 +195,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void EmptyAll() {
+            shardService.stopUpdate = true;
             EmptyInteractable();
             EmptyShards();
         }
@@ -223,6 +224,8 @@ namespace _Project.Scripts.GameServices {
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
             shardDebugService.UpdateSceneDebug(scenes, frameMaster);
             #endif
+            
+            shardService.stopUpdate = false;
         }
         
         public BaseObject[] GetInteractable() {
@@ -385,6 +388,10 @@ namespace _Project.Scripts.GameServices {
         
         #endregion
 
+        public void UpdateDebugCameras() {
+            cameraDebugService.UpdateCameras(GetCameras());
+        }
+        
         public int GetPostProcess(int index) {
             return index switch {
                 0 => GetSettings.brightness,
