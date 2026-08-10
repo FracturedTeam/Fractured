@@ -64,7 +64,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 onPlayerInteraction.Invoke();
                 return;
             }
-            
+            print($"{gameObject.name} {validationMethod} {isValidated}");
             switch (validationMethod) {
                 case ValidationMethod.Position:
                     PositionValidation();
@@ -75,6 +75,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ValidationMethod.UseState:
                     UsableValidation();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
