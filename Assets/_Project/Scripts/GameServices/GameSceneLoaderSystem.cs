@@ -102,11 +102,13 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
         
-        public void NewGame() 
-            => _ = StartNewGame();
+        public void NewGame() => _ = StartNewGame();
         
-        public void LoadGame(string sceneName = "") 
-            => _ = LoadSave(sceneName == "" ? GameInitializer.Instance.GetLastScene() : sceneName);
+        public void LoadGame(string sceneName = "") => _ = LoadSave(sceneName == "" ? GameInitializer.Instance.GetLastScene() : sceneName);
+
+        public void LoadLevel(int levelIndex) {
+            _ = StartNewGame(levelIndex);
+        }
         
         public void LoadMenu() 
             => _ = LoadMenuAsync();
@@ -227,13 +229,14 @@ namespace _Project.Scripts.GameServices {
             await FadeToGame();
         }
 
-        private async Task StartNewGame() {
+        private async Task StartNewGame(int index = 0) {
             GameInitializer.Instance.CreateNewSave();
             scenesToLoad.Clear();
             
             await FadeToBlack();
 
-            await LoadSceneAsync(newGameScene);
+            
+            await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index - 1]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
             newGameStarted = true;
