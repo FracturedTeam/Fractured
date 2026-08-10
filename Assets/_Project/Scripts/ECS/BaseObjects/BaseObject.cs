@@ -4,6 +4,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
 using UnityEditor;
@@ -166,15 +167,15 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if(TryGetComponent(out TriggerComponent trigger)) 
                     GetTrigger = trigger;
                 
-                if(TryGetComponent(typeof(GlassText), out var gt))
-                    GetTextInteractable = gt as GlassText;
-                
                 if(TryGetComponent(out IInteractable interactable)) 
                     GetInteract = interactable;
                 else SetInteract(false);
 
                 if (TryGetComponent(out LockedAttribute blocked)) 
                     blockedAttribute = blocked;
+                
+                if(TryGetComponent(typeof(GlassText), out var gt))
+                    GetTextInteractable = gt as GlassText;
 
                 if (TryGetComponent(out SceneElement scene)) {
                     sceneElement = scene;
@@ -196,7 +197,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
         }
-        
+
+        private void Start()
+        {
+            if(!IsInitialized)
+                Initialize();
+        }
+
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
             
@@ -220,6 +227,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void OnShardInteract(bool isOn, Glass shard) {  
+            print($"base object interacted  {name} with {shard} shard");
             if(canGlassInteractWith)
                 GetGlassInteract.OnShardUpdated(isOn, shard);
         }
@@ -248,6 +256,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+        }
+
+        public void SetDialogue(DialogueScriptableObject dialogue)
+        {
+            HudManager.Instance.SetText(dialogue);
         }
         
         public Collider GetCollider() => objectCollider;

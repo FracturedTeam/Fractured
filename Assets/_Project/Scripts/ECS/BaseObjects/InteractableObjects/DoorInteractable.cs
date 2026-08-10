@@ -26,7 +26,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 isInitialized = true;
             }
-            
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {

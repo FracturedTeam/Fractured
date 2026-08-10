@@ -605,6 +605,7 @@ GameObject:
   - component: {fileID: 4559356953594915415}
   - component: {fileID: 8176287884244408161}
   - component: {fileID: 7347209856382421510}
+  - component: {fileID: 595019640867243951}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -621,7 +622,7 @@ Transform:
   m_GameObject: {fileID: 4831234619962423155}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.25, z: -7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -767,6 +768,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.PlayerInventory
   items: []
   keys: []
+--- !u!114 &595019640867243951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831234619962423155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cab8c8e4edc64d738178ed8b5b1f9409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Player.PlayerIK
+  armsRig: {fileID: 2216906419656639565}
+  rightArm: {fileID: 4702405003606475199}
+  leftArm: {fileID: 1082881095040056186}
 --- !u!1 &6226524822803797494
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +842,7 @@ Transform:
   m_GameObject: {fileID: 6852810347288631100}
   serializedVersion: 2
   m_LocalRotation: {x: 0.57864046, y: -0, z: -0, w: 0.81558275}
-  m_LocalPosition: {x: 0, y: 22.25, z: -14}
+  m_LocalPosition: {x: 0, y: 20, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1116,7 +1132,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 0
-    Time: 0
+    Time: 0.25
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -1355,6 +1371,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6002794212237526626, guid: f1454fcdbaacabb4d957c21ec23e427f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -1815,6 +1835,10 @@ PrefabInstance:
     - target: {fileID: 2123269250145536201, guid: a8ff6b912859a1244a5155073d90ce16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468032584467834208, guid: a8ff6b912859a1244a5155073d90ce16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 6388264693797716004, guid: a8ff6b912859a1244a5155073d90ce16, type: 3}
       propertyPath: m_Name

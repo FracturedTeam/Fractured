@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2314,7 +2314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2552,8 +2552,8 @@ MonoBehaviour:
 
     9'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2678,6 +2678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad55ad12c91d15a4dad10d0beb761318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCharacter
+  text: {fileID: 0}
   spaceBetweenCharacters: 41.12
 --- !u!1 &4110742600991663876
 GameObject:
@@ -2952,7 +2953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2996,7 +2997,6 @@ GameObject:
   - component: {fileID: 8819137835034831717}
   - component: {fileID: 4970679844282229805}
   - component: {fileID: 4592339627036881905}
-  - component: {fileID: 2778794894858374443}
   m_Layer: 5
   m_Name: P_Canva
   m_TagString: Untagged
@@ -3175,35 +3175,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PadlockHud
   codeObject: {fileID: 6165594748261767973}
-  textObject: {fileID: 0}
   selectionImage: {fileID: 0}
-  spaceBetweenCharacters: 41.5
-  numbersTMP:
-  - {fileID: 4275180263573696945}
-  - {fileID: 6810960807146943364}
-  - {fileID: 1722669461594813124}
-  - {fileID: 1373262949846406094}
---- !u!114 &2778794894858374443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4783835123029768652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be09ccc8c5d90034a9b3634ec5324df1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PadlockHud
-  codeObject: {fileID: 6165594748261767973}
-  textObject: {fileID: 0}
-  selectionImage: {fileID: 0}
-  spaceBetweenCharacters: 41.5
-  numbersTMP:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  characters:
+  - {fileID: 6665681656893857398}
+  - {fileID: 3806631066427758573}
+  - {fileID: 1090573242106186857}
+  - {fileID: 4883769101004082805}
 --- !u!1 &4877027484760356648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3517,8 +3494,8 @@ MonoBehaviour:
 
     9'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3643,6 +3620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad55ad12c91d15a4dad10d0beb761318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCharacter
+  text: {fileID: 0}
   spaceBetweenCharacters: 41.12
 --- !u!1 &5641371944708197972
 GameObject:
@@ -3834,8 +3812,8 @@ MonoBehaviour:
 
     9'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3960,6 +3938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad55ad12c91d15a4dad10d0beb761318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCharacter
+  text: {fileID: 0}
   spaceBetweenCharacters: 41.12
 --- !u!1 &7382979976186227334
 GameObject:
@@ -4026,7 +4005,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Maintain E to Confirm
+  m_text: Maintain F to Confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 774264c735602994ebb728da5769d51b, type: 2}
   m_sharedMaterial: {fileID: 8606842468925967686, guid: 774264c735602994ebb728da5769d51b, type: 2}
@@ -4778,8 +4757,8 @@ MonoBehaviour:
 
     9'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4904,6 +4883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad55ad12c91d15a4dad10d0beb761318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LockCharacter
+  text: {fileID: 0}
   spaceBetweenCharacters: 41.12
 --- !u!1 &8859967510994171192
 GameObject:
@@ -5388,7 +5368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3599352939069573218, guid: 9b4125d90cbeb504089b7016bf842a2e, type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6343482144053882653, guid: 9b4125d90cbeb504089b7016bf842a2e, type: 3}
       propertyPath: m_Name
@@ -5525,11 +5505,23 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5994196353585338207}
     m_Modifications:
+    - target: {fileID: 39196862652640156, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
+      propertyPath: isVisibleFromStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 684479828019643740, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 684479828019643740, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 925342318193063462, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 925342318193063462, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1
       objectReference: {fileID: 0}
@@ -5548,6 +5540,10 @@ PrefabInstance:
     - target: {fileID: 1798321074004917438, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995728749669529086, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
+      propertyPath: isVisibleFromStart
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2061373519612908056, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_SortingLayer
@@ -5681,6 +5677,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5968550129418062121, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
+      propertyPath: isVisibleFromStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6017042646842098990, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_fontSize
       value: 0.5
@@ -5755,7 +5755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8672256173427230913, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9183887387760449850, guid: 7d7e2e0c5dc7fd14db5637722a796587, type: 3}
       propertyPath: m_SortingLayer
