@@ -24,6 +24,7 @@ namespace _Project.Scripts.Inputs {
         public event Action OnSelectBtt = delegate { };
         public event Action<InputAction.CallbackContext> OnNavigation = delegate { };
         public event Action<InputAction.CallbackContext> OnSettingsView = delegate { };
+        public event Action OnPause = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
@@ -56,6 +57,8 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Navigation.performed += Navigation;
             inputs.UI.SettingsView.performed += SettingsView;
                 
+            inputs.Pause.Pause.performed += Pause;
+            
             InputSystem.onActionChange += InputActionChangeCallback;
             OnGamepadControlled.Invoke(false);
             
@@ -85,6 +88,8 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Back.performed -= OnBack;
             inputs.UI.Navigation.performed -= Navigation;
             inputs.UI.SettingsView.performed -= SettingsView;
+            
+            inputs.Pause.Pause.performed -= Pause;
             
             InputSystem.onActionChange -= InputActionChangeCallback;
             
@@ -131,6 +136,10 @@ namespace _Project.Scripts.Inputs {
 
         private void SettingsView(InputAction.CallbackContext context) {
             OnSettingsView.Invoke(context);
+        }
+
+        private void Pause(InputAction.CallbackContext context) {
+            OnPause.Invoke();
         }
     }
 }

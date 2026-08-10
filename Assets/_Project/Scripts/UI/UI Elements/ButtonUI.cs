@@ -54,6 +54,10 @@ namespace _Project.Scripts.UI {
         }
 
         private void OnEnable() {
+            Enable();
+        }
+
+        public void Enable() {
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
             
             buttonText.color = whiteColor;
@@ -62,7 +66,7 @@ namespace _Project.Scripts.UI {
             pressedGroup.gameObject.SetActive(false);
             pressedGroup.alpha = 0;
         }
-
+        
         private void OnDisable() {
             tweener?.Kill();
         }
