@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
-    public class ButtonMainMenu : MonoBehaviour{
+    public class ButtonMainMenu : MonoBehaviour {
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;

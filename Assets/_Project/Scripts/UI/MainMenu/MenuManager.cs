@@ -32,5 +32,9 @@ namespace _Project.Scripts.UI
         public void LoadGame() {
             GameSceneLoaderSystem.Instance.LoadGame();
         }
+
+        public void LoadLevel(int levelIndex) {
+            GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
+        }
     }
 }
