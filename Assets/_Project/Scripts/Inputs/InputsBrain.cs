@@ -1,5 +1,4 @@
 using System;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +19,7 @@ namespace _Project.Scripts.Inputs {
         
         public event Action<InputAction.CallbackContext> OnInventorySelect = delegate { };
         
+        public event Action<bool> OnGamepadControlled = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
@@ -46,6 +46,7 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.InventorySelect.performed += InventorySelect;
             
             InputSystem.onActionChange += InputActionChangeCallback;
+            OnGamepadControlled.Invoke(false);
             
             inputs.Enable();
         }
@@ -81,11 +82,13 @@ namespace _Project.Scripts.Inputs {
                 if ((lastDevice.name.Equals("Keyboard") || lastDevice.name.Equals("Mouse")) && !IsKeyboardControl) {
                     IsKeyboardControl = true;
                     Cursor.visible = true;
+                    OnGamepadControlled.Invoke(false);
                     Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
                 else if (!lastDevice.name.Equals("Keyboard") && !lastDevice.name.Equals("Mouse") && IsKeyboardControl) {
                     IsKeyboardControl = false;
                     Cursor.visible = false;
+                    OnGamepadControlled.Invoke(true);
                     Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
             }
