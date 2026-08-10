@@ -81,8 +81,7 @@ public class GlassTextLink : MonoBehaviour
             if (baseText)
                 baseText.text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
             else if (GetComponent<TMP_Text>())
-                GetComponent<TMP_Text>().text =
-                    Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+                GetComponent<TMP_Text>().text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
             return;
         }
         

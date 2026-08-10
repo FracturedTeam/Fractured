@@ -139,6 +139,7 @@ namespace _Project.Scripts.ECS
 
         public void SetUp3dShard(bool isVisible = true) {
             shard.gameObject.SetActive(isVisible);
+            shardSprite.raycastTarget = isVisible;
         }
 
         public void OnDrag(PointerEventData eventData) {
