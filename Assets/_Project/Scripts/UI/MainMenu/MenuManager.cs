@@ -77,6 +77,8 @@ namespace _Project.Scripts.UI {
             
             CurrentMenu = newMenu;
             currentMenuType = newMenu.menuType;
+            currentIndex = 0;
+            settingsIndex = 0;
             
             HoverButton(GetCurrentList()[currentIndex]);
             
@@ -106,19 +108,34 @@ namespace _Project.Scripts.UI {
         }
 
         private void ExecuteButtonScrip(GameObject list) {
-            if (list.TryGetComponent(out IPointerDownHandler main)) {
+            if (list.TryGetComponent(out Toggle ui)) {
+                ui.isOn = !ui.isOn;
+            }
+            else if (list.TryGetComponent(out IPointerDownHandler main)) {
                 main.OnPointerDown(null);
             }
         }
 
         private void HoverButton(GameObject list) {
-            if (list.TryGetComponent(out IPointerEnterHandler pointer)) {
+            if (list.TryGetComponent(out ToggleUI ui)) {
+                ui.OnPointerEnter(null);
+            }
+            else if (list.TryGetComponent(out SliderUI sld)) {
+                sld.OnPointerEnter(null);
+            }
+            else if (list.TryGetComponent(out IPointerEnterHandler pointer)) {
                 pointer.OnPointerEnter(null);
             }
         }
 
         private void UnHoverButton(GameObject list) {
-            if (list.TryGetComponent(out IPointerExitHandler pointer)) {
+            if (list.TryGetComponent(out ToggleUI ui)) {
+                ui.OnPointerExit(null);
+            }
+            else if (list.TryGetComponent(out SliderUI sld)) {
+                sld.OnPointerExit(null);
+            }
+            else if (list.TryGetComponent(out IPointerExitHandler pointer)) {
                 pointer.OnPointerExit(null);
             }
         }
@@ -249,6 +266,11 @@ namespace _Project.Scripts.UI {
             };
             
             ExecuteButtonScrip(settingsButtons[settingsIndex]);
+            
+            UnHoverButton(GetCurrentList()[currentIndex]);
+            
+            currentIndex = 0;
+            HoverButton(GetCurrentList()[currentIndex]);
             
             HoverButton(settingsButtons[settingsIndex]);
         }

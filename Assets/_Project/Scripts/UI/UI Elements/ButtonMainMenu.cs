@@ -31,7 +31,7 @@ namespace _Project.Scripts.UI {
         [Header("Event On Clicked")]
         public UnityEvent onClickPostTimer;
         
-        private Vector3 scale;
+        private Vector3 scale = Vector3.one;
         private Tweener tweener;
         
         private Image backgroundImg;
@@ -39,7 +39,6 @@ namespace _Project.Scripts.UI {
         private bool pressed;
         
         private void Awake() {
-            scale = transform.localScale;
             if(TryGetComponent(out Image img))
                 backgroundImg = img;
         }
@@ -53,7 +52,7 @@ namespace _Project.Scripts.UI {
 
         private void OnEnable() {
             //sometimes the OnHover false of the disable doesn't work, this fixes it 
-            tweener = transform.DOScale(scale, 0).SetUpdate(true);
+            transform.localScale = scale;
             backgroundImg.enabled = true;
             buttonText.color = whiteColor;
             hoverGroup.alpha = 0f;

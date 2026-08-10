@@ -21,6 +21,7 @@ namespace _Project.Scripts.UI {
                 InputsBrain.Instance.OnGamepadControlled += DisplayGamepad;
             
             UpdateDisplay(true);
+            DisplayGamepad(false);
         }
 
         private void OnDisable() {
