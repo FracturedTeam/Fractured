@@ -6,6 +6,7 @@ namespace _Project.Scripts.UI
     public class MenuAnimation : MonoBehaviour {
         [Header("Menu")]
         [SerializeField] public MenuAnimation PreviousMenu;
+        [SerializeField] public CurrentMenu menuType;
         
         [Header("Switching Time")]
         [SerializeField] private float openingTime = 2;

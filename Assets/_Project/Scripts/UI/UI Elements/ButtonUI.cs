@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
-    public class ButtonUI : MonoBehaviour {
+    public class ButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
         [Header("General Settings")]
         [SerializeField] private bool settingsButtons;
         
@@ -34,37 +34,11 @@ namespace _Project.Scripts.UI {
         [Header("Event On Clicked")]
         public UnityEvent onClickPostTimer;
         
-        private EventTrigger button;
         private Vector3 scale;
         private Tweener tweener;
         
         private void Awake() {
             scale = transform.localScale;
-            if(TryGetComponent(typeof(EventTrigger), out var btn))
-                button = (EventTrigger)btn;
-        }
-
-        public void OnHover(bool hovering) {
-            tweener = transform.DOScale(hovering ? scale * multiplicator : scale, tweenTime).SetUpdate(true);
-            
-            buttonText.color = hovering ? blueColor : whiteColor;
-            backgroundImage.sprite = hovering ? backgroundHover: backgroundNormal;
-            pressedGroup.gameObject.SetActive(false);
-        }
-        public void OnClicked() {
-            tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
-
-            if (!settingsButtons) {
-                button.enabled = false;
-                buttonText.color = blueColor;
-                backgroundImage.gameObject.SetActive(false);
-                pressedGroup.gameObject.SetActive(true);
-                pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
-            }
-            
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
-            
-            StartCoroutine(CallClickPostTimer());
         }
         
         private IEnumerator CallClickPostTimer() { 
@@ -80,7 +54,6 @@ namespace _Project.Scripts.UI {
         }
 
         private void OnEnable() {
-            //sometimes the OnHover false of the disable doesn't work, this fixes it 
             tweener = transform.DOScale(scale, 0).SetUpdate(true);
             
             buttonText.color = whiteColor;
@@ -88,12 +61,41 @@ namespace _Project.Scripts.UI {
             backgroundImage.gameObject.SetActive(true);
             pressedGroup.gameObject.SetActive(false);
             pressedGroup.alpha = 0;
-            
-            button.enabled = true;
         }
 
         private void OnDisable() {
             tweener?.Kill();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData) {
+            tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
+            
+            buttonText.color = blueColor;
+            backgroundImage.sprite = backgroundHover;
+            pressedGroup.gameObject.SetActive(false);
+        }
+
+        public void OnPointerExit(PointerEventData eventData) {
+            tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
+            
+            buttonText.color = whiteColor;
+            backgroundImage.sprite = backgroundNormal;
+            pressedGroup.gameObject.SetActive(false);
+        }
+
+        public void OnPointerDown(PointerEventData eventData) {
+            tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
+
+            if (!settingsButtons) {
+                buttonText.color = blueColor;
+                backgroundImage.gameObject.SetActive(false);
+                pressedGroup.gameObject.SetActive(true);
+                pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
+            }
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
+            
+            StartCoroutine(CallClickPostTimer());
         }
     }
 }

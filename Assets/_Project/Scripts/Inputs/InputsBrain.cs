@@ -22,6 +22,8 @@ namespace _Project.Scripts.Inputs {
         public event Action<bool> OnGamepadControlled = delegate { };
         public event Action OnBackBtt = delegate { };
         public event Action OnSelectBtt = delegate { };
+        public event Action<InputAction.CallbackContext> OnNavigation = delegate { };
+        public event Action<InputAction.CallbackContext> OnSettingsView = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
@@ -31,6 +33,7 @@ namespace _Project.Scripts.Inputs {
         }
 
         private void OnEnable() {
+            // Player Inputs
             inputs.Player.Move.performed += PlayerMove;
             inputs.Player.Move.canceled += PlayerMove;
             inputs.Player.Interact.performed += Interact;
@@ -47,9 +50,12 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.canceled += ShardB;
             inputs.Player.InventorySelect.performed += InventorySelect;
 
+            // UI Inputs
             inputs.UI.Select.performed += OnSelect;
             inputs.UI.Back.performed += OnBack;
-            
+            inputs.UI.Navigation.performed += Navigation;
+            inputs.UI.SettingsView.performed += SettingsView;
+                
             InputSystem.onActionChange += InputActionChangeCallback;
             OnGamepadControlled.Invoke(false);
             
@@ -57,6 +63,7 @@ namespace _Project.Scripts.Inputs {
         }
 
         private void OnDisable() {
+            // Player Inputs
             inputs.Player.Move.performed -= PlayerMove;
             inputs.Player.Move.canceled -= PlayerMove;
             inputs.Player.Interact.performed -= Interact;
@@ -73,8 +80,11 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.canceled -= ShardB;
             inputs.Player.InventorySelect.performed -= InventorySelect;
             
+            // UI Inputs
             inputs.UI.Select.performed -= OnSelect;
             inputs.UI.Back.performed -= OnBack;
+            inputs.UI.Navigation.performed -= Navigation;
+            inputs.UI.SettingsView.performed -= SettingsView;
             
             InputSystem.onActionChange -= InputActionChangeCallback;
             
@@ -114,5 +124,13 @@ namespace _Project.Scripts.Inputs {
         
         private void OnSelect(InputAction.CallbackContext context) => OnSelectBtt.Invoke();
         private void OnBack(InputAction.CallbackContext context) => OnBackBtt.Invoke();
+
+        private void Navigation(InputAction.CallbackContext context) {
+            OnNavigation.Invoke(context);
+        }
+
+        private void SettingsView(InputAction.CallbackContext context) {
+            OnSettingsView.Invoke(context);
+        }
     }
 }
