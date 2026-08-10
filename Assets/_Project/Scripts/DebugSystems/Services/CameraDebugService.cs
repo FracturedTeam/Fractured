@@ -7,9 +7,9 @@ using UnityEngine;
 namespace _Project.Scripts.DebugSystems.Services {
     public class CameraDebugService : IDebugSystem, IDebugGUI, IDebugGizmos {
 
-        private readonly CinemachineBrain currentCamera;
+        private CinemachineBrain currentCamera;
+        private CinemachineCamera[] cameras;
         private readonly DebugUIState debugUIState;
-        private readonly CinemachineCamera[] cameras;
         private readonly CountdownTimer countdownTimer = new (0.1f);
         
         public CameraDebugService(DebugUIState debugUI, CinemachineCamera[] cameras) {
@@ -25,8 +25,14 @@ namespace _Project.Scripts.DebugSystems.Services {
         public void Tick() {
         }
 
+        public void UpdateCameras(CinemachineCamera[] cameras) {
+            currentCamera = PlayerController.Instance.cinemachineBrain;
+            this.cameras = cameras;
+        }
+        
         public void DrawDebugGUI() {
             if(!debugUIState.IsVisible("Camera")) return;
+            if(currentCamera == null) return;
             
             var headerStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Bold,
