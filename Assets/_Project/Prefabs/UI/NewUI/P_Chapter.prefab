@@ -585,8 +585,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155, y: 0.0064697}
-  m_SizeDelta: {x: 886.6409, y: 816}
+  m_AnchoredPosition: {x: -246, y: -35}
+  m_SizeDelta: {x: 1556.9604, y: 875.7903}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2971101076920277871
 CanvasRenderer:
@@ -616,7 +616,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 17a0f3ce3c4f9f940b0717b57f322729, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7a54e9bc205babf4c88ab2ba2466728d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1061,6 +1061,7 @@ GameObject:
   - component: {fileID: 3394720018397862241}
   - component: {fileID: 5457898899006043454}
   - component: {fileID: 4363575238820948518}
+  - component: {fileID: 7993260790150172391}
   m_Layer: 5
   m_Name: P_Chapter
   m_TagString: Untagged
@@ -1140,3 +1141,40 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7993260790150172391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8004899581148220271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c880117d24f74975be226d74ad0350f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.ChapterSelection
+  chapterIndex: 0
+  hoverGroup: {fileID: 7265241058482367384}
+  unlockedMat: {fileID: 2100000, guid: 5456d70f2531df94ebc03ae7d1fc1cef, type: 2}
+  lockedMat: {fileID: 2100000, guid: b33b8ccbcc7aea047976210f6b40779e, type: 2}
+  chapterImage: {fileID: 2757924098221886635}
+  lockedObject: {fileID: 7851006440243795260}
+  onClickPostTimer:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  callbackTime: 0.5
+  easeType: 27
+  tweenTime: 0.25
+  multiplicator: 1.15
