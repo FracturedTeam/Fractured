@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19820b9accdd71a4b8424a9e7bcba799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.MenuAnimation
+  PreviousMenu: {fileID: 0}
+  menuType: 2
   openingTime: 1
   closingTime: 0.75
 --- !u!1 &2487933519218694124
@@ -375,6 +377,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 19069486659136831}
     m_Modifications:
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: chapterIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8004899581148220271, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Name
       value: P_Chapter (4)
@@ -393,7 +419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.x
@@ -401,7 +427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_SizeDelta.x
@@ -441,11 +467,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1704.48
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -479,7 +505,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 730755776220143072, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2737241574584767200, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Color.a
@@ -492,6 +518,30 @@ PrefabInstance:
     - target: {fileID: 5670224164036419341, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: chapterIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8004899581148220271, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Name
@@ -511,7 +561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.x
@@ -519,7 +569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_SizeDelta.x
@@ -559,11 +609,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 960
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -599,6 +649,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: chapterIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8004899581148220271, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Name
       value: P_Chapter
@@ -617,7 +691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.x
@@ -625,7 +699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_SizeDelta.x
@@ -665,11 +739,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 215.51999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -701,6 +775,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 19069486659136831}
     m_Modifications:
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: chapterIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8004899581148220271, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Name
       value: P_Chapter (1)
@@ -719,7 +817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.x
@@ -727,7 +825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_SizeDelta.x
@@ -767,11 +865,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 587.76
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -803,6 +901,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 19069486659136831}
     m_Modifications:
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: chapterIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Project.Scripts.UI.MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993260790150172391, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
+      propertyPath: onClickPostTimer.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8004899581148220271, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_Name
       value: P_Chapter (3)
@@ -821,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.x
@@ -829,7 +951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_SizeDelta.x
@@ -869,11 +991,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1332.24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -570
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8185926261943735324, guid: b26eb0b24f379544ab50913cbfd8ed69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
