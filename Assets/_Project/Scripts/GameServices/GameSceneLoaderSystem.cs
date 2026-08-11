@@ -62,7 +62,7 @@ namespace _Project.Scripts.GameServices {
                 
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-                
+                GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
                 // GameInitializer.Instance.SaveData();
                 // PlayerController.Instance.triggerEnterRoom = true;
             }
