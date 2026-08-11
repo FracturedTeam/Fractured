@@ -18,7 +18,8 @@ namespace _Project.Scripts.UI
         }
 
         private void OnDisable() {
-            InputsBrain.Instance.OnPause -= OnEscapePressed;
+            if(InputsBrain.HasInstance)
+                InputsBrain.Instance.OnPause -= OnEscapePressed;
         }
 
         private void OnEscapePressed() {
