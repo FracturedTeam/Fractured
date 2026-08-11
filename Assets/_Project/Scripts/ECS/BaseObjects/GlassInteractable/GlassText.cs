@@ -9,7 +9,11 @@ using UnityEngine;
 [RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
 {
-    [SerializeField] private bool isVisibleFromStart; 
+    [Header("Visibility Settings")]
+    [SerializeField] private bool isVisibleFromStart;
+    [SerializeField] private bool disappearDefinitively; 
+
+    [Header("Global Settings")]
     [SerializeField] private GlassTextScriptableObject currentTextScriptableObject;
     [SerializeField] private GlassTextLink baseText;
     [SerializeField] private GlassTextLink fragAText;
@@ -20,7 +24,8 @@ public class GlassText : MonoBehaviour
     private ObservableHashSet<Glass> shardsOnTop;
     private BaseObject baseObject;
     private bool isInitialized;
-    
+
+    private bool canAppearAgain = true;
 
     internal void Initialize()
     {
@@ -76,21 +81,22 @@ public class GlassText : MonoBehaviour
     }
 
     [ContextMenu("Manually Appear")]
-    public void Appear()
-    {
+    public void Appear() {
+        if(!canAppearAgain) return;
+        
         SetAlpha( 1, 1);
         if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
     }    
     
     [ContextMenu("Manually Disappear")]
-    public void Disappear()
-    {
+    public void Disappear() {
         SetAlpha( 0, 1);
         if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
+
+        if (disappearDefinitively) canAppearAgain = false;
     }
 
-    internal void OnInteract(bool isColliding, Glass shard)
-    {
+    internal void OnInteract(bool isColliding, Glass shard) {
         fragAText.OnInteract(isColliding, shard);
         fragBText.OnInteract(isColliding, shard);
         bothText.OnInteract(isColliding, shard);
