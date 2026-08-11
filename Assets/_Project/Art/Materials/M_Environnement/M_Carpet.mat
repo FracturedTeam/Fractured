@@ -23,13 +23,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Floor_02
+  m_Name: M_Carpet
   m_Shader: {fileID: -6465566751694194690, guid: ba21fd15aae8e81418924828d1b13aaa, type: 3}
-  m_Parent: {fileID: 2100000, guid: dea2324d1a4d2aa4eb8e2475a6e47039, type: 2}
+  m_Parent: {fileID: 2100000, guid: c78cff0f8b610b84f8106f99c6635906, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
-  - _CURRENTACT_ACT_1
+  - _CURRENTACT_ACT_2
   - _DISABLE_SSR_TRANSPARENT
   - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
@@ -50,29 +50,51 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseColor:
-        m_Texture: {fileID: 2800000, guid: bf3f94fecd7b89f4da49b534209e488a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 91d2930a115307c42a9ae3a74edc9427, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: a8154b68aebf88e40b9a00d183b09213, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2b55ed1764afd664fb599889f377c42b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORM:
-        m_Texture: {fileID: 2800000, guid: f61ca2ba10a248f479d204d92e7b068b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 08d16792a957bf141ad2799c3b636446, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AOIntensity: 1
+    - _ActGlobalTransition: 0
+    - _CURRENTACT: 0
+    - _DisableGradientMap: 0
+    - _LightingGradientMapInfluence: 1
+    - _Triplanar: 1
+    - _UseCustomRoughness: 1
+    - _X_GradientIntensity: 0
+    - _Y_GradientIntensity: 0
     m_Colors:
-    - _AOColor: {r: 0.39607844, g: 0.39607844, b: 0.39607844, a: 1}
-    - _Color1: {r: 0, g: 0, b: 0, a: 1}
-    - _Color1_2Levels: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Color2: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
-    - _Color2_3Levels: {r: 0.5, g: 1, b: 0, a: 0}
-    - _Color3: {r: 0.42352942, g: 0.42352942, b: 0.42352942, a: 1}
-    - _Color_1_Location: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Tilling: {r: 1, g: 1, b: 0, a: 0}
+    - _ACT1_Color_A: {r: 0.745283, g: 0.03867035, b: 0.03867035, a: 1}
+    - _ACT1_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _ACT1_Color_B: {r: 0.735849, g: 0.3991634, b: 0.3991634, a: 1}
+    - _ACT1_Color_C: {r: 1, g: 0.8160377, b: 0.8160377, a: 1}
+    - _ACT2_Color_A: {r: 0.4307986, g: 0.29019612, b: 0.7254902, a: 1}
+    - _ACT2_Color_A_Location: {r: 0, g: 0.35, b: 0, a: 0}
+    - _ACT2_Color_B: {r: 0.48584908, g: 0.6092453, b: 1, a: 1}
+    - _ACT2_Color_B_Location: {r: 0.4000002, g: 1, b: 0, a: 0}
+    - _ACT2_Color_C: {r: 0.6745098, g: 1, b: 0.9542851, a: 1}
+    - _ACT3_Color_A: {r: 0.7191118, g: 0, b: 0.8490566, a: 1}
+    - _ACT3_Color_B: {r: 0.7083213, g: 0.41251338, b: 0.8490566, a: 1}
+    - _ACT3_Color_C: {r: 0.93342745, g: 0.8537736, b: 1, a: 1}
+    - _AOColor: {r: 0.3301887, g: 0.12660074, b: 0, a: 1}
+    - _Color1: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+    - _Color2: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
+    - _Color3: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
+    - _Color_1_Location: {r: 0, g: 0.25, b: 0, a: 0}
+    - _Color_2_Location: {r: 0.25, g: 1, b: 0, a: 0}
+    - _Color_A: {r: 0.07058824, g: 0.04705883, b: 0.25882354, a: 1}
+    - _Color_B: {r: 0.28235295, g: 0.30588236, b: 0.8980393, a: 1}
+    - _Color_C: {r: 0.46057317, g: 0.67958397, b: 0.8490566, a: 1}
+    - _Color_D: {r: 0.73794055, g: 0.9716981, b: 0.9592642, a: 1}
+    - _Tilling: {r: 0.5, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6024201449024024153
