@@ -192,6 +192,7 @@ namespace _Project.Scripts.GameServices {
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                     GameInitializer.Instance.UpdateDebugCameras();
+                    GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
                 }
 
                 if (newGameStarted) {
@@ -215,7 +216,6 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
             
             GameInitializer.Instance.DisposeShards();
-            GameInitializer.Instance.SetEditableArea(false, ColorEnum.Both);
             
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);

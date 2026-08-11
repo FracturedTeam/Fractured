@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
@@ -39,13 +38,13 @@ namespace _Project.Scripts.UI
                     layer = LayerMask.NameToLayer("Fragment Color A");
                     gameObject.layer = layer;
                     frag.layer = layer;
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true);
                     break;
                 case ColorEnum.ColorB:
                     layer = LayerMask.NameToLayer("Fragment Color B");
                     gameObject.layer = layer;
                     frag.layer = layer;
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false);
                     break;
                 case ColorEnum.Both:
                 case ColorEnum.None:
