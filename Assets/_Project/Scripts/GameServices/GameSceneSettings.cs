@@ -13,9 +13,9 @@ namespace _Project.Scripts.GameServices {
         
         [Header("Scene Settings")]
         [SerializeField] private CinemachineCamera roomCamera;
+        [SerializeField] public int ActColor = 1;
         
         [Header("Puzzle Objects")]
-        //[HideInInspector] public Glass[] glassShards;
         [SerializeField] public List<BaseObject> baseObjects;
         [SerializeField] public List<SceneMaster> sceneMasters;
         

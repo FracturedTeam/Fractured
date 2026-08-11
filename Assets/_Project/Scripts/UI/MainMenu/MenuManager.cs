@@ -72,6 +72,13 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
         }
 
+        private void OnDisable() {
+            InputsBrain.Instance.OnBackBtt -= Back;
+            InputsBrain.Instance.OnSelectBtt -= Select;
+            InputsBrain.Instance.OnNavigation -= Navigation;
+            InputsBrain.Instance.OnSettingsView -= SettingsView;
+        }
+
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             UnHoverButton(GetCurrentList()[currentIndex]);
             

@@ -14,6 +14,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private CanvasGroup fadeCanvasGroup;
         [SerializeField] private float fadeInDuration = 0.3f;
         [SerializeField] private float fadeOutDuration = 0.3f;
+        [SerializeField] private Material transitionMaterial;
 
         private Tweener tween;
         
@@ -26,18 +27,14 @@ namespace _Project.Scripts.UI {
             EventBus<FadeObject>.Deregister(fadeEventBinding);
             
             tween?.Kill();
+            transitionMaterial.SetFloat("_Animation", 1.1f);
         }
 
         void Fade(FadeObject f) {
             tween?.Kill();
-            if (f.show) {
-                tween = fadeCanvasGroup.DOFade(1f, fadeInDuration);
-                fadeCanvasGroup.blocksRaycasts = true;
-            }
-            else {
-                tween = fadeCanvasGroup.DOFade(0f, fadeOutDuration);
-                fadeCanvasGroup.blocksRaycasts = false;
-            }
+            
+            fadeCanvasGroup.blocksRaycasts = f.show;
+            tween = transitionMaterial.DOFloat(f.show ? 0 : 1.1f, "_Animation", f.show ? fadeInDuration : fadeOutDuration);
         }
     }
 }
