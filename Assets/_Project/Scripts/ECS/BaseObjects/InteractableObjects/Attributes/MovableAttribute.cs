@@ -251,13 +251,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
             var dir = PlayerController.Instance.Movement.mesh.forward;
 
-            var ignoreLayer = LayerMask.NameToLayer("ShardEditableArea");
+            var ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
             var mask = ~(1 << ignoreLayer);
             
-            Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask); 
-                
-            var pos = playerPos + dir.normalized * (boundExtent.z * 2 + 0.4f);
-            //pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
+            Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask);
+
+            var dist = boundExtent.z * 2 + 0.4f;
+            
+            if(dist < 1.4f) dist = 1.4f;
+            
+            var pos = playerPos + dir.normalized * dist;
             pos.y = groundLevel.point.y;
             return pos;
         }
