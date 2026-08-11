@@ -83,15 +83,6 @@ namespace _Project.Scripts.ECS.BaseObjects
                     for (var i = 0; i < transform.childCount; i++) {
                         transform.GetChild(i).gameObject.SetActive(false);
                     }
-                    
-                    /*
-                    if (baseObject.locked && !MemoryManager.Instance.IsUnlockedMemory(baseObject.memoryId)) {
-                        if(wallRenderer.Length > 0)
-                            foreach (var wall in wallRenderer) {
-                                wall.material = visibleWallMat;
-                            }
-                    }
-                    */
                 }
                 
                 underRed = 0;
