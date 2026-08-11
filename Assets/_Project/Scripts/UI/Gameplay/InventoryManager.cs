@@ -12,7 +12,6 @@ namespace _Project.Scripts.UI.Gameplay {
         
         [Header("Item Display Settings")]
         [SerializeField] private RectTransform itemDisplay;
-        [SerializeField] private RectTransform itemHighlight;
         [SerializeField] private Vector3 closePosition;
         [SerializeField] private Vector3 openPosition;
         [SerializeField] private ItemHolder[] itemHolder;
@@ -77,14 +76,18 @@ namespace _Project.Scripts.UI.Gameplay {
             isOpen = !isOpen;
             
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
-            itemHighlight.gameObject.SetActive(!InputsBrain.Instance.IsKeyboardControl); 
+            
+            if(selectedItem)
+                selectedItem.itemHighlight.SetActive(true);
         }
 
         private void ShowInventory(ShowInventoryEvent evt) {
             itemGroup.DOFade(evt.doShow ? 1f : 0f, 0.5f);
             itemGroup.interactable = evt.doShow;
             itemGroup.blocksRaycasts = evt.doShow;
-            itemHighlight.gameObject.SetActive(evt.doShow);
+            
+            if(selectedItem)
+                selectedItem.itemHighlight.SetActive(true);
             
             if (!evt.doShow) isOpen = false;
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
@@ -118,17 +121,17 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void SelectItem(SelectItemEvent evt) {
+            foreach (var item in itemHolder) {
+                item.itemHighlight.SetActive(false);
+            }
+            
             SetHighlight(evt.selectedItem);
         }
 
         private void SetHighlight(Item wantedItem) {
             selectedItem = GetItem(wantedItem);
-            if (selectedItem) {
-                itemHighlight.position = selectedItem.transform.position;
-            }
-            else {
-                itemHighlight.gameObject.SetActive(false);
-            }
+            if(selectedItem)
+                selectedItem.itemHighlight.SetActive(true);
         }
 
         public void StopHoldingObject() {

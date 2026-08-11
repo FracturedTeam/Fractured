@@ -12,6 +12,7 @@ namespace _Project.Scripts.UI.Gameplay {
     public class ItemHolder : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
         [SerializeField] private Image itemImage;
         [SerializeField] private TextMeshProUGUI text;
+        [SerializeField] public GameObject itemHighlight;
         public bool isHeld {get; private set;}
         
         public BaseObject worldItem {get; private set;}
@@ -26,6 +27,7 @@ namespace _Project.Scripts.UI.Gameplay {
             isHeld = false;
             worldItem = item.worldItem;
             text.text = worldItem.ObjectName;
+            itemHighlight.SetActive(false);
         }
         
         public void ResetItem() {
@@ -54,10 +56,12 @@ namespace _Project.Scripts.UI.Gameplay {
 
         public void OnPointerEnter(PointerEventData eventData) {
             text.DOFade(1f, 0.25f);
+            itemHighlight.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
             text.DOFade(0f, 0.5f);
+            itemHighlight.SetActive(false);
         }
     }
 }
