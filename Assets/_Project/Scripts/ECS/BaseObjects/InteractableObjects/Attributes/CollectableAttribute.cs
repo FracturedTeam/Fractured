@@ -3,9 +3,7 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
-using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI.Gameplay;
 using DG.Tweening;
 using UnityEngine;
 
@@ -297,7 +295,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(dist < 1.4f) dist = 1.4f;
             
             var pos = playerPos + dir.normalized * dist;
-            //pos.y = groundLevel.point.y + Mathf.Abs(boundExtent.y) - Mathf.Abs(boundCenter.y);
             pos.y = groundLevel.point.y;
             return pos;
         }

@@ -190,10 +190,6 @@ namespace _Project.Scripts.ECS
             shard?.gameObject.SetActive(true);
         }
 
-        /*private void OnDisable() {
-            shard?.gameObject.SetActive(false);
-        }*/
-
         void OnDestroy() {
             if(shard) Destroy(shard.gameObject);
         }
@@ -244,15 +240,7 @@ namespace _Project.Scripts.ECS
             return true;
         }
 
-        public void SetEditAnywhere(bool editAnywhere) {
-            canEditAnywhere = editAnywhere;
-        }
-
-        public void SetInFront(bool setOnTop)
-        {
-            if(!GameInitializer.Instance.InEditableArea())
-                return;
-                
+        public void SetInFront(bool setOnTop) {
             var vector3 = shard.transform.position;
             vector3.z = setOnTop ? 0 : -0.0001f;
             shard.transform.position = vector3;

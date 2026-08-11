@@ -161,7 +161,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Initialize() {
             if(!IsInitialized) {
-                if (TryGetComponent(typeof(GlassInteractable), out var g))
+                if (TryGetComponent(out GlassInteractable g))
                     GetGlassInteract = g as GlassInteractable;
                 
                 if(TryGetComponent(out TriggerComponent trigger)) 
@@ -198,11 +198,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             blockedAttribute?.Initialize();
         }
 
-        private void Start()
-        {
-            if(!IsInitialized)
-                Initialize();
-        }
+        // private void Start()
+        // {
+        //     if(!IsInitialized)
+        //         Initialize();
+        // }
 
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
