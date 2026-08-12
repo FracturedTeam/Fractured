@@ -27,8 +27,10 @@ namespace _Project.Scripts.Player.Camera {
                 col.bounds.size.y, 
                 col.bounds.size.z
             );
-            
             mask =  LayerMask.GetMask("Player");
+            
+            if(!isInitialized && GameInitializer.HasInstance)
+                Initialize();
         }
 
         public void Initialize() {
@@ -42,11 +44,11 @@ namespace _Project.Scripts.Player.Camera {
         
         private void Update() {
             if(!isInitialized) return;
-            
             DetectPlayer();
         }
 
         private void DetectPlayer() {
+            if(!PlayerController.HasInstance) return;
             if(Vector3.Distance(PlayerController.Instance.transform.position, transform.position) > 5f) return;
             
             Size = Physics.OverlapBoxNonAlloc(transform.position, extentSize, playerCollider,

@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c7bf4c83eab1d8a43b5d0b531da3cae7, type: 2}
+  - {fileID: 2100000, guid: f634ef8dcf8f80f4aa7755244b6e86a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <link="id_01">my link</link>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: c7bf4c83eab1d8a43b5d0b531da3cae7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 55a0db4c9606c494f882d1ee984623b6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: f634ef8dcf8f80f4aa7755244b6e86a9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -144,9 +144,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
-  m_wordSpacing: 0
+  m_wordSpacing: 10
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -257,7 +257,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
+  - {fileID: 2100000, guid: f0c952b9295f4f1489062aba056d65c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -303,8 +303,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: yellow
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e94f371cdf296c54cb2f9733732ff33d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 55a0db4c9606c494f882d1ee984623b6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: f0c952b9295f4f1489062aba056d65c5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -338,9 +338,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
-  m_wordSpacing: 0
+  m_wordSpacing: 10
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -398,7 +398,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7361113650604808971}
   - component: {fileID: 8492057756971255774}
-  - component: {fileID: 6471420935397449596}
   - component: {fileID: 5040674146446807392}
   m_Layer: 0
   m_Name: GlassText
@@ -439,23 +438,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlassText
   isVisibleFromStart: 0
+  disappearDefinitively: 0
   currentTextScriptableObject: {fileID: 11400000, guid: 87b216eb549d782459a51363da2b0401, type: 2}
   baseText: {fileID: 2407066462243604092}
   fragAText: {fileID: 9180926914282100868}
   fragBText: {fileID: 8203010925296497072}
   bothText: {fileID: 4622185792937900568}
---- !u!225 &6471420935397449596
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4508558174255291151}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  meshRenderer: {fileID: 0}
 --- !u!114 &5040674146446807392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,7 +533,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f329b29930ec4d94b8d6fbf0e15aa579, type: 2}
+  - {fileID: 2100000, guid: 196b3e28f710c814fab80fd925410942, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -590,8 +579,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: both
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: f329b29930ec4d94b8d6fbf0e15aa579, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 55a0db4c9606c494f882d1ee984623b6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 196b3e28f710c814fab80fd925410942, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -625,9 +614,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
-  m_wordSpacing: 0
+  m_wordSpacing: 10
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -738,7 +727,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
+  - {fileID: 2100000, guid: ce872bb215183bf43bb66b4a8770b337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -784,8 +773,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: red
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 84a480eff03c04841a1a00a439ed2ff4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 55a0db4c9606c494f882d1ee984623b6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: ce872bb215183bf43bb66b4a8770b337, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -819,9 +808,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
-  m_wordSpacing: 0
+  m_wordSpacing: 10
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0

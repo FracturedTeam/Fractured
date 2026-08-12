@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
-    public class ButtonMainMenu : MonoBehaviour{
+    public class ButtonMainMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;
@@ -25,37 +25,71 @@ namespace _Project.Scripts.UI {
         [SerializeField] private float callbackTime = 0.5f;
         [SerializeField] private float tweenTime = 0.25f;
         [SerializeField] private float multiplicator = 1.15f;
+        [SerializeField] private MenuManager menuManager;
+        [SerializeField] private MenuAnimation openedMenu;
         
         [Header("Event On Clicked")]
         public UnityEvent onClickPostTimer;
         
-        private EventTrigger button;
-        private Vector3 scale;
+        private Vector3 scale = Vector3.one;
         private Tweener tweener;
         
         private Image backgroundImg;
         
+        private bool pressed;
+        
         private void Awake() {
-            scale = transform.localScale;
-            if(TryGetComponent(typeof(EventTrigger), out var btn))
-                button = (EventTrigger)btn;
             if(TryGetComponent(out Image img))
                 backgroundImg = img;
         }
+        
+        private IEnumerator CallClickPostTimer() { 
+            yield return new WaitForSecondsRealtime(callbackTime);
+            
+            menuManager?.UpdateCurrentMenu(openedMenu);
+            onClickPostTimer?.Invoke();
+        }
 
-        public void OnHover(bool hovering) {
-            if(!button.enabled) hovering = false;
+        private void OnEnable() {
+            //sometimes the OnHover false of the disable doesn't work, this fixes it 
+            transform.localScale = scale;
+            backgroundImg.enabled = true;
+            buttonText.color = whiteColor;
+            hoverGroup.alpha = 0f;
+            hoverGroup.gameObject.SetActive(true);
+            pressedGroup.gameObject.SetActive(false);
+            pressedGroup.alpha = 0;
+            pressed = false;
+        }
+
+        private void OnDisable() {
+            tweener?.Kill();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData) {
+            if(pressed) return;
             
-            tweener = transform.DOScale(hovering ? scale * multiplicator : scale, tweenTime).SetUpdate(true);
+            tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = hovering ? blueColor : whiteColor;
-            hoverGroup.DOFade(hovering ? 0.36f : 0f, 0.3f).SetUpdate(true).SetEase(easeType);
+            buttonText.color = blueColor;
+            hoverGroup.DOFade(0.36f, 0.3f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(false);
         }
-        public void OnClicked() {
+
+        public void OnPointerExit(PointerEventData eventData) {
+            if(pressed) return;
+            
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
             
-            button.enabled = false;
+            buttonText.color = whiteColor;
+            hoverGroup.DOFade(0f, 0.3f).SetUpdate(true).SetEase(easeType);
+            pressedGroup.gameObject.SetActive(false);
+        }
+
+        public void OnPointerDown(PointerEventData eventData) {
+            tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
+            
+            pressed = true;
             buttonText.color = blueColor;
             backgroundImg.enabled = false;
             hoverGroup.DOFade(0, 0.15f).SetUpdate(true).SetEase(easeType);
@@ -65,29 +99,6 @@ namespace _Project.Scripts.UI {
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
             
             StartCoroutine(CallClickPostTimer());
-        }
-        
-        private IEnumerator CallClickPostTimer() { 
-            yield return new WaitForSecondsRealtime(callbackTime);
-            
-            onClickPostTimer?.Invoke();
-        }
-
-        private void OnEnable() {
-            //sometimes the OnHover false of the disable doesn't work, this fixes it 
-            tweener = transform.DOScale(scale, 0).SetUpdate(true);
-            backgroundImg.enabled = true;
-            buttonText.color = whiteColor;
-            hoverGroup.alpha = 0f;
-            hoverGroup.gameObject.SetActive(true);
-            pressedGroup.gameObject.SetActive(false);
-            pressedGroup.alpha = 0;
-            
-            button.enabled = true;
-        }
-
-        private void OnDisable() {
-            tweener?.Kill();
         }
     }
 }

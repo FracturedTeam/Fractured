@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 19.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -5.975
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071111
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.7071025
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalRotation.z
@@ -42,15 +42,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -89.999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2556a5e31367d9942acf7fcd665c61a5, type: 2}
     - target: {fileID: 919132149155446097, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       propertyPath: m_Name
-      value: P_E_41_MatchBox
+      value: P_C_43_MatchBox
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -62,9 +66,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       insertIndex: -1
       addedObject: {fileID: -4979038856472895890}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7237427100572732217}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 83fd161dd3ad832448ceeb61bcb09f70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9016619366530128252}
@@ -86,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: 
+  ObjectName: Match Box
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
   data:
@@ -98,7 +99,7 @@ MonoBehaviour:
     lockedState: 0
     isUsed: 0
     objectOutOfGlass: 0
-  <Guid>k__BackingField: 
+  <Guid>k__BackingField: 1c1fff4e-eff6-48d6-ada0-6df115431adf
 --- !u!114 &-4979038856472895890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
   objectColor: 0
   isOn: 1
-  objectInside: 0
+  objectInside: 1
   interactableInBox: {fileID: 0}
   wallRenderer: []
   visibleWallMat: {fileID: 0}
@@ -121,23 +122,6 @@ MonoBehaviour:
   radius2D: 0
   showColliders: 0
   scaleModificator: 1
---- !u!114 &-7237427100572732217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73616490400538275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
-  itemSprite: {fileID: 0}
-  particles: {fileID: 0}
-  isAKey: 1
-  isOneTimeUse: 0
-  keyID: 41
 --- !u!65 &9016619366530128252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -157,5 +141,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.53201264, y: 0.2710629, z: 0.3785602}
-  m_Center: {x: -0.000000059604645, y: 0.13553143, z: -0.0085037425}
+  m_Size: {x: 0.5, y: 0.3, z: 0.35}
+  m_Center: {x: 0, y: 0.15, z: 0}

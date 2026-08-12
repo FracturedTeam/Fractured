@@ -1,4 +1,3 @@
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
@@ -13,7 +12,6 @@ namespace _Project.Scripts.UI.Gameplay {
         
         [Header("Item Display Settings")]
         [SerializeField] private RectTransform itemDisplay;
-        [SerializeField] private RectTransform itemHighlight;
         [SerializeField] private Vector3 closePosition;
         [SerializeField] private Vector3 openPosition;
         [SerializeField] private ItemHolder[] itemHolder;
@@ -23,7 +21,11 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private RectTransform keyDisplay;
         [SerializeField] private KeyHolder[] keyHolder;
         
+        [Header("Item Btt")]
+        [SerializeField] private RectTransform itemBtt;
+        
         Tweener openInventoryTween;
+        Tweener textTween;
         
         private EventBinding<ProcessItemEvent> addItemEventBinding;
         private EventBinding<ProcessKeyEvent> addKeyEventBinding;
@@ -77,17 +79,35 @@ namespace _Project.Scripts.UI.Gameplay {
             if(!itemGroup.interactable) return;
             isOpen = !isOpen;
             
+            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen ? 0 : 180);
+            
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
-            itemHighlight.gameObject.SetActive(!InputsBrain.Instance.IsKeyboardControl); 
+
+            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
+                selectedItem.itemHighlight.SetActive(true);
+                textTween = selectedItem.text.DOFade(isOpen ? 1 : 0, 0.25f);
+            }
         }
 
+        // Fonction pour montrer l'inventaire ou non si le joueur possède des items
         private void ShowInventory(ShowInventoryEvent evt) {
             itemGroup.DOFade(evt.doShow ? 1f : 0f, 0.5f);
             itemGroup.interactable = evt.doShow;
             itemGroup.blocksRaycasts = evt.doShow;
-            itemHighlight.gameObject.SetActive(evt.doShow);
             
-            if (!evt.doShow) isOpen = false;
+            
+            if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
+                selectedItem.itemHighlight.SetActive(true);
+
+            if (!evt.doShow) {
+                isOpen = false;
+                textTween?.Kill();
+                foreach (var item in itemHolder) {
+                    item.text.alpha = 0;
+                }
+            }
+            
+            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen? 0 : 180);
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
         }
         
@@ -119,16 +139,21 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void SelectItem(SelectItemEvent evt) {
-            SetHighlight(evt.selectedItem);
+            textTween?.Kill();
+            foreach (var item in itemHolder) {
+                item.itemHighlight.SetActive(false);
+                item.text.alpha = 0f;
+            }
+            
+            SetHighlight(evt.wantedItem);
         }
 
         private void SetHighlight(Item wantedItem) {
             selectedItem = GetItem(wantedItem);
-            if (selectedItem) {
-                itemHighlight.position = selectedItem.transform.position;
-            }
-            else {
-                itemHighlight.gameObject.SetActive(false);
+            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
+                selectedItem.itemHighlight.SetActive(true);
+                if(isOpen)
+                    textTween = selectedItem.text.DOFade(1f, 0.25f);
             }
         }
 
@@ -208,6 +233,6 @@ namespace _Project.Scripts.UI.Gameplay {
     }
 
     public struct SelectItemEvent : IEvent {
-        public Item selectedItem;
+        public Item wantedItem;
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,15 +19,23 @@ namespace _Project.Scripts.Inputs {
         
         public event Action<InputAction.CallbackContext> OnInventorySelect = delegate { };
         
+        public event Action<bool> OnGamepadControlled = delegate { };
+        public event Action OnBackBtt = delegate { };
+        public event Action OnSelectBtt = delegate { };
+        public event Action<InputAction.CallbackContext> OnNavigation = delegate { };
+        public event Action<InputAction.CallbackContext> OnSettingsView = delegate { };
+        public event Action OnPause = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
         protected override void Awake() {
             base.Awake();
             inputs = new InputSystem_Actions();
+            IsKeyboardControl = true;
         }
 
         private void OnEnable() {
+            // Player Inputs
             inputs.Player.Move.performed += PlayerMove;
             inputs.Player.Move.canceled += PlayerMove;
             inputs.Player.Interact.performed += Interact;
@@ -44,13 +51,23 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.performed += ShardB;
             inputs.Player.BShard.canceled += ShardB;
             inputs.Player.InventorySelect.performed += InventorySelect;
+
+            // UI Inputs
+            inputs.UI.Select.performed += OnSelect;
+            inputs.UI.Back.performed += OnBack;
+            inputs.UI.Navigation.performed += Navigation;
+            inputs.UI.SettingsView.performed += SettingsView;
+                
+            inputs.Pause.Pause.performed += Pause;
             
             InputSystem.onActionChange += InputActionChangeCallback;
+            OnGamepadControlled.Invoke(false);
             
             inputs.Enable();
         }
 
         private void OnDisable() {
+            // Player Inputs
             inputs.Player.Move.performed -= PlayerMove;
             inputs.Player.Move.canceled -= PlayerMove;
             inputs.Player.Interact.performed -= Interact;
@@ -67,6 +84,14 @@ namespace _Project.Scripts.Inputs {
             inputs.Player.BShard.canceled -= ShardB;
             inputs.Player.InventorySelect.performed -= InventorySelect;
             
+            // UI Inputs
+            inputs.UI.Select.performed -= OnSelect;
+            inputs.UI.Back.performed -= OnBack;
+            inputs.UI.Navigation.performed -= Navigation;
+            inputs.UI.SettingsView.performed -= SettingsView;
+            
+            inputs.Pause.Pause.performed -= Pause;
+            
             InputSystem.onActionChange -= InputActionChangeCallback;
             
             inputs.Disable();
@@ -81,11 +106,13 @@ namespace _Project.Scripts.Inputs {
                 if ((lastDevice.name.Equals("Keyboard") || lastDevice.name.Equals("Mouse")) && !IsKeyboardControl) {
                     IsKeyboardControl = true;
                     Cursor.visible = true;
+                    OnGamepadControlled.Invoke(false);
                     Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
                 else if (!lastDevice.name.Equals("Keyboard") && !lastDevice.name.Equals("Mouse") && IsKeyboardControl) {
                     IsKeyboardControl = false;
                     Cursor.visible = false;
+                    OnGamepadControlled.Invoke(true);
                     Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
             }
@@ -101,5 +128,19 @@ namespace _Project.Scripts.Inputs {
         private void ShardB(InputAction.CallbackContext context) => OnShardB.Invoke(context);
         private void InventorySelect(InputAction.CallbackContext context) => OnInventorySelect.Invoke(context);
         
+        private void OnSelect(InputAction.CallbackContext context) => OnSelectBtt.Invoke();
+        private void OnBack(InputAction.CallbackContext context) => OnBackBtt.Invoke();
+
+        private void Navigation(InputAction.CallbackContext context) {
+            OnNavigation.Invoke(context);
+        }
+
+        private void SettingsView(InputAction.CallbackContext context) {
+            OnSettingsView.Invoke(context);
+        }
+
+        private void Pause(InputAction.CallbackContext context) {
+            OnPause.Invoke();
+        }
     }
 }

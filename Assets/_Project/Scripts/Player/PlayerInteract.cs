@@ -25,8 +25,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
-        private InteractionHUD hud;
-        
+
         //Pre allocate space for collider (10 will be completely sufficient)
         private readonly Collider[] results = new Collider[10];
         private BaseObject potentialInteraction;
@@ -90,11 +89,6 @@ namespace _Project.Scripts.Player {
             interactCooldown = new CountdownTimer(0.5f);
             
             wallLayerMask = LayerMask.GetMask("Wall");
-        }
-
-        private void Start()
-        {
-            hud = HudManager.Instance.interact;
         }
 
         private void OnEnable() {
@@ -231,6 +225,9 @@ namespace _Project.Scripts.Player {
                 if (!potentialInteraction || !potentialInteraction.transform) return;
 
                 var boxCollider = potentialInteraction.GetCollider() as BoxCollider;
+
+                if (boxCollider == null) return;
+                
                 var dir = (potentialInteraction.transform.TransformPoint(boxCollider.center) - transform.position).normalized;
                 var dist = Vector3.Distance(transform.TransformPoint(boxCollider.center), transform.position);
                 
@@ -238,6 +235,7 @@ namespace _Project.Scripts.Player {
                 if (hasHit && wallInBetween.collider != potentialInteraction.GetCollider() as BoxCollider) {
                     potentialInteraction = null;
                 }
+
                 return;
             }
         

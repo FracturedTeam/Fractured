@@ -20,31 +20,24 @@ namespace _Project.Scripts.GameServices.Services {
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
-        public bool PlayerInEditableArea {get; private set;}
-        public bool PlayerInRedEditableArea {get; private set;}
-        public bool PlayerInBlueEditableArea {get; private set;}
+        public bool stopUpdate;
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            PlayerInEditableArea = false;
-            UpdateInteractableObjects();
-
+            
             InputsBrain.Instance.OnShardA += GrabShardA;
             InputsBrain.Instance.OnShardB += GrabShardB;
         }
 
-        private void UpdateInteractableObjects() { //Update the shards interactable List and Initialize its components
-            if (interactables.Count != 0)
+        private void UpdateInteractableObjects() //Update the shards interactable List and Initialize its components
+        {
+            if (interactables.Count == 0) return;
+            foreach (var interactable in interactables)
             {
-                foreach (var interactable in interactables)
-                {
-                    interactable.Initialize();
-                    if (interactable.GetGlass)
-                    {
-                        shardsInteractable.Add(interactable);
-                    }
-                }
+                interactable.Initialize();
+                if (interactable.GetGlass)
+                    shardsInteractable.Add(interactable);
             }
         }
 
@@ -60,22 +53,24 @@ namespace _Project.Scripts.GameServices.Services {
             UpdateInteractableObjects();
         }
         
-        
-        public void Tick() {
+        public void Tick() { //Add a check method to not call the function when loading a scene
+            if(stopUpdate) return;
+            
             HandleShardMovement();
             UpdateGlassInteraction(); //Expensive methods
         }
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             if(Time.frameCount % 4 != 0) return;
-            
             foreach (var glassInteractable in shardsInteractable) {
+                if(stopUpdate) break;
                 SetShardState(glassInteractable);
             }
         }
         
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
+                if(stopUpdate) break;
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
@@ -151,6 +146,9 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void RepopulateBaseObjet(BaseObject[] obj) {
             interactables.Clear();
+            shards.Clear();
+            shardsInteractable.Clear();
+            
             interactables.AddRange(obj);
             
             UpdateInteractableObjects();

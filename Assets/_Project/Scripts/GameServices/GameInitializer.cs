@@ -37,13 +37,16 @@ namespace _Project.Scripts.GameServices {
         [Header("PostProcess")]
         [SerializeField] private VolumeProfile postProcess;
 
-        [Header("ShardMaterials")] 
+        [Header("Shard Materials")] 
         [SerializeField] private Material chapter1A;
         [SerializeField] private Material chapter1B;        
         [SerializeField] private Material chapter2A;
         [SerializeField] private Material chapter2B;
         [SerializeField] private Material chapter3A;
         [SerializeField] private Material chapter3B;
+        
+        [Header("Enviro Materials")]
+        [SerializeField] private Material[] enviroMaterials;
 
         [Header("Gamepad Color Settings")]
         [SerializeField] private Color chapter1Color;
@@ -59,26 +62,23 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Color chapter3ShardAColor;
         [SerializeField] private Color chapter3ShardBColor;
         
-        private float fadeTimer = 0.0f;
-        
         private int CurrentChapter = 1;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
         [SerializeField] private bool initializeDebugger = true;
         private ShardDebugService shardDebugService;
+        private CameraDebugService cameraDebugService;
         #endif
         
         protected override void Awake() {
             base.Awake();
             
             InitializeGameSystems();
-            
-            //Shard Edition area Screen Effect
-            //screenEffectMat.SetFloat("_Progression", 0f);
         }
 
         private void InitializeGameSystems() {
+            Debug.Log("Initializing Game Systems");
             //Create all the game systems
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();
@@ -94,27 +94,6 @@ namespace _Project.Scripts.GameServices {
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
-        }
-
-        public Material GetCurrentFragmentMaterial(bool isA, int chapter)
-        {
-            if (isA)
-            {
-                return chapter switch
-                {
-                    1 => chapter1A,
-                    2 => chapter2A,
-                    3 => chapter3A,
-                    _ => null
-                };
-            }
-            return chapter switch
-            {
-                1 => chapter1B,
-                2 => chapter2B,
-                3 => chapter3B,
-                _ => null
-            };
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -136,8 +115,7 @@ namespace _Project.Scripts.GameServices {
             shardDebugService = new ShardDebugService(shardService,  debugUIState, scenes, frameMaster);
             debugSystem.Register(shardDebugService);
 
-            var cameras = GetCameras();
-            var cameraDebugService = new CameraDebugService(debugUIState, cameras);
+            cameraDebugService = new CameraDebugService(debugUIState, GetCameras());
             debugSystem.Register(cameraDebugService);
             
             var generalDebug =  new GeneralDebugService(debugUIState, saveService);
@@ -172,6 +150,15 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
+        public void SetCurrentChapter(int index) {
+            CurrentChapter = index;
+
+            foreach (var mat in enviroMaterials) {
+                mat.SetFloat("_CurrentAct", CurrentChapter);
+                mat.SetFloat("_ActGlobalTransition", 0);
+            }
+        }
+
         #region SaveService
 
         public void SaveData() => saveService.SaveData();
@@ -194,6 +181,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         public void EmptyAll() {
+            shardService.stopUpdate = true;
             EmptyInteractable();
             EmptyShards();
         }
@@ -222,13 +210,16 @@ namespace _Project.Scripts.GameServices {
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
             shardDebugService.UpdateSceneDebug(scenes, frameMaster);
             #endif
+            
+            shardService.stopUpdate = false;
         }
         
         public BaseObject[] GetInteractable() {
             return shardService.interactables.ToArray();
         }
         
-        public void AddShards(Glass[] shards) {
+        public void AddShards(Glass[] shards)
+        {
             foreach (var shard in shards) {
                 var s = Instantiate(shard, HudManager.Instance.glassHolder);
                 shardService.AddShards(s, shard.GetColor is ColorEnum.ColorA);
@@ -260,40 +251,24 @@ namespace _Project.Scripts.GameServices {
                 shard.SetUp3dShard(isOn);
         }
         
-        public void UpdatePuzzleRoom(BaseObject[] _interactable,  Glass[] _shards) =>
-            shardService.PopulateService(_interactable,  _shards);
-
-        public void SetEditableArea(bool inArea, ColorEnum color) {
-            // switch (color) {
-            //     case ColorEnum.ColorA:
-            //         shardService.SetBlueEditableArea(inArea);
-            //         break;
-            //     case ColorEnum.ColorB:
-            //         shardService.SetRedEditableArea(inArea);
-            //         break;
-            //     case ColorEnum.Both:
-            //         shardService.SetEditableArea(inArea);
-            //         break;
-            //     default:
-            //         throw new ArgumentOutOfRangeException(nameof(color), color, null);
-            // }
+        public Material GetCurrentFragmentMaterial(bool isA)
+        {
+            if (isA) {
+                return CurrentChapter switch {
+                    1 => chapter1A,
+                    2 => chapter2A,
+                    3 => chapter3A,
+                    _ => null
+                };
+            }
+            return CurrentChapter switch {
+                1 => chapter1B,
+                2 => chapter2B,
+                3 => chapter3B,
+                _ => null
+            };
         }
         
-        public bool InEditableArea() {
-            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
-            return shardService.PlayerInEditableArea;
-        }
-        
-        public bool InBlueEditableArea() {
-            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
-            return shardService.PlayerInBlueEditableArea;
-        }
-        
-        public bool InRedEditableArea() {
-            audioService.PlayEditableSoundLoop(shardService.PlayerInEditableArea);
-            return shardService.PlayerInRedEditableArea;
-        }
-
         #endregion
 
         #region AudioService
@@ -381,6 +356,10 @@ namespace _Project.Scripts.GameServices {
         
         #endregion
 
+        public void UpdateDebugCameras() {
+            cameraDebugService.UpdateCameras(GetCameras());
+        }
+        
         public int GetPostProcess(int index) {
             return index switch {
                 0 => GetSettings.brightness,

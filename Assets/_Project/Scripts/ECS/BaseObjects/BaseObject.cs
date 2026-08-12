@@ -4,8 +4,10 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
+using _Project.Scripts.UI.Gameplay;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -30,10 +32,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
+        [SerializeField] private ObjectInteractionUI prefabInteractionUI;
         
+        private ObjectInteractionUI interactionUI;
         
         private MeshRenderer meshRenderer;
-        
         private Collider objectCollider;
 
         public bool IsInitialized { get; private set; }
@@ -160,14 +163,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Initialize() {
             if(!IsInitialized) {
-                if (TryGetComponent(typeof(GlassInteractable), out var g))
+                if (TryGetComponent(out GlassInteractable g))
                     GetGlassInteract = g as GlassInteractable;
                 
                 if(TryGetComponent(out TriggerComponent trigger)) 
                     GetTrigger = trigger;
-                
-                if(TryGetComponent(typeof(GlassText), out var gt))
-                    GetTextInteractable = gt as GlassText;
                 
                 if(TryGetComponent(out IInteractable interactable)) 
                     GetInteract = interactable;
@@ -175,6 +175,9 @@ namespace _Project.Scripts.ECS.BaseObjects
 
                 if (TryGetComponent(out LockedAttribute blocked)) 
                     blockedAttribute = blocked;
+                
+                if(TryGetComponent(typeof(GlassText), out var gt))
+                    GetTextInteractable = gt as GlassText;
 
                 if (TryGetComponent(out SceneElement scene)) {
                     sceneElement = scene;
@@ -188,6 +191,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
+                
+                if (prefabInteractionUI) {
+                    interactionUI = Instantiate(prefabInteractionUI, transform);
+                }
             }
             IsInitialized = true;
         
@@ -195,8 +202,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Initialize();
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
+            
         }
-        
+
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
             
@@ -205,6 +213,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         void OnDestroy() {
+            if(interactionUI) Destroy(interactionUI);
+            
             GetInteract?.Dispose();
         }
 
@@ -219,7 +229,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract.OnInteract(interaction, interactable);
         }
 
-        public void OnShardInteract(bool isOn, Glass shard) {  
+        public void OnShardInteract(bool isOn, Glass shard) {
             if(canGlassInteractWith)
                 GetGlassInteract.OnShardUpdated(isOn, shard);
         }
@@ -238,6 +248,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
+            
+            if(interactionUI) interactionUI.gameObject.SetActive(canBeInteractedWith);
         }
 
         public void SetGlassInteract(bool canInteract) {
@@ -248,6 +260,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetCollider(bool isOn) {
             if (!objectCollider) return;
             objectCollider.enabled = isOn;
+        }
+
+        public void SetDialogue(DialogueScriptableObject dialogue)
+        {
+            HudManager.Instance.SetText(dialogue);
         }
         
         public Collider GetCollider() => objectCollider;

@@ -1,22 +1,26 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using UnityEngine;
 
-namespace _Project.Scripts.UI {
-    public class Fragment : MonoBehaviour {
+namespace _Project.Scripts.UI
+{
+    public class Fragment : MonoBehaviour
+    {
         [SerializeField] private List<Transform> corners;
         [SerializeField] private GameObject frag;
         [SerializeField] private Renderer render;
 
-        public void Setup(List<Vector3> positions) {
-            if(positions.Count != corners.Count ){
+        public void Setup(List<Vector3> positions)
+        {
+            if (positions.Count != corners.Count)
+            {
                 Debug.LogError("Wrong number of corners, are you sure the right fragment prefab is selected ?");
                 return;
             }
 
-            for (var i = 0; i < corners.Count; i++) { 
+            for (var i = 0; i < corners.Count; i++)
+            {
                 corners[i].position = positions[i];
             }
         }
@@ -25,7 +29,7 @@ namespace _Project.Scripts.UI {
         {
             if (!frag)
                 return;
-            
+
             LayerMask layer;
 
             switch (color)
@@ -34,19 +38,20 @@ namespace _Project.Scripts.UI {
                     layer = LayerMask.NameToLayer("Fragment Color A");
                     gameObject.layer = layer;
                     frag.layer = layer;
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true, 1);
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(true);
                     break;
                 case ColorEnum.ColorB:
                     layer = LayerMask.NameToLayer("Fragment Color B");
                     gameObject.layer = layer;
                     frag.layer = layer;
-                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false, 1);
+                    render.material = GameInitializer.Instance.GetCurrentFragmentMaterial(false);
                     break;
                 case ColorEnum.Both:
+                case ColorEnum.None:
                 default:
                     frag.layer = LayerMask.NameToLayer("Default");
                     break;
             }
         }
-        }
     }
+}

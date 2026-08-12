@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Player;
+using _Project.Scripts.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GlassDocument : MonoBehaviour
 {
@@ -10,8 +10,12 @@ public class GlassDocument : MonoBehaviour
     
     private Transform cameraTrans;
     
-    public void SetUp(GlassDocumentScriptableObject data, bool isOn = true)
-    {
+    public void SetUp(GlassDocumentScriptableObject data, bool isOn = true) {
+        foreach (var temp in templates) {
+            temp.gameObject.SetActive(false);
+        }
+        
+        HudManager.Instance?.interact?.ForceInteractHUDVisibility(!isOn);
         cameraTrans = PlayerController.Instance.cinemachineBrain.OutputCamera.transform;
         transform.position = cameraTrans.position + cameraTrans.forward * distance;
         transform.LookAt(cameraTrans);
