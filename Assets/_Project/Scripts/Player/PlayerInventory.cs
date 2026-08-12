@@ -80,7 +80,7 @@ namespace _Project.Scripts.Player {
         private void UpdateSelectedItem(float input) {
             if(items.Count == 0) return;
             
-            if (items.Count <= 1) {
+            if (input == 0) {
                 itemIndex = 0;
                 EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
                 return;
@@ -120,7 +120,10 @@ namespace _Project.Scripts.Player {
                     items.RemoveAt(i);
                     
                     EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
-                    if (items.Count > 1) UpdateSelectedItem(-1);
+                    if (items.Count == 1) 
+                        UpdateSelectedItem(0);
+                    else if (items.Count >= 2)
+                        UpdateSelectedItem(itemIndex <= 1 ? 0 : -1);
                     break;
                 }
             }

@@ -13,6 +13,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private Image itemImage;
         [SerializeField] private TextMeshProUGUI text;
         [SerializeField] public GameObject itemHighlight;
+        [SerializeField] public GameObject selectedHighlight;
         public bool isHeld {get; private set;}
         
         public BaseObject worldItem {get; private set;}
@@ -34,11 +35,13 @@ namespace _Project.Scripts.UI.Gameplay {
             itemImage.sprite = null;
             isHeld = false;
             worldItem = null;
+            itemHighlight.SetActive(false);
         }
 
         public void HeldItem() {
             if (isHeld) {
                 isHeld = false;
+                selectedHighlight.SetActive(false);
                 worldItem.OnInteract(ObjectInteraction.StopHeld);
                 return;
             }
@@ -48,9 +51,11 @@ namespace _Project.Scripts.UI.Gameplay {
                     return;
                 
                 inventoryManager.StopHoldingObject();
+                selectedHighlight.SetActive(false);
             }
             
             isHeld = true;
+            selectedHighlight.SetActive(true);
             worldItem.OnInteract(ObjectInteraction.Held);
         }
 

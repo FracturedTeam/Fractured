@@ -21,6 +21,9 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private RectTransform keyDisplay;
         [SerializeField] private KeyHolder[] keyHolder;
         
+        [Header("Item Btt")]
+        [SerializeField] private RectTransform itemBtt;
+        
         Tweener openInventoryTween;
         
         private EventBinding<ProcessItemEvent> addItemEventBinding;
@@ -75,21 +78,26 @@ namespace _Project.Scripts.UI.Gameplay {
             if(!itemGroup.interactable) return;
             isOpen = !isOpen;
             
+            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen ? 0 : 180);
+            
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
             
-            if(selectedItem)
+            if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
                 selectedItem.itemHighlight.SetActive(true);
         }
 
+        // Fonction pour montrer l'inventaire ou non si le joueur possède des items
         private void ShowInventory(ShowInventoryEvent evt) {
             itemGroup.DOFade(evt.doShow ? 1f : 0f, 0.5f);
             itemGroup.interactable = evt.doShow;
             itemGroup.blocksRaycasts = evt.doShow;
             
-            if(selectedItem)
+            
+            if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
                 selectedItem.itemHighlight.SetActive(true);
             
             if (!evt.doShow) isOpen = false;
+            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen? 0 : 180);
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
         }
         
@@ -130,8 +138,9 @@ namespace _Project.Scripts.UI.Gameplay {
 
         private void SetHighlight(Item wantedItem) {
             selectedItem = GetItem(wantedItem);
-            if(selectedItem)
+            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
                 selectedItem.itemHighlight.SetActive(true);
+            }
         }
 
         public void StopHoldingObject() {
