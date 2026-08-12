@@ -76,7 +76,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            hud.SetActiveMemoryButton(CheckMemoryUnlocked() && !IsMemoryCompleted);
+            hud.SetActiveMemoryButton(CheckMemoryUnlocked() && !IsMemoryCompleted && isUsingMemoryFrame);
             hud.SetMemoryDialogue("", new Vector3());
             HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             

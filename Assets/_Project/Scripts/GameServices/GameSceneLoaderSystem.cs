@@ -184,8 +184,8 @@ namespace _Project.Scripts.GameServices {
         
         private async Task UnloadGameplaySceneAsync() {
             try {
-                await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
+                await UnloadSceneAsync();
                 
                 await Task.Yield();
                 

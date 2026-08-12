@@ -1,12 +1,7 @@
-using System.Collections.Generic;
-using _Project.Scripts.ECS;
-using _Project.Scripts.Enums;
 using _Project.Scripts.ScriptableObjects;
-using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.UI
 {

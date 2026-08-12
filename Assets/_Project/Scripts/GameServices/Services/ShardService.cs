@@ -20,17 +20,12 @@ namespace _Project.Scripts.GameServices.Services {
         
         private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
 
-        public bool PlayerInEditableArea {get; private set;}
-        public bool PlayerInRedEditableArea {get; private set;}
-        public bool PlayerInBlueEditableArea {get; private set;}
-
         public bool stopUpdate;
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
-            PlayerInEditableArea = false;
-            //UpdateInteractableObjects();
+            
             InputsBrain.Instance.OnShardA += GrabShardA;
             InputsBrain.Instance.OnShardB += GrabShardB;
         }
@@ -76,7 +71,6 @@ namespace _Project.Scripts.GameServices.Services {
         private void SetShardState(BaseObject glassBase) {
             foreach (var shard in shards) {
                 if(stopUpdate) break;
-                Debug.Log(shard.GetType().Name);
                 glassBase.OnShardInteract(glassBase.GetTextInteractable ? shard.IsColliding(glassBase.transform.position) : shard.IsColliding(glassBase.GetGlassInteract.BoundingBox), shard);
             }
         }
@@ -152,6 +146,9 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void RepopulateBaseObjet(BaseObject[] obj) {
             interactables.Clear();
+            shards.Clear();
+            shardsInteractable.Clear();
+            
             interactables.AddRange(obj);
             
             UpdateInteractableObjects();
