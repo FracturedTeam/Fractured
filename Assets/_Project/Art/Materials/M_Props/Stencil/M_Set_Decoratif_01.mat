@@ -23,19 +23,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Set_Marine
-  m_Shader: {fileID: -6465566751694194690, guid: ba21fd15aae8e81418924828d1b13aaa, type: 3}
+  m_Name: M_Set_Decoratif_01
+  m_Shader: {fileID: 4800000, guid: 5d71a16cea2af0e429a8fada747cf1ca, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _CURRENTACT_ACT_1
-  - _DISABLE_SSR_TRANSPARENT
-  - _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2225
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
     RenderType: Opaque
@@ -44,7 +42,6 @@ Material:
   - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
-  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -54,7 +51,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColor:
-        m_Texture: {fileID: 2800000, guid: e56af93832216ec4bb1c0e3d19c1ce84, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6ba07486f96e2b04494ac413b1ffc47a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
@@ -102,7 +99,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: 4505fad6bd269304e9403c21bd28bd4c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 22149d51a5042f24cbdeed0eac5ff75f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -114,7 +111,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORM:
-        m_Texture: {fileID: 2800000, guid: e5c27e5e87c45c24ba37812e08e4f9d6, type: 3}
+        m_Texture: {fileID: 2800000, guid: fd384560eda435b438adabd42eeea8a1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -163,7 +160,6 @@ Material:
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
-    - _ActGlobalTransition: 0
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaClip: 0
@@ -215,6 +211,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+    - _EnvironmentReflections: 1
     - _ExcludeFromTUAndAA: 0
     - _Float: 1
     - _HeightAmplitude: 0.02
@@ -230,7 +227,7 @@ Material:
     - _Ior: 1.5
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
-    - _LightingGradientMapInfluence: 1
+    - _LightingGradientMapInfluence: 0
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
     - _MaterialTypeMask: 2
@@ -257,16 +254,18 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _RoughnessMultiplier: 3
+    - _RoughnessMultiplier: 5
     - _RoughnessTest: 1
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
+    - _SpecularHighlights: 1
     - _SpecularOcclusionMode: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _StencilID: 2
     - _StencilRef: 0
     - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
@@ -294,20 +293,20 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _Triplanar: 0
-    - _TriplanarBlend: 50
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
-    - _UseCustomRoughness: 1
+    - _UseCustomRoughness: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
+    - _Visible: 1
     - _WorkflowMode: 1
     - _X_Gradient: 0
     - _X_GradientEndPosition: 1
     - _X_GradientIntensity: 0
     - _X_GradientStartPosition: 0
     - _Y_Gradient: 0
-    - _Y_GradientEndPosition: 1
+    - _Y_GradientEndPosition: 0.5474218
     - _Y_GradientIntensity: 0
     - _Y_GradientStartPosition: 0
     - _ZTest: 4
@@ -321,11 +320,11 @@ Material:
     - _Z_GradientIntensity: 0
     - _Z_GradientStartPosition: 0
     m_Colors:
-    - _ACT1_Color_A: {r: 0.25882354, g: 0.12941177, b: 0.2901961, a: 1}
+    - _ACT1_Color_A: {r: 0, g: 0, b: 0, a: 1}
     - _ACT1_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
-    - _ACT1_Color_B: {r: 0.5019608, g: 0.40784317, b: 0.78823537, a: 1}
+    - _ACT1_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _ACT1_Color_B_Location: {r: 0.5, g: 1, b: 0, a: 0}
-    - _ACT1_Color_C: {r: 0.43921572, g: 0.64705884, b: 0.85098046, a: 1}
+    - _ACT1_Color_C: {r: 1, g: 1, b: 1, a: 1}
     - _ACT2_Color_A: {r: 0, g: 0, b: 0, a: 1}
     - _ACT2_Color_A_Location: {r: 0, g: 0.5, b: 0, a: 0}
     - _ACT2_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
@@ -336,24 +335,19 @@ Material:
     - _ACT3_Color_B: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _ACT3_Color_B_Location: {r: 0.5, g: 1, b: 0, a: 0}
     - _ACT3_Color_C: {r: 1, g: 1, b: 1, a: 1}
-    - _AOColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+    - _AOColor: {r: 0.9716981, g: 0.22618526, b: 0, a: 1}
     - _AOLevels: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Color1: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
-    - _Color1_2Levels: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Color2: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
-    - _Color2_3Levels: {r: 0.5, g: 1, b: 0, a: 0}
+    - _Color1: {r: 0.9622642, g: 0.71232545, b: 0, a: 1}
+    - _Color12Levels: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color1_2Levels: {r: 0.02, g: 0.13, b: 0, a: 0}
+    - _Color2: {r: 1, g: 1, b: 1, a: 1}
+    - _Color23Levels: {r: 0.5, g: 1, b: 0, a: 0}
+    - _Color2_3Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Color3: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_1_Location: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Color_2_Location: {r: 0.5, g: 1, b: 0, a: 0}
-    - _Color_A: {r: 0, g: 0.07450981, b: 0.227451, a: 1}
-    - _Color_A_Location: {r: 0, g: 0.33, b: 0, a: 0}
-    - _Color_B: {r: 0, g: 0.07329773, b: 0.22745098, a: 1}
-    - _Color_B_Location: {r: 0.33, g: 0.66, b: 0, a: 0}
-    - _Color_C: {r: 0.1251335, g: 0.3456258, b: 0.7169812, a: 1}
-    - _Color_C_Location: {r: 0.66, g: 1, b: 0, a: 0}
-    - _Color_D: {r: 0.2728729, g: 0.4426034, b: 0.7924528, a: 1}
+    - _Color_1_Location: {r: 0, g: 0.25, b: 0, a: 0}
+    - _Color_2_Location: {r: 0.25, g: 1, b: 0, a: 0}
     - _Colors_1_2_Levels: {r: 0.02, g: 0.08, b: 0, a: 0}
     - _Colors_2_3_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _Colors_3_4_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
@@ -367,14 +361,15 @@ Material:
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Tilling: {r: 1, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _X_GradientColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Y_GradientColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Z_GradientColor: {r: 0, g: 0, b: 0, a: 1}
+    - _X_GradientColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Y_GradientColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Z_GradientColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6024201449024024153
