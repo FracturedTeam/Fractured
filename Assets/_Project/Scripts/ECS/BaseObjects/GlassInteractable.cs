@@ -69,8 +69,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
-                updateShardVisual.OnTick += Set2DPoints;
-                updateShardVisual.Start();
+                //updateShardVisual.OnTick += Set2DPoints;
+                //updateShardVisual.Start();
                 
                 gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
                 
@@ -115,7 +115,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         internal void OnShardUpdated(bool isUnder, Glass shard) {
             Set2DPoints();
-            print(gameObject.name + " has been updated");
+            
             if (isUnder) 
                 shardsOnTop.Add(shard);
             else if(shardsOnTop.Contains(shard))
