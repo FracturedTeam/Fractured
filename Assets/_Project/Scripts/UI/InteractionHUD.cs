@@ -8,6 +8,7 @@ namespace _Project.Scripts.UI {
     public class InteractionHUD : MonoBehaviour
     {
         [SerializeField] private InteractionPopUp interactionUI;
+        [SerializeField] private Ease easeType = Ease.OutBack;
         private Tweener interactTween;
         private EventBinding<InteractEvent> interactEventBinding;
     
@@ -45,7 +46,7 @@ namespace _Project.Scripts.UI {
             interactTween.Kill();
                 
             if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-                interactTween = interactionUI.GetGroup.DOFade(0f, 1f);
+                interactTween = interactionUI.GetGroup.DOFade(0f, 0.5f).SetEase(easeType);
                 return;
             }
          
@@ -68,7 +69,7 @@ namespace _Project.Scripts.UI {
                 _ => "Not supported"
             };
                 
-            interactTween = interactionUI.GetGroup.DOFade( 1f, 1f);
+            interactTween = interactionUI.GetGroup.DOFade( 1f, 0.5f).SetEase(easeType);
         }
         public void ForceInteractHUDVisibility(bool showPopUp)
         {

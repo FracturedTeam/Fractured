@@ -7,6 +7,8 @@ using UnityEngine;
 namespace _Project.Scripts.UI.Gameplay {
     public class ObjectInteractionUI : MonoBehaviour {
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Sprite normalSprite;
+        [SerializeField] private Sprite closeSprite;
         [SerializeField] private float constantCameraScale = 1;
         [SerializeField] private float maxScale = 0.5f, minScale = 0.25f;
         [SerializeField] private float distanceToBeVisible = 8;
@@ -36,6 +38,11 @@ namespace _Project.Scripts.UI.Gameplay {
             transform.LookAt(Camera.main.transform);
             distanceScale = Vector3.Lerp(Vector3.one * minScale, Vector3.one * maxScale, maxScaleMinimumDistance / distanceToPlayer);
             cameraScale = distanceScale * distanceToCamera / constantCameraScale;
+            
+            if(distanceToPlayer < maxScaleMinimumDistance)
+                spriteRenderer.sprite = closeSprite;
+            else
+                spriteRenderer.sprite = normalSprite;
             
             transform.localScale = cameraScale;
         }
