@@ -22,14 +22,6 @@ namespace _Project.Scripts.UI {
         [SerializeField] private string needKey = "Door locked";
         [SerializeField] private string needSomethingElse = "interact";
         [SerializeField] private string dialogueInteraction = "";
-        
-        // [Header("Interaction Image")] 
-        // [SerializeField] private Sprite spriteNormal;
-        // [SerializeField] private Sprite spriteGlass;
-        // [SerializeField] private Sprite spriteUseDoor;
-        // [SerializeField] private Sprite spriteKey;
-        // [SerializeField] private Sprite spriteUp;
-        // [SerializeField] private Sprite spriteDown;
     
         private void Start()
         {
@@ -76,19 +68,6 @@ namespace _Project.Scripts.UI {
                 _ => "Not supported"
             };
                 
-            // interactionUI.GetInteractionImage.sprite = e.Interaction switch
-            // {
-            //     Interaction.Grab => spriteNormal,
-            //     Interaction.PickObjectOnPressurePlate => spriteUp,
-            //     Interaction.ObtainShard => spriteGlass,
-            //     Interaction.UseDoor => spriteUseDoor,
-            //     Interaction.UseKey => spriteKey,
-            //     Interaction.UseFragment => spriteDown,
-            //     Interaction.NeedFragment => spriteGlass,
-            //     Interaction.NeedKey => spriteKey,
-            //     _ => spriteNormal
-            // };
-        
             interactTween = interactionUI.GetGroup.DOFade( 1f, 1f);
         }
         public void ForceInteractHUDVisibility(bool showPopUp)
