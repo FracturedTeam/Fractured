@@ -25,6 +25,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private RectTransform itemBtt;
         
         Tweener openInventoryTween;
+        Tweener textTween;
         
         private EventBinding<ProcessItemEvent> addItemEventBinding;
         private EventBinding<ProcessKeyEvent> addKeyEventBinding;
@@ -81,9 +82,11 @@ namespace _Project.Scripts.UI.Gameplay {
             itemBtt.rotation = Quaternion.Euler(0, 0, isOpen ? 0 : 180);
             
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
-            
-            if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
+
+            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
                 selectedItem.itemHighlight.SetActive(true);
+                textTween = selectedItem.text.DOFade(isOpen ? 1 : 0, 0.25f);
+            }
         }
 
         // Fonction pour montrer l'inventaire ou non si le joueur possède des items
@@ -95,8 +98,15 @@ namespace _Project.Scripts.UI.Gameplay {
             
             if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
                 selectedItem.itemHighlight.SetActive(true);
+
+            if (!evt.doShow) {
+                isOpen = false;
+                textTween?.Kill();
+                foreach (var item in itemHolder) {
+                    item.text.alpha = 0;
+                }
+            }
             
-            if (!evt.doShow) isOpen = false;
             itemBtt.rotation = Quaternion.Euler(0, 0, isOpen? 0 : 180);
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
         }
@@ -129,17 +139,21 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void SelectItem(SelectItemEvent evt) {
+            textTween?.Kill();
             foreach (var item in itemHolder) {
                 item.itemHighlight.SetActive(false);
+                item.text.alpha = 0f;
             }
             
-            SetHighlight(evt.selectedItem);
+            SetHighlight(evt.wantedItem);
         }
 
         private void SetHighlight(Item wantedItem) {
             selectedItem = GetItem(wantedItem);
             if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
                 selectedItem.itemHighlight.SetActive(true);
+                if(isOpen)
+                    textTween = selectedItem.text.DOFade(1f, 0.25f);
             }
         }
 
@@ -219,6 +233,6 @@ namespace _Project.Scripts.UI.Gameplay {
     }
 
     public struct SelectItemEvent : IEvent {
-        public Item selectedItem;
+        public Item wantedItem;
     }
 }
