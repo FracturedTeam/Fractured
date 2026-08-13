@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 1908081741928949929, guid: 6d00b7e61b95f194bb659f942fc22fd4, type: 3}
       propertyPath: data
       value: 
-      objectReference: {fileID: 11400000, guid: d5eec464a9838a84b958721bb17c1138, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 1908081741928949929, guid: 6d00b7e61b95f194bb659f942fc22fd4, type: 3}
       propertyPath: requiredPosition
       value: 1
@@ -1297,6 +1297,10 @@ PrefabInstance:
       value: P_I_ColoredDoor01
       objectReference: {fileID: 0}
     - target: {fileID: 6635876515777870804, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
+      propertyPath: ObjectName
+      value: Garage door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635876515777870804, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
       propertyPath: <Guid>k__BackingField
       value: 046c020d-6478-43ea-95a4-e428b6d6fc0c
       objectReference: {fileID: 0}
@@ -1347,19 +1351,68 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4571478097224080788, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 712335158}
   m_SourcePrefab: {fileID: 100100000, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
 --- !u!114 &712335156 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6635876515777870804, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
   m_PrefabInstance: {fileID: 712335155}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 712335157}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &712335157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4571478097224080788, guid: 1423e670dc0671a4fb92abfce5d66b81, type: 3}
+  m_PrefabInstance: {fileID: 712335155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &712335158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712335157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 712335156}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 6ce04a1ca5789904fbc87924c6d315d9, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
 --- !u!1 &749092383
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,6 +1576,161 @@ MonoBehaviour:
     <Guid>k__BackingField: 
     isCompleted: 0
   <Guid>k__BackingField: 3ec544d0-098b-4d2d-b6ff-a6e959843ca7
+--- !u!1001 &918420832
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1897905762671262354, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_Name
+      value: P_WallSmallDoor_Rond_Push (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.508034
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.00041866302
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710254
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.70711106
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590531353456067467, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7154277137000374709, guid: 09f8543011869544bbada907fde67436, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bcbe5f8d74d864b4088cae3e35a8f940, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 918420836}
+    - targetCorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 918420835}
+    - targetCorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 918420834}
+  m_SourcePrefab: {fileID: 100100000, guid: 09f8543011869544bbada907fde67436, type: 3}
+--- !u!1 &918420833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
+  m_PrefabInstance: {fileID: 918420832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &918420834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918420833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  oneTimeUse: 0
+--- !u!114 &918420835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918420833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 918420836}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: e810d31efc866684888c78a7f538128a, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
+--- !u!114 &918420836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918420833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+  ObjectName: Back to the staff's corridor
+  hudTransformPoint: {x: 0, y: 0}
+  hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
+  data:
+    <Guid>k__BackingField: 
+    canBeInteractedWith: 0
+    position: {x: 0, y: 0, z: 0}
+    isInInventory: 0
+    hasBeenUsed: 0
+    lockedState: 0
+    isUsed: 0
+    objectOutOfGlass: 0
+  <Guid>k__BackingField: 7413c6c7-df62-48c8-a42d-39ec889ee562
 --- !u!1001 &956625923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1534,7 +1742,7 @@ PrefabInstance:
     - target: {fileID: 1908081741928949929, guid: 6d00b7e61b95f194bb659f942fc22fd4, type: 3}
       propertyPath: data
       value: 
-      objectReference: {fileID: 11400000, guid: e7dc38adf33cc9544bef384bdf06929b, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 1908081741928949929, guid: 6d00b7e61b95f194bb659f942fc22fd4, type: 3}
       propertyPath: requiredPosition
       value: 0
@@ -2517,6 +2725,7 @@ MonoBehaviour:
   ObjectName: Reorder Memories
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -3084,7 +3293,7 @@ PrefabInstance:
       objectReference: {fileID: 1243000411}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3095,6 +3304,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2009711216}
@@ -3103,7 +3316,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1243000411}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2080435684}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
@@ -3115,6 +3336,10 @@ PrefabInstance:
       value: set_enabled
       objectReference: {fileID: 0}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GlassText, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -3123,9 +3348,21 @@ PrefabInstance:
       value: UnityEngine.BoxCollider, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: _Project.Scripts.ECS.BaseObjects.BaseObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: db62e9b15a0fd98478871a0a3a857311, type: 2}
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
@@ -3133,6 +3370,10 @@ PrefabInstance:
     - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442352633816272104, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: _Project.Scripts.ScriptableObjects.DialogueScriptableObject, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6640431829810676980, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: <Guid>k__BackingField
@@ -3747,3 +3988,4 @@ SceneRoots:
   - {fileID: 749092384}
   - {fileID: 1288097568}
   - {fileID: 1828486354}
+  - {fileID: 918420832}
