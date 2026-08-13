@@ -1,16 +1,13 @@
 using TMPro;
 using UnityEngine;
 
-namespace _Project.Scripts.UI
-{
-    public class InteractionPopUp : MonoBehaviour
-    {
+namespace _Project.Scripts.UI {
+    public class InteractionPopUp : MonoBehaviour {
         [SerializeField] private TextMeshProUGUI interactionText;
         public CanvasGroup GetGroup { get; private set; }
         public TextMeshProUGUI GetInteractionText { get; private set; }
         
-        private void Awake()
-        {
+        private void Awake() {
             GetGroup = GetComponent<CanvasGroup>();
             GetInteractionText = interactionText;
         }

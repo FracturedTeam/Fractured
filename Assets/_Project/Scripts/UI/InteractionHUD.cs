@@ -1,78 +1,70 @@
-using _Project.Scripts.Enums;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.UI {
-    public class InteractionHUD : MonoBehaviour
-    {
+    public class InteractionHUD : MonoBehaviour {
         [SerializeField] private InteractionPopUp interactionUI;
         [SerializeField] private Ease easeType = Ease.OutBack;
+        
         private Tweener interactTween;
         private EventBinding<InteractEvent> interactEventBinding;
     
-        [Header("Interaction Texts")] 
-        [SerializeField] private string grab = "Pick up";
-        [SerializeField] private string obtainShard = "Break the frame";
-        [SerializeField] private string leaveMemory = "Leave";
-        [SerializeField] private string useDoor = "Enter";
-        [SerializeField] private string useKey = "Unlock the door";
-        [SerializeField] private string useFragment = "Put";
-        [SerializeField] private string needFragment = "interact";
-        [SerializeField] private string needKey = "Door locked";
-        [SerializeField] private string needSomethingElse = "interact";
-        [SerializeField] private string dialogueInteraction = "";
-    
-        private void Start()
-        {
+        private bool isShown = false;
+        
+        private void Start() {
             interactionUI.GetGroup.alpha = 0;
         }
 
-        private void OnEnable()
-        {
+        private void OnEnable() {
             interactEventBinding = new EventBinding<InteractEvent>(ShowInteraction);
             EventBus<InteractEvent>.Register(interactEventBinding); 
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             EventBus<InteractEvent>.Deregister(interactEventBinding);
             interactTween?.Kill();
         }
 
         private void ShowInteraction(InteractEvent e) {
-        
-            interactTween.Kill();
-                
-            if (!e.ShowInteraction || e.Interaction == Interaction.None) {
-                interactTween = interactionUI.GetGroup.DOFade(0f, 0.5f).SetEase(easeType);
-                return;
+            if (isShown != e.ShowInteraction) {
+                interactTween.Kill();
+                interactTween = interactionUI.GetGroup.DOFade(e.ShowInteraction ? 1f : 0f, 0.25f).SetEase(easeType);
             }
+            
+            interactionUI.GetInteractionText.text = e.ShowInteraction ? e.ObjectName : "";
          
-            if(e.Position != Vector3.zero)
-            {
+            if(e.Position != Vector3.zero) {
                 interactionUI.transform.position = e.Position;
             }
-                
-            interactionUI.GetInteractionText.text = e.Interaction switch {
-                Interaction.Grab => $"{grab} {e.ObjectName}",
-                Interaction.ObtainShard => $"{obtainShard}",
-                Interaction.LeaveMemory => $"{leaveMemory}",
-                Interaction.UseDoor  => $"{useDoor} {e.ObjectName}",
-                Interaction.UseKey =>  $"{useKey}",
-                Interaction.UseFragment => $"{useFragment} {e.ObjectName}",
-                Interaction.NeedFragment => $"{needFragment}",
-                Interaction.NeedKey  => $"{needKey}",
-                Interaction.NeedSomethingElse => $"{needSomethingElse}",
-                Interaction.Dialogue => $"{dialogueInteraction}",
-                _ => "Not supported"
-            };
-                
-            interactTween = interactionUI.GetGroup.DOFade( 1f, 0.5f).SetEase(easeType);
+            
+            isShown = e.ShowInteraction;
         }
-        public void ForceInteractHUDVisibility(bool showPopUp)
-        {
+
+        public void ShowInteractionMemory(bool doShow) {
+            if(!doShow && isShown) return;
+            
+            interactTween.Kill();
+            
+            interactTween = interactionUI.GetGroup.DOFade(doShow ? 1f : 0f, 0.25f).SetEase(easeType);
+            interactionUI.GetInteractionText.text = doShow ? "[E] leave  memory" : "";
+         
+            interactionUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,175,0);
+        }
+        
+        public void ShowInteractionInspect(bool doShow) {
+            if(!doShow && isShown) return;
+            
+            interactTween.Kill();
+            
+            interactTween = interactionUI.GetGroup.DOFade(doShow ? 1f : 0f, 0.25f).SetEase(easeType);
+            interactionUI.GetInteractionText.text = doShow ? "[E] leave  inspect" : "";
+         
+            interactionUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,40,0);
+        }
+        
+        public void ForceInteractHUDVisibility(bool showPopUp) {
             interactionUI.gameObject.SetActive(showPopUp);
         }
     }

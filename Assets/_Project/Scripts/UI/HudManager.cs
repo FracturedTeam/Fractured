@@ -7,9 +7,7 @@ using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace _Project.Scripts.UI
 {
@@ -21,7 +19,7 @@ namespace _Project.Scripts.UI
         public MemoryHUD memory {get; private set;}
         public PadlockHud padLock {get; private set;}
         
-        private EventBinding<DocumentEvent> documentEventBinding;
+        // private EventBinding<DocumentEvent> documentEventBinding;
         
         [Header("Dialogue")]
         [SerializeField] private SubtitleText subtitleText;
@@ -31,7 +29,7 @@ namespace _Project.Scripts.UI
         [Header("Glass Animation")]
         [SerializeField] private Fragment fragment;
         [SerializeField] private ParticleSystem spawningParticles;  
-        [SerializeField] private GlassDocument glassDocument;
+        //[SerializeField] private GlassDocument glassDocument;
         [SerializeField] private int currentShardsSpawning;
         [SerializeField] private float firstHalfTime = 1.0f;
         [SerializeField] private float secondHalfTime = 0.5f;
@@ -52,7 +50,7 @@ namespace _Project.Scripts.UI
             
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
-            glassDocument.gameObject.SetActive(false);
+            // glassDocument.gameObject.SetActive(false);
             
             interact = GetComponent<InteractionHUD>();
             memory = GetComponent<MemoryHUD>();
@@ -60,20 +58,20 @@ namespace _Project.Scripts.UI
         }
 
         private void OnEnable() {
-            documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
-            EventBus<DocumentEvent>.Register(documentEventBinding);
+            // documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
+            // EventBus<DocumentEvent>.Register(documentEventBinding);
         }
 
         private void OnDisable() {
-            EventBus<DocumentEvent>.Deregister(documentEventBinding);
+            // EventBus<DocumentEvent>.Deregister(documentEventBinding);
             textTimer.OnTimerStop  -= ResetText;
         }
 
-        public void OpenDocument(DocumentEvent e)
-        {
-            glassDocument.gameObject.SetActive(e.isOn);
-            glassDocument.SetUp(e.document, e.isOn);
-        }
+        // private void OpenDocument(DocumentEvent e)
+        // {
+        //     glassDocument.gameObject.SetActive(e.isOn);
+        //     glassDocument.SetUp(e.document, e.isOn);
+        // }
 
         public void SetText(DialogueScriptableObject newDialogue) {
             if(!subtitleText || !newDialogue)
