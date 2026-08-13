@@ -1262,6 +1262,7 @@ MonoBehaviour:
   ObjectName: 
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -1915,6 +1916,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2094869252}
+    - targetCorrespondingSourceObject: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2094869254}
   m_SourcePrefab: {fileID: 100100000, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
 --- !u!114 &890488064 stripped
 MonoBehaviour:
@@ -3578,6 +3582,7 @@ MonoBehaviour:
   ObjectName: 
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -4873,6 +4878,7 @@ MonoBehaviour:
   ObjectName: Reorder Memories
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -5219,6 +5225,7 @@ MonoBehaviour:
   ObjectName: Paper Bin
   hudTransformPoint: {x: 0, y: 0}
   hudSpecialTransformPoint: {x: 0, y: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -6226,6 +6233,47 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6658190496837029639, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
   m_PrefabInstance: {fileID: 869774623}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2094869254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267959825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2094869251}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 350af7f0506efc54bbaf197019645a8a, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
 --- !u!1001 &215116229298947033
 PrefabInstance:
   m_ObjectHideFlags: 0
