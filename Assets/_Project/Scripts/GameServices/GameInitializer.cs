@@ -192,6 +192,8 @@ namespace _Project.Scripts.GameServices {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
+            
+            if(HudManager.HasInstance) HudManager.Instance.SetGlass(false);
         }
 
         public void PopulateLevel(BaseObject[] baseObjects) {
@@ -223,6 +225,7 @@ namespace _Project.Scripts.GameServices {
             }
             
             saveService.SetRuntimeShard(shardService.shards);
+            if(HudManager.HasInstance) HudManager.Instance.SetGlass(true);
         }
         
         public void ResetAllInteractable() {

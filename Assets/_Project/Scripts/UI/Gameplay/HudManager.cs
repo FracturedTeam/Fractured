@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.EventBus;
@@ -39,11 +40,17 @@ namespace _Project.Scripts.UI {
         [SerializeField] private Color act3Color;
         [SerializeField] private SetUIColor setUIColor;
         
+        [Header("Gamepad Visual")]
+        [SerializeField] private GameObject gamepadVisual;
+        
         private ParticleSystem currentParticle;
         private Fragment currentFrag;
         
         private readonly List<ParticleSystem> freeParticles = new List<ParticleSystem>();
         private readonly List<Fragment> freeFragment = new List<Fragment>();
+        
+        private bool hasGlass = false;
+        private bool isGamepadControlled = false;
 
         protected override void Awake() {
             base.Awake();
@@ -61,10 +68,22 @@ namespace _Project.Scripts.UI {
         }
 
         private void OnEnable() {
+            InputsBrain.Instance.OnGamepadControlled += UpdateGamepadControlled;
         }
 
         private void OnDisable() {
+            if(InputsBrain.HasInstance) InputsBrain.Instance.OnGamepadControlled -= UpdateGamepadControlled;
             textTimer.OnTimerStop  -= ResetText;
+        }
+
+        private void UpdateGamepadControlled(bool isGamepad) {
+            isGamepadControlled = isGamepad;
+            gamepadVisual.SetActive(isGamepad && hasGlass);
+        }
+
+        public void SetGlass(bool isOn) {
+            hasGlass = isOn;
+            gamepadVisual.SetActive(isGamepadControlled && hasGlass);
         }
 
         public void SetText(DialogueScriptableObject newDialogue) {
