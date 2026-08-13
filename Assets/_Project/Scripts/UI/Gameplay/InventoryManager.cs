@@ -24,6 +24,9 @@ namespace _Project.Scripts.UI.Gameplay {
         [Header("Item Btt")]
         [SerializeField] private RectTransform itemBtt;
         
+        [Header("Gamepad Visual")]
+        [SerializeField] private GameObject[] gamepadVisuals;
+        
         Tweener openInventoryTween;
         Tweener textTween;
         
@@ -33,6 +36,8 @@ namespace _Project.Scripts.UI.Gameplay {
         private EventBinding<SelectItemEvent> selectItemEventBinding;
 
         private ItemHolder selectedItem;
+        
+        private bool isGamepadControlled = false;
         
         private void Start() {
             foreach (var item in itemHolder) {
@@ -55,8 +60,9 @@ namespace _Project.Scripts.UI.Gameplay {
             
             InputsBrain.Instance.OnInventoryOpen += OpenInventory;
             InputsBrain.Instance.OnSecondaryInteract += HoldItemGamepad;
+            InputsBrain.Instance.OnGamepadControlled += UpdateGamepadControlled;
         }
-
+        
         private void OnDisable() {
             EventBus<ProcessItemEvent>.Deregister(addItemEventBinding);
             EventBus<ProcessKeyEvent>.Deregister(addKeyEventBinding);
@@ -66,11 +72,21 @@ namespace _Project.Scripts.UI.Gameplay {
             if (InputsBrain.HasInstance) {
                 InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
                 InputsBrain.Instance.OnSecondaryInteract -= HoldItemGamepad;
+                InputsBrain.Instance.OnGamepadControlled -= UpdateGamepadControlled;
             }
             
             openInventoryTween.Kill();
         }
 
+        private void UpdateGamepadControlled(bool isGamepad) {
+            isGamepadControlled = isGamepad;
+            
+            // Update l'UI également
+            foreach (var pad in gamepadVisuals) {
+                pad.SetActive(isGamepad);
+            }
+        }
+        
         private void OpenInventory(InputAction.CallbackContext context) {
             OpenInventory();
         }
@@ -83,7 +99,7 @@ namespace _Project.Scripts.UI.Gameplay {
             
             openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
 
-            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
+            if (selectedItem && isGamepadControlled) {
                 selectedItem.itemHighlight.SetActive(true);
                 textTween = selectedItem.text.DOFade(isOpen ? 1 : 0, 0.25f);
             }
@@ -96,7 +112,7 @@ namespace _Project.Scripts.UI.Gameplay {
             itemGroup.blocksRaycasts = evt.doShow;
             
             
-            if(selectedItem && !InputsBrain.Instance.IsKeyboardControl)
+            if(selectedItem && isGamepadControlled)
                 selectedItem.itemHighlight.SetActive(true);
 
             if (!evt.doShow) {
@@ -150,7 +166,7 @@ namespace _Project.Scripts.UI.Gameplay {
 
         private void SetHighlight(Item wantedItem) {
             selectedItem = GetItem(wantedItem);
-            if (selectedItem && !InputsBrain.Instance.IsKeyboardControl) {
+            if (selectedItem && isGamepadControlled) {
                 selectedItem.itemHighlight.SetActive(true);
                 if(isOpen)
                     textTween = selectedItem.text.DOFade(1f, 0.25f);
@@ -167,7 +183,7 @@ namespace _Project.Scripts.UI.Gameplay {
         }
 
         private void HoldItemGamepad(InputAction.CallbackContext context) {
-            if(InputsBrain.Instance.IsKeyboardControl) return;
+            if(!isGamepadControlled) return;
             if (context.performed) {
                 if(selectedItem == null) return;
                 if(isOpen || selectedItem.isHeld)

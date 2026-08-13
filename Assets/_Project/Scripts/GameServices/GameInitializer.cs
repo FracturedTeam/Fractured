@@ -44,9 +44,6 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material chapter2B;
         [SerializeField] private Material chapter3A;
         [SerializeField] private Material chapter3B;
-        
-        [Header("Enviro Materials")]
-        [SerializeField] private Material[] enviroMaterials;
 
         [Header("Gamepad Color Settings")]
         [SerializeField] private Color chapter1Color;
@@ -62,7 +59,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Color chapter3ShardAColor;
         [SerializeField] private Color chapter3ShardBColor;
         
-        private int CurrentChapter = 1;
+        public int CurrentChapter {get; private set;}
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -153,10 +150,10 @@ namespace _Project.Scripts.GameServices {
         public void SetCurrentChapter(int index) {
             CurrentChapter = index;
 
-            foreach (var mat in enviroMaterials) {
-                mat.SetFloat("_CurrentAct", CurrentChapter);
-                mat.SetFloat("_ActGlobalTransition", 0);
-            }
+            Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
+            Shader.SetGlobalFloat("_ActGlobalTransition", 0);
+            
+            HudManager.Instance.UpdateUIColor(CurrentChapter);
         }
 
         #region SaveService
@@ -195,6 +192,8 @@ namespace _Project.Scripts.GameServices {
                 Destroy(shardService.shards[i].gameObject);
                 shardService.shards.RemoveAt(i);
             }
+            
+            if(HudManager.HasInstance) HudManager.Instance.SetGlass(false);
         }
 
         public void PopulateLevel(BaseObject[] baseObjects) {
@@ -226,6 +225,7 @@ namespace _Project.Scripts.GameServices {
             }
             
             saveService.SetRuntimeShard(shardService.shards);
+            if(HudManager.HasInstance) HudManager.Instance.SetGlass(true);
         }
         
         public void ResetAllInteractable() {
