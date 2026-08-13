@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -7,7 +6,6 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +13,6 @@ namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
         public bool ShowInteraction;
-        public Interaction Interaction;
         public string ObjectName;
         public Vector3 Position;
     }
@@ -46,7 +43,6 @@ namespace _Project.Scripts.Player {
         private CountdownTimer interactCooldown;
         private const float TimerToUseDoor = 0.15f;
         
-        private Interaction interactionType;
         private RaycastHit wallInBetween;
         private LayerMask wallLayerMask;
         
@@ -61,13 +57,15 @@ namespace _Project.Scripts.Player {
         public bool CanInteract {
             get => canInteract;
             private set {
-                if(canInteract == value) return;
                 canInteract = value;
 
-                if (value == false) {
+                if (canInteract == false) {
                     EventBus<InteractEvent>.Raise(new InteractEvent {
                         ShowInteraction = false
                     });
+                }
+                else {
+                    RaiseInteraction();
                 }
             }
         }
@@ -106,8 +104,9 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void Interact(InputAction.CallbackContext ctx) {
-            if(triggerFailedDrop) return;
+            if(ctx.canceled) return;
             
+            if(triggerFailedDrop || IsInMemory) return;
             if(interactCooldown.IsRunning) return;
             
             if(CanGrab())
@@ -179,7 +178,8 @@ namespace _Project.Scripts.Player {
                     }
                 }
             }
-            if (IsFocus) return;
+            
+            if (IsFocus || IsInMemory) return;
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -194,31 +194,27 @@ namespace _Project.Scripts.Player {
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
-            switch (Size) {
-                case 0:
-                    potentialInteraction = null;
-                    return;
-                case 1:
-                    potentialInteraction = results[0].GetComponent<BaseObject>();
-                    break;
-                case > 1:
-                    var closestDist = 10f;
+            if (Size == 1) {
+                potentialInteraction = results[0].GetComponent<BaseObject>();
+            }
+            else if (Size > 1) {
+                var closestDist = 10f;
 
-                    for (var i = 0; i < Size; i++) {
-                        if (results[i].TryGetComponent(out BaseObject b)) {
-                            if (!b.CanBeInteractedWith()) continue;
-                            var dist = Vector3.Distance(b.transform.position, transform.position);
+                for (var i = 0; i < Size; i++) {
+                    if (results[i].TryGetComponent(out BaseObject b)) {
+                        if (!b.CanBeInteractedWith()) continue;
+                        var dist = Vector3.Distance(b.transform.position, transform.position);
 
-                            if (dist < closestDist) {
-                                closestDist = dist;
-                                potentialInteraction = b;
-                            }
+                        if (dist < closestDist) {
+                            closestDist = dist;
+                            potentialInteraction = b;
                         }
                     }
-                    break;
-                default:
-                    potentialInteraction = null;
-                    break;
+                }
+            }
+            else {
+                potentialInteraction = null;
+                return;
             }
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
@@ -241,77 +237,19 @@ namespace _Project.Scripts.Player {
         
             // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
             if (potentialInteraction == currentInteraction) potentialInteraction = null;
-
         }
 
         void SetPlayerInteraction() {
-            if (potentialInteraction is null) {
-                CanInteract = false;
-                return;
-            }
-            
-            UpdatePossibleInteraction();
-            
-            if (potentialInteraction.CanBeInteractedWith())
-                CanInteract = canPlayerInteract && Size > 0;
-            else {
-                CanInteract = false;
-            }
-        }
-
-        private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
-            
-            if (potentialInteraction == null || interactCooldown.IsRunning) {
-                CanInteract = false;
-                interactionType = Interaction.None;
-                RaiseInteraction();
-                return;
-            }
-            
-            switch (potentialInteraction.GetObjectType) {
-                case ObjectType.Moveable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Door:
-                    interactionType = Interaction.UseDoor;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Collectable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Usable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    break;
-                case ObjectType.Inspectable:
-                    interactionType = Interaction.Dialogue;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.MemoryFrame:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.SimpleInteraction:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.None:
-                default:
-                    interactionType = Interaction.None;
-                    return;
-            }
+            CanInteract = canPlayerInteract && potentialInteraction != null && potentialInteraction.CanBeInteractedWith();
         }
 
         #endregion
         
         private void RaiseInteraction() {
             EventBus<InteractEvent>.Raise(new InteractEvent {
-                ShowInteraction = canInteract,
-                Interaction = interactionType,
-                ObjectName = potentialInteraction?.ObjectName,
-                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector3.zero
+                ShowInteraction = CanInteract,
+                ObjectName = potentialInteraction.ObjectName,
+                Position = potentialInteraction.GetUIPosition()
             });
         }
         

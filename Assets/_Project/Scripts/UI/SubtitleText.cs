@@ -1,17 +1,10 @@
-using System.Collections.Generic;
-using _Project.Scripts.ECS;
-using _Project.Scripts.Enums;
 using _Project.Scripts.ScriptableObjects;
-using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace _Project.Scripts.UI
-{
-    public class SubtitleText : MonoBehaviour
-    {
+namespace _Project.Scripts.UI {
+    public class SubtitleText : MonoBehaviour {
         [SerializeField] TextMeshProUGUI text;
         internal Vector2 TagPositions;
         private DialogueScriptableObject dialogue;
@@ -24,7 +17,6 @@ namespace _Project.Scripts.UI
         private void Start() {
             textCanva.alpha = 0;
         }
-    
 
         public void Setup(DialogueScriptableObject scriptableObject) {
             tween?.Kill();

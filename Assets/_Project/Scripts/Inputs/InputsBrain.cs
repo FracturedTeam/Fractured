@@ -31,6 +31,7 @@ namespace _Project.Scripts.Inputs {
         protected override void Awake() {
             base.Awake();
             inputs = new InputSystem_Actions();
+            IsKeyboardControl = true;
         }
 
         private void OnEnable() {
