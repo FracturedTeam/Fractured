@@ -48,7 +48,7 @@ namespace _Project.Scripts.UI {
             interactTween.Kill();
             
             interactTween = interactionUI.GetGroup.DOFade(doShow ? 1f : 0f, 0.25f).SetEase(easeType);
-            interactionUI.GetInteractionText.text = doShow ? "[E] leave  memory" : "";
+            interactionUI.GetInteractionText.text = doShow ? "Leave  memory" : "";
          
             interactionUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,175,0);
         }
@@ -59,7 +59,7 @@ namespace _Project.Scripts.UI {
             interactTween.Kill();
             
             interactTween = interactionUI.GetGroup.DOFade(doShow ? 1f : 0f, 0.25f).SetEase(easeType);
-            interactionUI.GetInteractionText.text = doShow ? "[E] leave  inspect" : "";
+            interactionUI.GetInteractionText.text = doShow ? "Leave  inspect" : "";
          
             interactionUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,40,0);
         }

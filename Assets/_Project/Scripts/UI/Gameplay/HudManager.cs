@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI.Gameplay;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Project.Scripts.UI
-{
+namespace _Project.Scripts.UI {
     public class HudManager : PersistentSingleton<HudManager>
     {
         [Header("HUD")]
@@ -18,8 +19,6 @@ namespace _Project.Scripts.UI
         public InteractionHUD interact {get; private set;}
         public MemoryHUD memory {get; private set;}
         public PadlockHud padLock {get; private set;}
-        
-        // private EventBinding<DocumentEvent> documentEventBinding;
         
         [Header("Dialogue")]
         [SerializeField] private SubtitleText subtitleText;
@@ -29,11 +28,16 @@ namespace _Project.Scripts.UI
         [Header("Glass Animation")]
         [SerializeField] private Fragment fragment;
         [SerializeField] private ParticleSystem spawningParticles;  
-        //[SerializeField] private GlassDocument glassDocument;
         [SerializeField] private int currentShardsSpawning;
         [SerializeField] private float firstHalfTime = 1.0f;
         [SerializeField] private float secondHalfTime = 0.5f;
         [SerializeField] private Material transitionMaterial;
+        
+        [Header("UI Color")]
+        [SerializeField] private Color act1Color;
+        [SerializeField] private Color act2Color;
+        [SerializeField] private Color act3Color;
+        [SerializeField] private SetUIColor setUIColor;
         
         private ParticleSystem currentParticle;
         private Fragment currentFrag;
@@ -50,7 +54,6 @@ namespace _Project.Scripts.UI
             
             textTimer = new CountdownTimer(0);
             textTimer.OnTimerStop += ResetText;
-            // glassDocument.gameObject.SetActive(false);
             
             interact = GetComponent<InteractionHUD>();
             memory = GetComponent<MemoryHUD>();
@@ -58,20 +61,11 @@ namespace _Project.Scripts.UI
         }
 
         private void OnEnable() {
-            // documentEventBinding = new EventBinding<DocumentEvent>(OpenDocument);
-            // EventBus<DocumentEvent>.Register(documentEventBinding);
         }
 
         private void OnDisable() {
-            // EventBus<DocumentEvent>.Deregister(documentEventBinding);
             textTimer.OnTimerStop  -= ResetText;
         }
-
-        // private void OpenDocument(DocumentEvent e)
-        // {
-        //     glassDocument.gameObject.SetActive(e.isOn);
-        //     glassDocument.SetUp(e.document, e.isOn);
-        // }
 
         public void SetText(DialogueScriptableObject newDialogue) {
             if(!subtitleText || !newDialogue)
@@ -139,6 +133,20 @@ namespace _Project.Scripts.UI
             freeParticles.Add(shard.visualParticles);
             
             transitionMaterial.SetFloat("_Progression",  0);
+        }
+
+        public void UpdateUIColor(int index) {
+            switch (index) {
+                case 1:
+                    setUIColor.SetSpriteColor(act1Color);
+                    break;
+                case 2:
+                    setUIColor.SetSpriteColor(act2Color);
+                    break;
+                case 3:
+                    setUIColor.SetSpriteColor(act3Color);
+                    break;
+            }
         }
     }
 
