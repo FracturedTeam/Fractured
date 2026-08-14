@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{e02b267a-7738-4149-a6ea-a0f4cc7e594f}">
 		<property name="name">
-			<value>HideObject</value>
+			<value>GlassShard_HideObject</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{5823f69e-c712-4a54-8eaa-a8a1260fba4a}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{91bb63e8-071e-4490-b505-42d48a86f23f}</destination>
 		</relationship>
@@ -84,7 +87,7 @@
 	</object>
 	<object class="MultiSound" id="{6d845155-cf9a-4e92-822a-eb70f7868f32}">
 		<relationship name="sounds">
-			<destination>{bcea6397-0bd3-4976-9f06-3c8e8dcf7a0b}</destination>
+			<destination>{c43a7af6-c508-4ce5-b6b7-690ca265a873}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{b43aaccb-7257-4c92-b145-f11565e25345}">
@@ -96,14 +99,20 @@
 	<object class="MixerBusEffectChain" id="{91bb63e8-071e-4490-b505-42d48a86f23f}">
 		<relationship name="effects">
 			<destination>{d78061c9-3c42-41f5-8fcb-87c721508a97}</destination>
+			<destination>{1813428c-17e0-44c0-86ec-5e73a57589dd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{62b9c80c-8f7e-4d83-8586-72efc220acec}" />
-	<object class="SingleSound" id="{bcea6397-0bd3-4976-9f06-3c8e8dcf7a0b}">
+	<object class="SingleSound" id="{c43a7af6-c508-4ce5-b6b7-690ca265a873}">
 		<relationship name="audioFile">
-			<destination>{9ea0f130-b275-4509-b173-b0d094a95fb8}</destination>
+			<destination>{2f74a94b-40aa-4f10-97c1-c10049f889c4}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{e81884c5-c874-4d85-8736-8f8ebceb0cfa}" />
 	<object class="MixerBusFader" id="{d78061c9-3c42-41f5-8fcb-87c721508a97}" />
+	<object class="ThreeEQEffect" id="{1813428c-17e0-44c0-86ec-5e73a57589dd}">
+		<property name="lowGain">
+			<value>-17.5</value>
+		</property>
+	</object>
 </objects>
