@@ -62,7 +62,7 @@ namespace _Project.Scripts.GameServices {
                 
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
                 PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-                
+                GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
                 // GameInitializer.Instance.SaveData();
                 // PlayerController.Instance.triggerEnterRoom = true;
             }
@@ -99,11 +99,13 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
         
-        public void NewGame() 
-            => _ = StartNewGame();
+        public void NewGame() => _ = StartNewGame();
         
-        public void LoadGame(string sceneName = "") 
-            => _ = LoadSave(sceneName == "" ? GameInitializer.Instance.GetLastScene() : sceneName);
+        public void LoadGame(string sceneName = "") => _ = LoadSave(sceneName == "" ? GameInitializer.Instance.GetLastScene() : sceneName);
+
+        public void LoadLevel(int levelIndex) {
+            _ = StartNewGame(levelIndex);
+        }
         
         public void LoadMenu() 
             => _ = LoadMenuAsync();
@@ -182,13 +184,15 @@ namespace _Project.Scripts.GameServices {
         
         private async Task UnloadGameplaySceneAsync() {
             try {
-                await UnloadSceneAsync();
                 GameInitializer.Instance.EmptyAll();
+                await UnloadSceneAsync();
                 
                 await Task.Yield();
                 
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
+                    GameInitializer.Instance.UpdateDebugCameras();
+                    GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
                 }
 
                 if (newGameStarted) {
@@ -212,7 +216,6 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
             
             GameInitializer.Instance.DisposeShards();
-            GameInitializer.Instance.SetEditableArea(false, ColorEnum.Both);
             
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
@@ -224,13 +227,14 @@ namespace _Project.Scripts.GameServices {
             await FadeToGame();
         }
 
-        private async Task StartNewGame() {
+        private async Task StartNewGame(int index = 0) {
             GameInitializer.Instance.CreateNewSave();
             scenesToLoad.Clear();
             
             await FadeToBlack();
 
-            await LoadSceneAsync(newGameScene);
+            
+            await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index - 1]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
             newGameStarted = true;

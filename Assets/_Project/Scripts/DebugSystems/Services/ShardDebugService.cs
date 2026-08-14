@@ -34,6 +34,8 @@ namespace _Project.Scripts.DebugSystems.Services {
         public void DrawDebugGUI() {
             if(!debugUIState.IsVisible("Shard")) return;
             
+            if(shardService.stopUpdate) return;
+            
             var headerStyle = new GUIStyle(GUI.skin.label) {
                 fontStyle = FontStyle.Bold,
                 fontSize = 12,

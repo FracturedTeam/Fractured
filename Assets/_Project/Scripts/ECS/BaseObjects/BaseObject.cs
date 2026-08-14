@@ -7,6 +7,7 @@ using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
+using _Project.Scripts.UI.Gameplay;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,10 +32,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
+        [SerializeField] private ObjectInteractionUI prefabInteractionUI;
         
+        private ObjectInteractionUI interactionUI;
         
         private MeshRenderer meshRenderer;
-        
         private Collider objectCollider;
 
         public bool IsInitialized { get; private set; }
@@ -161,7 +163,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void Initialize() {
             if(!IsInitialized) {
-                if (TryGetComponent(typeof(GlassInteractable), out var g))
+                if (TryGetComponent(out GlassInteractable g))
                     GetGlassInteract = g as GlassInteractable;
                 
                 if(TryGetComponent(out TriggerComponent trigger)) 
@@ -189,6 +191,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
+                
+                if (prefabInteractionUI) {
+                    interactionUI = Instantiate(prefabInteractionUI, transform);
+                }
             }
             IsInitialized = true;
         
@@ -196,12 +202,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Initialize();
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
-        }
-
-        private void Start()
-        {
-            if(!IsInitialized)
-                Initialize();
+            
         }
 
         private void Update() {
@@ -212,6 +213,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         void OnDestroy() {
+            if(interactionUI) Destroy(interactionUI);
+            
             GetInteract?.Dispose();
         }
 
@@ -226,8 +229,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetInteract.OnInteract(interaction, interactable);
         }
 
-        public void OnShardInteract(bool isOn, Glass shard) {  
-            print($"base object interacted  {name} with {shard} shard");
+        public void OnShardInteract(bool isOn, Glass shard) {
             if(canGlassInteractWith)
                 GetGlassInteract.OnShardUpdated(isOn, shard);
         }
@@ -246,6 +248,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
+            
+            if(interactionUI) interactionUI.gameObject.SetActive(canBeInteractedWith);
         }
 
         public void SetGlassInteract(bool canInteract) {

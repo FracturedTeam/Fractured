@@ -10,19 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -17.37
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -23.315466
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.38268325
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalRotation.x
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.9238796
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalRotation.z
@@ -42,12 +42,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 225
       objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_Name
       value: P_S_41_Chair
@@ -66,6 +70,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8396802625617719648}
   m_SourcePrefab: {fileID: 100100000, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+--- !u!23 &741207948800615995 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3762826843808803414, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+  m_PrefabInstance: {fileID: 4499504667246709869}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1245721127710050286 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
@@ -111,7 +120,7 @@ MonoBehaviour:
     lockedState: 0
     isUsed: 0
     objectOutOfGlass: 0
-  <Guid>k__BackingField: 
+  <Guid>k__BackingField: 714dcd6c-1157-4bc8-b9d6-c1df5ac6b3ba
 --- !u!114 &8396802625617719648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131ce36cc3fa471c8a9d0d5e24093b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MovableAttribute
-  rightEdge: {fileID: 0}
-  leftEdge: {fileID: 0}
+  rightEdge: {fileID: 1874166426423205204}
+  leftEdge: {fileID: 1874166426423205204}
   particles: {fileID: 0}
-  dissolve: {fileID: 0}
+  dissolve: {fileID: 741207948800615995}
+--- !u!4 &1874166426423205204 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+  m_PrefabInstance: {fileID: 4499504667246709869}
+  m_PrefabAsset: {fileID: 0}

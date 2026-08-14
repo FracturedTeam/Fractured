@@ -3,22 +3,29 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Systems.HashSetUtil;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
 {
-    [SerializeField] private bool isVisibleFromStart; 
+    [Header("Visibility Settings")]
+    [SerializeField] private bool isVisibleFromStart;
+    [SerializeField] private bool disappearDefinitively; 
+
+    [Header("Global Settings")]
     [SerializeField] private GlassTextScriptableObject currentTextScriptableObject;
     [SerializeField] private GlassTextLink baseText;
     [SerializeField] private GlassTextLink fragAText;
     [SerializeField] private GlassTextLink fragBText;
     [SerializeField] private GlassTextLink bothText;
+    [SerializeField] private MeshRenderer meshRenderer;
 
     private ObservableHashSet<Glass> shardsOnTop;
     private BaseObject baseObject;
     private bool isInitialized;
-    
+
+    private bool canAppearAgain = true;
 
     internal void Initialize()
     {
@@ -26,6 +33,8 @@ public class GlassText : MonoBehaviour
         fragAText.Initialize();
         fragBText.Initialize();
         bothText.Initialize();
+        if(meshRenderer) meshRenderer?.material.DOFade(0, 0);
+        
         if (!isInitialized)
         {
             if (TryGetComponent(out BaseObject component)) baseObject = component;
@@ -56,6 +65,7 @@ public class GlassText : MonoBehaviour
         fragAText.SetAlpha(alpha, time);
         fragBText.SetAlpha(alpha, time);
         bothText.SetAlpha(alpha, time);
+        if(meshRenderer) meshRenderer?.material.DOFade(alpha, time);
     }
 
     private void UpdateShards()
@@ -71,19 +81,22 @@ public class GlassText : MonoBehaviour
     }
 
     [ContextMenu("Manually Appear")]
-    public void Appear()
-    {
+    public void Appear() {
+        if(!canAppearAgain) return;
+        
         SetAlpha( 1, 1);
+        if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
     }    
     
     [ContextMenu("Manually Disappear")]
-    public void Disappear()
-    {
+    public void Disappear() {
         SetAlpha( 0, 1);
+        if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
+
+        if (disappearDefinitively) canAppearAgain = false;
     }
 
-    internal void OnInteract(bool isColliding, Glass shard)
-    {
+    internal void OnInteract(bool isColliding, Glass shard) {
         fragAText.OnInteract(isColliding, shard);
         fragBText.OnInteract(isColliding, shard);
         bothText.OnInteract(isColliding, shard);
@@ -110,9 +123,9 @@ public class GlassText : MonoBehaviour
                     
                     //Case 0001 - Both
                     {
-                        baseText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
-                        fragAText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
-                        fragBText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, true);
+                        baseText.SetText("");
+                        fragAText.SetText("");
+                        fragBText.SetText("");
                         bothText.SetText(currentTextScriptableObject.bothText);
                         return;
                     }

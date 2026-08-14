@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 122988149633042790, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 661272718171315704, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 300c795aa15cec848b522d756f4bdbf8, type: 2}
     - target: {fileID: 1309892700931996717, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_Icon
       value: 
@@ -16,9 +24,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_S_52_Car
       objectReference: {fileID: 0}
+    - target: {fileID: 1309892700931996717, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.89818
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26,23 +38,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2.86
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.043619156
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.99904823
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 1830287549459719831, guid: 35ca3335e46ccb049b6023e6a25f0ac9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -99,7 +111,7 @@ MonoBehaviour:
     lockedState: 0
     isUsed: 0
     objectOutOfGlass: 0
-  <Guid>k__BackingField: 
+  <Guid>k__BackingField: 947b3103-1ace-48b7-8b0a-7c5294fec1b5
 --- !u!114 &2680817747539420565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
   objectColor: 2
-  isOn: 0
+  isOn: 1
   objectInside: 0
   interactableInBox: {fileID: 0}
   wallRenderer: []
@@ -121,7 +133,7 @@ MonoBehaviour:
   invisibleWallMat: {fileID: 0}
   radius2D: 0
   showColliders: 0
-  scaleModificator: 0.4
+  scaleModificator: 0.6
 --- !u!114 &5094228038238755880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,5 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SceneElement
   validationMethod: 1
   requestedCollisionArea: {fileID: 0}
-  requestedVisibility: 1
+  requestedVisibility: 0
   requestedUseState: 0
