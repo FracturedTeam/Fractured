@@ -283,7 +283,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public Vector2 GetUIPosition() {
-            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5);
+            if(meshRenderer)
+                return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(meshRenderer.bounds.center) + new Vector3(hudTransformPoint.x, hudTransformPoint.y - 45, 0);
+            
+            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + new Vector3(hudTransformPoint.x, hudTransformPoint.y - 45, 0);
         }
 
         public bool HasSceneElement() {

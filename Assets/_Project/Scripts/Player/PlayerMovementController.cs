@@ -1,9 +1,7 @@
 using System;
-using System.Threading.Tasks;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
-using _Project.Scripts.Systems.Timers;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -30,7 +28,6 @@ namespace _Project.Scripts.Player {
         [SerializeField] private float stepHeigtSmoothing = 2f;
         
         [Header("Camera Settings")]
-        [SerializeField] UnityEngine.Camera cam;
         [SerializeField] private bool alternateCameraDirection;
         [SerializeField, Range(0f, 1f)] private float amountOfAlternateDirection = 0f;
         [SerializeField] private float timeToSwitchToNewDir = 2f;
@@ -142,8 +139,8 @@ namespace _Project.Scripts.Player {
             if(cameraUpdateTimer > 0) return;
             cameraUpdateTimer = CameraUpdateInterval;
             
-            var flatCamForward = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-            var flatCamRight = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
+            var flatCamForward = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.forward, Vector3.up).normalized;
+            var flatCamRight = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.right, Vector3.up).normalized;
             
             UpdateMoveDir(flatCamForward);
 
@@ -166,7 +163,7 @@ namespace _Project.Scripts.Player {
             
             var alternateForward = new Vector3();
             if (useAlternateCameraDirection) {
-                var camToPlayerDir = transform.position - cam.transform.position;
+                var camToPlayerDir = transform.position - player.cinemachineBrain.OutputCamera.transform.position;
                 alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
 
                 var dot = Vector3.Dot(alternateForward, flatCamForward);
@@ -188,14 +185,14 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdateCameraDir() {
-            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
+            newForwardDir = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.forward, Vector3.up).normalized;
+            newRightDir =  Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.right, Vector3.up).normalized;
 
             newCamDirBuffer = true;
             lerpCameraDirTime = timeToSwitchToNewDir;
 
             var threshold = 1f;
-            var yRotation = cam.transform.rotation.eulerAngles.y;
+            var yRotation = player.cinemachineBrain.OutputCamera.transform.rotation.eulerAngles.y;
             var nearestAngle = Mathf.Round(yRotation / 90f) * 90f;
             var difference = Mathf.Abs(yRotation - nearestAngle);
             
