@@ -108,6 +108,7 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
             
             HudManager.Instance.SetText(dialogue);
+            HudManager.Instance.interact.ShowInteractionMemory(true);
             InputsBrain.Instance.OnInteract += LeaveMemory;
         }
 
@@ -116,6 +117,7 @@ namespace _Project.Scripts.ECS {
             
             InputsBrain.Instance.OnInteract -= LeaveMemory;
             
+            HudManager.Instance.interact.ShowInteractionMemory(false);
             PlayerController.Instance.FreezeController(false);
             PlayerController.Instance.SetInteraction(true);
             PlayerController.Instance.SetInMemory(false);
