@@ -19,8 +19,11 @@ namespace _Project.Scripts.UI {
         private bool isGamepadControlled = false;
         private string currentObject;
         
+        private RectTransform rectTransform;
+        
         private void Start() {
             interactionUI.GetGroup.alpha = 0;
+            rectTransform = interactionUI.GetComponent<RectTransform>();
         }
 
         private void OnEnable() {
@@ -88,7 +91,7 @@ namespace _Project.Scripts.UI {
                 currentInput = isGamepadControlled ? gamepadInput : keyboardInput;
             interactionUI.GetInteractionText.text = $"{currentInput} {currentObject}";
             
-            interactionUI.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,yPos,0);
+            rectTransform.anchoredPosition = new Vector3(0,yPos,0);
         }
         
         public void ForceInteractHUDVisibility(bool showPopUp) {
