@@ -16,22 +16,22 @@ public class PadlockHud : MonoBehaviour
     private PadlockAttribute current;
     [SerializeField] private List<LockCharacter> characters = new List<LockCharacter>();
 
-    private void Start()
-    {
-        codeObject.DOFade( 0, 0);
-        codeObject.gameObject.SetActive(false);
+    private void Start() {
+        codeObject.alpha = 0;
+        codeObject.blocksRaycasts = false;
+        codeObject.interactable = false;
     }
 
-    public void SetCurrent(PadlockAttribute newLock)
-    {
-        codeObject.gameObject.SetActive(true);
-        codeObject.DOFade(newLock ? 1 : 0, 0.5f);
-        if(!newLock)
-        {
-            Invoke(nameof(Start), 0.5f);
-            return;
-        }
+    public void SetCurrent(PadlockAttribute newLock) {
+        var hasLock = false;
+        if(newLock) hasLock = true;
+        
+        codeObject.DOFade(hasLock ? 1 : 0, 0.5f);
+        codeObject.blocksRaycasts = hasLock;
+        codeObject.interactable = hasLock;
 
+        if(!hasLock) return;
+        
         codeObject.transform.position =
             PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(newLock.transform.position) + (Vector3)newLock.offset;
         current = newLock;
