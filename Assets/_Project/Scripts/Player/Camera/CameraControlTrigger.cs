@@ -19,6 +19,16 @@ namespace _Project.Scripts.Player.Camera {
         private readonly CountdownTimer countdownTimer = new (0.1f);
         
         private bool isInitialized;
+
+        private enum cameraTrigger {
+            Right,
+            Left,
+            Front,
+            Back
+        }
+        
+        [SerializeField] private cameraTrigger cameraTriggerSide;
+        private TriggerComponent GetTrigger;
         
         private void Start() {
             col = GetComponent<BoxCollider>();
@@ -35,6 +45,8 @@ namespace _Project.Scripts.Player.Camera {
 
         public void Initialize() {
             countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
+            if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
+            
             isInitialized = true;
         }
         
@@ -80,12 +92,14 @@ namespace _Project.Scripts.Player.Camera {
                     
                     SetCameraPriorityZero();
                     customInspectorObjects.cameraOnRight.Priority = 1;
+                    if (GetTrigger && cameraTriggerSide is cameraTrigger.Right) GetTrigger.OnFunction(GetTrigger.OnInteract);
                 }
                 else {
                     if (!customInspectorObjects.cameraOnLeft) return;
                     
                     SetCameraPriorityZero();
                     customInspectorObjects.cameraOnLeft.Priority = 1;
+                    if (GetTrigger && cameraTriggerSide is cameraTrigger.Left) GetTrigger.OnFunction(GetTrigger.OnInteract);
                 }
             }
             else {
@@ -94,12 +108,14 @@ namespace _Project.Scripts.Player.Camera {
                     
                     SetCameraPriorityZero();
                     customInspectorObjects.cameraOnFront.Priority = 1;
+                    if (GetTrigger && cameraTriggerSide is cameraTrigger.Front) GetTrigger.OnFunction(GetTrigger.OnInteract);
                 }
                 else {
                     if (!customInspectorObjects.cameraOnBack) return;
                     
                     SetCameraPriorityZero();
                     customInspectorObjects.cameraOnBack.Priority = 1;
+                    if (GetTrigger && cameraTriggerSide is cameraTrigger.Back) GetTrigger.OnFunction(GetTrigger.OnInteract);
                 }
             }
         }
