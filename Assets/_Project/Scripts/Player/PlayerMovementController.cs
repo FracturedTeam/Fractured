@@ -138,7 +138,6 @@ namespace _Project.Scripts.Player {
         }
 
         private void HandleCamera() {
-            //if (Time.frameCount % 4 != 0) return;
             cameraUpdateTimer -= Time.deltaTime;
             if(cameraUpdateTimer > 0) return;
             cameraUpdateTimer = CameraUpdateInterval;
@@ -148,6 +147,8 @@ namespace _Project.Scripts.Player {
             
             UpdateMoveDir(flatCamForward);
 
+            moveDir = rawMoveInput.x * rightDir + rawMoveInput.y * forwardDir;
+            
             var forwardAngle = Vector3.Dot(newForwardDir, flatCamForward);
             var rightAngle = Vector3.Dot(newRightDir, flatCamRight);
             
@@ -184,8 +185,6 @@ namespace _Project.Scripts.Player {
                 newCamDirBuffer = false;
                 lerpCameraDirTime = -1;
             }
-            
-            moveDir = rawMoveInput.x * rightDir + rawMoveInput.y * forwardDir;
         }
 
         private void UpdateCameraDir() {

@@ -61,7 +61,7 @@ namespace _Project.Scripts.ECS {
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
 
-            if (!requiredPlayerPosition) return;
+            if (!requiredPlayerPosition || !PlayerController.HasInstance) return;
             
             var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
             
