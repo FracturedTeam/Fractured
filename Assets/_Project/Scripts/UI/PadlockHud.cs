@@ -60,15 +60,13 @@ public class PadlockHud : MonoBehaviour
             3 =>((currentNumber % 1000) % 100) % 10
         };
         
-        print(currentNumber);
-        print( Mathf.Pow(10, 3 - index));
-        print( numberAtIndex * Mathf.Pow(10, 3 - index));
-        print(currentNumber - numberAtIndex * Mathf.Pow(10, 3 - index));
-        print(currentNumber - numberAtIndex * Mathf.Pow(10, 3 - index) + newCode * Mathf.Pow(10, 3 - index));
-        
+        // print(currentNumber);
+        // print( Mathf.Pow(10, 3 - index));
+        // print( numberAtIndex * Mathf.Pow(10, 3 - index));
+        // print(currentNumber - numberAtIndex * Mathf.Pow(10, 3 - index));
+        // print(currentNumber - numberAtIndex * Mathf.Pow(10, 3 - index) + newCode * Mathf.Pow(10, 3 - index));
         
         current.ForceSetInput((int)(currentNumber - numberAtIndex * Mathf.Pow(10, 3 - index) + newCode * Mathf.Pow(10, 3 - index)), index);
-        
     }
   
     public void UpdateCode()

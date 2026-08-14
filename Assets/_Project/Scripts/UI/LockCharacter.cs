@@ -22,7 +22,6 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
     
     public void RoundPosition()
     {
-        print("round");
         trans.anchoredPosition = 
             new Vector2(trans.anchoredPosition.x, 
                 Mathf.Round(trans.anchoredPosition.y /
