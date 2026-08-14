@@ -90,13 +90,18 @@ namespace _Project.Scripts.ECS
         private bool isHeld;
         
         private bool isOnTop;
-
-
+        
         private bool initialized = false;
-        private bool canInteract = true;
 
+        private float halfWidth;
+        private float halfHeight;
+        
         private void Start() {
             Initialize();
+            
+            var scale = shardSprite.canvas.scaleFactor;
+            halfWidth = shardSprite.rectTransform.sizeDelta.x * scale * 0.5f;
+            halfHeight = shardSprite.rectTransform.sizeDelta.y * scale * 0.5f;
         }
 
         private void Initialize() {
@@ -147,7 +152,7 @@ namespace _Project.Scripts.ECS
         }
         
         private void MoveGlass(Vector2 delta) {
-            if(!canInteract && !isHeld) return;
+            if(!isHeld) return;
             if(PlayerController.Instance.Interact.IsInMemory || !PlayerController.Instance.Interact.CanGlassInteract) return;
             
             if (!InputsBrain.Instance.IsKeyboardControl) {
@@ -155,11 +160,11 @@ namespace _Project.Scripts.ECS
                 if(!PlayerController.Instance.IsFrozen()) PlayerController.Instance.FreezeController(true);
             }
             
-            transform.position += (Vector3)delta; 
+            transform.position += (Vector3)delta;
             
             transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, Screen.width - shardSprite.rectTransform.sizeDelta.x/2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, Screen.height  - shardSprite.rectTransform.sizeDelta.y/2)
+                Mathf.Clamp(transform.position.x, halfWidth, Screen.width - halfWidth),
+                Mathf.Clamp(transform.position.y, halfHeight, Screen.height  - halfHeight)
                 );
 
             Set3DShard();
@@ -195,8 +200,6 @@ namespace _Project.Scripts.ECS
         }
         
         internal void ChangeHoldingState(bool isOn) {
-            if (!canInteract) return;
-
             isHeld = isOn;
 
             if (!InputsBrain.Instance.IsKeyboardControl) {
