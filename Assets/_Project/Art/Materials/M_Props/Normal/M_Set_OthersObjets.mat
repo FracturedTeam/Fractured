@@ -23,16 +23,19 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_MemoryFrames
-  m_Shader: {fileID: -6465566751694194690, guid: 31a86cff71a2bac4f99995c0d37ab41e, type: 3}
+  m_Name: M_Set_OthersObjets
+  m_Shader: {fileID: -6465566751694194690, guid: ba21fd15aae8e81418924828d1b13aaa, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 0
+  m_InvalidKeywords:
+  - _CURRENTACT_ACT_1
+  - _DISABLE_SSR_TRANSPARENT
+  - _NORMALMAP_TANGENT_SPACE
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2225
   stringTagMap:
     MotionVector: User
     RenderType: Opaque
@@ -51,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColor:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f0a8c8d2e606b9840bedb63f1f28188c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
@@ -99,7 +102,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a22d10ea68d74914c8cf308679abc748, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -111,27 +114,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORM:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _PaintingsArray:
-        m_Texture: {fileID: 18700000, guid: 634bb9a954d9c9f4794f01cd9ea8f756, type: 3}
+        m_Texture: {fileID: 2800000, guid: c95b1de8e31a5e54d8b3556f3476cb52, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SSHDObjectMain_df701865810f412d84cda8ed5ea25da7_BaseColorArray_3592441525_Texture2DArray:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SSHDObjectMain_df701865810f412d84cda8ed5ea25da7_BaseColor_1598027287_Texture2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DArray_5a590e74c8ce498a979d48c457556e09_TextureArray_1_Texture2DArray:
-        m_Texture: {fileID: 18700000, guid: 634bb9a954d9c9f4794f01cd9ea8f756, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DArray_7941646b41b74a63be05938d631c14d9_TextureArray_1_Texture2DArray:
-        m_Texture: {fileID: 18700000, guid: 8a1d964c2d90f374b9d19edb9e1fc47d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -150,30 +137,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureArray:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Textures_13_16:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Textures_17_20:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Textures_1_4:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Textures_5_8:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Textures_9_12:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _ThicknessMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -184,10 +147,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _TransmittanceColorMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Triplanar_bd00e96c0acd459caaf5d76082218aa6_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 6d49293b8054a4844acf3ba8154f15c6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -223,7 +182,6 @@ Material:
     - _AlphaSrcBlend: 1
     - _AlphaToMask: 0
     - _Anisotropy: 0
-    - _ArrayTotalSize: 16
     - _Blend: 0
     - _BlendMode: 0
     - _BlendModePreserveSpecular: 1
@@ -283,7 +241,6 @@ Material:
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
-    - _NoiseTiling: 0.15
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _ObjectSpaceUVMapping: 0
@@ -295,7 +252,7 @@ Material:
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
     - _PerPixelSorting: 0
-    - _QueueControl: 0
+    - _QueueControl: 1
     - _QueueOffset: 0
     - _RayTracing: 0
     - _ReceiveShadows: 1
@@ -304,16 +261,8 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Roughness: 0.448
     - _RoughnessMultiplier: 1
     - _RoughnessTest: 1
-    - _Shine2: 0
-    - _Shine2Offset: -0.4
-    - _Shine2Width: 0.3
-    - _ShineDuration: 0.6
-    - _ShineIntensity: 0.1
-    - _ShineLoopDuration: 6
-    - _ShineWidth: 1.5
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -336,7 +285,6 @@ Material:
     - _SupportDecals: 1
     - _Surface: 0
     - _SurfaceType: 0
-    - _Test: 25.87
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1
@@ -394,15 +342,15 @@ Material:
     - _ACT3_Color_C: {r: 1, g: 1, b: 1, a: 1}
     - _AOColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
     - _AOLevels: {r: 1, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
     - _Color1: {r: 0, g: 0, b: 0, a: 1}
     - _Color1_2Levels: {r: 0, g: 0.5, b: 0, a: 0}
-    - _Color2: {r: 1, g: 1, b: 1, a: 1}
+    - _Color2: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
     - _Color2_3Levels: {r: 0.5, g: 1, b: 0, a: 0}
     - _Color3: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_1_Location: {r: 0, g: 0.26960784, b: 0, a: 0}
-    - _Color_2_Location: {r: 0.43627456, g: 1, b: 0, a: 0}
+    - _Color_1_Location: {r: 0, g: 0.5, b: 0, a: 0}
+    - _Color_2_Location: {r: 0.5, g: 1, b: 0, a: 0}
     - _Color_A: {r: 0, g: 0.07450981, b: 0.227451, a: 1}
     - _Color_A_Location: {r: 0, g: 0.33, b: 0, a: 0}
     - _Color_B: {r: 0, g: 0.07329773, b: 0.22745098, a: 1}
@@ -415,16 +363,15 @@ Material:
     - _Colors_3_4_Levels: {r: 0.1, g: 0.16, b: 0, a: 0}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _GradientMapLevels: {r: 0.02, g: 0.12, b: 0, a: 0}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _ShineColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _Tilling: {r: 8, g: 8, b: 0, a: 0}
+    - _Tilling: {r: 1, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
