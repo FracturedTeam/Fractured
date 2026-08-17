@@ -16,6 +16,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private Vector3 boundExtent;
         private Vector3 boundCenter;
         
+        [Header("Edges")] 
+        [SerializeField] public Transform leftEdge;
+        
         [Header("items")]
         public Sprite itemSprite;
 
@@ -131,7 +134,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
@@ -189,7 +192,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isHeld = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -214,7 +217,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isHeld = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
         }
 
         public void SetInInventory() {

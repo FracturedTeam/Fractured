@@ -14,10 +14,11 @@ namespace _Project.Scripts.Player.States {
             //Animator -- Set the hold animation while holding object
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
-            animator.CrossFade(CarryHash,  DefaultCrossFadeDuration, UpperBodyLayer);
+            animator.CrossFade(player.Interact.HasItemObject ? CarryLightHash : CarryHeavyHash,  DefaultCrossFadeDuration, UpperBodyLayer);
             
             player.SetMoveSpeed(PlayerSpeedEnum.Normal);
             player.SetInteraction(true);
+            player.PlayerIK.SetHolding(true);
         }
 
         public override void OnUpdate() {
@@ -36,6 +37,7 @@ namespace _Project.Scripts.Player.States {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            player.PlayerIK.SetHolding(false);
         }
     }
 }

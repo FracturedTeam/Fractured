@@ -1371,7 +1371,8 @@ Transform:
   m_LocalPosition: {x: 0.345, y: 0.5, z: -0.478}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 839572610}
   m_Father: {fileID: 1648062241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &265448401
@@ -1386,6 +1387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 839572610}
   itemSprite: {fileID: 21300000, guid: fa484ea90cfff1f42a1a700f3363e7b6, type: 3}
   particles: {fileID: 0}
   isAKey: 0
@@ -2499,6 +2501,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1197306824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &560701465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 560701466}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &560701466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560701465}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 866345175}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &564533478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3271,6 +3304,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -5064877164720126241, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
   m_PrefabInstance: {fileID: 1607853518}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &657160537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657160538}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &657160538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657160537}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 684621335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &680528377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3371,7 +3435,8 @@ Transform:
   m_LocalPosition: {x: -1.155, y: 0.5, z: -0.53799987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 657160538}
   m_Father: {fileID: 1648062241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &684621336
@@ -3386,6 +3451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 657160538}
   itemSprite: {fileID: -705388849, guid: 2f4ed0ac825647f4fbc86e324b978690, type: 3}
   particles: {fileID: 0}
   isAKey: 0
@@ -3730,6 +3796,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -3160401706963468804, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
   m_PrefabInstance: {fileID: 1607853518}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &839572609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 839572610}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &839572610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839572609}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 265448399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &843578225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3993999447918883837, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
@@ -3768,7 +3865,8 @@ Transform:
   m_LocalPosition: {x: -2.4, y: 0.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 560701466}
   m_Father: {fileID: 1648062241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &866345176
@@ -3783,6 +3881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 560701466}
   itemSprite: {fileID: 21300000, guid: abcc936b5e8d85c4a8a27bbedc7373cd, type: 3}
   particles: {fileID: 0}
   isAKey: 0
@@ -7020,6 +7119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 0}
   itemSprite: {fileID: 21300000, guid: ed7546aa07ff19a489435fa2468770d5, type: 3}
   particles: {fileID: 0}
   isAKey: 1
@@ -8007,6 +8107,18 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 1936190181}
+    - target: {fileID: 2861916987234056372, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: grabHeavyObjectClip
+      value: 
+      objectReference: {fileID: -6749487318328100851, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
+    - target: {fileID: 2861916987234056372, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: grabLightObjectClip
+      value: 
+      objectReference: {fileID: 7291789417057254790, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
+    - target: {fileID: 2861916987234056372, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
+      propertyPath: putObjectInInventoryClip
+      value: 
+      objectReference: {fileID: -3594608038146193152, guid: f1a53e35565b7354b9f8ba5de1de71ae, type: 3}
     - target: {fileID: 3102594279267364491, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.82
@@ -8385,6 +8497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 0}
   itemSprite: {fileID: 21300000, guid: 352a525a62ed94d4eb89980f8c2abc33, type: 3}
   particles: {fileID: 0}
   isAKey: 0
@@ -9580,6 +9693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 0}
   itemSprite: {fileID: 836058013, guid: 2f3cbff1e8f5cc443ad67d11a2899e99, type: 3}
   particles: {fileID: 0}
   isAKey: 0

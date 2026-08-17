@@ -1,33 +1,38 @@
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Player.States.SubStates {
-    public class GrabObjectState : PlayerBaseState {
+    public class TakeItemState : PlayerBaseState {
         static readonly int BlendingHash = Animator.StringToHash("Blend");
         
-        private readonly float grabHeavyLength;
-        private readonly float putInInventoryLength;
-        
-        private CountdownTimer animationExitTimer;
+        private readonly CountdownTimer animationExitTimer;
+        private readonly CountdownTimer playAnimTimer;
 
-        public GrabObjectState(PlayerController player, Animator animator, AnimationClip heavy, AnimationClip inventory) : base(player, animator) {
-            grabHeavyLength = heavy.length;
-            putInInventoryLength = inventory.length;
+        public TakeItemState(PlayerController player, Animator animator, AnimationClip grab, AnimationClip inventory) : base(player, animator) {
+            animationExitTimer = new CountdownTimer(grab.length - 0.5f + inventory.length);
+            playAnimTimer = new CountdownTimer(grab.length - 0.5f);
+            playAnimTimer.OnTimerStop += PlaySecondAnimation;
+        }
+
+        private void PlaySecondAnimation() {
+            animator.CrossFade(PutObjectInInventoryHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            Debug.Log("Play Second Animation");
         }
         
         public override void OnEnter() {
-            animationExitTimer = 
-                player.Interact.HasItemObject ? new CountdownTimer(grabHeavyLength) : new CountdownTimer(putInInventoryLength);
-            
             animationExitTimer.Start();
+            playAnimTimer.Start();
+
+            Debug.Log("Enter Take Item");
+            
+            player.Interact.TriggerPickUpItem = false;
             
             //Set the grab animation when entering holding state
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
-            animator.CrossFade(player.Interact.HasItemObject ? TakeObjectOutInventoryHash : GrabHeavyObjectHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            animator.CrossFade(GrabLightObjectHash, DefaultCrossFadeDuration, UpperBodyLayer);
         }
 
         public override void OnUpdate() {

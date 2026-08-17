@@ -18,6 +18,12 @@ namespace _Project.Scripts.Player {
     }
     
     public class PlayerInteract : MonoBehaviour {
+        public enum DropType {
+            Heavy,
+            Light,
+            Inventory
+        }
+        
         [Header("UI")] 
         [SerializeField] private Vector2 uiOffset;
         
@@ -34,6 +40,9 @@ namespace _Project.Scripts.Player {
         private BaseObject memoryInteraction;
         
         public bool HasObject { get; private set; }
+        public bool HasItemObject { get; private set; }
+        public bool HasDroppedObject { get; private set; }
+        public DropType dropType { get; private set; }
         
         private bool canPlayerInteract = false;
         
@@ -53,6 +62,7 @@ namespace _Project.Scripts.Player {
         public bool IsFocus { get; private set; }
         public bool IsInMemory { get; private set; }
         public bool CanGlassInteract { get; private set; }
+        public bool TriggerPickUpItem;
         
         private bool validationInputHold;
         private float validationInputTime;
@@ -145,21 +155,29 @@ namespace _Project.Scripts.Player {
         
         private void PickUpItem() {
             potentialInteraction.OnInteract(ObjectInteraction.Grab);
+            TriggerPickUpItem = true;
         }
 
         public void HoldObject(bool doHold, BaseObject heldObject = null) {
             if (doHold) {
+                HasItemObject = true;
                 HasObject = true;
                 currentInteraction = heldObject;
+                if(currentInteraction.GetInteract is CollectableAttribute move)
+                    player.PlayerIK.SetLightObject( move.leftEdge);
+                HasDroppedObject = false;
             }
             else {
+                HasItemObject = false;
                 HasObject = false;
                 currentInteraction = null;
+                PutInInventory();
             }
         }
 
         private void DropObject() {
             currentInteraction?.OnInteract(ObjectInteraction.Drop);
+            if(HasItemObject) HasItemObject = false;
         }
         #endregion
 
@@ -269,13 +287,23 @@ namespace _Project.Scripts.Player {
             HasObject = true;
             currentInteraction = interaction;
             if(currentInteraction.GetInteract is MovableAttribute move)
-                player.PlayerIK.SetHoldingState(true, move.rightEdge, move.leftEdge);
+                player.PlayerIK.SetHoldingState(move.rightEdge, move.leftEdge);
         }
         
-        public void SetDropObject() {
+        public void SetDropObject(bool heavy) {
             HasObject = false;
             currentInteraction = null;
-            player.PlayerIK.SetHoldingState(false);
+            dropType = heavy ? DropType.Heavy : DropType.Light;
+            HasDroppedObject = true;
+        }
+
+        public void PutInInventory() {
+            dropType = DropType.Inventory;
+            HasDroppedObject = true;
+        }
+        
+        public void ResetDrop() {
+            HasDroppedObject = false;
         }
         
         public void SetDropObjectDebug() {
@@ -297,15 +325,13 @@ namespace _Project.Scripts.Player {
             if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out CollectableAttribute collectable))
-                return CanInteract && collectable.CanBeGrab();
+                return CanInteract && !HasObject && currentInteraction == null && collectable.CanBeGrab();
             
             return false;
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None or ObjectType.SimpleInteraction) return IsCarrying();
-
-            return false;
+            return IsCarrying();
         }
 
         private bool CanContextualInteract() {

@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Player;
 using DG.Tweening;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.UI.Gameplay {
@@ -20,12 +21,10 @@ namespace _Project.Scripts.UI.Gameplay {
         private float distanceToPlayer;
         private float distanceToCamera;
         private Tweener tween;
-        
-        // Scale - Rotation - Position
 
         private void LateUpdate() {
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
-            distanceToCamera = Vector3.Distance(transform.position, Camera.main.transform.position);
+            distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
 
             // A modifier pour être call qu'une fois lorsque la distance change
             if (distanceToPlayer > distanceToBeVisible) {
@@ -35,7 +34,7 @@ namespace _Project.Scripts.UI.Gameplay {
                 tween = spriteRenderer.DOFade(1f, 0.25f).SetEase(easeType);
             }
             
-            transform.LookAt(Camera.main.transform);
+            transform.LookAt(CinemachineBrain.GetActiveBrain(0).OutputCamera.transform);
             distanceScale = Vector3.Lerp(Vector3.one * minScale, Vector3.one * maxScale, maxScaleMinimumDistance / distanceToPlayer);
             cameraScale = distanceScale * distanceToCamera / constantCameraScale;
             

@@ -57,7 +57,8 @@ public class PadlockHud : MonoBehaviour
             0 => currentNumber / 1000,
             1 => (currentNumber % 1000) / 100,
             2 => ((currentNumber % 1000) % 100) / 10,
-            3 =>((currentNumber % 1000) % 100) % 10
+            3 =>((currentNumber % 1000) % 100) % 10,
+            _ => throw new ArgumentOutOfRangeException()
         };
         
         // print(currentNumber);

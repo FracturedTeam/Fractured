@@ -136,7 +136,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
@@ -186,7 +186,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -206,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
         }
         
         #region OtherMethods
