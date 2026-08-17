@@ -80,7 +80,6 @@ namespace _Project.Scripts.Player {
             var carryState = new PlayerCarryState(this, animator);
             var memoryState = new PlayerMemoryState(this, animator);
             var doorState = new PlayerUsingDoorState(this, animator, useDoorClip);
-            var obtainShardState = new PlayerObtainShardState(this, animator, breakObjectClip);
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
@@ -126,8 +125,8 @@ namespace _Project.Scripts.Player {
             At(failedDoor, locomotionState, new FuncPredicate(() => !Interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
             
             //Obtenir un éclat de verre
-            At(locomotionState, obtainShardState, new FuncPredicate(() => Interact.triggerShard));
-            At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
+            // At(locomotionState, obtainShardState, new FuncPredicate(() => Interact.triggerShard));
+            // At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
             
             //Entering Room State
             Any(playerEnterRoomState, new FuncPredicate(() => triggerEnterRoom));

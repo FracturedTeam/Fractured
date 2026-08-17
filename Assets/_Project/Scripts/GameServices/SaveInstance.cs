@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
+using _Project.Scripts.UI.Gameplay;
 using UnityEditor;
 using UnityEngine;
 
@@ -94,10 +95,22 @@ namespace _Project.Scripts.GameServices {
             //Set scene Master
             masters.AddRange(_masters);
             
+            var guids = AssetDatabase.FindAssets("P_Objet_InScene_UI t:Prefab");
+            
+            if (guids.Length == 0) {
+                Debug.LogWarning("P_ObjectInScene_UI prefab not found in project.");
+                return;
+            }
+            
+            var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            var prefab = AssetDatabase.LoadAssetAtPath<ObjectInteractionUI>(path);
+            
             foreach (var interactable in _baseObjects) {
                 if (String.IsNullOrEmpty(interactable.Guid)) { // Generate Object GUID
                     interactable.GenerateGuid();
                 }
+
+                interactable.prefabInteractionUI = prefab;
             }
             
             foreach (var scene in _masters) {

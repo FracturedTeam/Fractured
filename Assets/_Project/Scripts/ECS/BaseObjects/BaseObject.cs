@@ -32,7 +32,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
         [SerializeField] private Vector2 hudSpecialTransformPoint;
-        [SerializeField] private ObjectInteractionUI prefabInteractionUI;
+        [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
         private ObjectInteractionUI interactionUI;
         
@@ -194,6 +194,10 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (prefabInteractionUI) {
                     interactionUI = Instantiate(prefabInteractionUI, transform);
+                    if(meshRenderer)
+                        interactionUI.transform.position = meshRenderer.bounds.center;
+                    else if(objectCollider)
+                        interactionUI.transform.position = objectCollider.bounds.center;
                 }
             }
             IsInitialized = true;
@@ -249,7 +253,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
             
-            if(interactionUI) interactionUI.gameObject.SetActive(canBeInteractedWith);
+            if(interactionUI) interactionUI.gameObject.SetActive(canInteract);
         }
 
         public void SetGlassInteract(bool canInteract) {
