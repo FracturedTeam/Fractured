@@ -25,7 +25,7 @@ namespace _Project.Scripts.Player.States {
             player.UpdateMovement();
             player.UpdateInteraction();
             
-            animator.SetFloat(BlendingHash, player.SetAnimatorSpeed());
+            animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
         }
 
         public override void OnFixedUpdate() {
