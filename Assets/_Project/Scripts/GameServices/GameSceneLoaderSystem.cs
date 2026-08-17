@@ -92,9 +92,9 @@ namespace _Project.Scripts.GameServices {
         
 #endif
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (scene.buildIndex == 12) {
-                loadCredits = true;
-            }
+            // if (scene.buildIndex == 12) {
+            //     loadCredits = true;
+            // }
             
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }

@@ -130,6 +130,13 @@ namespace _Project.Scripts.Player {
         }
 
         #endregion
+
+        public void EmptyInventory() {
+            items.Clear();
+            keys.Clear();
+            
+            EventBus<ClearInventoryEvent>.Raise(new ClearInventoryEvent());
+        }
         
     }
     

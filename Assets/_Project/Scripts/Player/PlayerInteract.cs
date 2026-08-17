@@ -18,6 +18,10 @@ namespace _Project.Scripts.Player {
     }
     
     public class PlayerInteract : MonoBehaviour {
+        [Header("UI")] 
+        [SerializeField] private Vector2 uiOffset;
+        
+        [Header("Settings")]
         [SerializeField] public Transform objectPos;
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
@@ -249,7 +253,7 @@ namespace _Project.Scripts.Player {
             EventBus<InteractEvent>.Raise(new InteractEvent {
                 ShowInteraction = CanInteract,
                 ObjectName = potentialInteraction.ObjectName,
-                Position = potentialInteraction.GetUIPosition()
+                Position = potentialInteraction.GetUIPosition(),
             });
         }
         

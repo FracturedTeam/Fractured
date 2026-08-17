@@ -52,6 +52,8 @@ namespace _Project.Scripts.UI
                     frag.layer = LayerMask.NameToLayer("Default");
                     break;
             }
+            
+            if(render is SkinnedMeshRenderer skinnedMeshRenderer) skinnedMeshRenderer.updateWhenOffscreen = true;
         }
     }
 }

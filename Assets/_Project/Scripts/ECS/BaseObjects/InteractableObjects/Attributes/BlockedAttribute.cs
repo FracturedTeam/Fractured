@@ -39,5 +39,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(failed)
                 baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger?.OnInteractFailed);
         }
+
+        public void EventUnlock() {
+            baseObject.GetLockState = LockedState.Unlocked;
+        }
     }
 }
