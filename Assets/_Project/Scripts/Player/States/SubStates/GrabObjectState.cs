@@ -37,6 +37,7 @@ namespace _Project.Scripts.Player.States.SubStates {
 
         public override void OnUpdate() {
             animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
+            player.UpdateInteraction();
         }
 
         public override void OnFixedUpdate() {

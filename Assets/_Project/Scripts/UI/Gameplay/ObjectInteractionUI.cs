@@ -18,7 +18,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
 
-        private Collider parentCollider;
+        private float offset;
         private MeshRenderer parentMesh;
         
         private Vector3 distanceScale;
@@ -57,12 +57,12 @@ namespace _Project.Scripts.UI.Gameplay {
             var extents = bounds.extents;
             var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
             
-            transform.position = parentMesh.bounds.center + dirToCam * (projectedSize + 0.1f);
+            transform.position = parentMesh.bounds.center + dirToCam * (projectedSize + 0.1f + offset);
         }
         
-        public void RegisterComponents(Collider col, MeshRenderer meshRenderer) {
-            parentCollider = col;
+        public void RegisterComponents(MeshRenderer meshRenderer, float offset) {
             parentMesh = meshRenderer;
+            this.offset = offset;
         }
         
         private void LateUpdate() {

@@ -31,7 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
-        [SerializeField] private Vector2 hudSpecialTransformPoint;
+        [SerializeField] private float interactionUIOffset;
         [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
         private ObjectInteractionUI interactionUI;
@@ -194,7 +194,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (prefabInteractionUI && GetInteract != null) {
                     interactionUI = Instantiate(prefabInteractionUI, transform);
-                    interactionUI.RegisterComponents(objectCollider, meshRenderer);
+                    interactionUI.RegisterComponents(meshRenderer, interactionUIOffset);
                     if(meshRenderer)
                         interactionUI.transform.position = meshRenderer.bounds.center;
                     else if(objectCollider)
