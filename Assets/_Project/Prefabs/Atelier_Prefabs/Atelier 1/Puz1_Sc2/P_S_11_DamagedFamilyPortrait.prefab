@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5484689329342659173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6343704438389964780}
+  m_Layer: 0
+  m_Name: LeftHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6343704438389964780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5484689329342659173}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.219, y: 0.28, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8112743436445946672}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6715318736113506298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6993612484293552371}
+  m_Layer: 0
+  m_Name: RightHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6993612484293552371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6715318736113506298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.219, y: 0.28, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8112743436445946672}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7599231613448352679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18,7 +80,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1344453558242621997, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_LocalPosition.x
@@ -66,7 +128,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6993612484293552371}
+    - targetCorrespondingSourceObject: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6343704438389964780}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1344453558242621997, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       insertIndex: -1
@@ -81,6 +149,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 173176853043499738}
   m_SourcePrefab: {fileID: 100100000, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+--- !u!4 &8112743436445946672 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+  m_PrefabInstance: {fileID: 7599231613448352679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8925450017633618314 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1344453558242621997, guid: dd37094558312d64b87a841d33de3e41, type: 3}
@@ -161,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131ce36cc3fa471c8a9d0d5e24093b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.MovableAttribute
-  rightEdge: {fileID: 0}
-  leftEdge: {fileID: 0}
+  rightEdge: {fileID: 6993612484293552371}
+  leftEdge: {fileID: 6343704438389964780}
   particles: {fileID: 0}
   dissolve: {fileID: 0}

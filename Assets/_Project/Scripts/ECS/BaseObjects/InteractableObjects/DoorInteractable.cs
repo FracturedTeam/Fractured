@@ -41,6 +41,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().openBigDoorSound, transform.position);
             PlayerController.Instance.Interact.TriggerBigDoor(sceneToLoad, transform.position);
+            PlayerController.Instance.Inventory.EmptyInventory();
         }
 
         public void Tick(float deltaTime) {

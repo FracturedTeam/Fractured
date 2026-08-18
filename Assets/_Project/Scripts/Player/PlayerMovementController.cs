@@ -1,9 +1,9 @@
 using System;
-using System.Threading.Tasks;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
-using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.Player.States;
+using _Project.Scripts.Player.States.SubStates;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -30,7 +30,6 @@ namespace _Project.Scripts.Player {
         [SerializeField] private float stepHeigtSmoothing = 2f;
         
         [Header("Camera Settings")]
-        [SerializeField] UnityEngine.Camera cam;
         [SerializeField] private bool alternateCameraDirection;
         [SerializeField, Range(0f, 1f)] private float amountOfAlternateDirection = 0f;
         [SerializeField] private float timeToSwitchToNewDir = 2f;
@@ -57,9 +56,11 @@ namespace _Project.Scripts.Player {
         
         private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
         private Vector3 newForwardDir, newRightDir;
+        private Vector3 rawMoveInput;
         private bool newCamDirBuffer;
     
         private RaycastHit slopeHit; // Pour check si le joueur est sur une slope
+        private LayerMask nonWalkableLayer;
 
         private const float LerpTime = 1f;
         private float lerpTimer = 0f;
@@ -67,11 +68,22 @@ namespace _Project.Scripts.Player {
 
         private float lerpCameraDirTime;
 
-        private readonly CountdownTimer switchCameraBuffer = new(0.15f);
-
         private bool isGrounded;
         private bool isOnSlope;
         private bool isAgainstWall;
+        private bool camOn90Degrees;
+        private bool useAlternateCameraDirection => alternateCameraDirection && !camOn90Degrees;
+        private bool hasInput;
+        
+        private const float GroundRayDistance = 0.15f;
+        
+        private const float CameraUpdateInterval = 0.066f;
+        private float cameraUpdateTimer;
+
+        private bool HasMoveInput => moveDir.sqrMagnitude > 0.001f;
+
+        private Quaternion cachedMeshedRotation;
+        private Vector3 lastMeshDir;
         
         public void Awake() {
             if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
@@ -82,6 +94,8 @@ namespace _Project.Scripts.Player {
         
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+            nonWalkableLayer = ~LayerMask.GetMask("Walkable");
         }
 
         private void OnEnable() {
@@ -94,11 +108,12 @@ namespace _Project.Scripts.Player {
         }
 
         private void SetDir(Vector2 moveInput) {
-            moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
+            rawMoveInput = moveInput;
+            hasInput = moveInput.sqrMagnitude > 0.001f;
             
-            if (!InputsBrain.Instance.IsKeyboardControl && moveInput != Vector2.zero && !switchCameraBuffer.IsRunning) {
-                switchCameraBuffer.Start();
-            }
+            // if (newCamDirBuffer && hasInput) return;
+            //
+            // moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
         }
 
         public void SetSpeed(PlayerSpeedEnum speed) {
@@ -122,38 +137,49 @@ namespace _Project.Scripts.Player {
         }
 
         private void HandleCamera() {
-            if(Time.frameCount % 4 != 0) return;
+            cameraUpdateTimer -= Time.deltaTime;
+            if(cameraUpdateTimer > 0) return;
+            cameraUpdateTimer = CameraUpdateInterval;
             
-            UpdateMoveDir();
+            var flatCamForward = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.forward, Vector3.up).normalized;
+            var flatCamRight = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.right, Vector3.up).normalized;
+            
+            UpdateMoveDir(flatCamForward);
 
-            var forwardAngle = Vector3.Dot(newForwardDir, Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized);
-            var rightAngle = Vector3.Dot(newRightDir, Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized);
+            moveDir = rawMoveInput.x * rightDir + rawMoveInput.y * forwardDir;
+            
+            var forwardAngle = Vector3.Dot(newForwardDir, flatCamForward);
+            var rightAngle = Vector3.Dot(newRightDir, flatCamRight);
             
             if ((!Mathf.Approximately(forwardAngle, 1) || !Mathf.Approximately(rightAngle, 1)) && lerpCameraDirTime <= 0) 
                 UpdateCameraDir();
         }
 
-        private void UpdateMoveDir() {
-            if(!newCamDirBuffer && !alternateCameraDirection) return;
+        private void UpdateMoveDir(Vector3 flatCamForward) {
+            if(!newCamDirBuffer && !useAlternateCameraDirection) return;
             
-            lerpCameraDirTime -= Time.deltaTime;
+            lerpCameraDirTime -= Time.deltaTime * 4;
             if(lerpCameraDirTime < 0) newCamDirBuffer = false;
 
             var lerpTime = lerpCameraDirTime / timeToSwitchToNewDir;
             
             var alternateForward = new Vector3();
-            if (alternateCameraDirection) {
-                var camToPlayerDir = transform.position - cam.transform.position;
+            if (useAlternateCameraDirection) {
+                var camToPlayerDir = transform.position - player.cinemachineBrain.OutputCamera.transform.position;
                 alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
+
+                var dot = Vector3.Dot(alternateForward, flatCamForward);
+                if(dot < 0) alternateForward = -alternateForward;
+                
                 alternateForward = Vector3.Lerp(newForwardDir, alternateForward, amountOfAlternateDirection);
             }
 
-            if (moveDir != Vector3.zero) {
-                forwardDir = Vector3.Lerp(alternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
+            if (hasInput) {
+                forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
                 rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
-            else if (!switchCameraBuffer.IsRunning) {
-                forwardDir = alternateCameraDirection ? alternateForward : newForwardDir;
+            else {
+                forwardDir = useAlternateCameraDirection ? alternateForward : newForwardDir;
                 rightDir = newRightDir;
                 newCamDirBuffer = false;
                 lerpCameraDirTime = -1;
@@ -161,26 +187,37 @@ namespace _Project.Scripts.Player {
         }
 
         private void UpdateCameraDir() {
-            newForwardDir = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-            newRightDir =  Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
+            newForwardDir = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.forward, Vector3.up).normalized;
+            newRightDir =  Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.right, Vector3.up).normalized;
 
             newCamDirBuffer = true;
             lerpCameraDirTime = timeToSwitchToNewDir;
+
+            var threshold = 1f;
+            var yRotation = player.cinemachineBrain.OutputCamera.transform.rotation.eulerAngles.y;
+            var nearestAngle = Mathf.Round(yRotation / 90f) * 90f;
+            var difference = Mathf.Abs(yRotation - nearestAngle);
+            
+            camOn90Degrees = difference < threshold;
         }
 
         private void MeshRotation() {
             if (player.IsUsingDoor()) return;
-            if (moveDir == Vector3.zero) return;
+            if (!HasMoveInput) return;
         
-            var angle = Mathf.Atan2(PreviousMoveDir.x, PreviousMoveDir.z) * Mathf.Rad2Deg;
-            var targetRotation = Quaternion.Euler(0, angle, 0);
-            mesh.rotation = Quaternion.Slerp(mesh.rotation, targetRotation, playerConfig.rotationSpeed * Time.deltaTime);
+            if (PreviousMoveDir != lastMeshDir) {
+                lastMeshDir = PreviousMoveDir;
+                var angle = Mathf.Atan2(PreviousMoveDir.x, PreviousMoveDir.z) * Mathf.Rad2Deg;
+                cachedMeshedRotation = Quaternion.Euler(0, angle, 0);
+            }
+            
+            mesh.rotation = Quaternion.Slerp(mesh.rotation, cachedMeshedRotation, playerConfig.rotationSpeed * Time.deltaTime);
         }
 
         private void CheckMethods() {
             slopeMoveDir = Vector3.ProjectOnPlane(PreviousMoveDir, slopeHit.normal);
         
-            if(moveDir != Vector3.zero)
+            if(HasMoveInput)
                 PreviousMoveDir = moveDir;
         
             HandleTimeBeforeMoving();
@@ -203,35 +240,34 @@ namespace _Project.Scripts.Player {
                 TimeBeforeMoving = 0;
                 return;
             }
-        
-            //Handling player time before moving when he start to press a move key
-            TimeBeforeMoving = moveDir.magnitude > 0 ? 
-                TimeBeforeMoving += Time.deltaTime : 
-                timeBeforeMovingReset <= 0 ?
-                    TimeBeforeMoving -= Time.deltaTime : 
-                    TimeBeforeMoving = TimeBeforeMoving;
 
-            if (rb.linearVelocity == Vector3.zero && moveDir == Vector3.zero && timeBeforeMovingReset <= 0)
-                TimeBeforeMoving = 0;
-        
-            if(moveDir == Vector3.zero)
-                timeBeforeMovingReset -= Time.deltaTime;
-
-            if (TimeBeforeMoving >= playerConfig.timeBeforeMoving && moveDir != Vector3.zero)
+            if (HasMoveInput) {
+                TimeBeforeMoving += Time.deltaTime;
                 timeBeforeMovingReset = playerConfig.timeBeforeMovingReset;
+            }
+            else {
+                timeBeforeMovingReset -= Time.deltaTime;
+                if (timeBeforeMovingReset <= 0) {
+                    TimeBeforeMoving -= Time.deltaTime;
+
+                    if (rb.linearVelocity.sqrMagnitude < 0.001f) {
+                        TimeBeforeMoving = 0;
+                    }
+                }
+            }
         
             TimeBeforeMoving = Mathf.Clamp(TimeBeforeMoving, 0, playerConfig.timeBeforeMoving);
         }
 
         private void HandleAcceleration() {
-            if (moveDir.magnitude > 0 && TimeBeforeMoving >= playerConfig.timeBeforeMoving && !isAgainstWall) {
+            if (HasMoveInput && TimeBeforeMoving >= playerConfig.timeBeforeMoving && !isAgainstWall) {
                 AccelTime += Time.deltaTime;
                 DecelTime -= Time.deltaTime;
             
                 if(CurrentSpeed >= CurrentMaxSpeed - 0.1f)
                     DecelTime = 0;
             
-                CurrentSpeed = Mathf.Lerp(0, CurrentMaxSpeed, playerConfig.accelCurve.Evaluate(AccelTime / playerConfig.accelTime));
+                CurrentSpeed = CurrentMaxSpeed * playerConfig.accelCurve.Evaluate(AccelTime / playerConfig.accelTime);
             
             }
             else {
@@ -241,7 +277,7 @@ namespace _Project.Scripts.Player {
                 if(CurrentSpeed <= 0.1f)
                     AccelTime = 0;
             
-                CurrentSpeed = Mathf.Lerp(CurrentMaxSpeed, 0, playerConfig.decelCurve.Evaluate(DecelTime / playerConfig.decelTime));
+                CurrentSpeed = CurrentMaxSpeed * (1f - playerConfig.accelCurve.Evaluate(DecelTime / playerConfig.decelTime));
             }
         
             DecelTime = Mathf.Clamp(DecelTime, 0, playerConfig.decelTime);
@@ -264,8 +300,8 @@ namespace _Project.Scripts.Player {
         public void HandleFixedUpdate() {
             if (rb.isKinematic || player.IsUsingDoor()) return;
 
-            isGrounded = IsGrounded();
             isOnSlope = IsOnSlope();
+            isGrounded = IsGrounded();
             isAgainstWall = IsAgainstWall();
             
             UpdateDrag();
@@ -289,7 +325,7 @@ namespace _Project.Scripts.Player {
         }
         
         private void StepStairs() {
-            if(moveDir.magnitude == 0) return;
+            if(!HasMoveInput) return;
 
             if (!Physics.Raycast(feetPosition.position + Vector3.up * 0.1f, mesh.forward, lowerHit)) return;
             
@@ -340,10 +376,11 @@ namespace _Project.Scripts.Player {
             return CurrentSpeed / CurrentMaxSpeed;
         }
 
-        public float SetAnimatorSpeed() {
+        public float GetAnimatorSpeed() {
+            if(player.IsCurrentState<GrabObjectState>() || player.IsCurrentState<DropObjectState>() || player.IsCurrentState<TakeItemState>())  return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
             if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
-            if (moveDir.magnitude > 0 && !isAgainstWall) 
+            if (HasMoveInput && !isAgainstWall) 
                 return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, LerpTime);
         
             return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, LerpTime);
@@ -362,11 +399,7 @@ namespace _Project.Scripts.Player {
         #region Boolean
     
         public bool IsGrounded() {
-            float angle = 0;
-            if (slopeHit.normal != Vector3.up)
-                angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-        
-            return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && angle <= playerConfig.maxSlopeAngle;
+            return Physics.CheckBox(feetPosition.position, feetSize, Quaternion.identity, groundLayer) && CurrentSlopeAngle <= playerConfig.maxSlopeAngle;
         }
 
         public bool IsOnSlope() {
@@ -392,11 +425,11 @@ namespace _Project.Scripts.Player {
         }
         
         private bool IsAgainstWall() {
+            if(!HasMoveInput) return false;
+            
             var dir = isOnSlope ? slopeMoveDir : moveDir.normalized;
             
-            var walkable = LayerMask.GetMask("Walkable");
-            
-            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f, ~walkable);
+            Physics.Raycast(feetPosition.position + new Vector3(0,.1f,0), dir, out var hit, 0.6f, nonWalkableLayer);
         
             if (!hit.collider) return false;
             if(hit.collider.isTrigger) return false;

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{b34121f1-e216-4bf8-9895-453012cd869f}">
 		<property name="name">
-			<value>DropObjectAvatar</value>
+			<value>AvatarObjectDrop</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -87,7 +87,7 @@
 	</object>
 	<object class="MultiSound" id="{177067ea-b28f-4023-8570-4bb15f9f734a}">
 		<relationship name="sounds">
-			<destination>{a6994124-3703-428f-81fa-ddb5a31faaa2}</destination>
+			<destination>{c3da60ad-7753-4080-8666-4aad5262f957}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{f77b32e0-fce5-4d22-8756-48f13544512b}">
@@ -99,14 +99,23 @@
 	<object class="MixerBusEffectChain" id="{a644441f-69cc-4cce-986c-d35152c1d077}">
 		<relationship name="effects">
 			<destination>{9247f9db-e783-43cf-adc6-07f3f7154ef4}</destination>
+			<destination>{78080c1d-bf42-40fc-9925-5d1738c2b09f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{84ae4951-526f-4ae5-8a1c-9fa918371622}" />
-	<object class="SingleSound" id="{a6994124-3703-428f-81fa-ddb5a31faaa2}">
+	<object class="SingleSound" id="{c3da60ad-7753-4080-8666-4aad5262f957}">
+		<property name="startOffset">
+			<value>13</value>
+		</property>
 		<relationship name="audioFile">
-			<destination>{b771f4f7-20f2-4492-b50f-a180e9781330}</destination>
+			<destination>{d7ce4441-8b48-4f53-873f-3e6f6ffd334c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{d2577863-d312-4de8-b9e7-79d025de1663}" />
 	<object class="MixerBusFader" id="{9247f9db-e783-43cf-adc6-07f3f7154ef4}" />
+	<object class="ThreeEQEffect" id="{78080c1d-bf42-40fc-9925-5d1738c2b09f}">
+		<property name="lowGain">
+			<value>-2.5</value>
+		</property>
+	</object>
 </objects>
