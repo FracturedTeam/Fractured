@@ -13,8 +13,7 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
     [SerializeField] private float spaceBetweenCharacters = 37.89368182f;
     
 
-    private void Start()
-    {
+    private void Start() {
         hud = HudManager.Instance.padLock;
         trans = GetComponent<RectTransform>();
         text = GetComponentInChildren<TMP_Text>();
@@ -23,7 +22,6 @@ public class LockCharacter : MonoBehaviour, IEndDragHandler, IDragHandler, IPoin
     
     public void RoundPosition()
     {
-        print("round");
         trans.anchoredPosition = 
             new Vector2(trans.anchoredPosition.x, 
                 Mathf.Round(trans.anchoredPosition.y /

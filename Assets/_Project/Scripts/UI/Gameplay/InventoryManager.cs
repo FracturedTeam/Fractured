@@ -34,6 +34,7 @@ namespace _Project.Scripts.UI.Gameplay {
         private EventBinding<ProcessKeyEvent> addKeyEventBinding;
         private EventBinding<ShowInventoryEvent> showInventoryEventBinding;
         private EventBinding<SelectItemEvent> selectItemEventBinding;
+        private EventBinding<ClearInventoryEvent> clearItemEventBinding;
 
         private ItemHolder selectedItem;
         
@@ -57,6 +58,9 @@ namespace _Project.Scripts.UI.Gameplay {
 
             selectItemEventBinding = new EventBinding<SelectItemEvent>(SelectItem);
             EventBus<SelectItemEvent>.Register(selectItemEventBinding);
+
+            clearItemEventBinding = new EventBinding<ClearInventoryEvent>(ClearInventory);
+            EventBus<ClearInventoryEvent>.Register(clearItemEventBinding);
             
             InputsBrain.Instance.OnInventoryOpen += OpenInventory;
             InputsBrain.Instance.OnSecondaryInteract += HoldItemGamepad;
@@ -68,6 +72,7 @@ namespace _Project.Scripts.UI.Gameplay {
             EventBus<ProcessKeyEvent>.Deregister(addKeyEventBinding);
             EventBus<ShowInventoryEvent>.Deregister(showInventoryEventBinding);
             EventBus<SelectItemEvent>.Deregister(selectItemEventBinding);
+            EventBus<ClearInventoryEvent>.Deregister(clearItemEventBinding);
 
             if (InputsBrain.HasInstance) {
                 InputsBrain.Instance.OnInventoryOpen -= OpenInventory;
@@ -107,24 +112,7 @@ namespace _Project.Scripts.UI.Gameplay {
 
         // Fonction pour montrer l'inventaire ou non si le joueur possède des items
         private void ShowInventory(ShowInventoryEvent evt) {
-            itemGroup.DOFade(evt.doShow ? 1f : 0f, 0.5f);
-            itemGroup.interactable = evt.doShow;
-            itemGroup.blocksRaycasts = evt.doShow;
-            
-            
-            if(selectedItem && isGamepadControlled)
-                selectedItem.itemHighlight.SetActive(true);
-
-            if (!evt.doShow) {
-                isOpen = false;
-                textTween?.Kill();
-                foreach (var item in itemHolder) {
-                    item.text.alpha = 0;
-                }
-            }
-            
-            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen? 0 : 180);
-            openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
+            HideInventory(evt.doShow);
         }
         
         #region Items
@@ -231,6 +219,41 @@ namespace _Project.Scripts.UI.Gameplay {
         }
     
         #endregion
+
+        private void ClearInventory(ClearInventoryEvent evt) {
+            foreach (var item in itemHolder) {
+                item.gameObject.SetActive(false);
+                item.ResetItem();
+            }
+
+            foreach (var key in keyHolder) {
+                key.gameObject.SetActive(false);
+                key.ResetKey();
+            }
+            
+            HideInventory(false);
+        }
+
+        private void HideInventory(bool doShow) {
+            itemGroup.DOFade(doShow ? 1f : 0f, 0.5f);
+            itemGroup.interactable = doShow;
+            itemGroup.blocksRaycasts = doShow;
+            
+            
+            if(selectedItem && isGamepadControlled)
+                selectedItem.itemHighlight.SetActive(true);
+
+            if (!doShow) {
+                isOpen = false;
+                textTween?.Kill();
+                foreach (var item in itemHolder) {
+                    item.text.alpha = 0;
+                }
+            }
+            
+            itemBtt.rotation = Quaternion.Euler(0, 0, isOpen? 0 : 180);
+            openInventoryTween = itemDisplay.DOAnchorPos3D(isOpen ? openPosition : closePosition, 0.5f, true);
+        }
         
     }
 
@@ -250,5 +273,9 @@ namespace _Project.Scripts.UI.Gameplay {
 
     public struct SelectItemEvent : IEvent {
         public Item wantedItem;
+    }
+
+    public struct ClearInventoryEvent : IEvent {
+        
     }
 }

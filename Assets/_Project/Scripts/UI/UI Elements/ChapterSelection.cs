@@ -24,7 +24,6 @@ namespace _Project.Scripts.UI {
         [Header("Tween settings")]
         [SerializeField] private Ease easeType;
         [SerializeField] private float tweenTime = 0.25f;
-        [SerializeField] private float multiplicator = 1.15f;
         
         private Tweener tweener;
         
