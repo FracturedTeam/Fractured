@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class ObjectInteractionUI : MonoBehaviour {
@@ -16,12 +18,53 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
 
+        private Collider parentCollider;
+        private MeshRenderer parentMesh;
+        
         private Vector3 distanceScale;
         private Vector3 cameraScale;
         private float distanceToPlayer;
         private float distanceToCamera;
         private Tweener tween;
 
+        private void Start() {
+            StartCoroutine(UpdatePosition());
+        }
+
+        private void OnEnable() {
+            CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+        }
+
+        private void OnDisable() {
+            CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
+            tween?.Kill();
+        }
+        
+        private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {
+            StartCoroutine(UpdatePosition());
+        }
+
+        private IEnumerator UpdatePosition() {
+            yield return null;
+            if (parentMesh == null) {
+                yield break;
+            }
+
+            var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+            var dirToCam = (outPutCamera.transform.position - parentMesh.bounds.center).normalized;
+            
+            var bounds = parentMesh.bounds;
+            var extents = bounds.extents;
+            var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
+            
+            transform.position = parentMesh.bounds.center + dirToCam * (projectedSize + 0.1f);
+        }
+        
+        public void RegisterComponents(Collider col, MeshRenderer meshRenderer) {
+            parentCollider = col;
+            parentMesh = meshRenderer;
+        }
+        
         private void LateUpdate() {
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
             distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
@@ -44,10 +87,6 @@ namespace _Project.Scripts.UI.Gameplay {
                 spriteRenderer.sprite = normalSprite;
             
             transform.localScale = cameraScale;
-        }
-
-        private void OnDisable() {
-            tween?.Kill();
         }
     }
 }

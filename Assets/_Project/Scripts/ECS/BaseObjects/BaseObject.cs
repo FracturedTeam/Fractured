@@ -192,8 +192,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
                 
-                if (prefabInteractionUI) {
+                if (prefabInteractionUI && GetInteract != null) {
                     interactionUI = Instantiate(prefabInteractionUI, transform);
+                    interactionUI.RegisterComponents(objectCollider, meshRenderer);
                     if(meshRenderer)
                         interactionUI.transform.position = meshRenderer.bounds.center;
                     else if(objectCollider)
@@ -207,6 +208,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
             
+            interactionUI?.gameObject.SetActive(CanBeInteractedWith());
         }
 
         private void Update() {
