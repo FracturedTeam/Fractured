@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.DebugSystems;
 using _Project.Scripts.DebugSystems.Services;
 using _Project.Scripts.ECS;
@@ -364,6 +365,7 @@ namespace _Project.Scripts.GameServices {
             return index switch {
                 0 => GetSettings.brightness,
                 1 => GetSettings.contrast,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), index, null)
             };
         }
 

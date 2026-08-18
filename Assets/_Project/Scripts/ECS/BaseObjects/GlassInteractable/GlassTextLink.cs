@@ -14,7 +14,6 @@ public class GlassTextLink : MonoBehaviour
     private int lastIndex;
     private TMP_Text baseText;
     private bool isHoveringObject;
-    private int m_selectedLink = -1;
     private ObservableHashSet<Glass> shardsOnTop;
     private int underRed;
     private int underBlue;
@@ -23,13 +22,15 @@ public class GlassTextLink : MonoBehaviour
     
     public void Initialize() //Initialize
     {
-        if(TryGetComponent(out TMP_Text text)) baseText = text;
-        else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
-        
-        shardsOnTop = new ObservableHashSet<Glass>();
-        shardsOnTop.onUpdate += UpdateShards;
-
-        isInitialized = true;
+        if (!isInitialized) {
+            if(TryGetComponent(out TMP_Text text)) baseText = text;
+            else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
+            
+            shardsOnTop = new ObservableHashSet<Glass>();
+            shardsOnTop.onUpdate += UpdateShards;
+            
+            isInitialized = true;
+        }
     }
 
     public void SetAlpha(float alpha, float time)

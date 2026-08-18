@@ -74,7 +74,6 @@ namespace _Project.Scripts.ECS
         public ColorEnum GetColor => color2D;
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
-        [SerializeField] private bool canEditAnywhere = false;
         [SerializeField] private bool spawned = false;
         [SerializeField] private Fragment shard;
         [HideInInspector] public Fragment visualShard;

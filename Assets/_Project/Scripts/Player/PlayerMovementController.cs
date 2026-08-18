@@ -1,6 +1,8 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Player.States;
+using _Project.Scripts.Player.States.SubStates;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -374,7 +376,8 @@ namespace _Project.Scripts.Player {
             return CurrentSpeed / CurrentMaxSpeed;
         }
 
-        public float SetAnimatorSpeed() {
+        public float GetAnimatorSpeed() {
+            if(player.IsCurrentState<GrabObjectState>() || player.IsCurrentState<DropObjectState>() || player.IsCurrentState<TakeItemState>())  return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
             if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
             if (HasMoveInput && !isAgainstWall) 
