@@ -146,6 +146,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnGrab(IInteractable other = null) {
+            PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
             PlayerController.Instance.Interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
@@ -172,7 +173,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 var pos = GetGroundPos();
-                
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;

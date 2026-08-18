@@ -25,6 +25,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Start();
             playAnimTimer.Start();
 
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
+            
             Debug.Log("Enter Take Item");
             
             player.Interact.TriggerPickUpItem = false;
@@ -33,6 +35,9 @@ namespace _Project.Scripts.Player.States.SubStates {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
             animator.CrossFade(GrabLightObjectHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            if (doPlayerCrouch) {
+                animator.CrossFade(CrouchHash, DefaultCrossFadeDuration);
+            }
         }
 
         public override void OnUpdate() {
@@ -49,6 +54,7 @@ namespace _Project.Scripts.Player.States.SubStates {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            animator.CrossFade(IdleHash, DefaultCrossFadeDuration);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;

@@ -19,6 +19,8 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
         
         public override void OnEnter() {
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
+            
             animationExitTimer = 
                 player.Interact.HasItemObject ? new CountdownTimer(grabHeavyLength) : new CountdownTimer(putInInventoryLength);
             
@@ -28,6 +30,9 @@ namespace _Project.Scripts.Player.States.SubStates {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 1f, 0.2f);
             animator.CrossFade(player.Interact.HasItemObject ? TakeObjectOutInventoryHash : GrabHeavyObjectHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            if (doPlayerCrouch) {
+                animator.CrossFade(CrouchHash, DefaultCrossFadeDuration);
+            }
         }
 
         public override void OnUpdate() {
@@ -44,6 +49,7 @@ namespace _Project.Scripts.Player.States.SubStates {
             AnimWeightTween?.Kill();
             AnimWeightTween = FadeLayer(animator, UpperBodyLayer, 0f, 0.2f);
             animator.CrossFade(EmptyHash, DefaultCrossFadeDuration, UpperBodyLayer);
+            animator.CrossFade(IdleHash, DefaultCrossFadeDuration);
         }
         
         public bool IsClipFinished() => animationExitTimer.IsFinished;

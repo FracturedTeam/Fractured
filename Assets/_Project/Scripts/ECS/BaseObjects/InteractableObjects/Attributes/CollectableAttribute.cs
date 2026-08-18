@@ -145,6 +145,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void OnPickedUp() {
             SetInInventory();
+            PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
             
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
         }
@@ -174,7 +175,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 var pos = GetGroundPos();
-                
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;

@@ -45,6 +45,8 @@ namespace _Project.Scripts.Player {
         public DropType dropType { get; private set; }
         
         private bool canPlayerInteract = false;
+
+        public float pickUpObjectYPos;
         
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
@@ -160,6 +162,7 @@ namespace _Project.Scripts.Player {
 
         public void HoldObject(bool doHold, BaseObject heldObject = null) {
             if (doHold) {
+                pickUpObjectYPos = transform.position.y;
                 HasItemObject = true;
                 HasObject = true;
                 currentInteraction = heldObject;
@@ -168,6 +171,7 @@ namespace _Project.Scripts.Player {
                 HasDroppedObject = false;
             }
             else {
+                pickUpObjectYPos = transform.position.y;
                 HasItemObject = false;
                 HasObject = false;
                 currentInteraction = null;
