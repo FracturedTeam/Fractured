@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1835225602128033926, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 300c795aa15cec848b522d756f4bdbf8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -72,6 +76,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6926107346221087967}
+    - targetCorrespondingSourceObject: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4766675749884169548}
   m_SourcePrefab: {fileID: 100100000, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
 --- !u!1 &2759821443758449066 stripped
 GameObject:
@@ -158,3 +165,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 0.1, z: 0.8}
   m_Center: {x: 0, y: 0.05, z: 0}
+--- !u!114 &4766675749884169548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759821443758449066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  isOn: 1
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
