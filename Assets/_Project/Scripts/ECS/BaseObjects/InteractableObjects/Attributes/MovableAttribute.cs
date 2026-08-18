@@ -136,7 +136,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
@@ -146,6 +146,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnGrab(IInteractable other = null) {
+            PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
             PlayerController.Instance.Interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
@@ -172,7 +173,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 var pos = GetGroundPos();
-                
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
@@ -186,7 +187,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -206,7 +207,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isGrabbed = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(true);
         }
         
         #region OtherMethods

@@ -7,6 +7,7 @@ using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Player {
     
@@ -40,13 +41,16 @@ namespace _Project.Scripts.Player {
         [Header("Animations Settings")]
         [SerializeField] private Animator animator;
         [SerializeField] public AnimationClip useDoorClip;
-        [SerializeField] private AnimationClip grabObjectClip;
-        [SerializeField] private AnimationClip dropObjectClip;
-        [SerializeField] private AnimationClip failedDropClip;
-        [SerializeField] private AnimationClip breakObjectClip;
         [SerializeField] private AnimationClip failedDoorClip;
+        
+        [SerializeField] private AnimationClip grabHeavyObjectClip;
+        [SerializeField] private AnimationClip grabLightObjectClip;
+        [SerializeField] private AnimationClip putObjectInInventoryClip;
+        
+        [SerializeField] private AnimationClip failedDropClip;
+        
         [SerializeField] private AnimationClip leaveMemoryClip;
-        [SerializeField] private AnimationClip usePedestalClip;
+        
 
         private Action enterRoom;
         [HideInInspector] public bool triggerEnterRoom = false;
@@ -83,8 +87,12 @@ namespace _Project.Scripts.Player {
             var playerEnterRoomState = new PlayerEnteringRoomState(this, animator);
             
             //Define subState
-            var grabObject = new GrabObjectState(this, animator, grabObjectClip);
-            var dropObject = new DropObjectState(this, animator, dropObjectClip);
+            var grabObject = new GrabObjectState(this, animator, grabHeavyObjectClip, putObjectInInventoryClip);
+            
+            var dropObject = new DropObjectState(this, animator, grabHeavyObjectClip, grabLightObjectClip, putObjectInInventoryClip);
+            
+            var pickUpItem = new TakeItemState(this, animator, grabLightObjectClip, putObjectInInventoryClip);
+            
             var failedDropObject = new FailedDropObject(this, animator, failedDropClip);
             var failedDoor = new FailedOpeningDoor(this, animator, failedDoorClip);
             var leaveMemory = new LeaveMemory(this, animator, leaveMemoryClip);
@@ -99,14 +107,14 @@ namespace _Project.Scripts.Player {
             At(grabObject, carryState, new FuncPredicate(() => Interact.IsCarrying() && grabObject.IsClipFinished()));
             At(grabObject, locomotionState, new  FuncPredicate(() => !Interact.IsCarrying() && grabObject.IsClipFinished()));
             
-            At(carryState, dropObject, new FuncPredicate(() => !Interact.IsCarrying()));
+            At(carryState, dropObject, new FuncPredicate(() => !Interact.IsCarrying() && Interact.HasDroppedObject));
             At(dropObject, locomotionState, new FuncPredicate(() => !Interact.IsCarrying() && dropObject.IsClipFinished()));
             
             At(carryState, failedDropObject, new FuncPredicate(() => Interact.triggerFailedDrop));
             At(failedDropObject, carryState, new FuncPredicate(() => !Interact.triggerFailedDrop && failedDropObject.IsClipFinished()));
             
-            /*At(carryState, fallState, new FuncPredicate(() => interact.IsCarrying() && !movement.IsGrounded()));
-            At(fallState, carryState, new FuncPredicate(() => interact.IsCarrying() && movement.IsGrounded()));*/
+            At(locomotionState, pickUpItem, new FuncPredicate(() => Interact.TriggerPickUpItem));
+            At(pickUpItem, locomotionState, new FuncPredicate(() => pickUpItem.IsClipFinished()));
             
             //Memory State
             At(locomotionState, memoryState, new FuncPredicate(() => Interact.IsInMemory));
@@ -117,16 +125,10 @@ namespace _Project.Scripts.Player {
             //Using door state
             At(locomotionState, doorState, new FuncPredicate(() => Interact.triggerDoor));
             At(doorState, locomotionState, new FuncPredicate(() => !Interact.triggerDoor && doorState.animationExitTimer.IsFinished));
-            /*At(carryState, doorState, new FuncPredicate(() => interact.UsingLockedDoor()));
-            At(doorState, carryState, new FuncPredicate(() => !interact.UsingLockedDoor() && interact.IsCarrying()));*/
             
             //Failed Door
             At(locomotionState, failedDoor, new FuncPredicate(() => Interact.UsingLockedDoor()));
             At(failedDoor, locomotionState, new FuncPredicate(() => !Interact.UsingLockedDoor() && failedDoor.IsClipFinished()));
-            
-            //Obtenir un éclat de verre
-            // At(locomotionState, obtainShardState, new FuncPredicate(() => Interact.triggerShard));
-            // At(obtainShardState, locomotionState, new FuncPredicate(() => obtainShardState.animationExitTimer.IsFinished));
             
             //Entering Room State
             Any(playerEnterRoomState, new FuncPredicate(() => triggerEnterRoom));
@@ -170,7 +172,7 @@ namespace _Project.Scripts.Player {
 
         public void UpdateMovement() => Movement.HandleUpdate();
         public void FixedUpdateMovement() => Movement.HandleFixedUpdate();
-        public float SetAnimatorSpeed() => Movement.SetAnimatorSpeed();
+        public float GetAnimatorSpeed() => Movement.GetAnimatorSpeed();
         public void FreezeController(bool doFreeze) => Movement.SetKinematic(doFreeze);
         public bool IsFrozen() => Movement.IsPlayerFrozen();
         public void SetMoveSpeed(PlayerSpeedEnum speed) => Movement.SetSpeed(speed);
