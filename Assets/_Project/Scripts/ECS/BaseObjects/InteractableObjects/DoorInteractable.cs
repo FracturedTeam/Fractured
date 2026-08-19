@@ -39,7 +39,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (sceneToLoad == null) return;
             hasBeenInteracted = true;
             
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().openBigDoorSound, transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().door_Opened, transform.position);
             PlayerController.Instance.Interact.TriggerBigDoor(sceneToLoad, transform.position);
             PlayerController.Instance.Inventory.EmptyInventory();
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _Project.Scripts.Enums;
+using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Singletons;
@@ -45,7 +46,6 @@ namespace _Project.Scripts.GameServices {
                 
                 if (!PlayerService.HasInstance) Instantiate(player);
                 if (!HudManager.HasInstance) Instantiate(hudManager);
-            
                 GameInitializer.Instance.InitializeDebugSystems();
                 
                 StartCoroutine(SetSceneWithDelay());
@@ -57,7 +57,6 @@ namespace _Project.Scripts.GameServices {
         IEnumerator SetSceneWithDelay() {
             yield return new WaitForNextFrameUnit();
          
-            GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
             if (GameSceneSettings.HasInstance) {
                 
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
@@ -149,6 +148,8 @@ namespace _Project.Scripts.GameServices {
         
         public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
             try {
+                InputsBrain.Instance.DisablePlayerInput(true);
+                
                 scenesToLoad.Clear();
                 GameInitializer.Instance.SaveData();
                 
@@ -156,23 +157,26 @@ namespace _Project.Scripts.GameServices {
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                
+                EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+                    show = true,
+                    title = GameSceneSettings.Instance.transitionTextSO.title,
+                    description = GameSceneSettings.Instance.transitionTextSO.description,
+                });
 
                 PlayerController.Instance.Movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
-                await Task.Yield();
-                PlayerController.Instance.triggerEnterRoom = true;
-
                 await UnloadGameplaySceneAsync();
                 
                 if (loadCredits) {
                     await UnloadSceneAsync();
                     
                     Destroy(PlayerService.Instance.gameObject);
-                    Destroy(GameInitializer.Instance.gameObject);
                     Destroy(HudManager.Instance.gameObject);
+                    GameInitializer.Instance.EmptyAll();
                     loadCredits = false;
                 }
 
-                await FadeToGame();
+                InputsBrain.Instance.OnContinue += LeaveTransitionFade;
             }
             catch (Exception e) {
                 Debug.LogError("LoadGameplaySceneAsync failed: It most likely is a need to SetInteractable in the P_SceneSettings prefab\n" + e);
@@ -228,13 +232,13 @@ namespace _Project.Scripts.GameServices {
         }
 
         private async Task StartNewGame(int index = 0) {
+            InputsBrain.Instance.DisablePlayerInput(true);
             GameInitializer.Instance.CreateNewSave();
             scenesToLoad.Clear();
             
             await FadeToBlack();
-
             
-            await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index - 1]);
+            await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
             newGameStarted = true;
@@ -243,19 +247,24 @@ namespace _Project.Scripts.GameServices {
             if (!PlayerService.HasInstance) Instantiate(player);
             
             _ = UnloadGameplaySceneAsync();
-            
-            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+                            
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             GameInitializer.Instance.InitializeDebugSystems();
-            #endif
+#endif
+
+            EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+                show = true,
+                title = GameSceneSettings.Instance.transitionTextSO.title,
+                description = GameSceneSettings.Instance.transitionTextSO.description,
+            });
             
             GameInitializer.Instance.SaveData();
-            PlayerController.Instance.triggerEnterRoom = true;
-            
-            await FadeToGame();
+            InputsBrain.Instance.OnContinue += LeaveTransitionFade;
         }
         
         private async Task LoadSave(string lastOpenScene) {
             try {
+                InputsBrain.Instance.DisablePlayerInput(true);
                 GameInitializer.Instance.LoadGame();
                 scenesToLoad.Clear();
 
@@ -276,21 +285,41 @@ namespace _Project.Scripts.GameServices {
                 
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 
+                EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+                    show = true,
+                    title = GameSceneSettings.Instance.transitionTextSO.title,
+                    description = GameSceneSettings.Instance.transitionTextSO.description,
+                });
+                
                 _ = UnloadGameplaySceneAsync();
                 
                 if (!PlayerService.HasInstance) Instantiate(player);
                 if (!HudManager.HasInstance) Instantiate(hudManager);
                 
-            #if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                 GameInitializer.Instance.InitializeDebugSystems();
-                #endif
-
-                await FadeToGame();
+#endif
                 GameInitializer.Instance.LoadPlayerData();
+                InputsBrain.Instance.OnContinue += LeaveTransitionFade;
             }
             catch (Exception e) {
                 Debug.LogError("LoadSaveGame failed: \n" + e);
             }
+        }
+
+        private void LeaveTransitionFade() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Enter);
+            InputsBrain.Instance.DisablePlayerInput(false);
+            PlayerController.Instance.triggerEnterRoom = true;
+            EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+                show = false,
+                title = "",
+                description = "",
+            });
+            
+            _ = FadeToGame();
+            
+            InputsBrain.Instance.OnContinue -= LeaveTransitionFade;
         }
         
         private async Task FadeToBlack() {
@@ -300,7 +329,7 @@ namespace _Project.Scripts.GameServices {
             await Task.Delay(500);
         }
         private static async Task FadeToGame() {
-            await Task.Delay(300);
+            await Task.Delay(500);
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = false
             });

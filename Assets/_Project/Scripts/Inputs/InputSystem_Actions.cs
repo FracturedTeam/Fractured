@@ -524,6 +524,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Continue"",
+                    ""type"": ""Button"",
+                    ""id"": ""daa914b0-fe82-4d0f-aaf7-0f84278f150e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -691,6 +700,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""SettingsView"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f8eb00b-ac5b-40ea-a7ff-fd23390f9694"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d20e57ec-126c-4f08-ae3b-5d913dabbf70"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Continue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -902,6 +933,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Back = m_UI.FindAction("Back", throwIfNotFound: true);
         m_UI_Navigation = m_UI.FindAction("Navigation", throwIfNotFound: true);
         m_UI_SettingsView = m_UI.FindAction("SettingsView", throwIfNotFound: true);
+        m_UI_Continue = m_UI.FindAction("Continue", throwIfNotFound: true);
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_TogglePlayer = m_Debug.FindAction("TogglePlayer", throwIfNotFound: true);
@@ -1182,6 +1214,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Back;
     private readonly InputAction m_UI_Navigation;
     private readonly InputAction m_UI_SettingsView;
+    private readonly InputAction m_UI_Continue;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1209,6 +1242,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/SettingsView".
         /// </summary>
         public InputAction @SettingsView => m_Wrapper.m_UI_SettingsView;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Continue".
+        /// </summary>
+        public InputAction @Continue => m_Wrapper.m_UI_Continue;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1247,6 +1284,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SettingsView.started += instance.OnSettingsView;
             @SettingsView.performed += instance.OnSettingsView;
             @SettingsView.canceled += instance.OnSettingsView;
+            @Continue.started += instance.OnContinue;
+            @Continue.performed += instance.OnContinue;
+            @Continue.canceled += instance.OnContinue;
         }
 
         /// <summary>
@@ -1270,6 +1310,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SettingsView.started -= instance.OnSettingsView;
             @SettingsView.performed -= instance.OnSettingsView;
             @SettingsView.canceled -= instance.OnSettingsView;
+            @Continue.started -= instance.OnContinue;
+            @Continue.performed -= instance.OnContinue;
+            @Continue.canceled -= instance.OnContinue;
         }
 
         /// <summary>
@@ -1699,6 +1742,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSettingsView(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Continue" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnContinue(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Debug" which allows adding and removing callbacks.

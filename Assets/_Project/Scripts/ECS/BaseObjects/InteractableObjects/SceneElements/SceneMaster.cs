@@ -1,18 +1,18 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace _Project.Scripts.ECS {
     public class SceneMaster : MonoBehaviour {
@@ -33,6 +33,10 @@ namespace _Project.Scripts.ECS {
         [Header("Animation Elements")]
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private DialogueScriptableObject dialogue;
+
+        [Header("Audio")] 
+        [SerializeField] private EventReference associatedMemoryLoop;
+        private EventInstance soundInstance;
         
         private readonly CountdownTimer validationDelay = new(1.25f);
         
@@ -52,6 +56,10 @@ namespace _Project.Scripts.ECS {
         private void Start() {
             SetMasterToSceneElement();
             validationDelay.OnTimerStop += DisplayMemoryOnDelay;
+
+            if (!associatedMemoryLoop.IsNull) {
+                soundInstance = GameInitializer.Instance.CreateInstance(associatedMemoryLoop);
+            }
         }
 
         private void OnDisable() {
@@ -96,7 +104,7 @@ namespace _Project.Scripts.ECS {
             if(!validationDelay.IsRunning)
                 validationDelay.Start();
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().enterMemorySound);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Interact);
             
             PlayerController.Instance.FreezeController(true);
             PlayerController.Instance.SetInteraction(false);
@@ -106,6 +114,7 @@ namespace _Project.Scripts.ECS {
         private void DisplayMemoryOnDelay() {
             GameInitializer.Instance.SetMemoryLoop(true);
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
+            soundInstance.start();
             
             HudManager.Instance.SetText(dialogue);
             HudManager.Instance.interact.ShowInteractionMemory(true);
@@ -125,10 +134,10 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().leaveMemorySound);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Leave);
             GameInitializer.Instance.SetMemoryLoop(false);
             GameInitializer.Instance.AddShards(glassShards);
-            
+            soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
         
         public void LoadCompleteScene() {

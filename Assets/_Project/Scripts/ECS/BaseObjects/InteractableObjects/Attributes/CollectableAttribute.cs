@@ -146,8 +146,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void OnPickedUp() {
             SetInInventory();
             PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
-            
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
+
+            GameInitializer.Instance.PlaySound3D(
+                isAKey
+                    ? GameInitializer.Instance.GetBank().avatar_Taking_Key
+                    : GameInitializer.Instance.GetBank().avatar_Taking_Object, transform.position);
         }
 
         private void HoldObject() {
@@ -184,7 +187,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
             }
             
             if (isInInventory) {
@@ -209,7 +212,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 IsColliding();
                 baseObject.SetInteract(true);
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
             }
             
             if (isInInventory) {

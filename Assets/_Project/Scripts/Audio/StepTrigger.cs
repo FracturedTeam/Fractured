@@ -6,7 +6,7 @@ namespace _Project.Scripts.Audio {
     public class StepTrigger : MonoBehaviour {
         public void StepSound() {
             if(GameInitializer.HasInstance)
-                GameInitializer.Instance?.PlaySound3D(GameInitializer.Instance.GetBank().playerFootstepSound, transform.position);
+                GameInitializer.Instance?.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Walking_Neutral, transform.position);
         }
     }
 }
