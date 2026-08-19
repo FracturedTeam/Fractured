@@ -235,7 +235,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectInside && !objectOut)
                 ActivateObjectInside(!isUnder);
             
-            if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
+            if(!IsVisible) GameInitializer.Instance.PlayHideSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {

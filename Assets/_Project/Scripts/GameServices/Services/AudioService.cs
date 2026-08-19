@@ -30,6 +30,8 @@ namespace _Project.Scripts.GameServices.Services {
         
         private EventInstance memorySeeingInstance;
         
+        private EventInstance movingShardInstance;
+        
         private readonly CountdownTimer hideObjectTimer = new (1f);
 
         private SettingData settingData;
@@ -58,6 +60,8 @@ namespace _Project.Scripts.GameServices.Services {
             //Memory
             memorySeeingInstance = CreateInstance(bank.memorySeeing_Loop);
             
+            movingShardInstance = CreateInstance(bank.movingShard_Loop);
+            
             settingData = GameInitializer.Instance.GetSettings;
         }
 
@@ -83,6 +87,25 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void Dispose() {
+            Act1Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act2Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act3Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act4Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act5Ambient.stop(STOP_MODE.IMMEDIATE);
+            menuInstance.stop(STOP_MODE.IMMEDIATE);
+            beachInstance.stop(STOP_MODE.IMMEDIATE);
+            creditsInstance.stop(STOP_MODE.IMMEDIATE);
+            memorySeeingInstance.stop(STOP_MODE.IMMEDIATE);
+            
+            Act1Ambient.release();
+            Act2Ambient.release();
+            Act3Ambient.release();
+            Act4Ambient.release();
+            Act5Ambient.release();
+            menuInstance.release();
+            beachInstance.release();
+            creditsInstance.release();
+            memorySeeingInstance.release();
         }
         
         public void PlayOneShot3D(EventReference sound, Vector3 worldPosition) {
@@ -101,11 +124,11 @@ namespace _Project.Scripts.GameServices.Services {
 
         public void PlayMovingShardLoop(bool moving) {
             if (moving) {
-                memorySeeingInstance.getPlaybackState(out var playbackSate);
-                if (playbackSate.Equals(PLAYBACK_STATE.STOPPED)) memorySeeingInstance.start();
+                movingShardInstance.getPlaybackState(out var playbackSate);
+                if (playbackSate.Equals(PLAYBACK_STATE.STOPPED)) movingShardInstance.start();
             }
             else {
-                memorySeeingInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                movingShardInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
         

@@ -3,12 +3,15 @@ using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
+using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
 using FMOD;
 using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 [RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
@@ -47,6 +50,7 @@ public class GlassText : MonoBehaviour
             isInitialized = true;
             
             soundInstance = GameInitializer.Instance.CreateInstance(GameInitializer.Instance.GetBank().environmentalText_Loop);
+            RuntimeManager.AttachInstanceToGameObject(soundInstance, gameObject, PlayerController.Instance.GetRigidbody());
         }
 
         ForceSet();
@@ -78,6 +82,9 @@ public class GlassText : MonoBehaviour
         
         shardsOnTop.onUpdate -= UpdateShards;
         shardsOnTop.Clear();
+
+        soundInstance.stop(STOP_MODE.IMMEDIATE);
+        soundInstance.release();
     }
 
     [ContextMenu("Manually Appear")]
@@ -87,9 +94,9 @@ public class GlassText : MonoBehaviour
         soundInstance.getPlaybackState(out var playbackState);
         if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
             soundInstance.start();
-            var pos = transform.position;
-            soundInstance.set3DAttributes(new ATTRIBUTES_3D{position = new VECTOR(pos.x, pos.y, pos.z)});
         }
+        
+        GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().environmentText_Appear, transform.position);
         
         SetAlpha( 1, 1);
         if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
