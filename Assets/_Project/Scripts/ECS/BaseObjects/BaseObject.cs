@@ -31,7 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
-        [SerializeField] private Vector2 hudSpecialTransformPoint;
+        [SerializeField] private float interactionUIOffset;
         [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
         private ObjectInteractionUI interactionUI;
@@ -192,8 +192,9 @@ namespace _Project.Scripts.ECS.BaseObjects
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
                 
-                if (prefabInteractionUI) {
+                if (prefabInteractionUI && GetInteract != null) {
                     interactionUI = Instantiate(prefabInteractionUI, transform);
+                    interactionUI.RegisterComponents(meshRenderer, interactionUIOffset);
                     if(meshRenderer)
                         interactionUI.transform.position = meshRenderer.bounds.center;
                     else if(objectCollider)
@@ -207,6 +208,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
             
+            interactionUI?.gameObject.SetActive(CanBeInteractedWith());
         }
 
         private void Update() {

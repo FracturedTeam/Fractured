@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -102,7 +104,7 @@ namespace _Project.Scripts.ECS
             halfWidth = shardSprite.rectTransform.sizeDelta.x * scale * 0.5f;
             halfHeight = shardSprite.rectTransform.sizeDelta.y * scale * 0.5f;
         }
-
+        
         private void Initialize() {
             if (!initialized) {
                 mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
@@ -192,6 +194,20 @@ namespace _Project.Scripts.ECS
 
         private void OnEnable() {
             shard?.gameObject.SetActive(true);
+            CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+        }
+
+        private void OnDisable() {
+            CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
+        }
+        
+        private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {
+            StartCoroutine(UpdatePosition());
+        }
+
+        private IEnumerator UpdatePosition() {
+            yield return null;
+            Set3DShard();
         }
 
         void OnDestroy() {

@@ -1,27 +1,84 @@
 using System;
+using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class ObjectInteractionUI : MonoBehaviour {
+        [Header("Sprites")]
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Sprite normalSprite;
-        [SerializeField] private Sprite closeSprite;
+        [SerializeField] private Sprite closedSpriteBlue;
+        [SerializeField] private Sprite closedSpriteRed;
+        [SerializeField] private Sprite closedSpriteYellow;
+        
+        [Header("UI Settings")]
         [SerializeField] private float constantCameraScale = 1;
         [SerializeField] private float maxScale = 0.5f, minScale = 0.25f;
         [SerializeField] private float distanceToBeVisible = 8;
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
 
+        private Sprite closeSprite;
+        private float offset;
+        private MeshRenderer parentMesh;
+        
         private Vector3 distanceScale;
         private Vector3 cameraScale;
         private float distanceToPlayer;
         private float distanceToCamera;
         private Tweener tween;
 
+        private void Start() {
+            closeSprite = GameInitializer.Instance.CurrentChapter switch {
+                1 => closedSpriteRed,
+                2 => closedSpriteBlue,
+                3 => closedSpriteYellow,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            StartCoroutine(UpdatePosition());
+        }
+
+        private void OnEnable() {
+            CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+        }
+
+        private void OnDisable() {
+            CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
+            tween?.Kill();
+        }
+        
+        private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {
+            StartCoroutine(UpdatePosition());
+        }
+
+        private IEnumerator UpdatePosition() {
+            yield return null;
+            if (parentMesh == null) {
+                yield break;
+            }
+
+            var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+            var dirToCam = (outPutCamera.transform.position - parentMesh.bounds.center).normalized;
+            
+            var bounds = parentMesh.bounds;
+            var extents = bounds.extents;
+            var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
+            
+            transform.position = parentMesh.bounds.center + dirToCam * (projectedSize + 0.1f + offset);
+        }
+        
+        public void RegisterComponents(MeshRenderer meshRenderer, float offset) {
+            parentMesh = meshRenderer;
+            this.offset = offset;
+        }
+        
         private void LateUpdate() {
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
             distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
@@ -44,10 +101,6 @@ namespace _Project.Scripts.UI.Gameplay {
                 spriteRenderer.sprite = normalSprite;
             
             transform.localScale = cameraScale;
-        }
-
-        private void OnDisable() {
-            tween?.Kill();
         }
     }
 }
