@@ -111,6 +111,7 @@ namespace _Project.Scripts.GameServices {
                 }
 
                 interactable.prefabInteractionUI = prefab;
+                EditorUtility.SetDirty(interactable);
             }
             
             foreach (var scene in _masters) {

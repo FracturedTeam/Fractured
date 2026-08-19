@@ -16,8 +16,6 @@ namespace _Project.Scripts.Player.Camera {
         private Vector3 extentSize;
         private LayerMask mask;
         
-        private readonly CountdownTimer countdownTimer = new (0.1f);
-        
         private bool isInitialized;
 
         private enum cameraTrigger {
@@ -44,14 +42,9 @@ namespace _Project.Scripts.Player.Camera {
         }
 
         public void Initialize() {
-            countdownTimer.OnTimerStop += GameInitializer.Instance.RepositionGlass;
             if(TryGetComponent(out TriggerComponent trigger)) GetTrigger = trigger;
             
             isInitialized = true;
-        }
-        
-        private void OnDisable() {
-            countdownTimer.Dispose();
         }
         
         private void Update() {
@@ -83,8 +76,6 @@ namespace _Project.Scripts.Player.Camera {
         private void SwitchCamera() {
             var exitDir = (playerCollider[0].transform.position - transform.position);
             var localExitDir = transform.InverseTransformDirection(exitDir);
-            
-            countdownTimer.Start();
             
             if (Mathf.Abs(localExitDir.x) > 0 && Mathf.Abs(localExitDir.z) < transform.localScale.z) {
                 if (localExitDir.x > 0) {
