@@ -66,6 +66,11 @@ namespace _Project.Scripts.ECS {
             validationDelay.OnTimerStop -= DisplayMemoryOnDelay;
         }
 
+        private void OnDestroy() {
+            soundInstance.stop(STOP_MODE.IMMEDIATE);
+            soundInstance.release();
+        }
+
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
 
