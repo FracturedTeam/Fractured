@@ -248,6 +248,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: 735a1b42-296b-4967-aca4-2ad113e8c560
       objectReference: {fileID: 0}
+    - target: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: interactionUIOffset.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: m_Name
       value: P_I_Cupboard01
@@ -608,6 +612,13 @@ MonoBehaviour:
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: 08971544556df4c48bf365a3f46a1516, type: 3}
   dialogue: {fileID: 11400000, guid: 20fcc2ce9dbd21d47953e8eedc9e0aaa, type: 2}
+  associatedMemoryLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -862,6 +873,14 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: 26ccf1a0-ca74-43db-90ed-48b6058e2222
       objectReference: {fileID: 0}
+    - target: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: interactionUIOffset.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: interactionUIOffset.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: m_Name
       value: P_I_Cupboard01 (2)
@@ -1070,8 +1089,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>I remember ordering the financial records when I suddenly
-        found this intriguing letter from Lemarchand. </color>
+      value: <color=#ffffffff>I always did the paperwork for Father.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -1087,7 +1105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff></color>
+      value: <color=#ffffffff>I always did the paperwork for Father.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -1099,7 +1117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff></color>
+      value: <color=#ffffffff>I always did the paperwork for Father.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -1115,7 +1133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff></color>
+      value: <color=#ffffffff>I always did the paperwork for Father.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -1380,7 +1398,7 @@ MonoBehaviour:
   ObjectName: Back to the Dining Room
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
-  prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -1496,7 +1514,7 @@ PrefabInstance:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
       value: <color=#ffffffff>Day after day inputting 8721 to get this dumb paperwork
-        and work on it for hours, only to get chastised because whatever I did was
+        and study it for hours, only to get chastised because whatever I did was
         never enough.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
@@ -1510,7 +1528,7 @@ PrefabInstance:
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
       value: <color=#ffffffff>Day after day inputting 8721 to get this dumb paperwork
-        and work on it for hours, only to get chastised because whatever I did was
+        and study it for hours, only to get chastised because whatever I did was
         never enough.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
@@ -1524,7 +1542,7 @@ PrefabInstance:
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
       value: <color=#ffffffff>Day after day inputting 8721 to get this dumb paperwork
-        and work on it for hours, only to get chastised because whatever I did was
+        and study it for hours, only to get chastised because whatever I did was
         never enough.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
@@ -1538,7 +1556,7 @@ PrefabInstance:
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
       value: <color=#ffffffff>Day after day inputting 8721 to get this dumb paperwork
-        and work on it for hours, only to get chastised because whatever I did was
+        and study it for hours, only to get chastised because whatever I did was
         never enough.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
@@ -1716,6 +1734,13 @@ MonoBehaviour:
   worldText: {fileID: 0}
   memorySprite: {fileID: 21300000, guid: 81eeb17f4ed04d445806a58b30129be6, type: 3}
   dialogue: {fileID: 11400000, guid: 1388815b81267564da0591db06e3435f, type: 2}
+  associatedMemoryLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -1888,6 +1913,13 @@ MonoBehaviour:
   worldText: {fileID: 659622208}
   memorySprite: {fileID: 21300000, guid: deea22f4aa80f764a8aa94b6a972e573, type: 3}
   dialogue: {fileID: 11400000, guid: c48798b390ddb7b4b8d66fe556d37854, type: 2}
+  associatedMemoryLoop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   data:
     <Guid>k__BackingField: 
     isCompleted: 0
@@ -1998,6 +2030,10 @@ PrefabInstance:
     - target: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: <Guid>k__BackingField
       value: be6d2a67-a0e0-4677-a454-977058d49652
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: interactionUIOffset.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: m_Name
@@ -2299,6 +2335,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: a88cd9cc-68a4-4b2b-b43d-cf3d4cfbe5ee
       objectReference: {fileID: 0}
+    - target: {fileID: 2098971938543304142, guid: 1ac07637ffbf3fc4c8fc6755e6d7848d, type: 3}
+      propertyPath: interactionUIOffset.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5001035526100530715, guid: 1ac07637ffbf3fc4c8fc6755e6d7848d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.633
@@ -2492,8 +2532,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Father summoned me to his office once. He wanted to have
-        a "serious talk" with me.</color>
+      value: <color=yellow>After the Frenchman left, Father summoned me to his office
+        to have a "serious talk".</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -2505,8 +2545,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>He held the newly signed business deal with Lemarchand,
-        before slamming it onto his desk while I stood stunned in front of it.</color>
+      value: <color=#ffffffff>He slammed the newly signed deal on his desk and praised
+        my brother for getting the deal while telling me I had been useless.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -2518,8 +2558,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Father summoned me to his office once. He wanted to have
-        a "serious talk" with me.</color>
+      value: <color=yellow>After the Frenchman left, Father summoned me to his office
+        to have a "serious talk".</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -2531,8 +2571,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Father summoned me to his office once. He wanted to have
-        a "serious talk" with me.</color>
+      value: <color=yellow>After the Frenchman left, Father summoned me to his office
+        to have a "serious talk".</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -2661,7 +2701,7 @@ PrefabInstance:
     - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: prefabInteractionUI
       value: 
-      objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: <Guid>k__BackingField
       value: 48c4af45-354f-43df-b0ea-8ad81bf8f3b2
@@ -3230,9 +3270,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>The frenchman was seating on the couch, like all of
-        Father's business partners. His name was something like Jean-Baptiste Lemarchand
-        or maybe Jean-Charles Lemaire I think.</color>
+      value: <color=#ffffffff>The Frenchman was sitting on the couch, facing Father.
+        I think his name was something like Lemarchand, or maybe Lemaire?</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -3248,9 +3287,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>The frenchman was seating on the couch, like all of
-        Father's business partners. His name was something like Jean-Baptiste Lemarchand
-        or maybe Jean-Charles Lemaire I think.</color>
+      value: <color=#ffffffff>The Frenchman was sitting on the couch, facing Father.
+        I think his name was something like Lemarchand, or maybe Lemaire?</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -3262,9 +3300,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>The frenchman was seating on the couch, like all of
-        Father's business partners. His name was something like Jean-Baptiste Lemarchand
-        or maybe Jean-Charles Lemaire I think.</color>
+      value: <color=#ffffffff>The Frenchman was sitting on the couch, facing Father.
+        I think his name was something like Lemarchand, or maybe Lemaire?</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -3280,9 +3317,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>The frenchman was seating on the couch, like all of
-        Father's business partners. His name was something like Jean-Baptiste Lemarchand
-        or maybe Jean-Charles Lemaire I think.</color>
+      value: <color=#ffffffff>The Frenchman was sitting on the couch, facing Father.
+        I think his name was something like Lemarchand, or maybe Lemaire?</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -3442,8 +3478,8 @@ PrefabInstance:
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
       value: <color=#ffffffff>He started berating me, calling me useless and a failure
-        compared to Arthur who did more for the business even though he wasn't even
-        there.</color>
+        compared to Arthur who did more for the business than me even though he wasn't
+        even there.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -3748,7 +3784,7 @@ MonoBehaviour:
   ObjectName: Interact with Office door
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
-  prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -4042,7 +4078,7 @@ PrefabInstance:
     - target: {fileID: 8895163239792251295, guid: 76cca552126aa0c4daa9e5022198c16d, type: 3}
       propertyPath: prefabInteractionUI
       value: 
-      objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8895163239792251295, guid: 76cca552126aa0c4daa9e5022198c16d, type: 3}
       propertyPath: <Guid>k__BackingField
       value: 5dfd1d45-07af-446a-8f9a-591174ddbfce
@@ -4439,9 +4475,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>According to Father, cigars are the key to fluid negotiations.
-        They put the boxes on the tables to have easy access while chatting. He sealed
-        one of his biggest deals with a frenchman with this technique.</color>
+      value: <color=#ffffffff>Father always keeps cigars on the tables during negotiations
+        to keep them flowing. He sealed a big deal with the Frenchman using this
+        trick.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4457,9 +4493,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>According to Father, cigars are the key to fluid negotiations.
-        They put the boxes on the tables to have easy access while chatting. He sealed
-        one of his biggest deals with a frenchman with this technique.</color>
+      value: <color=#ffffffff>Father always keeps cigars on the tables during negotiations
+        to keep them flowing. He sealed a big deal with the Frenchman using this
+        trick.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4471,9 +4507,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>According to Father, cigars are the key to fluid negotiations.
-        They put the boxes on the tables to have easy access while chatting. He sealed
-        one of his biggest deals with a frenchman with this technique.</color>
+      value: <color=#ffffffff>Father always keeps cigars on the tables during negotiations
+        to keep them flowing. He sealed a big deal with the Frenchman using this
+        trick.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4489,9 +4525,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>According to Father, cigars are the key to fluid negotiations.
-        They put the boxes on the tables to have easy access while chatting. He sealed
-        one of his biggest deals with a frenchman with this technique.</color>
+      value: <color=#ffffffff>Father always keeps cigars on the tables during negotiations
+        to keep them flowing. He sealed a big deal with the Frenchman using this
+        trick.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4638,9 +4674,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Those financial records are about French harbours.
-        Father hadn't yet signed the deal with Lemarchand when I read the letter
-        so they didn't exist yet.</color>
+      value: <color=#ffffffff>These financial records are about French ships. They're
+        more recent, Father hadn't yet signed the deal with Lemarchand when I read
+        the letter.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4656,9 +4692,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Those financial records are about French harbours.
-        Father hadn't yet signed the deal with Lemarchand when I read the letter
-        so they didn't exist yet.</color>
+      value: <color=#ffffffff>These financial records are about French ships. They're
+        more recent, Father hadn't yet signed the deal with Lemarchand when I read
+        the letter.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4670,9 +4706,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Those financial records are about French harbours.
-        Father hadn't yet signed the deal with Lemarchand when I read the letter
-        so they didn't exist yet.</color>
+      value: <color=#ffffffff>These financial records are about French ships. They're
+        more recent, Father hadn't yet signed the deal with Lemarchand when I read
+        the letter.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -4688,9 +4724,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Those financial records are about French harbours.
-        Father hadn't yet signed the deal with Lemarchand when I read the letter
-        so they didn't exist yet.</color>
+      value: <color=#ffffffff>These financial records are about French ships. They're
+        more recent, Father hadn't yet signed the deal with Lemarchand when I read
+        the letter.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -5076,7 +5112,7 @@ MonoBehaviour:
   ObjectName: Reorder Memories
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
-  prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -5138,8 +5174,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Father liked to keep note of his business partners'
-        cigar preferences. For some reason, he always chose the other brand.</color>
+      value: <color=#ffffffff>Father keeps notes of his business partners' cigar
+        preferences. For some reason, he always chooses the other type.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -5151,8 +5187,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Father liked to keep note of his business partners'
-        cigar preferences. For some reason, he always chose the other brand.</color>
+      value: <color=#ffffffff>Father keeps notes of his business partners' cigar
+        preferences. For some reason, he always chooses the other type.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -5164,8 +5200,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Father liked to keep note of his business partners'
-        cigar preferences. For some reason, he always chose the other brand.</color>
+      value: <color=#ffffffff>Father keeps notes of his business partners' cigar
+        preferences. For some reason, he always chooses the other type.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -5177,8 +5213,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>Father liked to keep note of his business partners'
-        cigar preferences. For some reason, he always chose the other brand.</color>
+      value: <color=#ffffffff>Father keeps notes of his business partners' cigar
+        preferences. For some reason, he always chooses the other type.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -5768,95 +5804,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3849432147200610938, guid: 6d00b7e61b95f194bb659f942fc22fd4, type: 3}
   m_PrefabInstance: {fileID: 1729048512}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1737285956
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -41.278
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 19.95641
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 18.2484
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6830127
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.18301274
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.6830127
-      objectReference: {fileID: 0}
-    - target: {fileID: 1780917482715388280, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.18301274
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 30.208
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -13.99241
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -11.8484
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3212840581946447344, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6275382852799146018, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: field of view
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 8629540748965857753, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
-      propertyPath: m_Name
-      value: P_PlayerObject
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 04c81cbbcf81713479e824a4c1a9383d, type: 3}
 --- !u!114 &1771716208 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3737230451364617118, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
@@ -6104,7 +6051,7 @@ PrefabInstance:
     - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: prefabInteractionUI
       value: 
-      objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: <Guid>k__BackingField
       value: a5059dfb-9001-4fd5-ae9b-9de39dac1081
@@ -6310,9 +6257,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Arthur's essay was really good. I'd never written anything
-        as good let alone anything that made Father proud enough to hang it in his
-        office which made me quite mad.</color>
+      value: <color=yellow>Arthur's essay was so good that Father chose to keep it
+        in his office. I've never written anything to make him that proud.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 279256896435744567, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -6328,7 +6274,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=#ffffffff>I threw it in the bin out of anger.</color>
+      value: <color=#ffffffff>I could never do anything to satisfy Father. I threw
+        the essay in the bin out of anger.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3344555599455988294, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -6340,9 +6287,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Arthur's essay was really good. I'd never written anything
-        as good let alone anything that made Father proud enough to hang it in his
-        office which made me quite mad.</color>
+      value: <color=yellow>Arthur's essay was so good that Father chose to keep it
+        in his office. I've never written anything to make him that proud.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 3808707724023769250, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -6358,9 +6304,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_text
-      value: <color=yellow>Arthur's essay was really good. I'd never written anything
-        as good let alone anything that made Father proud enough to hang it in his
-        office which made me quite mad.</color>
+      value: <color=yellow>Arthur's essay was so good that Father chose to keep it
+        in his office. I've never written anything to make him that proud.</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4461744898393978638, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_fontSize
@@ -7065,6 +7010,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: 34aff788-c3e0-4463-a940-9b6c23c8d5c8
       objectReference: {fileID: 0}
+    - target: {fileID: 3492185324117573508, guid: 17b1292e83bf5b147bbced85f63abffe, type: 3}
+      propertyPath: interactionUIOffset.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3903597389785909972, guid: 17b1292e83bf5b147bbced85f63abffe, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -7541,6 +7490,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: e40a25aa-7be7-4df1-b8a1-b817b36ab1cc
       objectReference: {fileID: 0}
+    - target: {fileID: 4702077166203164718, guid: cb0dc0656573d0144b34c310bdfbe0b2, type: 3}
+      propertyPath: interactionUIOffset.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 7735244183336653993, guid: cb0dc0656573d0144b34c310bdfbe0b2, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
@@ -7596,4 +7549,3 @@ SceneRoots:
   - {fileID: 1104747879}
   - {fileID: 1267959823}
   - {fileID: 644187131}
-  - {fileID: 1737285956}
