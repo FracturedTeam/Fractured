@@ -5,53 +5,79 @@ using UnityEngine.Serialization;
 namespace _Project.Scripts.ScriptableObjects {
     [CreateAssetMenu(fileName = "AudioBank", menuName = "ScriptableObjects/AudioBank")]
     public class AudioBank : ScriptableObject {
-        [Header("One Shot Sounds")]
-        [Header("Player")]
-        public EventReference playerFootstepSound;
         
-        [Header("Glass Sounds")]
-        public EventReference grabGlassSound;
-        public EventReference grabGlassFailedSound;
-        public EventReference revealSound;
-        public EventReference hideSound;
-        public EventReference breakGlassSound;
+        [Header("Loops")] 
+        [Header("Act Ambient Loop")] 
+        public EventReference act_1_ambient_Loop;
+        public EventReference act_2_ambient_Loop;
+        public EventReference act_3_ambient_Loop;
+        public EventReference act_4_ambient_Loop;
+        public EventReference act_5_ambient_Loop;
         
-        [Header("Small Doors Sounds")]
-        public EventReference lockedSmallDoorSound;
-        public EventReference openSmallDoorSound;
+        [Header("Main Loop")] 
+        public EventReference mainMenu_Loop;
+        public EventReference credit_Loop;
+        public EventReference beach_Loop;
+
+        [Header("Memory")] 
+        public EventReference memorySeeing_Loop;
+        public EventReference Act1_Memory_1_Loop;
+        public EventReference Act1_Memory_2_Loop;
+        public EventReference Act2_Memory_1_Loop;
+        public EventReference Act2_Memory_2_Loop;
+        public EventReference Act2_Memory_3_Loop;
+        public EventReference Act3_Memory_1_Loop;
+        public EventReference Act3_Memory_2_Loop;
+        public EventReference Act3_Memory_3_Loop;
+        public EventReference Act4_Memory_1_Loop;
+        public EventReference Act4_Memory_2_Loop;
+        public EventReference Act4_Memory_3_Loop;
+        public EventReference Act4_Memory_4_Loop;
+        public EventReference Act5_Memory_1_Loop;
+        public EventReference Act5_Memory_2_Loop;
         
-        [Header("Big Doors Sounds")]
-        public EventReference lockedBigDoorSound;
-        public EventReference openBigDoorSound;
-        
-        [Header("Moveable Object Sounds")]
-        public EventReference pickUpObjectSound;
-        public EventReference pickUpKeySound;
-        public EventReference dropObjectSound;
-        
-        [Header("Memory Sounds")]
-        public EventReference reconstructMemorySound;
-        public EventReference enterMemorySound;
-        public EventReference leaveMemorySound;
-        
-        [Header("Pressure Plate Sounds")]
-        public EventReference pressurePlateActiveSound;
-        public EventReference pressurePlateInactiveSound;
-        
-        [Header("Looping Main Ambient Sounds")]
-        public EventReference ambient_CoffinRoom_Loop;
-        public EventReference ambient_TutorialRooms_Loop;
-        public EventReference ambient_Act1_Loop;
-        
-        [Header("Looping Gameplay Ambient Sounds")]
-        public EventReference ambient_Memory_Loop;
-        public EventReference ambient_GlassEditable_Loop;
-        
-        [Header("Looping Other Ambient Sounds")]
-        public EventReference ambient_MainMenu_Loop;
-        public EventReference ambient_Credits_Loop;
-        
-        [Header("UI")]
-        public EventReference uiBttClickedSound;
+        // [Header("Player")]
+        // public EventReference playerFootstepSound;
+        //
+        // [Header("Glass Sounds")]
+        // public EventReference grabGlassSound;
+        // public EventReference grabGlassFailedSound;
+        // public EventReference revealSound;
+        // public EventReference hideSound;
+        // public EventReference breakGlassSound;
+        //
+        // [Header("Small Doors Sounds")]
+        // public EventReference lockedSmallDoorSound;
+        // public EventReference openSmallDoorSound;
+        //
+        // [Header("Big Doors Sounds")]
+        // public EventReference lockedBigDoorSound;
+        // public EventReference openBigDoorSound;
+        //
+        // [Header("Moveable Object Sounds")]
+        // public EventReference pickUpObjectSound;
+        // public EventReference pickUpKeySound;
+        // public EventReference dropObjectSound;
+        //
+        // [Header("Memory Sounds")]
+        // public EventReference reconstructMemorySound;
+        // public EventReference enterMemorySound;
+        // public EventReference leaveMemorySound;
+        //
+        // [Header("Looping Main Ambient Sounds")]
+        // public EventReference ambient_CoffinRoom_Loop;
+        // public EventReference ambient_TutorialRooms_Loop;
+        // public EventReference ambient_Act1_Loop;
+        //
+        // [Header("Looping Gameplay Ambient Sounds")]
+        // public EventReference ambient_Memory_Loop;
+        // public EventReference ambient_GlassEditable_Loop;
+        //
+        // [Header("Looping Other Ambient Sounds")]
+        // public EventReference ambient_MainMenu_Loop;
+        // public EventReference ambient_Credits_Loop;
+        //
+        // [Header("UI")]
+        // public EventReference uiBttClickedSound;
     }
 }

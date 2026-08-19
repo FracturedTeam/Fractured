@@ -57,7 +57,6 @@ namespace _Project.Scripts.GameServices {
         IEnumerator SetSceneWithDelay() {
             yield return new WaitForNextFrameUnit();
          
-            GameInitializer.Instance.UpdateAmbientLoop(SceneManager.GetActiveScene().buildIndex);
             if (GameSceneSettings.HasInstance) {
                 
                 GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());

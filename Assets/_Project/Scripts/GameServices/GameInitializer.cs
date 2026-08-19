@@ -290,10 +290,6 @@ namespace _Project.Scripts.GameServices {
             audioService.PlayOneShot2D(audioClip);
         }
 
-        public void PlayRevealSound(Vector3 position) {
-            audioService.PlayRevealObjectSound(position);
-        }
-
         public void PlayHideSound(Vector3 position) {
             audioService.PlayHideObjectSound(position);
         }
