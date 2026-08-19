@@ -175,7 +175,9 @@ namespace _Project.Scripts.Player {
                 HasItemObject = false;
                 HasObject = false;
                 currentInteraction = null;
-                PutInInventory();
+                
+                dropType = DropType.Inventory;
+                HasDroppedObject = true;
             }
         }
 
@@ -300,11 +302,6 @@ namespace _Project.Scripts.Player {
             dropType = heavy ? DropType.Heavy : DropType.Light;
             HasDroppedObject = true;
         }
-
-        public void PutInInventory() {
-            dropType = DropType.Inventory;
-            HasDroppedObject = true;
-        }
         
         public void ResetDrop() {
             HasDroppedObject = false;
@@ -381,6 +378,7 @@ namespace _Project.Scripts.Player {
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Exit);
             _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(toLoad);
         }
     }

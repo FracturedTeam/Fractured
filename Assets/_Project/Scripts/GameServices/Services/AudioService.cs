@@ -30,7 +30,6 @@ namespace _Project.Scripts.GameServices.Services {
         
         private EventInstance memorySeeingInstance;
         
-        private readonly CountdownTimer revealObjectTimer = new (1f);
         private readonly CountdownTimer hideObjectTimer = new (1f);
 
         private SettingData settingData;
@@ -96,8 +95,18 @@ namespace _Project.Scripts.GameServices.Services {
 
         public void PlayHideObjectSound(Vector3 worldPosition) {
              if(hideObjectTimer.IsRunning) return;
-             RuntimeManager.PlayOneShot(bank.hideSound, worldPosition);
+             RuntimeManager.PlayOneShot(bank.shard_Hide, worldPosition);
              hideObjectTimer.Start();
+        }
+
+        public void PlayMovingShardLoop(bool moving) {
+            if (moving) {
+                memorySeeingInstance.getPlaybackState(out var playbackSate);
+                if (playbackSate.Equals(PLAYBACK_STATE.STOPPED)) memorySeeingInstance.start();
+            }
+            else {
+                memorySeeingInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            }
         }
         
         public void UpdateAmbientLoop(int index) {

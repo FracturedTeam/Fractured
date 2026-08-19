@@ -2,9 +2,13 @@ using System;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
+using FMOD;
+using FMOD.Studio;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 [RequireComponent(typeof(BaseObject))] 
 public class GlassText : MonoBehaviour
@@ -21,8 +25,9 @@ public class GlassText : MonoBehaviour
     [SerializeField] private GlassTextLink bothText;
     [SerializeField] private MeshRenderer meshRenderer;
 
+    private EventInstance soundInstance; 
+    
     private ObservableHashSet<Glass> shardsOnTop;
-    private BaseObject baseObject;
     private bool isInitialized;
 
     private bool canAppearAgain = true;
@@ -35,17 +40,13 @@ public class GlassText : MonoBehaviour
         bothText.Initialize();
         if(meshRenderer) meshRenderer?.material.DOFade(0, 0);
         
-        if (!isInitialized)
-        {
-            if (TryGetComponent(out BaseObject component)) baseObject = component;
-            else
-                throw new ArgumentNullException(
-                    $"[GlassText] BaseObject on {gameObject.name} could not be found !");
-
+        if (!isInitialized) {
             shardsOnTop = new ObservableHashSet<Glass>();
             shardsOnTop.onUpdate += UpdateShards;
 
             isInitialized = true;
+            
+            soundInstance = GameInitializer.Instance.CreateInstance(GameInitializer.Instance.GetBank().environmentalText_Loop);
         }
 
         ForceSet();
@@ -69,8 +70,7 @@ public class GlassText : MonoBehaviour
     }
 
     private void UpdateShards()
-    {
-    }
+    { }
 
     private void OnDestroy() {
         if (shardsOnTop == null) 
@@ -83,6 +83,13 @@ public class GlassText : MonoBehaviour
     [ContextMenu("Manually Appear")]
     public void Appear() {
         if(!canAppearAgain) return;
+
+        soundInstance.getPlaybackState(out var playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+            soundInstance.start();
+            var pos = transform.position;
+            soundInstance.set3DAttributes(new ATTRIBUTES_3D{position = new VECTOR(pos.x, pos.y, pos.z)});
+        }
         
         SetAlpha( 1, 1);
         if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
@@ -90,6 +97,7 @@ public class GlassText : MonoBehaviour
     
     [ContextMenu("Manually Disappear")]
     public void Disappear() {
+        soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         SetAlpha( 0, 1);
         if(meshRenderer) meshRenderer?.material.DOFade(0.5f, 1);
 

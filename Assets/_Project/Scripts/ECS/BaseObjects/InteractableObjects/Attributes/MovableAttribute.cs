@@ -161,7 +161,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             TweenObjectOnPlayer();
 
             //Call audio
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Taking_Object, transform.position);
         }
 
         public void OnDrop(IInteractable other) {
@@ -182,7 +182,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
                 
             }
             
@@ -203,7 +203,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 IsColliding();
                 baseObject.SetInteract(true);
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
             }
             
             isGrabbed = false;

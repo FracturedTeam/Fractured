@@ -93,6 +93,7 @@ namespace _Project.Scripts.UI {
             currentDialogue = newDialogue;
             
             subtitleText.Setup(currentDialogue);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Sight_Sounds, PlayerController.Instance.transform.position);
             
             if (currentDialogue.time <= 0)
                 return;

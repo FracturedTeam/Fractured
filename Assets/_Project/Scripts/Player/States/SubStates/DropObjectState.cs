@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
@@ -36,6 +37,7 @@ namespace _Project.Scripts.Player.States.SubStates {
                 case PlayerInteract.DropType.Inventory:
                     animationExitTimer = new(putInInventoryLength);
                     hash = PutObjectInInventoryHash;
+                    GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_PuttingAway_Object, player.transform.position);
                     break;
             }
             

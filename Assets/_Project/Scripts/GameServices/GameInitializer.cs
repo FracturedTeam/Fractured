@@ -293,6 +293,10 @@ namespace _Project.Scripts.GameServices {
         public void PlayHideSound(Vector3 position) {
             audioService.PlayHideObjectSound(position);
         }
+
+        public void PlayShardMoving(bool doPlay) {
+            audioService.PlayMovingShardLoop(doPlay);
+        }
         
         public void UpdateAmbientLoop(int sceneIndex) {
             audioService.UpdateAmbientLoop(sceneIndex);

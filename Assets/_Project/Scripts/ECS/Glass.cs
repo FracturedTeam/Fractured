@@ -103,6 +103,8 @@ namespace _Project.Scripts.ECS
             var scale = shardSprite.canvas.scaleFactor;
             halfWidth = shardSprite.rectTransform.sizeDelta.x * scale * 0.5f;
             halfHeight = shardSprite.rectTransform.sizeDelta.y * scale * 0.5f;
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().shard_Obtained);
         }
         
         private void Initialize() {
@@ -227,8 +229,12 @@ namespace _Project.Scripts.ECS
                     PlayerController.Instance.FreezeController(false);
                 }
             }
+
+            GameInitializer.Instance.PlaySound2D(isOn
+                ? GameInitializer.Instance.GetBank().shard_Picked
+                : GameInitializer.Instance.GetBank().shard_LetGo);
             
-            if (isOn) GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassSound);
+            GameInitializer.Instance.PlayShardMoving(isOn);
         }
         
         

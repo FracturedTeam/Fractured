@@ -135,6 +135,12 @@ namespace FMOD
         public float x;
         public float y;
         public float z;
+
+        public VECTOR(float posX, float posY, float posZ) {
+            x = posX;
+            y = posY;
+            z = posZ;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]

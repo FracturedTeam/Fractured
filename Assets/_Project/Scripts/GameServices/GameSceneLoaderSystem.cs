@@ -308,6 +308,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         private void LeaveTransitionFade() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Enter);
             InputsBrain.Instance.DisablePlayerInput(false);
             PlayerController.Instance.triggerEnterRoom = true;
             EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {

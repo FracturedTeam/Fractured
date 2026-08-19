@@ -96,6 +96,8 @@ namespace _Project.Scripts.UI {
         private void Back() {
             if(currentMenuType is UI.CurrentMenu.MainMenu) return;
             
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
+            
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
@@ -326,14 +328,17 @@ namespace _Project.Scripts.UI {
         }
         
         public void NewGame() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.NewGame();
         }
 
         public void LoadGame() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadGame();
         }
 
         public void LoadLevel(int levelIndex) {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
         }
     }
