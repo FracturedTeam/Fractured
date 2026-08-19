@@ -6,6 +6,7 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
+using _Project.Scripts.Player;
 using _Project.Scripts.Player.Camera;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
@@ -60,6 +61,13 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Color chapter3ShardAColor;
         [SerializeField] private Color chapter3ShardBColor;
         
+        [Header("Floor Material for sound")]
+        [SerializeField] private Material woodFloor;
+        [SerializeField] private Material tileFloor1;
+        [SerializeField] private Material tileFloor2;
+        [SerializeField] private Material tileFloor3;
+        [SerializeField] private Material carpetFloor;
+        
         public int CurrentChapter {get; private set;}
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -68,6 +76,8 @@ namespace _Project.Scripts.GameServices {
         private ShardDebugService shardDebugService;
         private CameraDebugService cameraDebugService;
         #endif
+        
+        private Vector3 lastStepPosition;
         
         protected override void Awake() {
             base.Awake();
@@ -285,6 +295,42 @@ namespace _Project.Scripts.GameServices {
         public void PlaySound3D(EventReference audioClip, Vector3 position) {
             audioService.PlayOneShot3D(audioClip, position);
         }
+
+        public void PlayPlayerFootstep(Vector3 position) {
+            lastStepPosition = position;
+            Physics.Raycast(position + new Vector3(0,0.2f,0), -Vector3.up, out var hit, 3f);
+            
+            if (!hit.collider) {
+                audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
+                Debug.Log("Hit Nothing");
+                return;
+            }
+
+            if (hit.collider.TryGetComponent(out MeshRenderer render)) {
+                var matName = render.materials[0].name;
+                
+                if (matName.Contains(woodFloor.name)) {
+                    audioService.PlayOneShot3D(GetBank().avatar_Walking_Wood, position);
+                    Debug.Log(hit.collider.gameObject.name + " Wood Sound");
+                }
+                else if (matName.Contains(tileFloor1.name) || matName.Contains(tileFloor2.name) || matName.Contains(tileFloor3.name)) {
+                    audioService.PlayOneShot3D(GetBank().avatar_Walking_Tile, position);
+                    Debug.Log(hit.collider.gameObject.name + " Tile Raycast");
+                }
+                else if (matName.Contains(carpetFloor.name)) {
+                    audioService.PlayOneShot3D(GetBank().avatar_Walking_Carpet, position);
+                    Debug.Log(hit.collider.gameObject.name + " Carpet Raycast");
+                }
+                else {
+                    audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
+                    Debug.Log(hit.collider.gameObject.name + " Default Sound");    
+                }
+            }
+            else {
+                audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
+                Debug.Log(hit.collider.gameObject.name + " Sound Raycast");
+            }
+        }
         
         public void PlaySound2D(EventReference audioClip) {
             audioService.PlayOneShot2D(audioClip);
@@ -393,6 +439,11 @@ namespace _Project.Scripts.GameServices {
             }
             
             SaveSettings();
+        }
+
+        private void OnDrawGizmos() {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(lastStepPosition + new Vector3(0,0.2f,0), lastStepPosition + new Vector3(0,0.2f,0) + -Vector3.up * 3f);
         }
     }
 }
