@@ -72,7 +72,8 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
         }
 
-        private void OnDisable() {
+        private void OnDisable() { 
+            if (!InputsBrain.HasInstance) return;
             InputsBrain.Instance.OnBackBtt -= Back;
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;

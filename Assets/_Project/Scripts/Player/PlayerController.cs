@@ -55,7 +55,8 @@ namespace _Project.Scripts.Player {
         private Action enterRoom;
         [HideInInspector] public bool triggerEnterRoom = false;
 
-        private void Start() {
+        protected override void Awake() {
+            base.Awake();
             stateMachine = new StateMachine();
             // quick fix for that art part, need rework for the steam version
             cinemachineBrain.gameObject.SetActive(false);

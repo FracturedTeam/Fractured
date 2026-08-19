@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEditor;
@@ -14,6 +15,7 @@ namespace _Project.Scripts.GameServices {
         [Header("Scene Settings")]
         [SerializeField] private CinemachineCamera roomCamera;
         [SerializeField] public int ActColor = 1;
+        [SerializeField] public TransitionTextSO transitionTextSO;
         
         [Header("Puzzle Objects")]
         [SerializeField] public List<BaseObject> baseObjects;
