@@ -31,7 +31,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
-        [SerializeField] private float interactionUIOffset;
+        [SerializeField] private Vector3 interactionUIOffset;
         [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
         private ObjectInteractionUI interactionUI;
@@ -211,6 +211,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             interactionUI?.gameObject.SetActive(CanBeInteractedWith());
         }
 
+        [ContextMenu("Update UI Position")]
+        public void UpdateUIPosition() {
+            if(interactionUI) interactionUI.ManualPositionUpdate(interactionUIOffset);
+        }
+        
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
             
