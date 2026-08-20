@@ -77,6 +77,10 @@ namespace _Project.Scripts.UI {
         public void ShowInteractionInspect(bool doShow) {
             UpdateInteraction(doShow, "Leave inspect", 40f);
         }
+        
+        public void ShowInteractionPadlock(bool doShow) {
+            UpdateInteraction(doShow, "Leave lock", 40f);
+        }
 
         private void UpdateInteraction(bool doShow, string text, float yPos) {
             if(!doShow && isShown) return;
