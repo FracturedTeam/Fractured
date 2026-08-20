@@ -25,7 +25,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private Ease easeType;
 
         private Sprite closeSprite;
-        private float offset;
+        private Vector3 offset;
         private MeshRenderer parentMesh;
         
         private Vector3 distanceScale;
@@ -71,12 +71,17 @@ namespace _Project.Scripts.UI.Gameplay {
             var extents = bounds.extents;
             var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
             
-            transform.position = parentMesh.bounds.center + dirToCam * (projectedSize + 0.1f + offset);
+            transform.position = parentMesh.bounds.center + dirToCam + offset * (projectedSize + 0.1f);
         }
         
-        public void RegisterComponents(MeshRenderer meshRenderer, float offset) {
+        public void RegisterComponents(MeshRenderer meshRenderer, Vector3 offset) {
             parentMesh = meshRenderer;
             this.offset = offset;
+        }
+
+        public void ManualPositionUpdate(Vector3 offset) {
+            this.offset = offset;
+            StartCoroutine(UpdatePosition());
         }
         
         private void LateUpdate() {

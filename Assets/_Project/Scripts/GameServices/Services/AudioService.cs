@@ -14,16 +14,25 @@ namespace _Project.Scripts.GameServices.Services {
         private Bus sfxBus;
         private Bus musicBus;
         
-        private EventInstance memorySoundInstance;
-        private EventInstance ambientZone1Instance;
-        private EventInstance ambientTutorialInstance;
-        private EventInstance ambientCoffinInstance;
+        // Act Ambient
+        private EventInstance Act1Ambient;
+        private EventInstance Act2Ambient;
+        private EventInstance Act3Ambient;
+        private EventInstance Act4Ambient;
+        private EventInstance Act5Ambient;
+        
+        // Main Menu Ambient
         private EventInstance menuInstance;
-        private EventInstance editableInstance;
+        // Beach Ambient
+        private EventInstance beachInstance;
+        // Credit Ambient
         private EventInstance creditsInstance;
         
-        private readonly CountdownTimer revealObjectTimer = new CountdownTimer(1f);
-        private readonly CountdownTimer hideObjectTimer = new CountdownTimer(1f);
+        private EventInstance memorySeeingInstance;
+        
+        private EventInstance movingShardInstance;
+        
+        private readonly CountdownTimer hideObjectTimer = new (1f);
 
         private SettingData settingData;
 
@@ -37,17 +46,21 @@ namespace _Project.Scripts.GameServices.Services {
             sfxBus = RuntimeManager.GetBus("bus:/SFX");
             
             //Main ambient loop
-            ambientCoffinInstance = CreateInstance(bank.ambient_CoffinRoom_Loop);
-            ambientTutorialInstance = CreateInstance(bank.ambient_TutorialRooms_Loop);
-            ambientZone1Instance = CreateInstance(bank.ambient_Act1_Loop);
-            
-            //Gameplay dependent ambient loop
-            memorySoundInstance = CreateInstance(bank.ambient_Memory_Loop);
-            editableInstance = CreateInstance(bank.ambient_GlassEditable_Loop);
+            Act1Ambient = CreateInstance(bank.act_1_ambient_Loop);
+            Act2Ambient = CreateInstance(bank.act_2_ambient_Loop);
+            Act3Ambient = CreateInstance(bank.act_3_ambient_Loop);
+            Act4Ambient = CreateInstance(bank.act_4_ambient_Loop);
+            Act5Ambient = CreateInstance(bank.act_5_ambient_Loop);
             
             //Others ambient loop
-            menuInstance = CreateInstance(bank.ambient_MainMenu_Loop);
-            creditsInstance = CreateInstance(bank.ambient_Credits_Loop);
+            menuInstance = CreateInstance(bank.mainMenu_Loop);
+            beachInstance = CreateInstance(bank.beach_Loop);
+            creditsInstance = CreateInstance(bank.credit_Loop);
+            
+            //Memory
+            memorySeeingInstance = CreateInstance(bank.memorySeeing_Loop);
+            
+            movingShardInstance = CreateInstance(bank.movingShard_Loop);
             
             settingData = GameInitializer.Instance.GetSettings;
         }
@@ -74,6 +87,25 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void Dispose() {
+            Act1Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act2Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act3Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act4Ambient.stop(STOP_MODE.IMMEDIATE);
+            Act5Ambient.stop(STOP_MODE.IMMEDIATE);
+            menuInstance.stop(STOP_MODE.IMMEDIATE);
+            beachInstance.stop(STOP_MODE.IMMEDIATE);
+            creditsInstance.stop(STOP_MODE.IMMEDIATE);
+            memorySeeingInstance.stop(STOP_MODE.IMMEDIATE);
+            
+            Act1Ambient.release();
+            Act2Ambient.release();
+            Act3Ambient.release();
+            Act4Ambient.release();
+            Act5Ambient.release();
+            menuInstance.release();
+            beachInstance.release();
+            creditsInstance.release();
+            memorySeeingInstance.release();
         }
         
         public void PlayOneShot3D(EventReference sound, Vector3 worldPosition) {
@@ -84,50 +116,49 @@ namespace _Project.Scripts.GameServices.Services {
             RuntimeManager.PlayOneShot(sound);
         }
 
-        public void PlayRevealObjectSound(Vector3 worldPosition) {
-             if(revealObjectTimer.IsRunning) return;
-             RuntimeManager.PlayOneShot(bank.revealSound, worldPosition);
-             revealObjectTimer.Start();
-        }
-
         public void PlayHideObjectSound(Vector3 worldPosition) {
              if(hideObjectTimer.IsRunning) return;
-             RuntimeManager.PlayOneShot(bank.hideSound, worldPosition);
+             RuntimeManager.PlayOneShot(bank.shard_Hide, worldPosition);
              hideObjectTimer.Start();
         }
-        
-        public void PlayEditableSoundLoop(bool doPlay) {
-            if (doPlay) {
-                editableInstance.getPlaybackState(out var playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
-                    editableInstance.start();
-                }
+
+        public void PlayMovingShardLoop(bool moving) {
+            if (moving) {
+                movingShardInstance.getPlaybackState(out var playbackSate);
+                if (playbackSate.Equals(PLAYBACK_STATE.STOPPED)) movingShardInstance.start();
             }
             else {
-                editableInstance.getPlaybackState(out var playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.PLAYING)) {
-                    editableInstance.stop(STOP_MODE.ALLOWFADEOUT);
-                }
+                movingShardInstance.stop(STOP_MODE.ALLOWFADEOUT);
             }
         }
         
         public void UpdateAmbientLoop(int index) {
             PLAYBACK_STATE playbackState;
             
-            if (index == 2) {
-                ambientCoffinInstance.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) ambientCoffinInstance.start();
-                FadeLoop(ref ambientCoffinInstance);
+            if (index is 2 or 3) {
+                Act1Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act1Ambient.start();
+                FadeLoop(ref Act1Ambient);
             }
-            else if (index is > 2 and < 8) {
-                ambientTutorialInstance.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) ambientTutorialInstance.start();
-                FadeLoop(ref ambientTutorialInstance);
+            else if (index is 4) {
+                Act2Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act2Ambient.start();
+                FadeLoop(ref Act2Ambient);
             }
-            else if (index is > 7 and < 12) {
-                ambientZone1Instance.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) ambientZone1Instance.start();
-                FadeLoop(ref ambientZone1Instance);
+            else if (index is 5) {
+                Act3Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act3Ambient.start();
+                FadeLoop(ref Act3Ambient);
+            }
+            else if (index is 6) {
+                Act4Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act4Ambient.start();
+                FadeLoop(ref Act4Ambient);
+            }
+            else if (index is 7) {
+                Act5Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act5Ambient.start();
+                FadeLoop(ref Act5Ambient);
             }
             else if (index is 12) {
                 creditsInstance.getPlaybackState(out playbackState);
@@ -143,13 +174,13 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void UpdateMemory(bool inMemory) {
             if (inMemory) {
-                memorySoundInstance.getPlaybackState(out var playbackState);
+                memorySeeingInstance.getPlaybackState(out var playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
-                    memorySoundInstance.start();
+                    memorySeeingInstance.start();
                 }
             }
             else
-                memorySoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+                memorySeeingInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
         
         public EventInstance CreateInstance(EventReference reference) {
@@ -162,11 +193,15 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void FadeLoop(ref EventInstance e) {
-            if(e.handle != ambientCoffinInstance.handle) ambientCoffinInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            if(e.handle != ambientTutorialInstance.handle) ambientTutorialInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            if(e.handle != ambientZone1Instance.handle) ambientZone1Instance.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != Act1Ambient.handle) Act1Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != Act2Ambient.handle) Act2Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != Act3Ambient.handle) Act3Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != Act4Ambient.handle) Act4Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != Act5Ambient.handle) Act5Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+            
             if(e.handle != menuInstance.handle) menuInstance.stop(STOP_MODE.ALLOWFADEOUT);
             if(e.handle != creditsInstance.handle) creditsInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            if(e.handle != beachInstance.handle) beachInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 }

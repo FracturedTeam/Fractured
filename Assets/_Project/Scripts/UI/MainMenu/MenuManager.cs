@@ -72,7 +72,8 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
         }
 
-        private void OnDisable() {
+        private void OnDisable() { 
+            if (!InputsBrain.HasInstance) return;
             InputsBrain.Instance.OnBackBtt -= Back;
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;
@@ -94,6 +95,8 @@ namespace _Project.Scripts.UI {
         
         private void Back() {
             if(currentMenuType is UI.CurrentMenu.MainMenu) return;
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
             UnHoverButton(GetCurrentList()[currentIndex]);
             
@@ -325,14 +328,17 @@ namespace _Project.Scripts.UI {
         }
         
         public void NewGame() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.NewGame();
         }
 
         public void LoadGame() {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadGame();
         }
 
         public void LoadLevel(int levelIndex) {
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
         }
     }

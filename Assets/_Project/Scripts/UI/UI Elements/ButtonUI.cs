@@ -97,7 +97,7 @@ namespace _Project.Scripts.UI {
                 pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
             }
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Clicked);
             
             StartCoroutine(CallClickPostTimer());
         }

@@ -12,185 +12,276 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f933ada97d34e0a8b91f6d127771f0e, type: 3}
   m_Name: AudioBank
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ScriptableObjects.AudioBank
-  playerFootstepSound:
-    Guid:
-      Data1: 918943603
-      Data2: 1317536730
-      Data3: 1668663222
-      Data4: 926601801
-    Path: event:/Avatar/WalkAvatar
-  grabGlassSound:
-    Guid:
-      Data1: -248614675
-      Data2: 1293750530
-      Data3: 1327389838
-      Data4: 685856562
-    Path: event:/GlassShards/PickGlassShard
-  grabGlassFailedSound:
-    Guid:
-      Data1: -708073355
-      Data2: 1112805501
-      Data3: -1712522835
-      Data4: -1504437574
-    Path: event:/GlassShards/UnmovableShard
-  revealSound:
-    Guid:
-      Data1: -2097273480
-      Data2: 1109822826
-      Data3: 248002945
-      Data4: -1272179928
-    Path: event:/GlassShards/RevealObject
-  hideSound:
-    Guid:
-      Data1: -534043014
-      Data2: 1095333688
-      Data3: -190780762
-      Data4: 1331265228
-    Path: event:/GlassShards/HideObject
-  breakGlassSound:
-    Guid:
-      Data1: 1398537186
-      Data2: 1251314147
-      Data3: -64145739
-      Data4: -1956768531
-    Path: event:/Interactables/GlassObject/BreakGlassObject
-  lockedSmallDoorSound:
-    Guid:
-      Data1: -776423039
-      Data2: 1100042407
-      Data3: -290305651
-      Data4: -56245413
-    Path: event:/Interactables/Doors/LockedDoor
-  openSmallDoorSound:
-    Guid:
-      Data1: 1481821410
-      Data2: 1178744314
-      Data3: 211504061
-      Data4: 763192994
-    Path: event:/Interactables/Doors/UnlockDoor
-  lockedBigDoorSound:
-    Guid:
-      Data1: -776423039
-      Data2: 1100042407
-      Data3: -290305651
-      Data4: -56245413
-    Path: event:/Interactables/Doors/LockedDoor
-  openBigDoorSound:
-    Guid:
-      Data1: -2013302614
-      Data2: 1327765046
-      Data3: 1773503126
-      Data4: 1851239746
-    Path: event:/Interactables/Doors/Big Doors/OpenBigDoor
-  pickUpObjectSound:
+  avatar_Taking_Object:
     Guid:
       Data1: -196268784
       Data2: 1297727202
       Data3: 307150011
       Data4: -1649097609
-    Path: event:/Avatar/PickUpObjectAvatar
-  pickUpKeySound:
+    Path: event:/Avatar/AvatarObjectPickUp
+  avatar_Taking_Key:
     Guid:
-      Data1: -201944710
-      Data2: 1275697712
-      Data3: 854004663
-      Data4: -919705225
-    Path: event:/Avatar/PickUpKeyAvatar
-  dropObjectSound:
+      Data1: 1096949412
+      Data2: 1158132600
+      Data3: 2069156247
+      Data4: -60397916
+    Path: event:/Avatar/AvatarKeyPickUp
+  avatar_PuttingAway_Object:
+    Guid:
+      Data1: 392077432
+      Data2: 1273961877
+      Data3: -1433618271
+      Data4: -189768044
+    Path: event:/Avatar/AvatarObjectPutAway
+  avatar_Equipping_Object:
+    Guid:
+      Data1: -1569785807
+      Data2: 1185341407
+      Data3: 1788395932
+      Data4: -1380362063
+    Path: event:/Avatar/AvatarObjectEquip
+  avatar_Drops_Object:
     Guid:
       Data1: -1287577103
       Data2: 1274602006
       Data3: 809866648
       Data4: -1618555630
-    Path: event:/Avatar/DropObjectAvatar
-  reconstructMemorySound:
+    Path: event:/Avatar/AvatarObjectDrop
+  avatar_Sight_Sounds:
     Guid:
-      Data1: 1404006921
-      Data2: 1077536647
-      Data3: -135973474
-      Data4: -1509290500
-    Path: event:/Interactables/Memories/MemoryConnected
-  enterMemorySound:
+      Data1: 851445628
+      Data2: 1256581632
+      Data3: -944437869
+      Data4: -590714047
+    Path: event:/Avatar/Sigh
+  avatar_Inventory_Sound:
+    Guid:
+      Data1: 1548956894
+      Data2: 1327717435
+      Data3: -1963949434
+      Data4: 1137697601
+    Path: event:/Avatar/InventorySlide
+  avatar_Walking_Neutral:
+    Guid:
+      Data1: 918943603
+      Data2: 1317536730
+      Data3: 1668663222
+      Data4: 926601801
+    Path: event:/Avatar/Walk/AvatarWalkNeutral
+  avatar_Walking_Wood:
+    Guid:
+      Data1: 889566898
+      Data2: 1204850328
+      Data3: 372321424
+      Data4: 1958237437
+    Path: event:/Avatar/Walk/AvatarWalkWood
+  avatar_Walking_Tile:
+    Guid:
+      Data1: -470661417
+      Data2: 1094384229
+      Data3: 1291681920
+      Data4: 305264850
+    Path: event:/Avatar/Walk/AvatarWalkTile
+  avatar_Walking_Carpet:
+    Guid:
+      Data1: 1535297963
+      Data2: 1255366329
+      Data3: -1015175233
+      Data4: 1557638572
+    Path: event:/Avatar/Walk/AvatarWalkCarpet
+  avatar_Walking_Sand:
+    Guid:
+      Data1: 1292760208
+      Data2: 1196516958
+      Data3: -1824713316
+      Data4: 1483507881
+    Path: event:/Avatar/Walk/AvatarWalkSand
+  shard_Picked:
+    Guid:
+      Data1: -248614675
+      Data2: 1293750530
+      Data3: 1327389838
+      Data4: 685856562
+    Path: event:/GlassShards/GlassShard_PickGlassShard
+  shard_LetGo:
+    Guid:
+      Data1: -708073355
+      Data2: 1112805501
+      Data3: -1712522835
+      Data4: -1504437574
+    Path: event:/GlassShards/GlassShard_DropShard
+  shard_Hide:
+    Guid:
+      Data1: -534043014
+      Data2: 1095333688
+      Data3: -190780762
+      Data4: 1331265228
+    Path: event:/GlassShards/GlassShard_HideObject
+  shard_Obtained:
+    Guid:
+      Data1: 1292086747
+      Data2: 1155849166
+      Data3: -1021532534
+      Data4: -1391494869
+    Path: event:/GlassShards/GlassShard_NewObtained
+  door_Opened:
+    Guid:
+      Data1: 974067939
+      Data2: 1293462261
+      Data3: -1118220111
+      Data4: -1579116767
+    Path: event:/Interactables/Doors/Door_Open
+  lock_Tick:
+    Guid:
+      Data1: -253426377
+      Data2: 1179451628
+      Data3: 1856352958
+      Data4: 1654036380
+    Path: event:/Interactables/Locks/Lock_Tick
+  lock_Unlocked:
+    Guid:
+      Data1: -863694793
+      Data2: 1143489440
+      Data3: -453779055
+      Data4: 2077334406
+    Path: event:/Interactables/Locks/Lock_Unlock
+  environmentText_Appear:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  ld_Solved:
+    Guid:
+      Data1: 71563826
+      Data2: 1261787801
+      Data3: -2013381965
+      Data4: -1516547613
+    Path: event:/Interactables/LD_Solved
+  memory_Interact:
     Guid:
       Data1: 1130414617
       Data2: 1089128145
       Data3: -438888770
       Data4: -1665942961
     Path: event:/Interactables/Memories/MemoryEnter
-  leaveMemorySound:
+  memory_Leave:
     Guid:
       Data1: -869429855
       Data2: 1223166782
       Data3: 2112804230
       Data4: -1842925339
     Path: event:/Interactables/Memories/MemoryLeave
-  pressurePlateActiveSound:
+  room_Enter:
     Guid:
-      Data1: 250698333
-      Data2: 1332084648
-      Data3: -2054123901
-      Data4: -1182931219
-    Path: event:/Interactables/Pedestals/ActivatePedestal
-  pressurePlateInactiveSound:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  room_Exit:
     Guid:
-      Data1: -787061672
-      Data2: 1310721748
-      Data3: -883429441
-      Data4: 1883033449
-    Path: event:/Interactables/Pedestals/DeactivatePedestal
-  ambient_CoffinRoom_Loop:
-    Guid:
-      Data1: -179434076
-      Data2: 1126210623
-      Data3: 167421361
-      Data4: 2060830116
-    Path: event:/Ambiance/AmbianceCrows&WindRight
-  ambient_TutorialRooms_Loop:
-    Guid:
-      Data1: -1741668068
-      Data2: 1302516669
-      Data3: -110573141
-      Data4: -430117866
-    Path: event:/Ambiance/AmbianceTutorialPeople
-  ambient_Act1_Loop:
-    Guid:
-      Data1: 2085282745
-      Data2: 1321148667
-      Data3: -1512197191
-      Data4: -514609374
-    Path: event:/Ambiance/AmbianceZone1
-  ambient_Memory_Loop:
-    Guid:
-      Data1: -585657607
-      Data2: 1292218366
-      Data3: 441671832
-      Data4: -484434492
-    Path: event:/Ambiance/MemorySeeing
-  ambient_GlassEditable_Loop:
-    Guid:
-      Data1: -1645112945
-      Data2: 1288471288
-      Data3: -973021286
-      Data4: 1686767403
-    Path: event:/GlassShards/EditableLoop
-  ambient_MainMenu_Loop:
-    Guid:
-      Data1: -938664448
-      Data2: 1244451118
-      Data3: 1589274037
-      Data4: -1098736284
-    Path: event:/Ambiance/MainMenu
-  ambient_Credits_Loop:
-    Guid:
-      Data1: -1409963897
-      Data2: 1080404392
-      Data3: -2067258466
-      Data4: 1610149415
-    Path: event:/Ambiance/Credits
-  uiBttClickedSound:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  ui_Clicked:
     Guid:
       Data1: 1338886063
       Data2: 1318756705
       Data3: 796872356
       Data4: -117186817
     Path: event:/UI/PressButtonUI
+  ui_Back:
+    Guid:
+      Data1: -511004162
+      Data2: 1267603344
+      Data3: -732731219
+      Data4: -2138986384
+    Path: event:/UI/Button_Back_UI
+  ui_Play:
+    Guid:
+      Data1: -2138461924
+      Data2: 1300143051
+      Data3: -1807142485
+      Data4: 1934589386
+    Path: event:/UI/Button_Play_UI
+  act_1_ambient_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  act_2_ambient_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  act_3_ambient_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  act_4_ambient_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  act_5_ambient_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  mainMenu_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  credit_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  beach_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  movingShard_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  environmentalText_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  memorySeeing_Loop:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 

@@ -134,8 +134,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void DoValidation() {
-            Debug.Log("DoValidation");
-            
             bool allValid = true;
             foreach (var frame in frames) {
                 if(!frame.ValidPosition()) allValid = false;
@@ -153,6 +151,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             UseMemoryFrame();
             HudManager.Instance.memory.SetActiveMemoryButton(false);
             
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ld_Solved);
             GameInitializer.Instance.EmptyShards();
             GameInitializer.Instance.ResetGlassInteractable();
             

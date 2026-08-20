@@ -25,6 +25,7 @@ namespace _Project.Scripts.Inputs {
         public event Action<InputAction.CallbackContext> OnNavigation = delegate { };
         public event Action<InputAction.CallbackContext> OnSettingsView = delegate { };
         public event Action OnPause = delegate { };
+        public event Action OnContinue = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
@@ -57,7 +58,8 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Back.performed += OnBack;
             inputs.UI.Navigation.performed += Navigation;
             inputs.UI.SettingsView.performed += SettingsView;
-                
+            inputs.UI.Continue.performed += Continue;
+            
             inputs.Pause.Pause.performed += Pause;
             
             InputSystem.onActionChange += InputActionChangeCallback;
@@ -89,6 +91,7 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Back.performed -= OnBack;
             inputs.UI.Navigation.performed -= Navigation;
             inputs.UI.SettingsView.performed -= SettingsView;
+            inputs.UI.Continue.performed -= Continue;
             
             inputs.Pause.Pause.performed -= Pause;
             
@@ -97,6 +100,16 @@ namespace _Project.Scripts.Inputs {
             inputs.Disable();
         }
 
+        public void DisablePlayerInput(bool doDisable) {
+            if(doDisable) inputs.Player.Disable();
+            else inputs.Player.Enable();
+        }
+
+        public void DisableUIInput(bool doDisable) {
+            if(doDisable) inputs.UI.Disable();
+            else inputs.UI.Enable();
+        }
+        
         private void InputActionChangeCallback(object obj, InputActionChange change) {
             if (obj != null && obj is InputAction action) {
                 if (action.activeControl == null) return;
@@ -141,6 +154,10 @@ namespace _Project.Scripts.Inputs {
 
         private void Pause(InputAction.CallbackContext context) {
             OnPause.Invoke();
+        }
+
+        private void Continue(InputAction.CallbackContext context) {
+            OnContinue.Invoke();
         }
     }
 }
