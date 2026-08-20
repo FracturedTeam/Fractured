@@ -128,7 +128,7 @@ namespace _Project.Scripts.UI {
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
-            CurrentMenu.PreviousMenu.gameObject.SetActive(true);
+            CurrentMenu.PreviousMenu.Open();
             
             var previous = CurrentMenu.PreviousMenu;
             CurrentMenu = previous;

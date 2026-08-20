@@ -58,11 +58,14 @@ namespace _Project.Scripts.UI {
         }
 
         private void OnEnable() {
-            alternateColor = FindFirstObjectByType<MenuManager>().ChapterIndex switch {
-                1 => act1Color,
-                2 => act2Color,
-                3 => act3Color,
-            };
+            if (GameInitializer.HasInstance) {
+                var ChapterIndex = GameInitializer.Instance.GetLastChapter();
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                };
+            }
             
             Enable();
         }
