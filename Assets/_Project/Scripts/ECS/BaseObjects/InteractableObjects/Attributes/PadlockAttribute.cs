@@ -3,6 +3,7 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
+using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using UnityEngine;
@@ -11,24 +12,35 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     public class PadlockAttribute : LockedAttribute {
         [Header("Padlock Attribute")]
         [SerializeField] private int requiredCode;
-        internal int currentCode = 9876;
         [SerializeField] private bool doInteractImmediately;
-        [SerializeField] internal Vector2 offset;
 
         private readonly CountdownTimer timerUp = new(0.1f);
         private readonly CountdownTimer timerRight = new(0.1f);
         
         private bool isUsingLock;
-
         private int selectedDigit = 0;
+
+        private int firstDigit;
+        private int secondDigit;
+        private int thirdDigit;
+        private int fourthDigit;
 
         public override void Initialize() {
             base.Initialize();
 
-            currentCode = Random.Range(0, 10000);
+            firstDigit = Random.Range(0,10);
+            secondDigit = Random.Range(0,10);
+            thirdDigit = Random.Range(0,10);
+            fourthDigit = Random.Range(0,10);
+            
+            var actualCode = firstDigit * 1000 + secondDigit * 100 + thirdDigit * 10 + fourthDigit;
 
-            if (currentCode == requiredCode)
-                currentCode = 2713;
+            if (actualCode == requiredCode) {
+                firstDigit = Random.Range(0,10);
+                secondDigit = Random.Range(0,10);
+                thirdDigit = Random.Range(0,10);
+                fourthDigit = Random.Range(0,10);
+            }
         }
         
         public override void OnInteract(IInteractable interactable) {
@@ -44,22 +56,27 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.Interact.SetGlassInteraction(!isUsingLock);
             PlayerController.Instance.FreezeController(isUsingLock);
             
-            HudManager.Instance.padLock.SetCurrent(isUsingLock ? this : null);
-            HudManager.Instance.padLock.SetSelected(selectedDigit);
-            
             if(isUsingLock) BindInputs();
             else UnbindInputs();
+            
+            EventBus<PadlockEvent>.Raise(new PadlockEvent {
+                doShow = isUsingLock,
+                firstDigit = firstDigit,
+                secondDigit = secondDigit,
+                thirdDigit = thirdDigit,
+                fourthDigit = fourthDigit,
+                currentLock = this
+            });
         }
 
         private void TryUnlock() {
-
-            if (currentCode == requiredCode) {
+            var actualCode = firstDigit * 1000 + secondDigit * 100 + thirdDigit * 10 + fourthDigit;
+            
+            if (actualCode == requiredCode) {
                 isUsingLock = false;
             
                 GameInitializer.Instance.SetShardsOnOff(!isUsingLock);
                 GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().lock_Unlocked);
-                
-                HudManager.Instance.padLock.SetCurrent(null);
 
                 PlayerController.Instance.Interact.SetIsFocus(isUsingLock, baseObject);
                 PlayerController.Instance.Interact.SetGlassInteraction(!isUsingLock);
@@ -82,6 +99,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         Debug.LogWarning($"[BlockedAttribute] Interactable type {baseObject.GetObjectType} not supported");
                         break;
                 }
+                
+                EventBus<PadlockEvent>.Raise(new PadlockEvent {
+                    doShow = isUsingLock,
+                    firstDigit = firstDigit,
+                    secondDigit = secondDigit,
+                    thirdDigit = thirdDigit,
+                    fourthDigit = fourthDigit,
+                    currentLock = this
+                });
             }
         }
         
@@ -91,11 +117,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             timerUp.Start();
             
             var add = input > 0.25f ? 1 : input < -0.25f ? -1 : 0;
-            
-           var firstDigit = currentCode / 1000;
-           var secondDigit = ((currentCode % 1000) / 100);
-           var thirdDigit = (((currentCode % 1000) % 100) / 10);
-           var fourthDigit = ((((currentCode % 1000) % 100) % 10));
             
             switch (selectedDigit) {
                 case 0:
@@ -119,19 +140,19 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     if (fourthDigit < 0) fourthDigit = 9;
                     break;
             }
+            
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().lock_Tick);
             
-            currentCode = firstDigit * 1000 + secondDigit * 100 + thirdDigit * 10 + fourthDigit;
-            HudManager.Instance.padLock.UpdateCode();
+            EventBus<PadlockEvent>.Raise(new PadlockEvent {
+                doShow = isUsingLock,
+                firstDigit = firstDigit,
+                secondDigit = secondDigit,
+                thirdDigit = thirdDigit,
+                fourthDigit = fourthDigit,
+                currentLock = this
+            });
+            
             TryUnlock();
-        }
-
-        public void ForceSetInput(int newCode, int newSelectedDigit)
-        {
-            currentCode = newCode;
-            selectedDigit = newSelectedDigit;
-            HudManager.Instance.padLock.UpdateCode();
-            HudManager.Instance.padLock.SetSelected(selectedDigit);
         }
         
         private void ProcessInputRight(float input) {
@@ -144,8 +165,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if(selectedDigit > 3) selectedDigit = 0;
             if(selectedDigit < 0) selectedDigit = 3;
+        }
+
+        public void UpdateLockDigit(int firstDigit, int secondDigit, int thirdDigit, int fourthDigit) {
+            this.firstDigit = firstDigit;
+            this.secondDigit = secondDigit;
+            this.thirdDigit = thirdDigit;
+            this.fourthDigit = fourthDigit;
             
-            HudManager.Instance.padLock.SetSelected(selectedDigit);
+            TryUnlock();
         }
         
         private void BindInputs() {
@@ -157,5 +185,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             InputsBrain.Instance.OnLockUp -= ProcessInputUp;
             InputsBrain.Instance.OnLockRight -= ProcessInputRight;
         }
+    }
+    
+    public struct PadlockEvent : IEvent {
+        public bool doShow;
+        public int firstDigit;
+        public int secondDigit;
+        public int thirdDigit;
+        public int fourthDigit;
+        public PadlockAttribute currentLock;
     }
 }
