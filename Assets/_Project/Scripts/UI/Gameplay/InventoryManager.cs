@@ -1,3 +1,4 @@
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
@@ -108,6 +109,8 @@ namespace _Project.Scripts.UI.Gameplay {
                 selectedItem.itemHighlight.SetActive(true);
                 textTween = selectedItem.text.DOFade(isOpen ? 1 : 0, 0.25f);
             }
+            
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Inventory_Sound, PlayerController.Instance.transform.position);
         }
 
         // Fonction pour montrer l'inventaire ou non si le joueur possède des items

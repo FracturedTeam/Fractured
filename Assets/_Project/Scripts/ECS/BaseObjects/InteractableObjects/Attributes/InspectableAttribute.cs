@@ -1,9 +1,11 @@
 using System;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.UI;
+using FMODUnity;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -14,6 +16,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isInitialized;
         private bool isInspecting;
 
+        public EventReference inspectEvent;
+        
         [SerializeField] private GlassDocumentScriptableObject glassDocument; 
         
         public void Initialize() {
@@ -43,6 +47,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 PlayerController.Instance.FreezeController(true);
                 
                 EventBus<DocumentEvent>.Raise(new DocumentEvent{isOn = true, document =glassDocument });
+                GameInitializer.Instance.PlaySound2D(inspectEvent);
             }
             else {
                 PlayerController.Instance.Interact.SetIsFocus(false);

@@ -57,6 +57,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 isUsingLock = false;
             
                 GameInitializer.Instance.SetShardsOnOff(!isUsingLock);
+                GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().lock_Unlocked);
                 
                 HudManager.Instance.padLock.SetCurrent(null);
 
@@ -118,7 +119,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     if (fourthDigit < 0) fourthDigit = 9;
                     break;
             }
-
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().lock_Tick);
+            
             currentCode = firstDigit * 1000 + secondDigit * 100 + thirdDigit * 10 + fourthDigit;
             HudManager.Instance.padLock.UpdateCode();
             TryUnlock();

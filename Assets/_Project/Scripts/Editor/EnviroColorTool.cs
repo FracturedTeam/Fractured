@@ -1,15 +1,12 @@
-using System;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Compilation;
-using UnityEngine.UIElements;
 
 public class EnviroColorTool : EditorWindow
 {
     private static Profil profil;
     
-    static int act = 1;
-    static float transition = 0;
+    // static int act = 1;
+    // static float transition = 0;
 
     static Color act1_Color_A;
     static Vector2 act1_Color_A_Location = new Vector2(0f,0.5f);

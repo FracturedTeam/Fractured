@@ -1,4 +1,5 @@
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.StateMachine;
 using _Project.Scripts.Systems.Timers;
 using DG.Tweening;
@@ -22,7 +23,10 @@ namespace _Project.Scripts.Player.States.SubStates {
             var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
             
             animationExitTimer = 
-                player.Interact.HasItemObject ? new CountdownTimer(grabHeavyLength) : new CountdownTimer(putInInventoryLength);
+                player.Interact.HasItemObject ? new CountdownTimer(putInInventoryLength) : new CountdownTimer(grabHeavyLength);
+            
+            if(player.Interact.HasItemObject)
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Equipping_Object, player.transform.position);
             
             animationExitTimer.Start();
             
