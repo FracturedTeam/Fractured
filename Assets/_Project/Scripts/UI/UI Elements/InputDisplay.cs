@@ -38,8 +38,8 @@ namespace _Project.Scripts.UI {
             selectBtt.gameObject.SetActive(isGamepad);
         }
 
-        public void FadeDisplay(bool doFade) {
-            group.DOFade(doFade ? 0 : 1, .25f).SetUpdate(true);
+        public void ShowDisplay(bool doShow) {
+            group.DOFade(doShow ? 1 : 0, .25f).SetUpdate(true);
         }
         
         public void UpdateDisplay(bool isInMainMenu) {

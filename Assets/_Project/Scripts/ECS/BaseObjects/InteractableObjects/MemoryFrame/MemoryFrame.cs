@@ -434,7 +434,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Unlock() {
             isUnlocked = true;
-            paintingMesh.material = data.material;
+            if(data)
+                paintingMesh.material = data.material;
         }
         
 

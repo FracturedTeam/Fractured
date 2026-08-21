@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -51,22 +52,30 @@ namespace _Project.Scripts.UI {
             onClickPostTimer?.Invoke();
             
             if (settingsButtons) {
-                pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
                 buttonText.color = alternateColor;
-                backgroundImage.gameObject.SetActive(true);
             }
+            else {
+                buttonText.color = whiteColor;
+                backgroundImage.sprite = backgroundNormal;
+            }
+            
+            pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
+            backgroundImage.gameObject.SetActive(true);
         }
 
-        private void OnEnable() {
+        private void Start() {
             if (GameInitializer.HasInstance) {
                 var ChapterIndex = GameInitializer.Instance.GetLastChapter();
                 alternateColor = ChapterIndex switch {
                     1 => act1Color,
                     2 => act2Color,
                     3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
                 };
             }
-            
+        }
+
+        private void OnEnable() {
             Enable();
         }
 

@@ -27,6 +27,7 @@ namespace _Project.Scripts.UI.Gameplay {
         private Sprite closeSprite;
         private Vector3 offset;
         private MeshRenderer parentMesh;
+        private Collider parentCollider;
         
         private Vector3 distanceScale;
         private Vector3 cameraScale;
@@ -60,23 +61,28 @@ namespace _Project.Scripts.UI.Gameplay {
 
         private IEnumerator UpdatePosition() {
             yield return null;
-            if (parentMesh == null) {
+            
+            if (parentMesh == null && parentCollider == null) {
                 yield break;
             }
+            
+            var center = parentMesh ? parentMesh.bounds.center : parentCollider.bounds.center;
 
             var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
-            var dirToCam = (outPutCamera.transform.position - parentMesh.bounds.center).normalized;
+            var dirToCam = (outPutCamera.transform.position - center).normalized;
             
-            var bounds = parentMesh.bounds;
+            var bounds = parentMesh ? parentMesh.bounds : parentCollider.bounds;
             var extents = bounds.extents;
             var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
             
-            transform.position = parentMesh.bounds.center + dirToCam + offset * (projectedSize + 0.1f);
+            transform.position = center + dirToCam + offset * (projectedSize + 0.1f);
         }
         
-        public void RegisterComponents(MeshRenderer meshRenderer, Vector3 offset) {
+        public void RegisterComponents(MeshRenderer meshRenderer, Collider col, Vector3 offset) {
             parentMesh = meshRenderer;
+            parentCollider = col;
             this.offset = offset;
+            StartCoroutine(UpdatePosition());
         }
 
         public void ManualPositionUpdate(Vector3 offset) {
