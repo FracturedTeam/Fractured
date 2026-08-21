@@ -49,6 +49,7 @@ namespace _Project.Scripts.UI
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
+                InputsBrain.Instance.DisableUIInput(true);
             }
             
             CurrentMenu = MainMenuPanel;
