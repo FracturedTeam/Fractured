@@ -20,7 +20,7 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
         
         public override void OnEnter() {
-            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1f;
             
             animationExitTimer = 
                 player.Interact.HasItemObject ? new CountdownTimer(putInInventoryLength) : new CountdownTimer(grabHeavyLength);

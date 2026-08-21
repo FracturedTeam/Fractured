@@ -24,7 +24,7 @@ namespace _Project.Scripts.Player.States.SubStates {
             animationExitTimer.Start();
             playAnimTimer.Start();
 
-            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1f;
             
             player.Interact.TriggerPickUpItem = false;
             
