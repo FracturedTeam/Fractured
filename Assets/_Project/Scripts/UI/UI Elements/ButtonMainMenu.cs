@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -46,6 +47,15 @@ namespace _Project.Scripts.UI {
             if(TryGetComponent(out Image img))
                 backgroundImg = img;
         }
+
+        private void Start() {
+            alternateColor = FindFirstObjectByType<MenuManager>().ChapterIndex switch {
+                1 => act1Color,
+                2 => act2Color,
+                3 => act3Color,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
         
         private IEnumerator CallClickPostTimer() { 
             yield return new WaitForSecondsRealtime(callbackTime);
@@ -64,12 +74,6 @@ namespace _Project.Scripts.UI {
             pressedGroup.gameObject.SetActive(false);
             pressedGroup.alpha = 0;
             pressed = false;
-
-            alternateColor = FindFirstObjectByType<MenuManager>().ChapterIndex switch {
-                1 => act1Color,
-                2 => act2Color,
-                3 => act3Color,
-            };
         }
 
         private void OnDisable() {
