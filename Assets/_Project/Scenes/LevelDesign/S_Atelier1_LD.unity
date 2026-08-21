@@ -2948,6 +2948,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1288097568}
     m_Modifications:
     - target: {fileID: 4859536562285407560, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
+      propertyPath: ObjectName
+      value: Examine Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859536562285407560, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
       propertyPath: <Guid>k__BackingField
       value: cb576169-9a77-42f6-b441-d8e0729a3ad1
       objectReference: {fileID: 0}
@@ -3030,7 +3034,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8155926776302967323, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1339582316}
+    - targetCorrespondingSourceObject: {fileID: 8155926776302967323, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1339582317}
   m_SourcePrefab: {fileID: 100100000, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
 --- !u!4 &1339582313 stripped
 Transform:
@@ -3042,12 +3052,71 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4859536562285407560, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
   m_PrefabInstance: {fileID: 1339582312}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1339582315}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &1339582315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8155926776302967323, guid: 5a1c4180f6ad03e48a8b7ef61897d913, type: 3}
+  m_PrefabInstance: {fileID: 1339582312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1339582316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339582315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
+  OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1339582314}
+          m_TargetAssemblyTypeName: _Project.Scripts.ECS.BaseObjects.BaseObject,
+            Assembly-CSharp
+          m_MethodName: SetDialogue
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: dc932c20b12331e42a0b68364e3c8982, type: 2}
+            m_ObjectArgumentAssemblyTypeName: _Project.Scripts.ScriptableObjects.DialogueScriptableObject,
+              Assembly-CSharp
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed: []
+  OnSetStateOn: []
+  OnSetStateOff: []
+  OnSceneComplete: []
+  OnAtelierComplete: []
+--- !u!114 &1339582317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339582315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
+  oneTimeUse: 0
 --- !u!1001 &1475626203
 PrefabInstance:
   m_ObjectHideFlags: 0

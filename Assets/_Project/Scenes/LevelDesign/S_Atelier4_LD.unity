@@ -1804,6 +1804,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 749092384}
     m_Modifications:
     - target: {fileID: -114012445396953531, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: ObjectName
+      value: Examine Lamp
+      objectReference: {fileID: 0}
+    - target: {fileID: -114012445396953531, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -1860,21 +1864,57 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1815653440}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1815653441}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1815653440}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1815653441}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnTextHideReveal.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1884,7 +1924,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1815653440}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1815653441}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
@@ -1892,12 +1940,60 @@ PrefabInstance:
       value: Appear
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: _Project.Scripts.ECS.BaseObjects.BaseObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 270dfd2c0dc643549916920bc470daba, type: 2}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GlassText, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: _Project.Scripts.ECS.BaseObjects.BaseObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: _Project.Scripts.ECS.BaseObjects.BaseObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 270dfd2c0dc643549916920bc470daba, type: 2}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 270dfd2c0dc643549916920bc470daba, type: 2}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: _Project.Scripts.ScriptableObjects.DialogueScriptableObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractFailed.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: _Project.Scripts.ScriptableObjects.DialogueScriptableObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8368079244238916663, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
+      propertyPath: OnInteractSuccess.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: _Project.Scripts.ScriptableObjects.DialogueScriptableObject, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
