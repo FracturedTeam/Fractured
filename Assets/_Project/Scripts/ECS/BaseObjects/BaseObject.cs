@@ -194,11 +194,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (prefabInteractionUI && GetInteract != null) {
                     interactionUI = Instantiate(prefabInteractionUI, transform);
-                    interactionUI.RegisterComponents(meshRenderer, interactionUIOffset);
-                    if(meshRenderer)
-                        interactionUI.transform.position = meshRenderer.bounds.center;
-                    else if(objectCollider)
-                        interactionUI.transform.position = objectCollider.bounds.center;
+                    interactionUI.RegisterComponents(meshRenderer, objectCollider, interactionUIOffset);
                 }
             }
             IsInitialized = true;
