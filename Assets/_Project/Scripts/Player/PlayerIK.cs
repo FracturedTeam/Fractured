@@ -24,8 +24,7 @@ namespace _Project.Scripts.Player {
 
             rightArm.weight = rightEdge == null ? 0 : 1;
             if(rightEdge != null) rightArm.data.target.position = rightEdge.position;
-            
-            leftArm.data.target.position = leftEdge.position;
+            if(leftEdge != null) leftArm.data.target.position = leftEdge.position;
         }
 
         public void SetHoldingState(Transform rEdge, Transform lEdge) {
