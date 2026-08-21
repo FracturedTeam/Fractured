@@ -65,6 +65,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 secondDigit = secondDigit,
                 thirdDigit = thirdDigit,
                 fourthDigit = fourthDigit,
+                selectedDigit = selectedDigit,
                 currentLock = this
             });
         }
@@ -106,6 +107,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     secondDigit = secondDigit,
                     thirdDigit = thirdDigit,
                     fourthDigit = fourthDigit,
+                    selectedDigit = selectedDigit,
                     currentLock = this
                 });
             }
@@ -117,6 +119,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             timerUp.Start();
             
             var add = input > 0.25f ? 1 : input < -0.25f ? -1 : 0;
+            
+            if(add == 0) return;
             
             switch (selectedDigit) {
                 case 0:
@@ -149,6 +153,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 secondDigit = secondDigit,
                 thirdDigit = thirdDigit,
                 fourthDigit = fourthDigit,
+                selectedDigit = selectedDigit,
                 currentLock = this
             });
             
@@ -165,6 +170,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             if(selectedDigit > 3) selectedDigit = 0;
             if(selectedDigit < 0) selectedDigit = 3;
+            
+            EventBus<PadlockEvent>.Raise(new PadlockEvent {
+                doShow = isUsingLock,
+                firstDigit = firstDigit,
+                secondDigit = secondDigit,
+                thirdDigit = thirdDigit,
+                fourthDigit = fourthDigit,
+                selectedDigit = selectedDigit,
+                currentLock = this
+            });
         }
 
         public void UpdateLockDigit(int firstDigit, int secondDigit, int thirdDigit, int fourthDigit) {
@@ -193,6 +208,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public int secondDigit;
         public int thirdDigit;
         public int fourthDigit;
+        public int selectedDigit;
         public PadlockAttribute currentLock;
     }
 }

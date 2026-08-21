@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,20 +18,33 @@ namespace _Project.Scripts.UI
         
         private void Awake() {
             canvasGroup = GetComponent<CanvasGroup>();
-            canvasGroup.alpha = 0;
+            if (canvasGroup.alpha == 0) {
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
         }
 
-        private void OnEnable() {
-            menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
-        }
+        // private void OnEnable() {
+        //     menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
+        // }
 
         public void Close() {
             menuTween =  canvasGroup.DOFade(0, closingTime).SetUpdate(true);
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
             Invoke(nameof(Closed), closingTime);
+
+        }
+
+        public void Open() {
+            gameObject.SetActive(true);
+            menuTween =  canvasGroup.DOFade(1, openingTime).SetUpdate(true);
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
         }
 
         private void Closed() => gameObject.SetActive(false);
-
+        
         private void OnDisable() {
             menuTween?.Kill();
         }

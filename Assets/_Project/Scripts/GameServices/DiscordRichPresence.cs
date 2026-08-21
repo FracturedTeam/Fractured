@@ -14,28 +14,44 @@ namespace _Project.Scripts.GameServices {
         public string largeImage = "";
         public string largeText = "Fractured";
         
-        public Discord.Discord discord;
-
+        private Discord.Discord discord;
+        private bool isInitialized = false;
+        
         void Start() {
-            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.Default);
-
-            UpdateStatus();
+            Initialize();   
         }
 
+        private void Initialize() {
+            try {
+                discord = new Discord.Discord(applicationID, (ulong)CreateFlags.NoRequireDiscord);
+                isInitialized = true;
+                UpdateStatus();
+            }
+            catch (Exception e) {
+                isInitialized = false;
+            }
+        }
+        
         private void OnDisable() {
+            if(!isInitialized) return;
             discord.Dispose();
+            isInitialized = false;
         }
 
         private void Update() {
+            if(!isInitialized) return;
+            
             try {
                 discord.RunCallbacks();
             }
             catch {
-                Destroy(this);
+                isInitialized = false;
             }
         }
 
-        void UpdateStatus() {
+        private void UpdateStatus() {
+            if(!isInitialized) return;
+            
             try {
                 var activityManager = discord.GetActivityManager();
                 var activity = new Discord.Activity {
@@ -51,8 +67,16 @@ namespace _Project.Scripts.GameServices {
                 });
             }
             catch {
-                Destroy(this);
+                isInitialized = false;
             }
+        }
+
+        public void UpdateRichPresence(string details) {
+            if(!isInitialized) return;
+            
+            this.details = details;
+            
+            UpdateStatus();
         }
     }
 }

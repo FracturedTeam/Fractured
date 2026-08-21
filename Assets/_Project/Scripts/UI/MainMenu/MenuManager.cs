@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.Timers;
+using _Project.Scripts.UI.Gameplay;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -55,10 +56,35 @@ namespace _Project.Scripts.UI {
         
         private readonly CountdownTimer navigationTimer = new(0.25f);
         private readonly CountdownTimer settingsTimer = new(0.1f);
+        private readonly CountdownTimer backTimer = new(1.5f);
         
-        private void Start() {
-            if(GameInitializer.HasInstance)
+        [Header("UI Color")]
+        [SerializeField] private Color act1Color;
+        [SerializeField] private Color act2Color;
+        [SerializeField] private Color act3Color;
+        [SerializeField] private SetUIColor uiColor;
+        
+        public int ChapterIndex { get; private set;}
+        
+        private void Awake() {
+            ChapterIndex = 1;
+            if (GameInitializer.HasInstance) {
                 loadGameBtt.SetActive(GameInitializer.Instance.ExistingSave());
+                ChapterIndex = GameInitializer.Instance.GetLastChapter();
+                GameInitializer.Instance.SetCurrentChapter(ChapterIndex);
+            }
+
+            switch (ChapterIndex) {
+                case 1:
+                    uiColor.SetSpriteColor(act1Color);
+                    break;
+                case 2:
+                    uiColor.SetSpriteColor(act2Color);
+                    break;
+                case 3:
+                    uiColor.SetSpriteColor(act3Color);
+                    break;
+            }
 
             if (InputsBrain.HasInstance) {
                 InputsBrain.Instance.OnBackBtt += Back;
@@ -81,6 +107,8 @@ namespace _Project.Scripts.UI {
         }
 
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
+            if(newMenu == null) return;
+            backTimer.Start();
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu = newMenu;
@@ -94,14 +122,14 @@ namespace _Project.Scripts.UI {
         }
         
         private void Back() {
-            if(currentMenuType is UI.CurrentMenu.MainMenu) return;
+            if(currentMenuType is UI.CurrentMenu.MainMenu || backTimer.IsRunning) return;
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
-            CurrentMenu.PreviousMenu.gameObject.SetActive(true);
+            CurrentMenu.PreviousMenu.Open();
             
             var previous = CurrentMenu.PreviousMenu;
             CurrentMenu = previous;
@@ -111,6 +139,7 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
+            backTimer.Start();
         }
 
         private void Select() {
