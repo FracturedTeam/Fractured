@@ -213,8 +213,9 @@ namespace _Project.Scripts.GameServices {
         
         private async Task LoadMenuAsync() {
             GameInitializer.Instance.SaveData();
+            Time.timeScale = 1;
             scenesToLoad.Clear();
-            
+
             await FadeToBlack();
             
             await UnloadSceneAsync();
@@ -226,7 +227,6 @@ namespace _Project.Scripts.GameServices {
             
             _ = LoadSceneAsync(menuScene);
 
-            Time.timeScale = 1;
 
             await FadeToGame();
         }
@@ -326,15 +326,26 @@ namespace _Project.Scripts.GameServices {
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = true
             });
-            await Task.Delay(500);
+            await WaitForSecondsAsync(0.5f);
         }
-        private static async Task FadeToGame() {
-            await Task.Delay(500);
+        
+        private async Task FadeToGame() {
+            await WaitForSecondsAsync(0.5f);
             EventBus<FadeObject>.Raise(new FadeObject {
                 show = false
             });
         }
-        
+
+        private Task WaitForSecondsAsync(float seconds) {
+            var task = new TaskCompletionSource<bool>();
+            StartCoroutine(WaitCoroutine(seconds, task));
+            return task.Task;
+        }
+
+        private IEnumerator WaitCoroutine(float seconds, TaskCompletionSource<bool> task) {
+            yield return new WaitForSecondsRealtime(seconds);
+            task.SetResult(true);
+        }
         
     }
     
