@@ -146,7 +146,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void OnGrab(IInteractable other = null) {
-            PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
+            PlayerController.Instance.Interact.pickUpObjectYPos = baseObject.GetRendered().bounds.center.y;
             PlayerController.Instance.Interact.SetGrabbedObject(baseObject);
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
@@ -157,7 +157,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(baseObject.HasSceneElement())
                 baseObject.UnValidSceneElement();
             
-            transform.SetParent(PlayerController.Instance.Interact.objectPos);
             TweenObjectOnPlayer();
 
             //Call audio
@@ -173,7 +172,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 var pos = GetGroundPos();
-                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y;
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y + baseObject.GetRendered().bounds.extents.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
@@ -213,8 +212,38 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         #region OtherMethods
         private void TweenObjectOnPlayer() {
             tween.Kill();
-            tween = transform.DOLocalMove(Vector3.zero, 0.5f);
+
+            var attachPoint = PlayerController.Instance.Interact.objectPos;
+
+            var worldPos = transform.position;
+            var worldRot = transform.rotation;
+
+            transform.SetParent(attachPoint);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            Physics.SyncTransforms();
+            
+            var bounds = GetCombineBounds();
+            var heightOffset = new Vector3(0, -bounds.extents.y, 0);
+            if(bounds.extents.y > 0.5f) heightOffset -= new Vector3(0, 0.5f, 0);
+            
+            var depthOffset = new Vector3(0, 0, bounds.extents.z);
+            var targetLocalPos = heightOffset + depthOffset;
+
+            transform.position = worldPos;
+            transform.rotation = worldRot;
+            
+            transform.DOLocalMove(targetLocalPos, 0.5f).OnComplete(() => transform.localPosition = targetLocalPos);
+            
             tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
+        }
+
+        private Bounds GetCombineBounds() {
+            var render = GetComponent<MeshFilter>();
+            if(render != null)
+                return render.sharedMesh.bounds;
+            
+            return new Bounds(Vector3.zero, Vector3.one);
         }
         
         private void TweenObjectDrop(Transform t) {

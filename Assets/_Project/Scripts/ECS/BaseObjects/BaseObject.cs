@@ -256,7 +256,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
             
-            if(interactionUI) interactionUI.gameObject.SetActive(canInteract);
+            if(interactionUI != null) interactionUI.gameObject.SetActive(canInteract);
         }
 
         public void SetGlassInteract(bool canInteract) {

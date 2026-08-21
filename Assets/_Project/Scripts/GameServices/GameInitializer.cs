@@ -312,7 +312,6 @@ namespace _Project.Scripts.GameServices {
             
             if (!hit.collider) {
                 audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                Debug.Log("Hit Nothing");
                 return;
             }
 
@@ -321,24 +320,19 @@ namespace _Project.Scripts.GameServices {
                 
                 if (matName.Contains(woodFloor.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Wood, position);
-                    Debug.Log(hit.collider.gameObject.name + " Wood Sound");
                 }
                 else if (matName.Contains(tileFloor1.name) || matName.Contains(tileFloor2.name) || matName.Contains(tileFloor3.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Tile, position);
-                    Debug.Log(hit.collider.gameObject.name + " Tile Raycast");
                 }
                 else if (matName.Contains(carpetFloor.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Carpet, position);
-                    Debug.Log(hit.collider.gameObject.name + " Carpet Raycast");
                 }
                 else {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                    Debug.Log(hit.collider.gameObject.name + " Default Sound");    
                 }
             }
             else {
                 audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                Debug.Log(hit.collider.gameObject.name + " Sound Raycast");
             }
         }
         

@@ -12,6 +12,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         private Transform originalParent;
         private Vector3 originalPosition;
+        private Vector3 originalScale;
         
         private Vector3 boundExtent;
         private Vector3 boundCenter;
@@ -48,6 +49,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
                 
                 originalPosition = transform.position;
+                originalScale = transform.localScale;
                 
                 baseObject.GetObjectType = ObjectType.Collectable;
                 
@@ -145,7 +147,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void OnPickedUp() {
             SetInInventory();
-            PlayerController.Instance.Interact.pickUpObjectYPos = transform.position.y;
+            PlayerController.Instance.Interact.pickUpObjectYPos = baseObject.GetRendered().bounds.center.y;
 
             GameInitializer.Instance.PlaySound3D(
                 isAKey
@@ -155,15 +157,41 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private void HoldObject() {
             isHeld = true;
-            transform.SetParent(PlayerController.Instance.Interact.objectPos);
+            
+            var attachPoint = PlayerController.Instance.Interact.objectPos;
+
+            transform.SetParent(attachPoint);
             transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            Physics.SyncTransforms();
+            
+            var bounds = GetCombineBounds();
+            var heightOffset = new Vector3(0, -bounds.extents.y, 0);
+            if(bounds.extents.y > 0.5f) heightOffset -= new Vector3(0, 0.5f, 0);
+            
+            var depthOffset = new Vector3(0, 0, bounds.extents.z);
+            var targetLocalPos = heightOffset + depthOffset;
+            
+            transform.localPosition = targetLocalPos;
+            transform.localScale = Vector3.zero;
+            
             baseObject.gameObject.SetActive(true);
+            transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
             
             PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
         }
         
+        private Bounds GetCombineBounds() {
+            var render = GetComponent<MeshFilter>();
+            if(render != null)
+                return render.sharedMesh.bounds;
+            
+            return new Bounds(Vector3.zero, Vector3.one);
+        }
+        
         private void StopHolding() {
-            baseObject.gameObject.SetActive(false);
+            transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => baseObject.gameObject.SetActive(false));
+            
             isHeld = false;
             PlayerController.Instance.Interact.HoldObject(false);
         }
@@ -178,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 }
 
                 var pos = GetGroundPos();
-                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y;
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y + baseObject.GetRendered().bounds.extents.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
@@ -225,7 +253,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void SetInInventory() {
-            baseObject.gameObject.SetActive(false);
+            transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => baseObject.gameObject.SetActive(false));
             
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
@@ -251,16 +279,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         #region OtherMethods
-        private void TweenObjectOnPlayer() {
-            tween.Kill();
-            tween = transform.DOLocalMove(Vector3.zero, 0.5f);
-            tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
-        }
-        
-        private void TweenObjectDrop(Transform t) {
-            tween.Kill();
-            TweenObjectDrop(t.position, t.eulerAngles);
-        }
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
