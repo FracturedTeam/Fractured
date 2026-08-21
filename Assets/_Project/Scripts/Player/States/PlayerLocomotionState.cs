@@ -26,7 +26,11 @@ namespace _Project.Scripts.Player.States {
                 idleBreak.Start();
             
             if(idleBreak.IsRunning && player.GetAnimatorSpeed() != 0) 
-                idleBreak.CompleteStop(); 
+                idleBreak.CompleteStop();
+
+            // if (player.GetAnimatorSpeed() != 0 && animator.GetCurrentAnimatorStateInfo(0).tagHash != IdleHash) {
+            //     animator.CrossFade(IdleHash, DefaultCrossFadeDuration);
+            // }
             
             animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
         }
