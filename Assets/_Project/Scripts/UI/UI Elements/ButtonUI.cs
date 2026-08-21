@@ -51,10 +51,15 @@ namespace _Project.Scripts.UI {
             onClickPostTimer?.Invoke();
             
             if (settingsButtons) {
-                pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
                 buttonText.color = alternateColor;
-                backgroundImage.gameObject.SetActive(true);
             }
+            else {
+                buttonText.color = whiteColor;
+                backgroundImage.sprite = backgroundNormal;
+            }
+            
+            pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
+            backgroundImage.gameObject.SetActive(true);
         }
 
         private void OnEnable() {

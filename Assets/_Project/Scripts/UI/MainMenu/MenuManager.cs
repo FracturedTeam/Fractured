@@ -56,6 +56,7 @@ namespace _Project.Scripts.UI {
         
         private readonly CountdownTimer navigationTimer = new(0.25f);
         private readonly CountdownTimer settingsTimer = new(0.1f);
+        private readonly CountdownTimer backTimer = new(1.5f);
         
         [Header("UI Color")]
         [SerializeField] private Color act1Color;
@@ -107,7 +108,7 @@ namespace _Project.Scripts.UI {
 
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             if(newMenu == null) return;
-            
+            backTimer.Start();
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu = newMenu;
@@ -121,7 +122,7 @@ namespace _Project.Scripts.UI {
         }
         
         private void Back() {
-            if(currentMenuType is UI.CurrentMenu.MainMenu) return;
+            if(currentMenuType is UI.CurrentMenu.MainMenu || backTimer.IsRunning) return;
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
@@ -138,6 +139,7 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
+            backTimer.Start();
         }
 
         private void Select() {

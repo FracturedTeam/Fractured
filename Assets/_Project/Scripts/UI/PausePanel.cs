@@ -37,8 +37,9 @@ namespace _Project.Scripts.UI
         private CurrentMenu currentMenuType;
         private CurrentSettings currentSettings;
         
-        private readonly CountdownTimer navigationTimer = new(0.25f);
-        private readonly CountdownTimer settingsTimer = new(0.1f);
+        private readonly CountdownTimerRealTime navigationTimer = new(0.25f);
+        private readonly CountdownTimerRealTime settingsTimer = new(0.1f);
+        private readonly CountdownTimerRealTime backTimer = new(1.5f);
         
         private bool gameIsPaused;
 
@@ -49,7 +50,6 @@ namespace _Project.Scripts.UI
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
-                InputsBrain.Instance.DisableUIInput(true);
             }
             
             CurrentMenu = MainMenuPanel;
@@ -75,6 +75,13 @@ namespace _Project.Scripts.UI
             gameIsPaused = !gameIsPaused;
             Time.timeScale = gameIsPaused ? 0 : 1;
 
+            if (gameIsPaused) {
+                MainMenuPanel.gameObject.SetActive(true);
+                foreach (var btt in buttons) {
+                    btt.Enable();
+                }
+            }
+            
             InputsBrain.Instance.DisableUIInput(!gameIsPaused);
             InputsBrain.Instance.DisablePlayerInput(gameIsPaused);
             
@@ -82,20 +89,20 @@ namespace _Project.Scripts.UI
             menuGroup.blocksRaycasts = gameIsPaused;
             menuGroup.DOFade(gameIsPaused ? 1 : 0, .3f).SetUpdate(true);
             
-            inputsDisplay.FadeDisplay(gameIsPaused);
-
+            inputsDisplay.ShowDisplay(gameIsPaused);
+            
             menuAnimator.Play(gameIsPaused ? "A_PauseMenu_IN" : "A_PauseMenu_OUT");
 
-            if (currentMenuType == UI.CurrentMenu.Settings) {
+            if (currentMenuType == UI.CurrentMenu.Settings && !gameIsPaused) {
                 CurrentMenu.Close();
-                CurrentMenu = MainMenuPanel;
             }
             
-            if (gameIsPaused) {
-                foreach (var btt in buttons) {
-                    btt.Enable();
-                }
-            }
+            CurrentMenu = MainMenuPanel;
+            currentMenuType = UI.CurrentMenu.MainMenu;
+            currentIndex = 0;
+            HoverButton(GetCurrentList()[currentIndex]);
+            
+            
         }
 
         public void LoadMenu() {
@@ -105,7 +112,7 @@ namespace _Project.Scripts.UI
         
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             if(newMenu == null) return;
-            
+            backTimer.Start();
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu = newMenu;
@@ -119,14 +126,19 @@ namespace _Project.Scripts.UI
         }
         
         private void Back() {
-            if(currentMenuType is UI.CurrentMenu.MainMenu) return;
+            if(!gameIsPaused) return;
+            
+            if (currentMenuType is UI.CurrentMenu.MainMenu) {
+                ChangeState();
+                return;
+            }
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
             UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
-            CurrentMenu.PreviousMenu.gameObject.SetActive(true);
+            CurrentMenu.PreviousMenu.Open();
             
             var previous = CurrentMenu.PreviousMenu;
             CurrentMenu = previous;
@@ -136,9 +148,11 @@ namespace _Project.Scripts.UI
             HoverButton(GetCurrentList()[currentIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
+            backTimer.Start();
         }
 
         private void Select() {
+            if(!gameIsPaused) return;
             ExecuteButtonScrip(GetCurrentList()[currentIndex]);
         }
 
@@ -188,6 +202,7 @@ namespace _Project.Scripts.UI
         }
 
         private void Navigation(InputAction.CallbackContext ctx) {
+            if(!gameIsPaused) return;
             var dir = ctx.ReadValue<Vector2>();
             
             UpdateSettings(dir);
@@ -213,6 +228,7 @@ namespace _Project.Scripts.UI
         }
         
         private void SettingsView(InputAction.CallbackContext ctx) {
+            if(!gameIsPaused) return;
             if(currentMenuType is not UI.CurrentMenu.Settings) return;
             
             var right = ctx.ReadValue<float>() > 0;
