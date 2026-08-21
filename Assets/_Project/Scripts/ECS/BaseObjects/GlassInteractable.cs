@@ -276,7 +276,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             interactableInBox.SetInteract(interactableInBox.GetLockState is not LockedState.Locked && revealed);
             interactableInBox.SetCollider(revealed);
-            // interactableInBox.SetRenderer(revealed);
         }
 
         bool IsInteractableInBoxActive() {
