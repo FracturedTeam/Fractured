@@ -164,7 +164,7 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
             Shader.SetGlobalFloat("_ActGlobalTransition", 0);
             
-            HudManager.Instance.UpdateUIColor(CurrentChapter);
+            if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
         }
 
         #region SaveService
@@ -174,6 +174,16 @@ namespace _Project.Scripts.GameServices {
         public void LoadPlayerData() => saveService.LoadPlayerData();
         public void LoadGame() => saveService.LoadGame();
         public string GetLastScene() => saveService.GameData.CurrentScene;
+
+        public int GetLastChapter() {
+            if (ExistingSave()) {
+                LoadGame();
+                return saveService.GameData.CurrentChapter;
+            }
+            
+            return 1;
+        }
+
         public bool ExistingSave() => saveService.ExistingSave();
         public void CreateNewSave() => saveService.NewGame();
         public void LoadSettings() => saveService.LoadSettings();
