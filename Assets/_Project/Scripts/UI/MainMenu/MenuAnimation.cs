@@ -17,20 +17,28 @@ namespace _Project.Scripts.UI
         
         private void Awake() {
             canvasGroup = GetComponent<CanvasGroup>();
-            canvasGroup.alpha = 0;
+            if (canvasGroup.alpha == 0) {
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
         }
 
-        private void OnEnable() {
-            menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
-        }
+        // private void OnEnable() {
+        //     menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
+        // }
 
         public void Close() {
             menuTween =  canvasGroup.DOFade(0, closingTime).SetUpdate(true);
-            Invoke(nameof(Closed), closingTime);
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
         }
 
-        private void Closed() => gameObject.SetActive(false);
-
+        public void Open() {
+            menuTween =  canvasGroup.DOFade(1, openingTime).SetUpdate(true);
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+        }
+        
         private void OnDisable() {
             menuTween?.Kill();
         }

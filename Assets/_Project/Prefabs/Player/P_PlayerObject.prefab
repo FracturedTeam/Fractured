@@ -1191,7 +1191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Gameplay.PadlockVisual
   distance: 2
-  targetScreenFraction: 1.5
+  targetScreenFraction: 2
   meshHeightAtScaleOne: 1
   wheel0: {fileID: 3349219010349064771}
   wheel1: {fileID: 7620917746070886717}
@@ -1308,8 +1308,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9118735760167049477}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18301274, y: 0.6830127, z: -0.18301274, w: 0.6830127}
-  m_LocalPosition: {x: -11.07, y: 5.964, z: 6.4}
+  m_LocalRotation: {x: 0.37303877, y: 0.6006995, z: -0.37302795, w: 0.60071}
+  m_LocalPosition: {x: -6.25, y: 9.53, z: 17.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1350,7 +1350,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 200
-  field of view: 80
+  field of view: 85
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -2377,6 +2377,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0737efa5cda84f5c9e3484dac07f51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Gameplay.LockWheel
+  normalMaterial: {fileID: 2100000, guid: 494f659caa6b77e458e3ff67f7d828e4, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: e5086ed58fc33d34889b3d839ab01477, type: 2}
+  meshRenderer: {fileID: 7129521108280953462}
 --- !u!1 &144198017057392562 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7214811009202416362, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
@@ -2426,6 +2429,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0737efa5cda84f5c9e3484dac07f51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Gameplay.LockWheel
+  normalMaterial: {fileID: 2100000, guid: 494f659caa6b77e458e3ff67f7d828e4, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: e5086ed58fc33d34889b3d839ab01477, type: 2}
+  meshRenderer: {fileID: 2949230337885187790}
+--- !u!23 &2949230337885187790 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5678377687557620630, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
+  m_PrefabInstance: {fileID: 7358990875727490392}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3022758253314893607 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5751833034146253439, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
+  m_PrefabInstance: {fileID: 7358990875727490392}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4366947127729203592 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6537784583677920464, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
+  m_PrefabInstance: {fileID: 7358990875727490392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5803798240471249939 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3939339647892625739, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
@@ -2465,6 +2486,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0737efa5cda84f5c9e3484dac07f51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Gameplay.LockWheel
+  normalMaterial: {fileID: 2100000, guid: 494f659caa6b77e458e3ff67f7d828e4, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: e5086ed58fc33d34889b3d839ab01477, type: 2}
+  meshRenderer: {fileID: 4366947127729203592}
 --- !u!1 &6808405996911290768 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4061176045755860168, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
@@ -2504,6 +2528,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0737efa5cda84f5c9e3484dac07f51e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Gameplay.LockWheel
+  normalMaterial: {fileID: 2100000, guid: 494f659caa6b77e458e3ff67f7d828e4, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: e5086ed58fc33d34889b3d839ab01477, type: 2}
+  meshRenderer: {fileID: 3022758253314893607}
+--- !u!23 &7129521108280953462 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 347136276353230638, guid: 9fc469f1041d24240a06c34f8b009263, type: 3}
+  m_PrefabInstance: {fileID: 7358990875727490392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8733391671347354925
 PrefabInstance:
   m_ObjectHideFlags: 0

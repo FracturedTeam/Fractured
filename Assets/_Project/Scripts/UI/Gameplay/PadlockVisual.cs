@@ -18,6 +18,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private GameObject lockVisual;
         
         private PadlockAttribute currentLock;
+        private int previousSelected;
         
         private void OnEnable() {
             padlockEvent = new EventBinding<PadlockEvent>(ShowPadlock);
@@ -45,16 +46,39 @@ namespace _Project.Scripts.UI.Gameplay {
             transform.position = camPos.position + new Vector3(0,1,0) + camPos.forward * distance;
         
             transform.LookAt(camPos); 
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x - 15f, transform.eulerAngles.y, 0);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x + 10f, transform.eulerAngles.y, 0);
             
             wheel0.SetNumber(e.firstDigit);
             wheel1.SetNumber(e.secondDigit);
             wheel2.SetNumber(e.thirdDigit);
             wheel3.SetNumber(e.fourthDigit);
+
+            if (previousSelected != e.selectedDigit) {
+                UpdateHighlight(false);
+                previousSelected = e.selectedDigit;
+                UpdateHighlight(true);
+            }
             
             currentLock = e.currentLock;
             
             UpdatePadlockScale();
+        }
+
+        private void UpdateHighlight(bool doHighlight) {
+            switch (previousSelected) {
+                case 0:
+                    wheel0.SetHighlight(doHighlight);
+                    break;
+                case 1:
+                    wheel1.SetHighlight(doHighlight);
+                    break;
+                case 2:
+                    wheel2.SetHighlight(doHighlight);
+                    break;
+                case 3:
+                    wheel3.SetHighlight(doHighlight);
+                    break;
+            }
         }
         
         private void UpdatePadlockScale() {
