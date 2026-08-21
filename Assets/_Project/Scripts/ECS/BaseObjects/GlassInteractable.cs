@@ -92,7 +92,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (objectInside) {
                     if (interactableInBox != null)
-                        SetObjectInside();
+                        SetInteractableInBox(false);
                     else
                         Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
                 }
@@ -106,11 +106,6 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             Set2DPoints();
             
-        }
-
-        void SetObjectInside() {
-            SetInteractableInBox(false);
-            interactableInBox.transform.position = transform.position;
         }
 
         internal void OnShardUpdated(bool isUnder, Glass shard) {
@@ -239,7 +234,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         private void ActivateObjectInside(bool isUnder) {
-            interactableInBox.transform.position = transform.position;
+            // interactableInBox.transform.position = transform.position;
             
             SetInteractableInBox(isUnder);
 
@@ -278,13 +273,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!interactableInBox.IsInitialized) {
                 interactableInBox.Initialize();
             }
-
-            if (interactableInBox.GetLockState is LockedState.Locked) {
-                interactableInBox.SetInteract(revealed);
-            }
             
+            interactableInBox.SetInteract(interactableInBox.GetLockState is not LockedState.Locked && revealed);
             interactableInBox.SetCollider(revealed);
-            interactableInBox.SetRenderer(revealed);
+            // interactableInBox.SetRenderer(revealed);
         }
 
         bool IsInteractableInBoxActive() {
