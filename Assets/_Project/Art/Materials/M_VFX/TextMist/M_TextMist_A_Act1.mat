@@ -136,8 +136,10 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _CellsSpeed1: -0.01
-    - _CellsSpeed2: 0.0105
+    - _CellsIntensity: 0.05
+    - _CellsSpeed1: 0
+    - _CellsSpeed2: 0
+    - _CirclePower: 2
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Contrast: 0.215
@@ -152,14 +154,15 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _NoiseIntensity: 0.005
-    - _NoiseSpeed: 0.2
+    - _NoiseIntensity: 0.007
+    - _NoiseSpeed: 0.1
     - _NoiseTiling: 4
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _SceneColorClamp: 1.51
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -172,11 +175,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CellsTiling: {r: 1, g: 0.2, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.92114323, b: 0.042452812, a: 1}
-    - _Color2: {r: 1, g: 0.59836286, b: 0, a: 1}
+    - _CellsTiling: {r: 0.07, g: 0.2, b: 0, a: 0}
+    - _CircleSmoothstep: {r: 0.19, g: 0.46, b: 0, a: 0}
+    - _Color: {r: 0.7647059, g: 0.50379574, b: 0, a: 1}
+    - _Color2: {r: 0.6037736, g: 0.3218325, b: 0.17372729, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SceneColorLevelsCorrection: {r: -0.005, g: 0.06, b: 0, a: 0}
+    - _SceneColorLevelsCorrection: {r: -0.005, g: 0.03, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
