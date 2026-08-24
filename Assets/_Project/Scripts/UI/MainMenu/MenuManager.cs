@@ -109,14 +109,16 @@ namespace _Project.Scripts.UI {
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             if(newMenu == null) return;
             backTimer.Start();
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            
+            //UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu = newMenu;
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
             settingsIndex = 0;
             
-            HoverButton(GetCurrentList()[currentIndex]);
+            if(currentMenuType is not UI.CurrentMenu.Credits)
+                HoverButton(GetCurrentList()[currentIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
         }
@@ -126,7 +128,8 @@ namespace _Project.Scripts.UI {
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            if(currentMenuType is not UI.CurrentMenu.Credits)
+                UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
             CurrentMenu.PreviousMenu.Open();
@@ -143,6 +146,7 @@ namespace _Project.Scripts.UI {
         }
 
         private void Select() {
+            if(currentMenuType is UI.CurrentMenu.Credits) return;
             ExecuteButtonScrip(GetCurrentList()[currentIndex]);
         }
 
@@ -192,6 +196,7 @@ namespace _Project.Scripts.UI {
         }
 
         private void Navigation(InputAction.CallbackContext ctx) {
+            if(currentMenuType is UI.CurrentMenu.Credits) return;
             var dir = ctx.ReadValue<Vector2>();
             
             UpdateSettings(dir);
@@ -326,8 +331,7 @@ namespace _Project.Scripts.UI {
                     CurrentSettings.Access => accessButtons,
                     _ => throw new ArgumentOutOfRangeException()
                 },
-                //UI.CurrentMenu.Credits => C,
-                _ => throw new ArgumentOutOfRangeException()
+                UI.CurrentMenu.Credits => null,
             };
         }
 
@@ -343,8 +347,7 @@ namespace _Project.Scripts.UI {
                     CurrentSettings.Access => accessButtons.Length,
                     _ => throw new ArgumentOutOfRangeException()
                 },
-                //UI.CurrentMenu.Credits => C,
-                _ => throw new ArgumentOutOfRangeException()
+                UI.CurrentMenu.Credits => 0,
             };
         }
         

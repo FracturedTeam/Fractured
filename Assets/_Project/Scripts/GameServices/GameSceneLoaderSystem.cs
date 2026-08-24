@@ -157,6 +157,8 @@ namespace _Project.Scripts.GameServices {
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+
+                await WaitForSecondsAsync(0.25f);
                 
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                     show = true,
@@ -252,6 +254,8 @@ namespace _Project.Scripts.GameServices {
             GameInitializer.Instance.InitializeDebugSystems();
 #endif
 
+            await WaitForSecondsAsync(0.25f);
+            
             EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                 show = true,
                 title = GameSceneSettings.Instance.transitionTextSO.title,
@@ -284,6 +288,8 @@ namespace _Project.Scripts.GameServices {
                 }
                 
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                
+                await WaitForSecondsAsync(0.25f);
                 
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                     show = true,
