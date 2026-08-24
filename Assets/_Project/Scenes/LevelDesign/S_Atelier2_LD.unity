@@ -2890,6 +2890,17 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
+--- !u!114 &1104747884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3260855474709073732, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
+  m_PrefabInstance: {fileID: 1104747879}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104747881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61695398c62f4d8eb548eb17dbbfa3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.DoorInteractable
 --- !u!1001 &1116637041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3798,7 +3809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
-  oneTimeUse: 0
+  oneTimeUse: 1
 --- !u!114 &1267959828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5216,7 +5227,7 @@ MonoBehaviour:
   - {fileID: 968825190}
   - {fileID: 1729048513}
   - {fileID: 1854598305}
-  doorExit: {fileID: 0}
+  doorExit: {fileID: 1104747884}
 --- !u!114 &1561323699
 MonoBehaviour:
   m_ObjectHideFlags: 0
