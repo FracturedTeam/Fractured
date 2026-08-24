@@ -28,7 +28,7 @@ namespace _Project.Scripts.UI.Gameplay {
             
             currentDigit = number;
 
-            currentRotation = (number + 1) * -36f;
+            currentRotation = number * -36f;
             transform.DOLocalRotate(new Vector3(currentRotation, 0, 0), 0.25f);
         }
         
@@ -51,7 +51,7 @@ namespace _Project.Scripts.UI.Gameplay {
             
             if(!OnWheel) meshRenderer.material = normalMaterial;
             
-            currentRotation = (currentDigit + 1) * -36f;
+            currentRotation = currentDigit * -36f;
             transform.DOLocalRotate(new Vector3(currentRotation, 0, 0), 0.25f);
             
             master.UpdateLock();
@@ -76,7 +76,7 @@ namespace _Project.Scripts.UI.Gameplay {
             const float step = 36f;
             var normalizedAngle = (-currentRotation % 360f + 360f) % 360f;
             var raw = Mathf.RoundToInt(normalizedAngle / step) % 10;
-            return (raw - 1 + 10) % 10;
+            return raw % 10;
         }
 
         public void SetHighlight(bool highlight) {

@@ -110,10 +110,6 @@ namespace _Project.Scripts.Player {
         private void SetDir(Vector2 moveInput) {
             rawMoveInput = moveInput;
             hasInput = moveInput.sqrMagnitude > 0.001f;
-            
-            // if (newCamDirBuffer && hasInput) return;
-            //
-            // moveDir = moveInput.x * rightDir +  moveInput.y * forwardDir;
         }
 
         public void SetSpeed(PlayerSpeedEnum speed) {
@@ -203,7 +199,7 @@ namespace _Project.Scripts.Player {
 
         private void MeshRotation() {
             if (player.IsUsingDoor()) return;
-            if (!HasMoveInput) return;
+            if (!HasMoveInput || isAgainstWall) return;
         
             if (PreviousMoveDir != lastMeshDir) {
                 lastMeshDir = PreviousMoveDir;
