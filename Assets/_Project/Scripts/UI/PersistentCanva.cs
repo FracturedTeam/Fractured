@@ -65,8 +65,7 @@ namespace _Project.Scripts.UI {
             titleText.text = e.title;
             descriptionText.text = e.description;
             
-            tween?.Kill();
-            tween = transitionCanvasGroup.DOFade(e.show ? 1f : 0f, e.show ? 1f : fadeOutDuration);
+            transitionCanvasGroup.DOFade(e.show ? 1f : 0f, e.show ? 1f : fadeOutDuration);
         }
 
         private void GamepadControlled(bool isGamepadControlled) {

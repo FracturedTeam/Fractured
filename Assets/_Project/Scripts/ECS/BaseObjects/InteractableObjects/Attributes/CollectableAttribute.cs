@@ -79,10 +79,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             switch (interaction) {
                 case ObjectInteraction.Grab:
-                    if (baseObject.CanBeInteractedWith())
+                    // if (baseObject.CanBeInteractedWith())
                         OnPickedUp();
-                    else
-                        Debug.LogWarning("[Collectable] Can't grab object !");
+                    // else
+                    //     Debug.LogWarning("[Collectable] Can't grab object !");
                     break;
                 case ObjectInteraction.Held:
                     HoldObject();

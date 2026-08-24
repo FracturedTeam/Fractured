@@ -148,6 +148,10 @@ namespace _Project.Scripts.Player {
                 validationInputTime = 0;
             }
         }
+
+        public float GetMemoryValidation() {
+            return validationInputTime;
+        }
         
         #region InteractionMethods
 

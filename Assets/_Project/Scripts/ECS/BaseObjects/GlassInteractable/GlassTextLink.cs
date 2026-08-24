@@ -128,8 +128,8 @@ public class GlassTextLink : MonoBehaviour
             replace = removeString;
         
         replace = AddColor(colorEnum, replace, special);
-        replace = "<mspace=0.5em>" + replace + "</mspace>";
-            
+        //replace = "<mspace=0.5em>" + replace + "</mspace>";
+        
         return output.Replace(removeString, replace);
     }
 }
