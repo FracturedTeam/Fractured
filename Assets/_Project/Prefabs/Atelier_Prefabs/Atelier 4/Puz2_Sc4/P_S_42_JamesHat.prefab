@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2861796120303619973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2677223852547997512}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2677223852547997512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861796120303619973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.195, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4122546969923381078}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4127083144202014069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,7 +93,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 31633913223621155, guid: 3894ec5e2d1d62c4fa01966716a94b31, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2677223852547997512}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 809436601728692377, guid: 3894ec5e2d1d62c4fa01966716a94b31, type: 3}
       insertIndex: -1
@@ -131,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 2677223852547997512}
   itemSprite: {fileID: 21300000, guid: a430aae869cb61d41b4982e46b6d90d6, type: 3}
   particles: {fileID: 0}
   isAKey: 0
@@ -150,7 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Take James' Hat
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
@@ -162,3 +197,8 @@ MonoBehaviour:
     isUsed: 0
     objectOutOfGlass: 0
   <Guid>k__BackingField: 
+--- !u!4 &4122546969923381078 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 31633913223621155, guid: 3894ec5e2d1d62c4fa01966716a94b31, type: 3}
+  m_PrefabInstance: {fileID: 4127083144202014069}
+  m_PrefabAsset: {fileID: 0}
