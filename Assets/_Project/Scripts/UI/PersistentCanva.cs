@@ -50,7 +50,8 @@ namespace _Project.Scripts.UI {
             
             tween?.Kill();
             transitionMaterial.SetFloat("_Animation", 1.1f);
-            InputsBrain.Instance.OnGamepadControlled -= GamepadControlled;
+            if(InputsBrain.HasInstance)
+                InputsBrain.Instance.OnGamepadControlled -= GamepadControlled;
         }
 
         private void Fade(FadeObject f) {

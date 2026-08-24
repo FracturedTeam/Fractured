@@ -176,7 +176,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
-                IsColliding();
+                //IsColliding();
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
@@ -199,7 +199,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
-                IsColliding();
+                //IsColliding();
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
@@ -253,7 +253,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
-            tween = transform.DOMove(pos, 0.5f);
+            tween = transform.DOMove(pos, 0.5f).OnComplete(IsColliding);
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
             tween.onComplete += TriggerSceneElement;
         }
@@ -299,39 +299,68 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void IsColliding() {
             var myCol = baseObject.GetCollider();
-            if (!myCol || !myCol.enabled)
-                return;
+            if (!myCol || !myCol.enabled) return;
 
             var mask = LayerMask.GetMask(
                 "Interactable",
                 "InteractableNoLUT",
                 "Wall",
-                "Walkable"
+                "Walkable",
+                "Default"
             );
+            
+            
+            var yPos = transform.position.y;
+            var toPlayer = (PlayerController.Instance.transform.position - transform.position).normalized;
+            toPlayer.y = 0;
 
-            var count = Physics.OverlapBoxNonAlloc(
-                myCol.bounds.center,
-                myCol.bounds.extents,
-                Hits,
-                myCol.transform.rotation,
-                mask,
-                QueryTriggerInteraction.Ignore
-            );
+            var resolvedPosition = transform.position;
 
-            for (var i = 0; i < count; i++)
-            {
-                var other = Hits[i];
-                if (!other || other == myCol)
-                    continue;
+            const int maxIteration = 10;
 
-                if (Physics.ComputePenetration(
-                        myCol, myCol.transform.position, myCol.transform.rotation,
-                        other, other.transform.position, other.transform.rotation,
-                        out Vector3 dir,
-                        out var distance)) {
-                    transform.position += dir * (distance + 0.001f);
+            for (var iteration = 0; iteration < maxIteration; iteration++) {
+                var boundsCenter = resolvedPosition + (myCol.bounds.center - myCol.transform.position);
+                
+                var count = Physics.OverlapBoxNonAlloc(
+                   boundsCenter,
+                    myCol.bounds.extents,
+                    Hits,
+                    myCol.transform.rotation,
+                    mask,
+                    QueryTriggerInteraction.Ignore
+                );
+                
+                var hadOverlap = false;
+            
+                for (var i = 0; i < count; i++)
+                {
+                    var other = Hits[i];
+                    if (!other || other == myCol) continue;
+
+                    if (Physics.ComputePenetration(
+                            myCol, myCol.transform.position, myCol.transform.rotation,
+                            other, other.transform.position, other.transform.rotation,
+                            out Vector3 dir, out var distance)) {
+                        hadOverlap = true;
+                    
+                        var correction = dir * (distance + 0.001f);
+                        correction.y = 0f;
+                    
+                        var dot = Vector3.Dot(correction.normalized, toPlayer);
+                        if (dot > 0f) {
+                            resolvedPosition += Vector3.Project(correction, toPlayer);
+                        }
+                        else {
+                            resolvedPosition -= correction;
+                        }
+                    }
                 }
+                
+                if(!hadOverlap) break;
             }
+
+            resolvedPosition.y = yPos;
+            transform.DOMove(resolvedPosition, 0.1f);
         }
 
         public bool CanBeGrab() {
