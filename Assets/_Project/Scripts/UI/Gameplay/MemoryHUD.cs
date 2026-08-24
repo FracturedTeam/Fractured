@@ -1,8 +1,10 @@
+using System;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
     public class MemoryHUD : MonoBehaviour {
@@ -11,7 +13,8 @@ namespace _Project.Scripts.UI {
         [SerializeField] private CanvasGroup memoryObject;
         [SerializeField] private CanvasGroup confirmMemoryButton;
         [SerializeField] private TextMeshProUGUI confirmText;
-
+        [SerializeField] private Image fillImage;
+        
         [Header("Text")]
         [SerializeField] private string keyboardInput = "[F]";
         [SerializeField] private string gamepadInput = "<sprite index=2>";
@@ -52,7 +55,7 @@ namespace _Project.Scripts.UI {
             memoryDialogue.text = dialogue;
         
             var newPos = PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(pos);
-            newPos = new Vector3(newPos.x, newPos.y - 330);
+            newPos = new Vector3(newPos.x, newPos.y - Screen.height * 0.25f);
         
             memoryObject.gameObject.transform.position = newPos;
         }
@@ -60,6 +63,12 @@ namespace _Project.Scripts.UI {
         public void IsInFrame(bool isIn) {
             isShown = isIn;
             gamepadVisual.SetActive(isGamepadControlled && isShown);
+        }
+
+        private void LateUpdate() {
+            if(confirmMemoryButton.alpha == 0) return;
+
+            fillImage.fillAmount = PlayerController.Instance.Interact.GetMemoryValidation();
         }
     }
 }
