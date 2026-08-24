@@ -22,7 +22,7 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
         
         public override void OnEnter() {
-            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1f;
             
             int hash = 0;
             switch (player.Interact.dropType) {

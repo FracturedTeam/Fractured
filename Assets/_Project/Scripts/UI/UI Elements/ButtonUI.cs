@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -15,7 +16,11 @@ namespace _Project.Scripts.UI {
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;
-        [SerializeField] private Color blueColor;
+        [SerializeField] private Color act1Color;
+        [SerializeField] private Color act2Color;
+        [SerializeField] private Color act3Color;
+
+        private Color alternateColor;
         
         [Header("background Settings")]
         [SerializeField] private Image backgroundImage;
@@ -47,9 +52,26 @@ namespace _Project.Scripts.UI {
             onClickPostTimer?.Invoke();
             
             if (settingsButtons) {
-                pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
-                buttonText.color = blueColor;
-                backgroundImage.gameObject.SetActive(true);
+                buttonText.color = alternateColor;
+            }
+            else {
+                buttonText.color = whiteColor;
+                backgroundImage.sprite = backgroundNormal;
+            }
+            
+            pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
+            backgroundImage.gameObject.SetActive(true);
+        }
+
+        private void Start() {
+            if (GameInitializer.HasInstance) {
+                var ChapterIndex = GameInitializer.Instance.GetLastChapter();
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
             }
         }
 
@@ -74,7 +96,7 @@ namespace _Project.Scripts.UI {
         public void OnPointerEnter(PointerEventData eventData) {
             tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = blueColor;
+            buttonText.color = alternateColor;
             backgroundImage.sprite = backgroundHover;
             pressedGroup.gameObject.SetActive(false);
         }
@@ -91,7 +113,7 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
 
             if (!settingsButtons) {
-                buttonText.color = blueColor;
+                buttonText.color = alternateColor;
                 backgroundImage.gameObject.SetActive(false);
                 pressedGroup.gameObject.SetActive(true);
                 pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);

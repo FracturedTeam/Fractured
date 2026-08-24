@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2743994036370599274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2026850281094503542}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2026850281094503542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2743994036370599274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.184, y: 0.5, z: 0.086}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6996959478373740328}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8852799543216149812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,7 +93,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1999958690511682076, guid: 524fa5e71e8201f428b9bad557b09d1c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2026850281094503542}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1191931600222757030, guid: 524fa5e71e8201f428b9bad557b09d1c, type: 3}
       insertIndex: -1
@@ -77,6 +111,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3931924898869162001}
   m_SourcePrefab: {fileID: 100100000, guid: 524fa5e71e8201f428b9bad557b09d1c, type: 3}
+--- !u!4 &6996959478373740328 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1999958690511682076, guid: 524fa5e71e8201f428b9bad557b09d1c, type: 3}
+  m_PrefabInstance: {fileID: 8852799543216149812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7661152099198350738 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1191931600222757030, guid: 524fa5e71e8201f428b9bad557b09d1c, type: 3}
@@ -96,8 +135,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Take Wine Bottle
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
-  prefabInteractionUI: {fileID: 0}
+  interactionUIOffset: {x: 0, y: -0.2, z: 0}
+  prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -107,7 +146,7 @@ MonoBehaviour:
     lockedState: 0
     isUsed: 0
     objectOutOfGlass: 0
-  <Guid>k__BackingField: 
+  <Guid>k__BackingField: 6e681f3f-e010-4277-b002-da008f914b16
 --- !u!114 &1037793512851823494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 2026850281094503542}
   itemSprite: {fileID: 21300000, guid: ed7546aa07ff19a489435fa2468770d5, type: 3}
   particles: {fileID: 0}
   isAKey: 0

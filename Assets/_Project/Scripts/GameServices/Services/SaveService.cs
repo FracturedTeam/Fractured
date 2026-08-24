@@ -16,6 +16,7 @@ namespace _Project.Scripts.GameServices.Services {
         public string CurrentScene;
         public PlayerData PlayerData;
         public List<SceneData> SceneDatas;
+        public int CurrentChapter;
     }
     
     [Serializable]
@@ -87,6 +88,7 @@ namespace _Project.Scripts.GameServices.Services {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
                 SceneDatas = new List<SceneData>(),
+                CurrentChapter = 1,
             };
         }
         
@@ -142,7 +144,8 @@ namespace _Project.Scripts.GameServices.Services {
                 
                 sceneData = GameSceneSettings.Instance.GetSceneData();
                 GameData.CurrentScene = sceneData.SceneName;
-
+                GameData.CurrentChapter = GameInitializer.Instance.CurrentChapter;
+                
                 if (!foundExistingSceneData) {
                     GameData.SceneDatas.Add(sceneData);
                     Debug.Log($"[SaveSystem]::Saving - Has not found existing Scene Save, Registering new one !");

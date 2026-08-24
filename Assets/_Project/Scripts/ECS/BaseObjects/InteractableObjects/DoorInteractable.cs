@@ -15,6 +15,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isInitialized = false;
         
         private bool hasBeenInteracted = false;
+        private bool canBeUsed = false;
         
         public void Initialize() {
             if (!isInitialized) {
@@ -30,6 +31,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if(hasBeenInteracted) return;
+
+            if (!canBeUsed) {
+                if (baseObject.GetTrigger) baseObject.GetTrigger.OnFunction( baseObject.GetTrigger.OnInteractFailed);
+                return;
+            }
             
             if (PlayerController.Instance.Interact.HasObject) {
                 PlayerController.Instance.Interact.triggerFailedDrop = true;
@@ -44,6 +50,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.Inventory.EmptyInventory();
         }
 
+        public void CanBeUsed(bool canBeUse) {
+            this.canBeUsed = canBeUse;
+        }
+        
         public void Tick(float deltaTime) {
         }
 

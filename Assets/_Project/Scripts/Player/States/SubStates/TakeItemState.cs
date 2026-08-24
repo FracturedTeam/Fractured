@@ -18,16 +18,13 @@ namespace _Project.Scripts.Player.States.SubStates {
 
         private void PlaySecondAnimation() {
             animator.CrossFade(PutObjectInInventoryHash, DefaultCrossFadeDuration, UpperBodyLayer);
-            Debug.Log("Play Second Animation");
         }
         
         public override void OnEnter() {
             animationExitTimer.Start();
             playAnimTimer.Start();
 
-            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1.15f;
-            
-            Debug.Log("Enter Take Item");
+            var doPlayerCrouch = player.transform.position.y - player.Interact.pickUpObjectYPos > 1f;
             
             player.Interact.TriggerPickUpItem = false;
             

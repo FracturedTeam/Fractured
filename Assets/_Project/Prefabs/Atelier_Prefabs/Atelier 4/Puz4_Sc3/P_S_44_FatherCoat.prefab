@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3866967152433443954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8850298755924859523}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8850298755924859523
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3866967152433443954}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.92249084, z: -0, w: 0.3860191}
+  m_LocalPosition: {x: -0.019, y: 0.104469776, z: 0.039}
+  m_LocalScale: {x: 0.99999964, y: 1, z: 0.99999964}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 930387599996757185}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4517048749494207497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,7 +93,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3622760452733640904, guid: e30d87f24ba8f794aad638dae15cc9fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8850298755924859523}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4111067227136326258, guid: e30d87f24ba8f794aad638dae15cc9fc, type: 3}
       insertIndex: -1
@@ -133,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Take Father's Coat
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
@@ -157,8 +191,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
+  leftEdge: {fileID: 8850298755924859523}
   itemSprite: {fileID: 21300000, guid: c17ef3e805b2f4c4eb53647245b867ba, type: 3}
   particles: {fileID: 0}
   isAKey: 0
   isOneTimeUse: 0
   keyID: 0
+--- !u!4 &930387599996757185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3622760452733640904, guid: e30d87f24ba8f794aad638dae15cc9fc, type: 3}
+  m_PrefabInstance: {fileID: 4517048749494207497}
+  m_PrefabAsset: {fileID: 0}

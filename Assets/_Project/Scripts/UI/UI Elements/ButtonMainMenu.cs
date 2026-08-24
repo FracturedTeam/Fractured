@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -12,7 +13,11 @@ namespace _Project.Scripts.UI {
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;
-        [SerializeField] private Color blueColor;
+        [SerializeField] private Color act1Color;
+        [SerializeField] private Color act2Color;
+        [SerializeField] private Color act3Color;
+
+        private Color alternateColor;
         
         [Header("background Settings")]
         [SerializeField] private CanvasGroup hoverGroup;
@@ -41,6 +46,15 @@ namespace _Project.Scripts.UI {
         private void Awake() {
             if(TryGetComponent(out Image img))
                 backgroundImg = img;
+        }
+
+        private void Start() {
+            alternateColor = FindFirstObjectByType<MenuManager>().ChapterIndex switch {
+                1 => act1Color,
+                2 => act2Color,
+                3 => act3Color,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
         
         private IEnumerator CallClickPostTimer() { 
@@ -71,7 +85,7 @@ namespace _Project.Scripts.UI {
             
             tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = blueColor;
+            buttonText.color = alternateColor;
             hoverGroup.DOFade(0.36f, 0.3f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(false);
         }
@@ -90,7 +104,7 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
             
             pressed = true;
-            buttonText.color = blueColor;
+            buttonText.color = alternateColor;
             backgroundImg.enabled = false;
             hoverGroup.DOFade(0, 0.15f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(true);

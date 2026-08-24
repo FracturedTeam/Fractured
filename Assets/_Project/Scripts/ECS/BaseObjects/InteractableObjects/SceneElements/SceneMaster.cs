@@ -163,6 +163,13 @@ namespace _Project.Scripts.ECS {
         
         public void CheckForValidation() {
             var everyElementIsValid = true;
+
+            if (elements.Length == 1) {
+                everyElementIsValid = elements[0].IsValidated;
+                if(requiredPlayerPosition && !isValidPlayerPosition) everyElementIsValid = false;
+                IsSceneValidated = everyElementIsValid;
+                return;
+            }
             
             foreach (var element in elements)
             {

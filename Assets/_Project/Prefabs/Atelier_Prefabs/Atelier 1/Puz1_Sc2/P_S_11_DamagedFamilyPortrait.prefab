@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 5484689329342659173}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.219, y: 0.28, z: 0}
+  m_LocalPosition: {x: -0.22, y: 0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 6715318736113506298}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.219, y: 0.28, z: 0}
+  m_LocalPosition: {x: 0.22, y: 0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -84,15 +84,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.9132595
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0018555294
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.674457
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1865516982607011991, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_LocalRotation.w
@@ -122,10 +122,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5332328798436477243, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.303
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332328798436477243, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.039
+      objectReference: {fileID: 0}
     - target: {fileID: 6471418929204055562, guid: dd37094558312d64b87a841d33de3e41, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8143636959058120698, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d8a499c12de5c54dafec16bbf8446b9, type: 2}
+    - target: {fileID: 8559203730379851677, guid: dd37094558312d64b87a841d33de3e41, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -9146618070568788744, guid: 7f173dd17539c3e4d98159ca10cff530, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -210,7 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Carry Damaged Family Portrait
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 

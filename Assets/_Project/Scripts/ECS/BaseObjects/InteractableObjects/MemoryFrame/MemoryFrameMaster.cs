@@ -18,6 +18,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] public CinemachineCamera frameCamera;
         [SerializeField] private Transform[] frameSlots;
         [SerializeField] private MemoryFrame[] frames;
+        [SerializeField] private DoorInteractable doorExit;
         
         private bool isInitialized;
         private bool isUsingMemoryFrame;
@@ -154,6 +155,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ld_Solved);
             GameInitializer.Instance.EmptyShards();
             GameInitializer.Instance.ResetGlassInteractable();
+            
+            doorExit.CanBeUsed(true);
             
             Debug.Log("Memory Completed");
         }

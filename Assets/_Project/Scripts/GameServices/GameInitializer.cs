@@ -164,7 +164,7 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
             Shader.SetGlobalFloat("_ActGlobalTransition", 0);
             
-            HudManager.Instance.UpdateUIColor(CurrentChapter);
+            if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
         }
 
         #region SaveService
@@ -174,6 +174,16 @@ namespace _Project.Scripts.GameServices {
         public void LoadPlayerData() => saveService.LoadPlayerData();
         public void LoadGame() => saveService.LoadGame();
         public string GetLastScene() => saveService.GameData.CurrentScene;
+
+        public int GetLastChapter() {
+            if (ExistingSave()) {
+                LoadGame();
+                return saveService.GameData.CurrentChapter;
+            }
+            
+            return 1;
+        }
+
         public bool ExistingSave() => saveService.ExistingSave();
         public void CreateNewSave() => saveService.NewGame();
         public void LoadSettings() => saveService.LoadSettings();
@@ -302,7 +312,6 @@ namespace _Project.Scripts.GameServices {
             
             if (!hit.collider) {
                 audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                Debug.Log("Hit Nothing");
                 return;
             }
 
@@ -311,24 +320,19 @@ namespace _Project.Scripts.GameServices {
                 
                 if (matName.Contains(woodFloor.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Wood, position);
-                    Debug.Log(hit.collider.gameObject.name + " Wood Sound");
                 }
                 else if (matName.Contains(tileFloor1.name) || matName.Contains(tileFloor2.name) || matName.Contains(tileFloor3.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Tile, position);
-                    Debug.Log(hit.collider.gameObject.name + " Tile Raycast");
                 }
                 else if (matName.Contains(carpetFloor.name)) {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Carpet, position);
-                    Debug.Log(hit.collider.gameObject.name + " Carpet Raycast");
                 }
                 else {
                     audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                    Debug.Log(hit.collider.gameObject.name + " Default Sound");    
                 }
             }
             else {
                 audioService.PlayOneShot3D(GetBank().avatar_Walking_Neutral, position);
-                Debug.Log(hit.collider.gameObject.name + " Sound Raycast");
             }
         }
         
