@@ -34,7 +34,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private Vector3 interactionUIOffset;
         [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
-        private ObjectInteractionUI interactionUI;
+        public ObjectInteractionUI interactionUI {get; private set;}
         
         private MeshRenderer meshRenderer;
         private Collider objectCollider;
@@ -193,7 +193,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
                 
                 if (prefabInteractionUI && GetInteract != null) {
-                    interactionUI = Instantiate(prefabInteractionUI, transform);
+                    interactionUI = Instantiate(prefabInteractionUI);
                     interactionUI.RegisterComponents(meshRenderer, objectCollider, interactionUIOffset);
                 }
             }
@@ -219,7 +219,15 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Tick(Time.deltaTime);
         }
 
-        void OnDestroy() {
+        private void OnEnable() {
+            if(interactionUI && canBeInteractedWith) interactionUI.gameObject.SetActive(true);
+        }
+
+        private void OnDisable() {
+            if(interactionUI) interactionUI.gameObject.SetActive(false);
+        }
+
+        private void OnDestroy() {
             if(interactionUI) Destroy(interactionUI);
             
             GetInteract?.Dispose();

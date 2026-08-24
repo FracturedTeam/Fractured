@@ -51,7 +51,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         public void CanBeUsed(bool canBeUse) {
-            
+            this.canBeUsed = canBeUse;
         }
         
         public void Tick(float deltaTime) {
