@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using DG.Tweening;
@@ -99,12 +100,36 @@ public class GlassTextLink : MonoBehaviour
         switch (color)
         {
             case ColorEnum.ColorA:
+                if(GameInitializer.HasInstance)
+                {
+                    var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorA);
+                    newString = special
+                        ? "<color=#00000000>" + newString + "</color>"
+                        : $"<color=#{textColor}>" + newString + "</color>";
+                    break;
+                }
                 newString = special? "<color=#00000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
                 break;
             case ColorEnum.ColorB:
+                if(GameInitializer.HasInstance)
+                {
+                    var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorB);
+                    newString = special
+                        ? "<color=#00000000>" + newString + "</color>"
+                        : $"<color=#{textColor}>" + newString + "</color>";
+                    break;
+                }
                 newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
                 break;
             case ColorEnum.Both:
+                if(GameInitializer.HasInstance)
+                {
+                    var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorAB);
+                    newString = special
+                        ? "<color=#00000000>" + newString + "</color>"
+                        : $"<color=#{textColor}>" + newString + "</color>";
+                    break;
+                }
                 newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";
                 break;
             case ColorEnum.None:
