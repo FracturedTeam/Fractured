@@ -58,7 +58,7 @@ public class GlassText : MonoBehaviour
     }
 
     [ContextMenu("Set Texts")]
-    private void ForceSet()
+    internal void ForceSet()
     {
         if (currentTextScriptableObject)
             Setup(currentTextScriptableObject);
