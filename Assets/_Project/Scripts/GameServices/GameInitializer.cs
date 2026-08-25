@@ -46,6 +46,19 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material chapter2B;
         [SerializeField] private Material chapter3A;
         [SerializeField] private Material chapter3B;
+        
+        [Header("Text Colors")] 
+        [SerializeField] private Color chapter1TextA;
+        [SerializeField] private Color chapter1TextB;
+        [SerializeField] private Color chapter1TextAB;
+        
+        [SerializeField] private Color chapter2TextA;
+        [SerializeField] private Color chapter2TextB;
+        [SerializeField] private Color chapter2TextAB;
+        
+        [SerializeField] private Color chapter3TextA;
+        [SerializeField] private Color chapter3TextB;
+        [SerializeField] private Color chapter3TextAB;
 
         [Header("Gamepad Color Settings")]
         [SerializeField] private Color chapter1Color;
@@ -69,6 +82,8 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material carpetFloor;
         
         public int CurrentChapter {get; private set;}
+        private ColorTextProfile profile1, profile2, profile3;
+        public ColorTextProfile currentTextColors;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -102,7 +117,13 @@ namespace _Project.Scripts.GameServices {
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
+            
+            profile1 = new ColorTextProfile(){colorA = chapter1TextA, colorB = chapter1TextB, colorAB = chapter1TextAB};
+            profile2 = new ColorTextProfile(){colorA = chapter2TextA, colorB = chapter2TextB, colorAB = chapter2TextAB};
+            profile3 = new ColorTextProfile(){colorA = chapter3TextA, colorB = chapter3TextB, colorAB = chapter3TextAB};
         }
+        
+        
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         public void InitializeDebugSystems() {
@@ -165,6 +186,16 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalFloat("_ActGlobalTransition", 0);
             
             if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
+            if(GameSceneSettings.HasInstance)
+            {
+                 currentTextColors = index switch
+                {
+                    1 => profile1,
+                    2 => profile2,
+                    3 => profile3,
+                    _ => profile1
+                };
+            }
         }
 
         #region SaveService
@@ -448,6 +479,13 @@ namespace _Project.Scripts.GameServices {
         private void OnDrawGizmos() {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(lastStepPosition + new Vector3(0,0.2f,0), lastStepPosition + new Vector3(0,0.2f,0) + -Vector3.up * 3f);
+        }
+        
+        public struct ColorTextProfile
+        {
+            public Color colorA;
+            public Color colorB;
+            public Color colorAB;
         }
     }
 }
