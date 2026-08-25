@@ -40,11 +40,8 @@ namespace _Project.Scripts.GameServices {
 
         public void ForceSetInteractableColor()
         {
-            print("feur");
             foreach (var baseObject in baseObjects)
-            {
                 baseObject.GetTextInteractable?.ForceSet();
-            }
         }
 
         #if UNITY_EDITOR

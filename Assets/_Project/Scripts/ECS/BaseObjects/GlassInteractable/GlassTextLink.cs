@@ -97,7 +97,6 @@ public class GlassTextLink : MonoBehaviour
     private static string AddColor(ColorEnum color, string input, bool special = false)
     {
         var newString = input;
-        print(GameInitializer.Instance.currentTextColors.colorA);
         switch (color)
         {
             case ColorEnum.ColorA:
@@ -136,6 +135,8 @@ public class GlassTextLink : MonoBehaviour
             case ColorEnum.None:
                 newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffffffff>" + newString + "</color>";
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(color), color, null);
         }
         return newString;
     }
