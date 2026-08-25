@@ -57,6 +57,18 @@ MonoBehaviour:
   chapter2B: {fileID: 2100000, guid: 71a845466f2305b4390306517785a4fe, type: 2}
   chapter3A: {fileID: 2100000, guid: 3efe7f42864ee034bbd24d7742b20bde, type: 2}
   chapter3B: {fileID: 2100000, guid: 25d271efa61295b44add628dbc185019, type: 2}
+  chapter1TextProfile:
+    colorA: {r: 0, g: 0, b: 0, a: 0}
+    colorB: {r: 0, g: 0, b: 0, a: 0}
+    colorAB: {r: 0, g: 0, b: 0, a: 0}
+  chapter2TextProfile:
+    colorA: {r: 0, g: 0, b: 0, a: 0}
+    colorB: {r: 0, g: 0, b: 0, a: 0}
+    colorAB: {r: 0, g: 0, b: 0, a: 0}
+  chapter3TextProfile:
+    colorA: {r: 0, g: 0, b: 0, a: 0}
+    colorB: {r: 0, g: 0, b: 0, a: 0}
+    colorAB: {r: 0, g: 0, b: 0, a: 0}
   chapter1Color: {r: 0.8584906, g: 0, b: 0, a: 1}
   chapter2Color: {r: 0, g: 0.18856287, b: 1, a: 1}
   chapter3Color: {r: 1, g: 0.7817019, b: 0, a: 1}
@@ -71,6 +83,10 @@ MonoBehaviour:
   tileFloor2: {fileID: 2100000, guid: c8efdf2a5dcfddb488a07fb077339211, type: 2}
   tileFloor3: {fileID: 2100000, guid: 53d4ad04b44bd1e43be70f133d01207a, type: 2}
   carpetFloor: {fileID: 2100000, guid: f45f510b2a84c134996ec745a259da71, type: 2}
+  currentTextColors:
+    colorA: {r: 0, g: 0, b: 0, a: 0}
+    colorB: {r: 0, g: 0, b: 0, a: 0}
+    colorAB: {r: 0, g: 0, b: 0, a: 0}
   debugSystemInitializer: {fileID: 9006967089802969567}
   initializeDebugger: 1
 --- !u!114 &9006967089802969567
@@ -98,8 +114,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.GameServices.DiscordRichPresence
   AutoUnparentOnAwake: 1
-  details: Developping Fractured
-  state: Soon on Steam
+  details: In main menu
+  state: Playing Solo
   largeImage: 
   largeText: Fractured
 --- !u!114 &9194239713120839868

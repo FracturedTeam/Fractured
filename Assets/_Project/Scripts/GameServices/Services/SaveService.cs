@@ -37,8 +37,8 @@ namespace _Project.Scripts.GameServices.Services {
     
     public class SaveService : IGameSystem {
         private readonly ShardService shardService;
-        private readonly string saveFileName = "New Game";
-        private readonly string settingsFileName = "Settings";
+        private readonly string saveFileName = "savefile0";
+        private readonly string settingsFileName = "settings";
         
         public GameData GameData;
         public SettingData SettingData;
@@ -84,6 +84,8 @@ namespace _Project.Scripts.GameServices.Services {
         public void NewGame(string gameName = "") {
             if (gameName == "") gameName = saveFileName;
             
+            DeleteGame(saveFileName);
+            
             GameData = new GameData {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
@@ -125,6 +127,10 @@ namespace _Project.Scripts.GameServices.Services {
                 if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time in the save file
                     GameSceneSettings.Instance.BindData(true);
                 PlayerController.Instance.SaveData(GameData.PlayerData); // Lui donner accès au shard Service (Pourquoi ? j'ai oublié)
+
+                foreach (var scene in shardService.sceneMasters) {
+                    scene.SaveData();
+                }
                 
                 //Save Interactable
                 foreach (var interactable in shardService.interactables) {
@@ -205,6 +211,10 @@ namespace _Project.Scripts.GameServices.Services {
             
             GameSceneSettings.Instance.SetSceneData(GameData.SceneDatas[index]);
             GameSceneSettings.Instance.BindData(false);
+
+            foreach (var scene in shardService.sceneMasters) {
+                scene.Load();
+            }
             
             foreach (var interactable in shardService.interactables) {
                 interactable.Load();

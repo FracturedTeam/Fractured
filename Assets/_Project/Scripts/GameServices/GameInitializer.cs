@@ -46,6 +46,11 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material chapter2B;
         [SerializeField] private Material chapter3A;
         [SerializeField] private Material chapter3B;
+        
+        [Header("Text Colors")] 
+        [SerializeField] private ColorTextProfile chapter1TextProfile;
+        [SerializeField] private ColorTextProfile chapter2TextProfile;
+        [SerializeField] private ColorTextProfile chapter3TextProfile;
 
         [Header("Gamepad Color Settings")]
         [SerializeField] private Color chapter1Color;
@@ -69,6 +74,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material carpetFloor;
         
         public int CurrentChapter {get; private set;}
+        public ColorTextProfile currentTextColors;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         [SerializeField] private DebugSystemInitializer debugSystemInitializer;
@@ -102,6 +108,7 @@ namespace _Project.Scripts.GameServices {
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
+            
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -132,6 +139,10 @@ namespace _Project.Scripts.GameServices {
             //Set the debug system
             debugSystemInitializer.SetDebugSystem(debugSystem);
         }
+        
+        [ContextMenu("ReloadColors 1")] void ReloadColors1() =>   currentTextColors = chapter1TextProfile;
+        [ContextMenu("ReloadColors 2")] void ReloadColors2() =>   currentTextColors = chapter2TextProfile;
+        [ContextMenu("ReloadColors 3")] void ReloadColors3() =>   currentTextColors = chapter3TextProfile;
         
 #endif
         
@@ -164,7 +175,16 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
             Shader.SetGlobalFloat("_ActGlobalTransition", 0);
             
+            currentTextColors = index switch
+            {
+                1 => chapter1TextProfile,
+                2 => chapter2TextProfile,
+                3 => chapter3TextProfile,
+                _ => chapter1TextProfile
+            };
+            
             if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
+            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ForceSetInteractableColor();
         }
 
         #region SaveService
@@ -200,12 +220,9 @@ namespace _Project.Scripts.GameServices {
 
         public void EmptyAll() {
             shardService.stopUpdate = true;
-            EmptyInteractable();
-            EmptyShards();
-        }
-        
-        private void EmptyInteractable() {
             shardService.interactables.Clear();
+            shardService.sceneMasters.Clear();
+            EmptyShards();
         }
 
         public void EmptyShards() {
@@ -217,8 +234,8 @@ namespace _Project.Scripts.GameServices {
             if(HudManager.HasInstance) HudManager.Instance.SetGlass(false);
         }
 
-        public void PopulateLevel(BaseObject[] baseObjects) {
-            shardService.RepopulateBaseObjet(baseObjects);
+        public void PopulateLevel(BaseObject[] baseObjects, SceneMaster[] scenes) {
+            shardService.RepopulateBaseObjet(baseObjects, scenes);
             var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
             foreach (var cam in camSwitches) {
                 cam.Initialize();
@@ -226,7 +243,6 @@ namespace _Project.Scripts.GameServices {
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if(!initializeDebugger) return;
-            var scenes = GetScenes();
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
             shardDebugService.UpdateSceneDebug(scenes, frameMaster);
             #endif
@@ -448,6 +464,14 @@ namespace _Project.Scripts.GameServices {
         private void OnDrawGizmos() {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(lastStepPosition + new Vector3(0,0.2f,0), lastStepPosition + new Vector3(0,0.2f,0) + -Vector3.up * 3f);
+        }
+        
+        [Serializable]
+        public struct ColorTextProfile
+        {
+            public Color colorA;
+            public Color colorB;
+            public Color colorAB;
         }
     }
 }

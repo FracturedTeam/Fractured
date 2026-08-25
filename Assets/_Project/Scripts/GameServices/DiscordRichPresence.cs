@@ -7,8 +7,8 @@ namespace _Project.Scripts.GameServices {
     public class DiscordRichPresence : PersistentSingleton<DiscordRichPresence> {
         private long applicationID = 1521130383679426591;
         [Space] 
-        public string details = "Playing Fractured";
-        public string state = "Remembering why i killed my brother";
+        public string details = "Chapter";
+        public string state = "Playing Solo";
 
         [Space] 
         public string largeImage = "";
@@ -16,6 +16,8 @@ namespace _Project.Scripts.GameServices {
         
         private Discord.Discord discord;
         private bool isInitialized = false;
+        
+        private long startTimestamp;
         
         void Start() {
             Initialize();   
@@ -25,6 +27,7 @@ namespace _Project.Scripts.GameServices {
             try {
                 discord = new Discord.Discord(applicationID, (ulong)CreateFlags.NoRequireDiscord);
                 isInitialized = true;
+                startTimestamp = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 UpdateStatus();
             }
             catch (Exception e) {
@@ -55,13 +58,18 @@ namespace _Project.Scripts.GameServices {
             try {
                 var activityManager = discord.GetActivityManager();
                 var activity = new Discord.Activity {
+                    Type = ActivityType.Playing,
                     Details = details,
                     State = state,
                     Assets = {
                         LargeImage = largeImage,
                         LargeText = largeText
+                    },
+                    Timestamps = new ActivityTimestamps {
+                        Start = startTimestamp,
                     }
                 };
+                
                 activityManager.UpdateActivity(activity, (res) => {
                     if(res != Discord.Result.Ok) Debug.LogWarning("Failed connecting to Discord");
                 });
@@ -71,10 +79,13 @@ namespace _Project.Scripts.GameServices {
             }
         }
 
-        public void UpdateRichPresence(string details) {
+        public void UpdateRichPresence(string details, string state) {
             if(!isInitialized) return;
             
-            this.details = details;
+            if(details != "")
+                this.details = details;
+            if(state != "")
+                this.state = state;
             
             UpdateStatus();
         }

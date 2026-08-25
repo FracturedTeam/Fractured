@@ -3,8 +3,6 @@ using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Inputs;
-using _Project.Scripts.Player;
-using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,19 +10,21 @@ namespace _Project.Scripts.GameServices.Services {
     public class ShardService : IGameSystem {
         public List<BaseObject> interactables { get; private set; }
         public List<Glass> shards {get; private set;}
+        public List<SceneMaster> sceneMasters {get; private set;}
         private Glass AShard;
         private Glass BShard;
         
         private Glass currentGlass;
         private Glass onTopGlass;
         
-        private readonly List<BaseObject> shardsInteractable = new List<BaseObject>();
+        private readonly List<BaseObject> shardsInteractable = new();
 
         public bool stopUpdate;
         
         public void Initialize() { //Initialize the service
             interactables = new List<BaseObject>();
             shards = new List<Glass>();
+            sceneMasters = new List<SceneMaster>();
             
             InputsBrain.Instance.OnShardA += GrabShardA;
             InputsBrain.Instance.OnShardB += GrabShardB;
@@ -41,17 +41,17 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
 
-        public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
-            interactables.Clear();
-            shards.Clear();
-            shardsInteractable.Clear();
-            
-            interactables.AddRange(_interactable);
-            shards.AddRange(_shards);
-            
-            //Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
-            UpdateInteractableObjects();
-        }
+        // public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
+        //     interactables.Clear();
+        //     shards.Clear();
+        //     shardsInteractable.Clear();
+        //     
+        //     interactables.AddRange(_interactable);
+        //     shards.AddRange(_shards);
+        //     
+        //     //Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
+        //     UpdateInteractableObjects();
+        // }
         
         public void Tick() { //Add a check method to not call the function when loading a scene
             if(stopUpdate) return;
@@ -144,12 +144,14 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        public void RepopulateBaseObjet(BaseObject[] obj) {
+        public void RepopulateBaseObjet(BaseObject[] obj, SceneMaster[] scenes) {
             interactables.Clear();
             shards.Clear();
             shardsInteractable.Clear();
+            sceneMasters.Clear();
             
             interactables.AddRange(obj);
+            sceneMasters.AddRange(scenes);
             
             UpdateInteractableObjects();
         }
@@ -166,11 +168,15 @@ namespace _Project.Scripts.GameServices.Services {
             BShard = null;
             shardsInteractable.Clear();
             interactables.Clear();
+            sceneMasters.Clear();
         }
         
         public void Dispose() {
             shardsInteractable.Clear();
             shards.Clear();
+            interactables.Clear();
+            sceneMasters.Clear();
+            
             InputsBrain.Instance.OnShardA -= GrabShardA;
             InputsBrain.Instance.OnShardB -= GrabShardB;
         }

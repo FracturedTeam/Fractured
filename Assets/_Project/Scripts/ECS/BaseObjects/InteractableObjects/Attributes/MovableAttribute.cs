@@ -351,7 +351,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                             resolvedPosition += Vector3.Project(correction, toPlayer);
                         }
                         else {
-                            resolvedPosition -= correction;
+                            resolvedPosition -= correction * 0.1f;
                         }
                     }
                 }

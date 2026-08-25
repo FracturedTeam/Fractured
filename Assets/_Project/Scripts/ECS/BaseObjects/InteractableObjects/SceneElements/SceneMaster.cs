@@ -48,7 +48,7 @@ namespace _Project.Scripts.ECS {
             private set {
                 isSceneValid = value;
                 if (isSceneValid) {
-                    ValidSceneElement();
+                    ValidateScene();
                 }
             }
         }
@@ -73,13 +73,10 @@ namespace _Project.Scripts.ECS {
 
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
-
             if (!requiredPlayerPosition || !PlayerController.HasInstance) return;
             
             var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
             
-            if (isValidPlayerPosition == dist <= 2) return;
-                
             isValidPlayerPosition = dist <= 2;
             CheckForValidation();
         }
@@ -90,9 +87,23 @@ namespace _Project.Scripts.ECS {
             }
         }
 
-        private void ValidSceneElement() {
+        private void ValidateScene() {
             if(hasSceneBeenValidated) return;
             
+            BaseValidation();
+
+            // Timer start
+            if(!validationDelay.IsRunning)
+                validationDelay.Start();
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Interact);
+            
+            PlayerController.Instance.FreezeController(true);
+            PlayerController.Instance.SetInteraction(false);
+            PlayerController.Instance.SetInMemory(true);
+        }
+
+        private void BaseValidation() {
             hasSceneBeenValidated = true;
 
             foreach (var element in elements) { // Lock interaction with sceneElement once the scene is valid
@@ -104,16 +115,6 @@ namespace _Project.Scripts.ECS {
             
             frame.Unlock();
             worldText?.Appear();
-            
-            // Timer start
-            if(!validationDelay.IsRunning)
-                validationDelay.Start();
-            
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Interact);
-            
-            PlayerController.Instance.FreezeController(true);
-            PlayerController.Instance.SetInteraction(false);
-            PlayerController.Instance.SetInMemory(true);
         }
 
         private void DisplayMemoryOnDelay() {
@@ -145,18 +146,12 @@ namespace _Project.Scripts.ECS {
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
         
-        public void LoadCompleteScene() {
-            ValidSceneElement();
+        public void LoadValidateScene() {
+            BaseValidation();
+            
+            GameInitializer.Instance.AddShards(glassShards);
             
             foreach (var element in elements) {
-                if (element.validationMethod is SceneElement.ValidationMethod.Position) {
-                    element.transform.position = element.requestedCollisionArea.transform.position;
-                }
-
-                if (element.validationMethod is SceneElement.ValidationMethod.UseState) {
-                    element.SetDebugUseState(element.requestedUseState);
-                }
-                
                 element.SetValidate();
             }
         }
@@ -224,7 +219,7 @@ namespace _Project.Scripts.ECS {
              if(data.Guid != Guid) return;
              
              if(data.isCompleted)
-                 LoadCompleteScene();
+                 LoadValidateScene();
          }
          
          [ContextMenu("Save")]
