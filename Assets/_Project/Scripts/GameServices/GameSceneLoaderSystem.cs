@@ -56,15 +56,13 @@ namespace _Project.Scripts.GameServices {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         IEnumerator SetSceneWithDelay() {
             yield return new WaitForNextFrameUnit();
-         
-            if (GameSceneSettings.HasInstance) {
-                
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
-                PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
-                GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
-                // GameInitializer.Instance.SaveData();
-                // PlayerController.Instance.triggerEnterRoom = true;
-            }
+
+            if (!GameSceneSettings.HasInstance) yield break;
+            
+            var settings = GameSceneSettings.Instance;
+            GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
+            PlayerController.Instance.Movement.SetPosition(settings.playerPosition, Direction.Up);
+            GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
         }
         
         public async Task LoadSceneFromDebug(SceneField scene) {
@@ -79,14 +77,14 @@ namespace _Project.Scripts.GameServices {
             await LoadSceneAsync(scene);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
             
-            if(GameSceneSettings.HasInstance)
-                GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
+            var settings = GameSceneSettings.Instance;
+            GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
             
             await Task.Delay(100);
             GameInitializer.Instance.LoadData();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
-            PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+            PlayerController.Instance.Movement.SetPosition(settings.playerPosition, Direction.Up);
         }
         
 #endif
@@ -156,14 +154,16 @@ namespace _Project.Scripts.GameServices {
                 await FadeToBlack();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
-                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                
+                var settings = GameSceneSettings.Instance;
+                await LoadSceneAsync(settings.levelArt);
 
                 await WaitForSecondsAsync(0.25f);
                 
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                     show = true,
-                    title = GameSceneSettings.Instance.transitionTextSO.title,
-                    description = GameSceneSettings.Instance.transitionTextSO.description,
+                    title = settings.transitionTextSO.title,
+                    description = settings.transitionTextSO.description,
                 });
 
                 PlayerController.Instance.Movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
@@ -194,11 +194,13 @@ namespace _Project.Scripts.GameServices {
                 await UnloadSceneAsync();
                 
                 await Task.Yield();
+
+                var settings = GameSceneSettings.Instance;
                 
                 if (GameSceneSettings.HasInstance) {
-                    GameInitializer.Instance.PopulateLevel(GameSceneSettings.Instance.baseObjects.ToArray());
+                    GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
                     GameInitializer.Instance.UpdateDebugCameras();
-                    GameInitializer.Instance.SetCurrentChapter(GameSceneSettings.Instance.ActColor);
+                    GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
                 }
 
                 if (newGameStarted) {

@@ -220,12 +220,9 @@ namespace _Project.Scripts.GameServices {
 
         public void EmptyAll() {
             shardService.stopUpdate = true;
-            EmptyInteractable();
-            EmptyShards();
-        }
-        
-        private void EmptyInteractable() {
             shardService.interactables.Clear();
+            shardService.sceneMasters.Clear();
+            EmptyShards();
         }
 
         public void EmptyShards() {
@@ -237,8 +234,8 @@ namespace _Project.Scripts.GameServices {
             if(HudManager.HasInstance) HudManager.Instance.SetGlass(false);
         }
 
-        public void PopulateLevel(BaseObject[] baseObjects) {
-            shardService.RepopulateBaseObjet(baseObjects);
+        public void PopulateLevel(BaseObject[] baseObjects, SceneMaster[] scenes) {
+            shardService.RepopulateBaseObjet(baseObjects, scenes);
             var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
             foreach (var cam in camSwitches) {
                 cam.Initialize();
@@ -246,7 +243,6 @@ namespace _Project.Scripts.GameServices {
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if(!initializeDebugger) return;
-            var scenes = GetScenes();
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
             shardDebugService.UpdateSceneDebug(scenes, frameMaster);
             #endif
