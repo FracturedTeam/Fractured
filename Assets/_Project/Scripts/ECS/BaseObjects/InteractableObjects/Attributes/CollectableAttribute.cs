@@ -328,39 +328,68 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void IsColliding() {
             var myCol = baseObject.GetCollider();
-            if (!myCol || !myCol.enabled)
-                return;
+            if (!myCol || !myCol.enabled) return;
 
             var mask = LayerMask.GetMask(
                 "Interactable",
                 "InteractableNoLUT",
                 "Wall",
-                "Walkable"
+                "Walkable",
+                "Default"
             );
+            
+            
+            var yPos = transform.position.y;
+            var toPlayer = (PlayerController.Instance.transform.position - transform.position).normalized;
+            toPlayer.y = 0;
 
-            var count = Physics.OverlapBoxNonAlloc(
-                myCol.bounds.center,
-                myCol.bounds.extents,
-                Hits,
-                myCol.transform.rotation,
-                mask,
-                QueryTriggerInteraction.Ignore
-            );
+            var resolvedPosition = transform.position;
 
-            for (var i = 0; i < count; i++)
-            {
-                var other = Hits[i];
-                if (!other || other == myCol)
-                    continue;
+            const int maxIteration = 10;
 
-                if (Physics.ComputePenetration(
-                        myCol, myCol.transform.position, myCol.transform.rotation,
-                        other, other.transform.position, other.transform.rotation,
-                        out Vector3 dir,
-                        out var distance)) {
-                    transform.position += dir * (distance + 0.001f);
+            for (var iteration = 0; iteration < maxIteration; iteration++) {
+                var boundsCenter = resolvedPosition + (myCol.bounds.center - myCol.transform.position);
+                
+                var count = Physics.OverlapBoxNonAlloc(
+                   boundsCenter,
+                    myCol.bounds.extents,
+                    Hits,
+                    myCol.transform.rotation,
+                    mask,
+                    QueryTriggerInteraction.Ignore
+                );
+                
+                var hadOverlap = false;
+            
+                for (var i = 0; i < count; i++)
+                {
+                    var other = Hits[i];
+                    if (!other || other == myCol) continue;
+
+                    if (Physics.ComputePenetration(
+                            myCol, myCol.transform.position, myCol.transform.rotation,
+                            other, other.transform.position, other.transform.rotation,
+                            out Vector3 dir, out var distance)) {
+                        hadOverlap = true;
+                    
+                        var correction = dir * (distance + 0.001f);
+                        correction.y = 0f;
+                    
+                        var dot = Vector3.Dot(correction.normalized, toPlayer);
+                        if (dot > 0f) {
+                            resolvedPosition += Vector3.Project(correction, toPlayer);
+                        }
+                        else {
+                            resolvedPosition -= correction * 0.1f;
+                        }
+                    }
                 }
+                
+                if(!hadOverlap) break;
             }
+
+            resolvedPosition.y = yPos;
+            transform.DOMove(resolvedPosition, 0.1f);
         }
 
         public bool CanBeGrab() {

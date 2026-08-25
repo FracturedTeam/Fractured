@@ -12,6 +12,10 @@ namespace _Project.Scripts.Player.States {
             idleBreak.OnTimerStop += PlayIdleBreak;
         }
 
+        ~PlayerLocomotionState() {
+            idleBreak.OnTimerStop -= PlayIdleBreak;
+        }
+        
         public override void OnEnter() {
             animator.CrossFade(IdleHash,  DefaultCrossFadeDuration);
             player.SetMoveSpeed(PlayerSpeedEnum.Normal);
@@ -52,7 +56,7 @@ namespace _Project.Scripts.Player.States {
         }
 
         public override void OnExit() {
-            
+            idleBreak.CompleteStop();
         }
     }
 }

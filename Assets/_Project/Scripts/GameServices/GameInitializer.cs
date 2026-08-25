@@ -48,17 +48,9 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material chapter3B;
         
         [Header("Text Colors")] 
-        [SerializeField] private Color chapter1TextA;
-        [SerializeField] private Color chapter1TextB;
-        [SerializeField] private Color chapter1TextAB;
-        
-        [SerializeField] private Color chapter2TextA;
-        [SerializeField] private Color chapter2TextB;
-        [SerializeField] private Color chapter2TextAB;
-        
-        [SerializeField] private Color chapter3TextA;
-        [SerializeField] private Color chapter3TextB;
-        [SerializeField] private Color chapter3TextAB;
+        [SerializeField] private ColorTextProfile chapter1TextProfile;
+        [SerializeField] private ColorTextProfile chapter2TextProfile;
+        [SerializeField] private ColorTextProfile chapter3TextProfile;
 
         [Header("Gamepad Color Settings")]
         [SerializeField] private Color chapter1Color;
@@ -82,7 +74,6 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material carpetFloor;
         
         public int CurrentChapter {get; private set;}
-        private ColorTextProfile profile1, profile2, profile3;
         public ColorTextProfile currentTextColors;
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -118,12 +109,7 @@ namespace _Project.Scripts.GameServices {
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
             
-            profile1 = new ColorTextProfile(){colorA = chapter1TextA, colorB = chapter1TextB, colorAB = chapter1TextAB};
-            profile2 = new ColorTextProfile(){colorA = chapter2TextA, colorB = chapter2TextB, colorAB = chapter2TextAB};
-            profile3 = new ColorTextProfile(){colorA = chapter3TextA, colorB = chapter3TextB, colorAB = chapter3TextAB};
         }
-        
-        
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
         public void InitializeDebugSystems() {
@@ -153,6 +139,10 @@ namespace _Project.Scripts.GameServices {
             //Set the debug system
             debugSystemInitializer.SetDebugSystem(debugSystem);
         }
+        
+        [ContextMenu("ReloadColors 1")] void ReloadColors1() =>   currentTextColors = chapter1TextProfile;
+        [ContextMenu("ReloadColors 2")] void ReloadColors2() =>   currentTextColors = chapter2TextProfile;
+        [ContextMenu("ReloadColors 3")] void ReloadColors3() =>   currentTextColors = chapter3TextProfile;
         
 #endif
         
@@ -185,17 +175,16 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
             Shader.SetGlobalFloat("_ActGlobalTransition", 0);
             
-            if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
-            if(GameSceneSettings.HasInstance)
+            currentTextColors = index switch
             {
-                 currentTextColors = index switch
-                {
-                    1 => profile1,
-                    2 => profile2,
-                    3 => profile3,
-                    _ => profile1
-                };
-            }
+                1 => chapter1TextProfile,
+                2 => chapter2TextProfile,
+                3 => chapter3TextProfile,
+                _ => chapter1TextProfile
+            };
+            
+            if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
+            if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ForceSetInteractableColor();
         }
 
         #region SaveService
@@ -231,12 +220,9 @@ namespace _Project.Scripts.GameServices {
 
         public void EmptyAll() {
             shardService.stopUpdate = true;
-            EmptyInteractable();
-            EmptyShards();
-        }
-        
-        private void EmptyInteractable() {
             shardService.interactables.Clear();
+            shardService.sceneMasters.Clear();
+            EmptyShards();
         }
 
         public void EmptyShards() {
@@ -248,8 +234,8 @@ namespace _Project.Scripts.GameServices {
             if(HudManager.HasInstance) HudManager.Instance.SetGlass(false);
         }
 
-        public void PopulateLevel(BaseObject[] baseObjects) {
-            shardService.RepopulateBaseObjet(baseObjects);
+        public void PopulateLevel(BaseObject[] baseObjects, SceneMaster[] scenes) {
+            shardService.RepopulateBaseObjet(baseObjects, scenes);
             var camSwitches = FindObjectsByType<CameraControlTrigger>(FindObjectsSortMode.None);
             foreach (var cam in camSwitches) {
                 cam.Initialize();
@@ -257,7 +243,6 @@ namespace _Project.Scripts.GameServices {
             
             #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if(!initializeDebugger) return;
-            var scenes = GetScenes();
             var frameMaster = FindAnyObjectByType<MemoryFrameMaster>();
             shardDebugService.UpdateSceneDebug(scenes, frameMaster);
             #endif
@@ -481,6 +466,7 @@ namespace _Project.Scripts.GameServices {
             Gizmos.DrawLine(lastStepPosition + new Vector3(0,0.2f,0), lastStepPosition + new Vector3(0,0.2f,0) + -Vector3.up * 3f);
         }
         
+        [Serializable]
         public struct ColorTextProfile
         {
             public Color colorA;

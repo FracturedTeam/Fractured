@@ -50,7 +50,7 @@ public class GlassText : MonoBehaviour
             isInitialized = true;
             
             soundInstance = GameInitializer.Instance.CreateInstance(GameInitializer.Instance.GetBank().environmentalText_Loop);
-            RuntimeManager.AttachInstanceToGameObject(soundInstance, gameObject, PlayerController.Instance.GetRigidbody());
+            RuntimeManager.AttachInstanceToGameObject(soundInstance, gameObject);
         }
 
         ForceSet();
@@ -58,7 +58,7 @@ public class GlassText : MonoBehaviour
     }
 
     [ContextMenu("Set Texts")]
-    private void ForceSet()
+    internal void ForceSet()
     {
         if (currentTextScriptableObject)
             Setup(currentTextScriptableObject);

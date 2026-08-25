@@ -135,6 +135,8 @@ public class GlassTextLink : MonoBehaviour
             case ColorEnum.None:
                 newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffffffff>" + newString + "</color>";
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(color), color, null);
         }
         return newString;
     }
