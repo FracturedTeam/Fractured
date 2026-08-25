@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{fd851668-4218-40c6-9134-d2fc11a4f567}">
+		<property name="volume">
+			<value>8</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{39a46b21-06ed-4537-ad32-0a542aea30fa}</destination>
 		</relationship>
@@ -96,6 +99,8 @@
 	<object class="MixerBusEffectChain" id="{39a46b21-06ed-4537-ad32-0a542aea30fa}">
 		<relationship name="effects">
 			<destination>{fffbd01b-a5cd-467c-a05e-845b32dcf417}</destination>
+			<destination>{0fed46e4-1013-4e05-bd89-934e79c67480}</destination>
+			<destination>{f51d1d7e-540d-48ca-a7f6-16ba89638906}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{75b6a8f0-4589-4071-83a4-ac22f772ab34}" />
@@ -110,6 +115,19 @@
 	</object>
 	<object class="MixerBusFader" id="{95253911-9465-4873-8b53-2ae0c3cac9fb}" />
 	<object class="MixerBusFader" id="{fffbd01b-a5cd-467c-a05e-845b32dcf417}" />
+	<object class="PitchShifterEffect" id="{0fed46e4-1013-4e05-bd89-934e79c67480}">
+		<property name="pitch">
+			<value>0.930000007</value>
+		</property>
+	</object>
+	<object class="ThreeEQEffect" id="{f51d1d7e-540d-48ca-a7f6-16ba89638906}">
+		<property name="lowGain">
+			<value>-28</value>
+		</property>
+		<property name="midGain">
+			<value>-3</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{5debe2ca-b5b3-4b73-8ac6-0306735a789e}">
 		<relationship name="audioFile">
 			<destination>{3019611e-5112-4c95-a35b-88288389e886}</destination>
