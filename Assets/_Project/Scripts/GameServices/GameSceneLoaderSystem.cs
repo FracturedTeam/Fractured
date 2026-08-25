@@ -160,6 +160,8 @@ namespace _Project.Scripts.GameServices {
 
                 await WaitForSecondsAsync(0.25f);
                 
+                DiscordRichPresence.Instance.UpdateRichPresence(settings.transitionTextSO.title, "");
+                
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                     show = true,
                     title = settings.transitionTextSO.title,
@@ -225,7 +227,7 @@ namespace _Project.Scripts.GameServices {
             await UnloadSceneAsync();
             
             GameInitializer.Instance.DisposeShards();
-            
+            DiscordRichPresence.Instance.UpdateRichPresence("In main menu", "");
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
             
@@ -245,6 +247,8 @@ namespace _Project.Scripts.GameServices {
             await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
 
+            DiscordRichPresence.Instance.UpdateRichPresence( "...", "");
+            
             newGameStarted = true;
             
             if (!HudManager.HasInstance) Instantiate(hudManager);
@@ -292,6 +296,7 @@ namespace _Project.Scripts.GameServices {
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 
                 await WaitForSecondsAsync(0.25f);
+                DiscordRichPresence.Instance.UpdateRichPresence(GameSceneSettings.Instance.transitionTextSO.title, "");
                 
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                     show = true,
