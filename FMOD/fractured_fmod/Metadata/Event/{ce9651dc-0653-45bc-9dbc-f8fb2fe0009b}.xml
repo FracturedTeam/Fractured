@@ -5,7 +5,7 @@
 			<value>Environmental_Text_Loop</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{d9245b2d-bb40-4304-b02c-d42a256c2ebe}</destination>
@@ -56,7 +56,17 @@
 			<destination>{15df2018-bd6f-4102-954b-c65e630e302d}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{7495cfcd-32e8-42c8-bd6f-f18eb5366ca8}" />
+	<object class="EventAutomatableProperties" id="{7495cfcd-32e8-42c8-bd6f-f18eb5366ca8}">
+		<property name="maxVoices">
+			<value>3</value>
+		</property>
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+		<property name="maximumDistance">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{2213b09d-c784-4ca1-bf59-188697539573}" />
 	<object class="Timeline" id="{5a487219-97c0-4fb8-8884-56e792f8bfef}">
 		<relationship name="modules">
@@ -110,6 +120,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{723698cb-1645-46d0-b49a-d635ddef2a3f}">
 		<relationship name="effects">
+			<destination>{ccf1b7b5-57b8-438a-b41d-ba4a80c87462}</destination>
 			<destination>{3b02ee59-9bbe-4e52-8beb-500fdadd3bf2}</destination>
 			<destination>{71aeca67-4541-484e-b718-0419819608b0}</destination>
 			<destination>{87686f1a-40cc-4d22-9364-0ec2062cd5e4}</destination>
@@ -117,10 +128,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{405e8517-6c3e-445f-a61e-abf8e864b947}" />
 	<object class="MixerBusFader" id="{61bcfcc5-d6eb-470d-8c2d-12bc4ee0f18f}" />
+	<object class="SpatialiserEffect" id="{ccf1b7b5-57b8-438a-b41d-ba4a80c87462}" />
 	<object class="MixerBusFader" id="{3b02ee59-9bbe-4e52-8beb-500fdadd3bf2}" />
 	<object class="ThreeEQEffect" id="{71aeca67-4541-484e-b718-0419819608b0}">
 		<property name="lowGain">
-			<value>-5.5</value>
+			<value>-39</value>
 		</property>
 		<property name="midGain">
 			<value>-17.5</value>
@@ -130,17 +142,32 @@
 		</property>
 	</object>
 	<object class="SFXReverbEffect" id="{87686f1a-40cc-4d22-9364-0ec2062cd5e4}">
+		<property name="decayTime">
+			<value>1300</value>
+		</property>
+		<property name="earlyDelay">
+			<value>30</value>
+		</property>
+		<property name="HFReference">
+			<value>15500</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>53.5</value>
+		</property>
 		<property name="lowShelfGain">
 			<value>-5</value>
 		</property>
 		<property name="highCut">
 			<value>720</value>
 		</property>
+		<property name="earlyLateMix">
+			<value>43</value>
+		</property>
 		<property name="wetLevel">
 			<value>9</value>
 		</property>
 		<property name="dryLevel">
-			<value>-34</value>
+			<value>-59</value>
 		</property>
 	</object>
 </objects>
