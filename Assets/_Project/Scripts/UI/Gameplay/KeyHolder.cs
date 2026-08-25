@@ -13,7 +13,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         public void SetKey(Key key) {
-            icon.sprite = key.keySprite;
+            if(key.keySprite != null)
+                icon.sprite = key.keySprite;
             ID = key.ID;
         }
 
