@@ -38,6 +38,15 @@ namespace _Project.Scripts.GameServices {
         public void SetSceneData(SceneData objectData) => saveInstance.SetGameData(objectData);
         public List<Glass> GetAllShards() => saveInstance.GetShards();
 
+        public void ForceSetInteractableColor()
+        {
+            print("feur");
+            foreach (var baseObject in baseObjects)
+            {
+                baseObject.GetTextInteractable?.ForceSet();
+            }
+        }
+
         #if UNITY_EDITOR
         public void SetPlayerPos(Vector3 pos) {
             playerPosition = pos;

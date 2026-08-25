@@ -97,6 +97,7 @@ public class GlassTextLink : MonoBehaviour
     private static string AddColor(ColorEnum color, string input, bool special = false)
     {
         var newString = input;
+        print(GameInitializer.Instance.currentTextColors.colorA);
         switch (color)
         {
             case ColorEnum.ColorA:
