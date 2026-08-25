@@ -36,16 +36,13 @@ namespace _Project.Scripts.Player.States {
         }
 
         private void PlayIdleBreak() {
-            var rdm = Random.Range(0, 3);
+            var rdm = Random.Range(0, 2);
             switch (rdm) {
                 case 0:
                     animator.CrossFade(IdleBreak1Hash, DefaultCrossFadeDuration);
                     break;
                 case 1:
                     animator.CrossFade(IdleBreak2Hash, DefaultCrossFadeDuration);
-                    break;
-                case 2:
-                    animator.CrossFade(IdleBreak3Hash, DefaultCrossFadeDuration);
                     break;
             }
         }
