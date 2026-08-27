@@ -14,10 +14,8 @@ namespace _Project.Scripts.UI.Gameplay {
                 sprite.color = newColor;
             }
 
-            if (allColoredTexts.Length > 0) {
-                foreach (var text in allColoredTexts) {
-                    text.color = new Color(color.r, color.g, color.b, text.color.a);
-                }
+            foreach (var text in allColoredTexts) {
+                text.color = new Color(color.r, color.g, color.b, text.color.a);
             }
         }
     }

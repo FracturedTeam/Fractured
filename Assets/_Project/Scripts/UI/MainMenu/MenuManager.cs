@@ -51,6 +51,10 @@ namespace _Project.Scripts.UI {
         [Header("Chapter Settings")] 
         [SerializeField] private ChapterSelection[] chapters;
         
+        [Header("Inputs Panel")]
+        [SerializeField] private GameObject inputsKeyboard;
+        [SerializeField] private GameObject inputsGamepad;
+        
         private int currentIndex = 0;
         private int settingsIndex = 0;
         
@@ -106,6 +110,7 @@ namespace _Project.Scripts.UI {
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
+                InputsBrain.Instance.OnGamepadControlled += UpdateInputs;
             }
             
             CurrentMenu = MainMenuPanel;
@@ -119,6 +124,12 @@ namespace _Project.Scripts.UI {
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;
             InputsBrain.Instance.OnSettingsView -= SettingsView;
+            InputsBrain.Instance.OnGamepadControlled -= UpdateInputs;
+        }
+
+        private void UpdateInputs(bool gamepadControlled) {
+            inputsKeyboard.SetActive(!gamepadControlled);
+            inputsGamepad.SetActive(gamepadControlled);
         }
 
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
