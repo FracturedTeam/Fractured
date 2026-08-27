@@ -31,6 +31,10 @@ namespace _Project.Scripts.UI
         [SerializeField] private InputDisplay inputsDisplay;
         private MenuAnimation CurrentMenu;
         
+        [Header("Inputs Panel")]
+        [SerializeField] private GameObject inputsKeyboard;
+        [SerializeField] private GameObject inputsGamepad;
+        
         private int currentIndex = 0;
         private int settingsIndex = 0;
         
@@ -50,6 +54,7 @@ namespace _Project.Scripts.UI
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
+                InputsBrain.Instance.OnGamepadControlled += UpdateInputs;
             }
             
             CurrentMenu = MainMenuPanel;
@@ -65,8 +70,14 @@ namespace _Project.Scripts.UI
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;
             InputsBrain.Instance.OnSettingsView -= SettingsView;
+            InputsBrain.Instance.OnGamepadControlled -= UpdateInputs;
         }
 
+        private void UpdateInputs(bool gamepadControlled) {
+            inputsKeyboard.SetActive(!gamepadControlled);
+            inputsGamepad.SetActive(gamepadControlled);
+        }
+        
         private void OnEscapePressed() {
             ChangeState();
         }

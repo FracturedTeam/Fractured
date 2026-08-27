@@ -146,7 +146,9 @@ namespace _Project.Scripts.GameServices {
         
         public async Task LoadGameplaySceneAsync(SceneSettings sceneSettings) {
             try {
+                InputsBrain.Instance.DisablePauseInput(true);
                 InputsBrain.Instance.DisablePlayerInput(true);
+                InputsBrain.Instance.DisableUIInput(false);
                 
                 scenesToLoad.Clear();
                 GameInitializer.Instance.SaveData();
@@ -238,7 +240,9 @@ namespace _Project.Scripts.GameServices {
         }
 
         private async Task StartNewGame(int index = 0) {
+            InputsBrain.Instance.DisablePauseInput(true);
             InputsBrain.Instance.DisablePlayerInput(true);
+            InputsBrain.Instance.DisableUIInput(false);
             GameInitializer.Instance.CreateNewSave();
             scenesToLoad.Clear();
             
@@ -274,7 +278,9 @@ namespace _Project.Scripts.GameServices {
         
         private async Task LoadSave(string lastOpenScene) {
             try {
+                InputsBrain.Instance.DisablePauseInput(true);
                 InputsBrain.Instance.DisablePlayerInput(true);
+                InputsBrain.Instance.DisableUIInput(false);
                 GameInitializer.Instance.LoadGame();
                 scenesToLoad.Clear();
 
@@ -323,6 +329,7 @@ namespace _Project.Scripts.GameServices {
         private void LeaveTransitionFade() {
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Enter);
             InputsBrain.Instance.DisablePlayerInput(false);
+            InputsBrain.Instance.DisableUIInput(true);
             PlayerController.Instance.triggerEnterRoom = true;
             EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
                 show = false,
@@ -333,6 +340,7 @@ namespace _Project.Scripts.GameServices {
             _ = FadeToGame();
             
             InputsBrain.Instance.OnContinue -= LeaveTransitionFade;
+            InputsBrain.Instance.DisablePauseInput(false);
         }
         
         private async Task FadeToBlack() {
