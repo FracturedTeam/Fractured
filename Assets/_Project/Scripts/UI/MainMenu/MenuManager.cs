@@ -47,6 +47,9 @@ namespace _Project.Scripts.UI {
         [SerializeField] private MenuAnimation MainMenuPanel;
         [SerializeField] private InputDisplay inputsDisplay;
         private MenuAnimation CurrentMenu;
+
+        [Header("Chapter Settings")] 
+        [SerializeField] private ChapterSelection[] chapters;
         
         private int currentIndex = 0;
         private int settingsIndex = 0;
@@ -69,9 +72,21 @@ namespace _Project.Scripts.UI {
         private void Awake() {
             ChapterIndex = 1;
             if (GameInitializer.HasInstance) {
-                loadGameBtt.SetActive(GameInitializer.Instance.ExistingSave());
+                var existingSave = GameInitializer.Instance.ExistingSave();
+                loadGameBtt.SetActive(existingSave);
                 ChapterIndex = GameInitializer.Instance.GetLastChapter();
                 GameInitializer.Instance.SetCurrentChapter(ChapterIndex);
+
+                if (existingSave) {
+                    for(var i = 5; i > ChapterIndex; i--) {
+                        chapters[i - 1].Lock();
+                    }
+                }
+                else {
+                    foreach (var chap in chapters) {
+                        chap.Lock();
+                    }
+                }
             }
 
             switch (ChapterIndex) {
@@ -360,17 +375,17 @@ namespace _Project.Scripts.UI {
         }
         
         public void NewGame() {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.NewGame();
         }
 
         public void LoadGame() {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadGame();
         }
 
         public void LoadLevel(int levelIndex) {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
         }
     }
