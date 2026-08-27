@@ -191,13 +191,13 @@ namespace _Project.Scripts.Player {
         }
         #endregion
 
-        private void HandleInteractRotation(Vector3 playerDir) {
-            var newPos = transform.position + playerDir * interactZoneSize.z;
+        private void HandleInteractRotation() {
+            var newPos = transform.position + player.Movement.mesh.forward * interactZoneSize.z;
             interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.GetRotationSpeed() * Time.deltaTime);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
-            HandleInteractRotation(playerDir);
+            HandleInteractRotation();
 
             if (validationInputHold) {
                 validationInputTime += Time.deltaTime;
