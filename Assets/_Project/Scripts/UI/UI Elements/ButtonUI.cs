@@ -99,6 +99,8 @@ namespace _Project.Scripts.UI {
             buttonText.color = alternateColor;
             backgroundImage.sprite = backgroundHover;
             pressedGroup.gameObject.SetActive(false);
+            
+            Debug.Log("On Pointer Enter");
         }
 
         public void OnPointerExit(PointerEventData eventData) {

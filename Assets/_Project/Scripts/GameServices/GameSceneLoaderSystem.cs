@@ -235,7 +235,6 @@ namespace _Project.Scripts.GameServices {
             
             _ = LoadSceneAsync(menuScene);
 
-
             await FadeToGame();
         }
 

@@ -139,13 +139,11 @@ namespace _Project.Scripts.UI {
             CurrentMenu = newMenu;
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
-            settingsIndex = 0;
             
-            if(currentMenuType is not UI.CurrentMenu.Credits)
+            if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 HoverButton(GetCurrentList()[currentIndex]);
             
-            if(currentMenuType is UI.CurrentMenu.Settings)
-                HoverButton(settingsButtons[settingsIndex]);
+            HoverButton(settingsButtons[settingsIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
         }
@@ -155,7 +153,7 @@ namespace _Project.Scripts.UI {
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
-            if(currentMenuType is not UI.CurrentMenu.Credits)
+            if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
@@ -280,7 +278,7 @@ namespace _Project.Scripts.UI {
         }
         
         private void NavigateThroughButtons(Vector2 dir) {
-            if(currentSettings is CurrentSettings.Input) return;
+            if(currentSettings is CurrentSettings.Input && currentMenuType is UI.CurrentMenu.Settings) return;
             
             if (dir.y > 0.5f) {
                 UnHoverButton(GetCurrentList()[currentIndex]);
