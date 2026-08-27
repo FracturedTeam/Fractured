@@ -133,6 +133,9 @@ namespace _Project.Scripts.UI
             
             HoverButton(GetCurrentList()[currentIndex]);
             
+            if(currentMenuType is UI.CurrentMenu.Settings)
+                HoverButton(settingsButtons[settingsIndex]);
+            
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
         }
         
@@ -262,22 +265,27 @@ namespace _Project.Scripts.UI
             currentSettings = settingsIndex switch {
                 0 => CurrentSettings.Audio,
                 1 => CurrentSettings.Video,
-                2 => CurrentSettings.Access,
-                3 => CurrentSettings.Input,
+                2 => CurrentSettings.Input,
+                3 => CurrentSettings.Access,
                 _ => throw new ArgumentOutOfRangeException()
             };
             
             ExecuteButtonScrip(settingsButtons[settingsIndex]);
             
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            if(currentSettings is not CurrentSettings.Input)
+                UnHoverButton(GetCurrentList()[currentIndex]);
             
             currentIndex = 0;
-            HoverButton(GetCurrentList()[currentIndex]);
+            
+            if(currentSettings is not CurrentSettings.Input)
+                HoverButton(GetCurrentList()[currentIndex]);
             
             HoverButton(settingsButtons[settingsIndex]);
         }
 
         private void NavigateThroughButtons(Vector2 dir) {
+            if(currentSettings is CurrentSettings.Input) return;
+            
             if (dir.y > 0.5f) {
                 UnHoverButton(GetCurrentList()[currentIndex]);
                 
