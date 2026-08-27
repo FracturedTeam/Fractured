@@ -38,8 +38,7 @@ namespace _Project.Scripts.GameServices {
         public void SetSceneData(SceneData objectData) => saveInstance.SetGameData(objectData);
         public List<Glass> GetAllShards() => saveInstance.GetShards();
 
-        public void ForceSetInteractableColor()
-        {
+        public void ForceSetInteractableColor() {
             foreach (var baseObject in baseObjects)
                 baseObject.GetTextInteractable?.ForceSet();
         }

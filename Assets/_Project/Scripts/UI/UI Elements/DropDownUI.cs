@@ -59,11 +59,11 @@ namespace _Project.Scripts.UI {
         public void UpdateIndex(bool add) {
             var predictValue = add ? m_Value + 1 : m_Value - 1;
             if(predictValue > options.Count - 1)
-                value = 0;
-            else if(predictValue < 0)
-                value = options.Count - 1;
-            else
-                value = predictValue;
+                return;
+            if(predictValue < 0)
+                return;
+            
+            value = predictValue;
         }
         
         public void AddOptions(List<string> options) {

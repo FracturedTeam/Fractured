@@ -173,7 +173,7 @@ namespace _Project.Scripts.GameServices {
             CurrentChapter = index;
 
             Shader.SetGlobalFloat("_CurrentAct", CurrentChapter);
-            Shader.SetGlobalFloat("_ActGlobalTransition", 0);
+            Shader.SetGlobalFloat("_ActGlobalTransition", saveService.SettingData.enviroColorIntensity);
             
             currentTextColors = index switch
             {
@@ -183,10 +183,26 @@ namespace _Project.Scripts.GameServices {
                 _ => chapter1TextProfile
             };
             
-            if(HudManager.HasInstance) HudManager.Instance.UpdateUIColor(CurrentChapter);
+            AdjustUIColorIntensity(saveService.SettingData.uiColorIntensity);
             if(GameSceneSettings.HasInstance) GameSceneSettings.Instance.ForceSetInteractableColor();
         }
 
+        public void AdjustEnviroColorIntensity(float value) {
+            Shader.SetGlobalFloat("_ActGlobalTransition", value);
+        }
+        
+        public void AdjustUIColorIntensity(float value) {
+            if (HudManager.HasInstance) {
+                HudManager.Instance.UpdateUIColor(CurrentChapter, value);
+                return;
+            }
+
+            var menu = FindAnyObjectByType<MenuManager>();
+            if (menu != null) {
+                menu.UpdateUIColor(value);
+            }
+        }
+        
         #region SaveService
 
         public void SaveData() => saveService.SaveData();
@@ -288,8 +304,7 @@ namespace _Project.Scripts.GameServices {
                 shard.SetUp3dShard(isOn);
         }
         
-        public Material GetCurrentFragmentMaterial(bool isA)
-        {
+        public Material GetCurrentFragmentMaterial(bool isA) {
             if (isA) {
                 return CurrentChapter switch {
                     1 => chapter1A,

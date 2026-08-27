@@ -1,3 +1,4 @@
+using _Project.Scripts.GameServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,9 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private Image[] allColoredSprites;
         [SerializeField] private TextMeshProUGUI[] allColoredTexts;
 
-        public void SetSpriteColor(Color color) {
+        public void SetSpriteColor(Color color, float intensity) {
+            color *= intensity;
+            
             foreach (var sprite in allColoredSprites) {
                 var alpha = sprite.color.a;
                 var newColor = new Color(color.r, color.g, color.b, alpha);

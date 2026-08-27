@@ -91,19 +91,10 @@ namespace _Project.Scripts.UI {
                         chap.Lock();
                     }
                 }
+                
+                UpdateUIColor(GameInitializer.Instance.GetSettings.uiColorIntensity);
             }
 
-            switch (ChapterIndex) {
-                case 1:
-                    uiColor.SetSpriteColor(act1Color);
-                    break;
-                case 2:
-                    uiColor.SetSpriteColor(act2Color);
-                    break;
-                case 3:
-                    uiColor.SetSpriteColor(act3Color);
-                    break;
-            }
 
             if (InputsBrain.HasInstance) {
                 InputsBrain.Instance.OnBackBtt += Back;
@@ -118,6 +109,20 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
         }
 
+        public void UpdateUIColor(float intensity) {
+            switch (ChapterIndex) {
+                case 1:
+                    uiColor.SetSpriteColor(act1Color, intensity);
+                    break;
+                case 2:
+                    uiColor.SetSpriteColor(act2Color, intensity);
+                    break;
+                case 3:
+                    uiColor.SetSpriteColor(act3Color, intensity);
+                    break;
+            }
+        }
+        
         private void OnDisable() { 
             if (!InputsBrain.HasInstance) return;
             InputsBrain.Instance.OnBackBtt -= Back;
