@@ -210,7 +210,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
-                IsColliding();
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
@@ -237,7 +236,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
-                IsColliding();
                 baseObject.SetInteract(true);
                 
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
@@ -282,7 +280,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
-            tween = transform.DOMove(pos, 0.5f);
+            tween = transform.DOMove(pos, 0.5f).OnComplete(IsColliding);
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
             tween.onComplete += TriggerSceneElement;
         }
@@ -380,7 +378,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                             resolvedPosition += Vector3.Project(correction, toPlayer);
                         }
                         else {
-                            resolvedPosition -= correction * 0.1f;
+                            resolvedPosition -= correction * 0.05f;
                         }
                     }
                 }
