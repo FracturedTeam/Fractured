@@ -6,6 +6,7 @@ using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneSettings : Singleton<GameSceneSettings> {
@@ -25,12 +26,24 @@ namespace _Project.Scripts.GameServices {
         public Vector3 playerPosition;
         
         private SaveInstance saveInstance;
+        private Volume volume;
         
         private void Start() {
             if(saveInstance == null)
                 saveInstance = GetComponent<SaveInstance>();
             
             roomCamera.Priority = 1;
+
+            var vol = FindAnyObjectByType<Volume>();
+            if(vol != null) {
+                volume = vol;
+                volume.weight = 1 - GameInitializer.Instance.GetSettings.enviroColorIntensity;
+            }
+        }
+
+        public void UpdateVolumeWeight(float intensity) {
+            if(volume != null)
+                volume.weight = 1 - intensity;
         }
 
         public void BindData(bool firstTimeBind) => saveInstance.Bind(firstTimeBind);
