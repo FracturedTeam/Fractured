@@ -54,6 +54,7 @@ namespace _Project.Scripts.ScriptableObjects {
         
         [Space, Header("Loops")] 
         [Header("Act Ambient Loop")] 
+        public EventReference act_0_ambient_Loop;
         public EventReference act_1_ambient_Loop;
         public EventReference act_2_ambient_Loop;
         public EventReference act_3_ambient_Loop;

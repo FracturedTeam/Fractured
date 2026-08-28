@@ -15,6 +15,7 @@ namespace _Project.Scripts.GameServices.Services {
         private Bus musicBus;
         
         // Act Ambient
+        private EventInstance Act0Ambient;
         private EventInstance Act1Ambient;
         private EventInstance Act2Ambient;
         private EventInstance Act3Ambient;
@@ -46,6 +47,7 @@ namespace _Project.Scripts.GameServices.Services {
             sfxBus = RuntimeManager.GetBus("bus:/SFX");
             
             //Main ambient loop
+            Act0Ambient = CreateInstance(bank.act_0_ambient_Loop);
             Act1Ambient = CreateInstance(bank.act_1_ambient_Loop);
             Act2Ambient = CreateInstance(bank.act_2_ambient_Loop);
             Act3Ambient = CreateInstance(bank.act_3_ambient_Loop);
@@ -87,6 +89,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void Dispose() {
+            Act0Ambient.stop(STOP_MODE.IMMEDIATE);
             Act1Ambient.stop(STOP_MODE.IMMEDIATE);
             Act2Ambient.stop(STOP_MODE.IMMEDIATE);
             Act3Ambient.stop(STOP_MODE.IMMEDIATE);
@@ -97,6 +100,7 @@ namespace _Project.Scripts.GameServices.Services {
             creditsInstance.stop(STOP_MODE.IMMEDIATE);
             memorySeeingInstance.stop(STOP_MODE.IMMEDIATE);
             
+            Act0Ambient.release();
             Act1Ambient.release();
             Act2Ambient.release();
             Act3Ambient.release();
@@ -135,7 +139,12 @@ namespace _Project.Scripts.GameServices.Services {
         public void UpdateAmbientLoop(int index) {
             PLAYBACK_STATE playbackState;
             
-            if (index is 2 or 3) {
+            if (index is 2) {
+                Act0Ambient.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act0Ambient.start();
+                FadeLoop(ref Act0Ambient);
+            }
+            else if (index is 3) {
                 Act1Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act1Ambient.start();
                 FadeLoop(ref Act1Ambient);
@@ -193,6 +202,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void FadeLoop(ref EventInstance e) {
+            if(e.handle != Act0Ambient.handle) Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
             if(e.handle != Act1Ambient.handle) Act1Ambient.stop(STOP_MODE.ALLOWFADEOUT);
             if(e.handle != Act2Ambient.handle) Act2Ambient.stop(STOP_MODE.ALLOWFADEOUT);
             if(e.handle != Act3Ambient.handle) Act3Ambient.stop(STOP_MODE.ALLOWFADEOUT);
