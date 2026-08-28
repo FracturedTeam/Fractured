@@ -189,6 +189,9 @@ namespace _Project.Scripts.GameServices {
 
         public void AdjustEnviroColorIntensity(float value) {
             Shader.SetGlobalFloat("_ActGlobalTransition", value);
+            if (GameSceneSettings.HasInstance) {
+                GameSceneSettings.Instance.UpdateVolumeWeight(value);
+            }
         }
         
         public void AdjustUIColorIntensity(float value) {
