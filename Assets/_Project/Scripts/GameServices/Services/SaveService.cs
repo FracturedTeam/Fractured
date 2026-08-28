@@ -33,6 +33,9 @@ namespace _Project.Scripts.GameServices.Services {
         public bool dof;
         public bool chromaticAberration;
         public int subtitleSize;
+
+        public float enviroColorIntensity;
+        public float uiColorIntensity;
     }
     
     public class SaveService : IGameSystem {

@@ -154,16 +154,16 @@ namespace _Project.Scripts.UI {
             transitionMaterial.SetFloat("_Progression",  0);
         }
 
-        public void UpdateUIColor(int index) {
+        public void UpdateUIColor(int index, float intensity) {
             switch (index) {
                 case 1:
-                    setUIColor.SetSpriteColor(act1Color);
+                    setUIColor.SetSpriteColor(act1Color, intensity);
                     break;
                 case 2:
-                    setUIColor.SetSpriteColor(act2Color);
+                    setUIColor.SetSpriteColor(act2Color, intensity);
                     break;
                 case 3:
-                    setUIColor.SetSpriteColor(act3Color);
+                    setUIColor.SetSpriteColor(act3Color, intensity);
                     break;
             }
         }

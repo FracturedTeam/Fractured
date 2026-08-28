@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Inputs {
     public class InputsBrain : PersistentSingleton<InputsBrain> {
-        private InputSystem_Actions inputs;
+        public InputSystem_Actions inputs { get; private set; }
 
         public event Action<Vector2> OnPlayerMove = delegate { };
         public event Action<InputAction.CallbackContext> OnInteract = delegate { };
@@ -108,6 +108,11 @@ namespace _Project.Scripts.Inputs {
         public void DisableUIInput(bool doDisable) {
             if(doDisable) inputs.UI.Disable();
             else inputs.UI.Enable();
+        }
+
+        public void DisablePauseInput(bool doDisable) {
+            if(doDisable) inputs.Pause.Disable();
+            else inputs.Pause.Enable();
         }
         
         private void InputActionChangeCallback(object obj, InputActionChange change) {
