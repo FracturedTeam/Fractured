@@ -36,6 +36,7 @@ namespace _Project.Scripts.GameServices.Services {
         private readonly CountdownTimer hideObjectTimer = new (1f);
 
         private SettingData settingData;
+        private int currentAmbient = 0;
 
         public AudioService(AudioBank _bank) {
             bank = _bank;
@@ -143,31 +144,37 @@ namespace _Project.Scripts.GameServices.Services {
                 Act0Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act0Ambient.start();
                 FadeLoop(ref Act0Ambient);
+                currentAmbient = 0;
             }
             else if (index is 3) {
                 Act1Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act1Ambient.start();
                 FadeLoop(ref Act1Ambient);
+                currentAmbient = 1;
             }
             else if (index is 4) {
                 Act2Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act2Ambient.start();
                 FadeLoop(ref Act2Ambient);
+                currentAmbient = 2;
             }
             else if (index is 5) {
                 Act3Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act3Ambient.start();
                 FadeLoop(ref Act3Ambient);
+                currentAmbient = 3;
             }
             else if (index is 6) {
                 Act4Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act4Ambient.start();
                 FadeLoop(ref Act4Ambient);
+                currentAmbient = 4;
             }
             else if (index is 7) {
                 Act5Ambient.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act5Ambient.start();
                 FadeLoop(ref Act5Ambient);
+                currentAmbient = 5;
             }
             else if (index is 12) {
                 creditsInstance.getPlaybackState(out playbackState);
@@ -182,6 +189,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void UpdateMemory(bool inMemory) {
+            SetCurrentAmbientPlayState(currentAmbient, !inMemory);
+            
             if (inMemory) {
                 memorySeeingInstance.getPlaybackState(out var playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
@@ -190,6 +199,35 @@ namespace _Project.Scripts.GameServices.Services {
             }
             else
                 memorySeeingInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+
+        private void SetCurrentAmbientPlayState(int currentIndex, bool doPlay) {
+            switch (currentIndex) {
+                case 0:
+                    if(doPlay) Act0Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+                case 1:
+                    if(doPlay) Act1Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+                case 2:
+                    if(doPlay) Act2Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+                case 3:
+                    if(doPlay) Act3Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+                case 4:
+                    if(doPlay) Act4Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+                case 5:
+                    if(doPlay) Act5Ambient.start();
+                    else Act0Ambient.stop(STOP_MODE.ALLOWFADEOUT);
+                    break;
+            }            
         }
         
         public EventInstance CreateInstance(EventReference reference) {
