@@ -32,6 +32,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private float multiplicator = 1.15f;
         [SerializeField] private MenuManager menuManager;
         [SerializeField] private MenuAnimation openedMenu;
+        [SerializeField] private bool isPlayBtt;
         
         [Header("Event On Clicked")]
         public UnityEvent onClickPostTimer;
@@ -110,7 +111,8 @@ namespace _Project.Scripts.UI {
             pressedGroup.gameObject.SetActive(true);
             pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Clicked);
+            GameInitializer.Instance.PlaySound2D(
+                isPlayBtt ? GameInitializer.Instance.GetBank().ui_Play : GameInitializer.Instance.GetBank().ui_Clicked);
             
             StartCoroutine(CallClickPostTimer());
         }

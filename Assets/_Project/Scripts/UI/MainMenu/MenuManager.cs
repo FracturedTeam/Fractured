@@ -47,6 +47,13 @@ namespace _Project.Scripts.UI {
         [SerializeField] private MenuAnimation MainMenuPanel;
         [SerializeField] private InputDisplay inputsDisplay;
         private MenuAnimation CurrentMenu;
+
+        [Header("Chapter Settings")] 
+        [SerializeField] private ChapterSelection[] chapters;
+        
+        [Header("Inputs Panel")]
+        [SerializeField] private GameObject inputsKeyboard;
+        [SerializeField] private GameObject inputsGamepad;
         
         private int currentIndex = 0;
         private int settingsIndex = 0;
@@ -69,28 +76,32 @@ namespace _Project.Scripts.UI {
         private void Awake() {
             ChapterIndex = 1;
             if (GameInitializer.HasInstance) {
-                loadGameBtt.SetActive(GameInitializer.Instance.ExistingSave());
+                var existingSave = GameInitializer.Instance.ExistingSave();
+                loadGameBtt.SetActive(existingSave);
                 ChapterIndex = GameInitializer.Instance.GetLastChapter();
                 GameInitializer.Instance.SetCurrentChapter(ChapterIndex);
+
+                if (existingSave) {
+                    for(var i = 5; i > ChapterIndex; i--) {
+                        chapters[i - 1].Lock();
+                    }
+                }
+                else {
+                    foreach (var chap in chapters) {
+                        chap.Lock();
+                    }
+                }
+                
+                UpdateUIColor(GameInitializer.Instance.GetSettings.uiColorIntensity);
             }
 
-            switch (ChapterIndex) {
-                case 1:
-                    uiColor.SetSpriteColor(act1Color);
-                    break;
-                case 2:
-                    uiColor.SetSpriteColor(act2Color);
-                    break;
-                case 3:
-                    uiColor.SetSpriteColor(act3Color);
-                    break;
-            }
 
             if (InputsBrain.HasInstance) {
                 InputsBrain.Instance.OnBackBtt += Back;
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
+                InputsBrain.Instance.OnGamepadControlled += UpdateInputs;
             }
             
             CurrentMenu = MainMenuPanel;
@@ -98,27 +109,46 @@ namespace _Project.Scripts.UI {
             HoverButton(GetCurrentList()[currentIndex]);
         }
 
+        public void UpdateUIColor(float intensity) {
+            switch (ChapterIndex) {
+                case 1:
+                    uiColor.SetSpriteColor(act1Color, intensity);
+                    break;
+                case 2:
+                    uiColor.SetSpriteColor(act2Color, intensity);
+                    break;
+                case 3:
+                    uiColor.SetSpriteColor(act3Color, intensity);
+                    break;
+            }
+        }
+        
         private void OnDisable() { 
             if (!InputsBrain.HasInstance) return;
             InputsBrain.Instance.OnBackBtt -= Back;
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;
             InputsBrain.Instance.OnSettingsView -= SettingsView;
+            InputsBrain.Instance.OnGamepadControlled -= UpdateInputs;
+        }
+
+        private void UpdateInputs(bool gamepadControlled) {
+            inputsKeyboard.SetActive(!gamepadControlled);
+            inputsGamepad.SetActive(gamepadControlled);
         }
 
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             if(newMenu == null) return;
             backTimer.Start();
             
-            //UnHoverButton(GetCurrentList()[currentIndex]);
-            
             CurrentMenu = newMenu;
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
-            settingsIndex = 0;
             
-            if(currentMenuType is not UI.CurrentMenu.Credits)
+            if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 HoverButton(GetCurrentList()[currentIndex]);
+            
+            HoverButton(settingsButtons[settingsIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
         }
@@ -128,7 +158,7 @@ namespace _Project.Scripts.UI {
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
-            if(currentMenuType is not UI.CurrentMenu.Credits)
+            if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
@@ -253,6 +283,8 @@ namespace _Project.Scripts.UI {
         }
         
         private void NavigateThroughButtons(Vector2 dir) {
+            if(currentSettings is CurrentSettings.Input && currentMenuType is UI.CurrentMenu.Settings) return;
+            
             if (dir.y > 0.5f) {
                 UnHoverButton(GetCurrentList()[currentIndex]);
                 
@@ -304,17 +336,19 @@ namespace _Project.Scripts.UI {
             currentSettings = settingsIndex switch {
                 0 => CurrentSettings.Audio,
                 1 => CurrentSettings.Video,
-                2 => CurrentSettings.Access,
-                3 => CurrentSettings.Input,
+                2 => CurrentSettings.Input,
+                3 => CurrentSettings.Access,
                 _ => throw new ArgumentOutOfRangeException()
             };
             
             ExecuteButtonScrip(settingsButtons[settingsIndex]);
-            
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            if(currentSettings is not CurrentSettings.Input)
+                UnHoverButton(GetCurrentList()[currentIndex]);
             
             currentIndex = 0;
-            HoverButton(GetCurrentList()[currentIndex]);
+            
+            if(currentSettings is not CurrentSettings.Input)
+                HoverButton(GetCurrentList()[currentIndex]);
             
             HoverButton(settingsButtons[settingsIndex]);
         }
@@ -360,17 +394,17 @@ namespace _Project.Scripts.UI {
         }
         
         public void NewGame() {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.NewGame();
         }
 
         public void LoadGame() {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadGame();
         }
 
         public void LoadLevel(int levelIndex) {
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
+            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
         }
     }

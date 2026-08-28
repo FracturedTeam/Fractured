@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.GameServices.Services;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -17,6 +15,10 @@ namespace _Project.Scripts.UI {
         [SerializeField] private Toggle vSync;
         [SerializeField] private Toggle depthOfField;
         [SerializeField] private Toggle chromaticAberration;
+        
+        [Header("Accessibility")]
+        [SerializeField] private DropDownUI enviroColorDropDown;
+        [SerializeField] private DropDownUI uiColorDropDown;
         
         private Resolution[] allResolutions;
 
@@ -33,6 +35,9 @@ namespace _Project.Scripts.UI {
             InitVSyncToggle();
             InitChromaticToggle();
             InitDOFToggle();
+            
+            InitEnviroColorIntensityDropdown();
+            InitUIColorIntensityDropdown();
         }
 
         #region Initialization
@@ -206,6 +211,52 @@ namespace _Project.Scripts.UI {
             qualityDropDown.RefreshShownValue();
         }
 
+        private void InitEnviroColorIntensityDropdown() {
+            enviroColorDropDown.ClearOptions();
+            enviroColorDropDown.AddOptions(new List<string> {
+                "0%",
+                "25%",
+                "50%",
+                "100%",
+            });
+            
+            var saved = settingData?.enviroColorIntensity ?? 1;
+
+            var value = saved switch {
+                1f => 0,
+                .5f => 1,
+                .25f => 2,
+                0f => 3
+            };
+            
+            enviroColorDropDown.value = value;
+            enviroColorDropDown.OnValueChanged += OnEnviroColorChanged;
+            enviroColorDropDown.RefreshShownValue();
+        }
+
+        private void InitUIColorIntensityDropdown() {
+            uiColorDropDown.ClearOptions();
+            uiColorDropDown.AddOptions(new List<string> {
+                "0%",
+                "25%",
+                "50%",
+                "100%",
+            });
+            
+            var saved = settingData?.uiColorIntensity ?? 1;
+
+            var value = saved switch {
+                1f => 3,
+                .5f => 2,
+                .25f => 1,
+                0f => 0
+            };
+            
+            uiColorDropDown.value = value;
+            uiColorDropDown.OnValueChanged += OnUIColorChanged;
+            uiColorDropDown.RefreshShownValue();
+        }
+        
         void InitVSyncToggle() {
             var saved = settingData?.vSyncEnabled ?? true;
             vSync.isOn = saved;
@@ -279,6 +330,33 @@ namespace _Project.Scripts.UI {
             
             GameInitializer.Instance.SaveSettings();
         }
+
+        private void OnEnviroColorChanged(int index) {
+            var value = index switch {
+                3 => 0f,
+                2 => 0.25f,
+                1 => 0.5f,
+                0 => 1f,
+            };
+            
+            settingData.enviroColorIntensity = value;
+            GameInitializer.Instance.AdjustEnviroColorIntensity(value);
+            GameInitializer.Instance.SaveSettings();
+        }
+        
+        private void OnUIColorChanged(int index) {
+            var value = index switch {
+                0 => 0f,
+                1 => 0.25f,
+                2 => 0.5f,
+                3 => 1f,
+            };
+            
+            settingData.uiColorIntensity = value;
+            GameInitializer.Instance.AdjustUIColorIntensity(value);
+            GameInitializer.Instance.SaveSettings();
+        }
+        
         #endregion
     }
 }

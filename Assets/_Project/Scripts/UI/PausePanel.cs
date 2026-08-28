@@ -31,6 +31,10 @@ namespace _Project.Scripts.UI
         [SerializeField] private InputDisplay inputsDisplay;
         private MenuAnimation CurrentMenu;
         
+        [Header("Inputs Panel")]
+        [SerializeField] private GameObject inputsKeyboard;
+        [SerializeField] private GameObject inputsGamepad;
+        
         private int currentIndex = 0;
         private int settingsIndex = 0;
         
@@ -50,6 +54,7 @@ namespace _Project.Scripts.UI
                 InputsBrain.Instance.OnSelectBtt += Select;
                 InputsBrain.Instance.OnNavigation += Navigation;
                 InputsBrain.Instance.OnSettingsView += SettingsView;
+                InputsBrain.Instance.OnGamepadControlled += UpdateInputs;
             }
             
             CurrentMenu = MainMenuPanel;
@@ -65,8 +70,14 @@ namespace _Project.Scripts.UI
             InputsBrain.Instance.OnSelectBtt -= Select;
             InputsBrain.Instance.OnNavigation -= Navigation;
             InputsBrain.Instance.OnSettingsView -= SettingsView;
+            InputsBrain.Instance.OnGamepadControlled -= UpdateInputs;
         }
 
+        private void UpdateInputs(bool gamepadControlled) {
+            inputsKeyboard.SetActive(!gamepadControlled);
+            inputsGamepad.SetActive(gamepadControlled);
+        }
+        
         private void OnEscapePressed() {
             ChangeState();
         }
@@ -113,14 +124,15 @@ namespace _Project.Scripts.UI
         public void UpdateCurrentMenu(MenuAnimation newMenu) {
             if(newMenu == null) return;
             backTimer.Start();
-            UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu = newMenu;
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
-            settingsIndex = 0;
             
-            HoverButton(GetCurrentList()[currentIndex]);
+            if(currentSettings is not CurrentSettings.Input) 
+                HoverButton(GetCurrentList()[currentIndex]);
+            
+            HoverButton(settingsButtons[settingsIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
         }
@@ -135,7 +147,8 @@ namespace _Project.Scripts.UI
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Back);
             
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            if(currentSettings is not CurrentSettings.Input)
+                UnHoverButton(GetCurrentList()[currentIndex]);
             
             CurrentMenu.Close();
             CurrentMenu.PreviousMenu.Open();
@@ -251,22 +264,27 @@ namespace _Project.Scripts.UI
             currentSettings = settingsIndex switch {
                 0 => CurrentSettings.Audio,
                 1 => CurrentSettings.Video,
-                2 => CurrentSettings.Access,
-                3 => CurrentSettings.Input,
+                2 => CurrentSettings.Input,
+                3 => CurrentSettings.Access,
                 _ => throw new ArgumentOutOfRangeException()
             };
             
             ExecuteButtonScrip(settingsButtons[settingsIndex]);
             
-            UnHoverButton(GetCurrentList()[currentIndex]);
+            if(currentSettings is not CurrentSettings.Input)
+                UnHoverButton(GetCurrentList()[currentIndex]);
             
             currentIndex = 0;
-            HoverButton(GetCurrentList()[currentIndex]);
+            
+            if(currentSettings is not CurrentSettings.Input)
+                HoverButton(GetCurrentList()[currentIndex]);
             
             HoverButton(settingsButtons[settingsIndex]);
         }
 
         private void NavigateThroughButtons(Vector2 dir) {
+            if(currentSettings is CurrentSettings.Input && currentMenuType is UI.CurrentMenu.Settings) return;
+            
             if (dir.y > 0.5f) {
                 UnHoverButton(GetCurrentList()[currentIndex]);
                 
