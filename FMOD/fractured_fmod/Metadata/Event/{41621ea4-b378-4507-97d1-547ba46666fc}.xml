@@ -5,7 +5,7 @@
 			<value>AvatarKeyPickUp</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -72,9 +72,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{afac8342-7344-4f53-8e8b-0e2634108f21}">
-		<property name="volume">
-			<value>-10.5</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{34bbebc6-d0fe-48c6-ad13-f990ae93ab48}</destination>
 		</relationship>
@@ -100,6 +97,7 @@
 		<relationship name="effects">
 			<destination>{c426d256-5f26-4c72-9867-3896182ced2d}</destination>
 			<destination>{819595b7-0383-4dc3-9faa-06a0bf49f853}</destination>
+			<destination>{05314739-8833-4434-ac78-982cf5689484}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a808d45b-c06c-4a92-bdbe-a923e149459b}" />
@@ -113,6 +111,11 @@
 	<object class="ThreeEQEffect" id="{819595b7-0383-4dc3-9faa-06a0bf49f853}">
 		<property name="lowGain">
 			<value>-6</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{05314739-8833-4434-ac78-982cf5689484}">
+		<property name="bypass">
+			<value>true</value>
 		</property>
 	</object>
 </objects>

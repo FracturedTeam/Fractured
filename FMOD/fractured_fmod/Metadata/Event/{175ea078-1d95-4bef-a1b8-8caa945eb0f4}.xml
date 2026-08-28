@@ -5,7 +5,7 @@
 			<value>AvatarObjectPutAway</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{56d53c05-8abe-40d7-a8f9-2c4cf1a622ca}">
 		<property name="volume">
-			<value>-6.5</value>
+			<value>-7.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{eb6a08cd-36e2-40b9-b6dd-58955cb1ec9e}</destination>
@@ -99,6 +99,7 @@
 	<object class="MixerBusEffectChain" id="{eb6a08cd-36e2-40b9-b6dd-58955cb1ec9e}">
 		<relationship name="effects">
 			<destination>{c6e251b7-b68e-4cc4-9f8f-5da31528ab34}</destination>
+			<destination>{b9f1d6ce-018f-494e-85aa-8578e283d2b6}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ff2115d6-d171-415e-8667-594948b54ddf}" />
@@ -109,4 +110,9 @@
 	</object>
 	<object class="MixerBusFader" id="{cc761ca3-3242-4616-bd54-f973ba78f860}" />
 	<object class="MixerBusFader" id="{c6e251b7-b68e-4cc4-9f8f-5da31528ab34}" />
+	<object class="SpatialiserEffect" id="{b9f1d6ce-018f-494e-85aa-8578e283d2b6}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+	</object>
 </objects>
