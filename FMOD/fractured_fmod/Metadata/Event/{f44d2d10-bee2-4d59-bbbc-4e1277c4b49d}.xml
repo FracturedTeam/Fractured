@@ -5,7 +5,7 @@
 			<value>AvatarObjectPickUp</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -59,7 +59,11 @@
 			<destination>{4af7cf42-0906-45d7-852e-030de370aa72}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{69f8c589-b2ac-4d9b-95ee-3653036004d5}" />
+	<object class="EventAutomatableProperties" id="{69f8c589-b2ac-4d9b-95ee-3653036004d5}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{28988c32-3035-40d5-8e31-0d7233d5e680}" />
 	<object class="Timeline" id="{7e906b6c-4d6b-41e2-8020-f2057f4635b7}">
 		<property name="isProxyEnabled">
@@ -100,7 +104,7 @@
 		<relationship name="effects">
 			<destination>{79063f1a-d774-4623-a599-065018ed1cb9}</destination>
 			<destination>{dd66b955-0e80-4733-976e-623431bf4b87}</destination>
-			<destination>{d285f5fe-83a6-4165-9664-3efa8aa659e3}</destination>
+			<destination>{127790fb-04d6-49d3-8f03-6658c728a89f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{389ee717-bb01-46c3-83ed-d6df03bfc42e}" />
@@ -122,9 +126,5 @@
 			<value>-1.5</value>
 		</property>
 	</object>
-	<object class="SpatialiserEffect" id="{d285f5fe-83a6-4165-9664-3efa8aa659e3}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
-	</object>
+	<object class="ObjectSpatialiserEffect" id="{127790fb-04d6-49d3-8f03-6658c728a89f}" />
 </objects>
