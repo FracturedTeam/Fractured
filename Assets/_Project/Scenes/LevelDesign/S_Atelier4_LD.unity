@@ -9230,9 +9230,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1696468926}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 5
@@ -9242,6 +9254,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1696468922}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -9250,12 +9270,24 @@ PrefabInstance:
       value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.Animator, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -9274,6 +9306,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2570916346207211495, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1696468925}
+    - targetCorrespondingSourceObject: {fileID: 2570916346207211495, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696468926}
   m_SourcePrefab: {fileID: 100100000, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
 --- !u!1 &1696468915 stripped
 GameObject:
@@ -9402,6 +9437,37 @@ MonoBehaviour:
   OnSetStateOff: []
   OnSceneComplete: []
   OnAtelierComplete: []
+--- !u!114 &1696468926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696468915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -279909108
+      Data2: 1182283647
+      Data3: 351577738
+      Data4: -1090292891
+    Path: event:/Interactables/Doors/Cabinet_Open
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1704556858
 PrefabInstance:
   m_ObjectHideFlags: 0
