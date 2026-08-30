@@ -4394,6 +4394,11 @@ Transform:
   - {fileID: 1940475923}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1047329378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7982322263504784109, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+  m_PrefabInstance: {fileID: 1505281452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1063081618
 GameObject:
   m_ObjectHideFlags: 0
@@ -7380,12 +7385,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 1288097568}
     m_Modifications:
     - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
       propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1505281459}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
       propertyPath: eventOnDeactivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8596224733272169320, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: -398767580665832001, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
       propertyPath: requestedUseState
@@ -7573,7 +7610,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6963151660842771290, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7982322263504784109, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1505281459}
   m_SourcePrefab: {fileID: 100100000, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
 --- !u!4 &1505281453 stripped
 Transform:
@@ -7585,7 +7625,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -398767580665832001, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
   m_PrefabInstance: {fileID: 1505281452}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1047329378}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7b89beb565d445b81371a4ab7b50414, type: 3}
@@ -7596,12 +7636,43 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2098619311548026099, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
   m_PrefabInstance: {fileID: 1505281452}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1047329378}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!114 &1505281459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047329378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1363806915
+      Data2: 1110951150
+      Data3: -1513762382
+      Data4: 277493420
+    Path: event:/Interactables/PuzzleElements/CurtainsDrawn
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1508376120
 PrefabInstance:
   m_ObjectHideFlags: 0
