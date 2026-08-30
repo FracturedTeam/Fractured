@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{b010560a-cf98-4364-a73e-8762c0966411}">
 		<property name="volume">
-			<value>-9</value>
+			<value>-8</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{46e37f69-32a2-4906-b4f6-3b801ef30c22}</destination>
@@ -99,6 +99,7 @@
 	<object class="MixerBusEffectChain" id="{46e37f69-32a2-4906-b4f6-3b801ef30c22}">
 		<relationship name="effects">
 			<destination>{70b0c480-8555-4d2a-8c12-b4b47c2dfba0}</destination>
+			<destination>{ebbd7cfc-7a37-43ce-b3cd-e005e28f80d1}</destination>
 			<destination>{b563db3c-acb3-4b0c-a46c-577932e85cf8}</destination>
 		</relationship>
 	</object>
@@ -120,6 +121,14 @@
 	</object>
 	<object class="MixerBusFader" id="{9602ae05-ae33-4010-85df-c077f4ec84d6}" />
 	<object class="MixerBusFader" id="{70b0c480-8555-4d2a-8c12-b4b47c2dfba0}" />
+	<object class="ThreeEQEffect" id="{ebbd7cfc-7a37-43ce-b3cd-e005e28f80d1}">
+		<property name="highGain">
+			<value>-13</value>
+		</property>
+		<property name="highCrossover">
+			<value>750</value>
+		</property>
+	</object>
 	<object class="ObjectSpatialiserEffect" id="{b563db3c-acb3-4b0c-a46c-577932e85cf8}" />
 	<object class="SingleSound" id="{d75a5add-6186-454d-83fb-1b9671516f96}">
 		<relationship name="audioFile">
