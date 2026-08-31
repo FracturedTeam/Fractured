@@ -86,7 +86,8 @@ namespace _Project.Scripts.UI {
             
             tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = alternateColor;
+            buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+            buttonText.alpha = 1f;
             hoverGroup.DOFade(0.36f, 0.3f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(false);
         }
@@ -105,7 +106,8 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
             
             pressed = true;
-            buttonText.color = alternateColor;
+            buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+            buttonText.alpha = 1f;
             backgroundImg.enabled = false;
             hoverGroup.DOFade(0, 0.15f).SetUpdate(true).SetEase(easeType);
             pressedGroup.gameObject.SetActive(true);
