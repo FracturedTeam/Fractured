@@ -186,7 +186,7 @@ namespace _Project.Scripts.UI {
                 "Exclusive Fullscreen"
             });
 
-            var saved = settingData?.fullScreenMode ?? 3;
+            var saved = settingData?.fullScreenMode ?? 1;
             fullscreenDropDown.value = saved;
             fullscreenDropDown.OnValueChanged += OnFullscreenChanged;
             fullscreenDropDown.RefreshShownValue();
