@@ -101,11 +101,15 @@
 		<relationship name="effects">
 			<destination>{c426d256-5f26-4c72-9867-3896182ced2d}</destination>
 			<destination>{819595b7-0383-4dc3-9faa-06a0bf49f853}</destination>
+			<destination>{565d5f88-0eac-4545-b254-e0b86b629fa4}</destination>
 			<destination>{4c11c27a-e3a8-43c1-855d-74da9c68ba87}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a808d45b-c06c-4a92-bdbe-a923e149459b}" />
 	<object class="SingleSound" id="{d056f2f1-3914-48f5-ad53-e41e201ad1b1}">
+		<property name="startOffset">
+			<value>3.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{0f08d3e6-141e-4c60-8e1f-acb9476c5671}</destination>
 		</relationship>
@@ -114,7 +118,27 @@
 	<object class="MixerBusFader" id="{c426d256-5f26-4c72-9867-3896182ced2d}" />
 	<object class="ThreeEQEffect" id="{819595b7-0383-4dc3-9faa-06a0bf49f853}">
 		<property name="lowGain">
-			<value>-6</value>
+			<value>-11</value>
+		</property>
+		<property name="midGain">
+			<value>-1</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{565d5f88-0eac-4545-b254-e0b86b629fa4}">
+		<property name="decayTime">
+			<value>1700</value>
+		</property>
+		<property name="lowShelfGain">
+			<value>-5</value>
+		</property>
+		<property name="highCut">
+			<value>2000</value>
+		</property>
+		<property name="wetLevel">
+			<value>-4</value>
+		</property>
+		<property name="dryLevel">
+			<value>-2</value>
 		</property>
 	</object>
 	<object class="ObjectSpatialiserEffect" id="{4c11c27a-e3a8-43c1-855d-74da9c68ba87}">
