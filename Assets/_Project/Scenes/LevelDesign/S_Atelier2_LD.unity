@@ -6799,6 +6799,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_I_Door01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1935291568}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 6964729884731616547, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7163049398779053450, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6904,23 +6936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef4389b0ca15f040a0d9472d8348dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
-  OnInteract:
-  - actions:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1935291568}
-          m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    times: 0
+  OnInteract: []
   OnCollisionTriggerEnter: []
   OnCollisionTriggerExit: []
   OnHideReveal: []
