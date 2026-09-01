@@ -6,7 +6,6 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Player;
 using _Project.Scripts.Player.Camera;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
