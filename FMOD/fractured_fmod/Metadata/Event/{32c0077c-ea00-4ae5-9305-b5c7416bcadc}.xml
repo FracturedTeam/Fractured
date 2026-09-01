@@ -56,7 +56,7 @@
 			<destination>{61d2f108-b608-4d89-861e-ee3caeecd067}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{4a4b8c2f-3c86-49f6-8152-fe59eab1eb67}</destination>
+			<destination>{d33b8e0f-9362-49be-8ee6-012dbe131efb}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{b3d8fb21-0134-42f3-ba63-42339495cfb0}">
@@ -76,6 +76,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{fd851668-4218-40c6-9134-d2fc11a4f567}">
+		<property name="volume">
+			<value>-12.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{39a46b21-06ed-4537-ad32-0a542aea30fa}</destination>
 		</relationship>
@@ -100,6 +103,7 @@
 	<object class="MixerBusEffectChain" id="{39a46b21-06ed-4537-ad32-0a542aea30fa}">
 		<relationship name="effects">
 			<destination>{fffbd01b-a5cd-467c-a05e-845b32dcf417}</destination>
+			<destination>{987e2ad3-ed74-45a1-b0f2-a9a7e8aaa57e}</destination>
 			<destination>{f16a96d9-bd87-4e5a-bc31-4961bca9237f}</destination>
 			<destination>{01abb13e-7c84-451a-b8c6-361cfb8ed325}</destination>
 		</relationship>
@@ -119,7 +123,19 @@
 	</object>
 	<object class="MixerBusFader" id="{95253911-9465-4873-8b53-2ae0c3cac9fb}" />
 	<object class="MixerBusFader" id="{fffbd01b-a5cd-467c-a05e-845b32dcf417}" />
-	<object class="SpatialiserEffect" id="{f16a96d9-bd87-4e5a-bc31-4961bca9237f}" />
+	<object class="ThreeEQEffect" id="{987e2ad3-ed74-45a1-b0f2-a9a7e8aaa57e}">
+		<property name="lowGain">
+			<value>-7.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>900</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{f16a96d9-bd87-4e5a-bc31-4961bca9237f}">
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="SFXReverbEffect" id="{01abb13e-7c84-451a-b8c6-361cfb8ed325}">
 		<property name="decayTime">
 			<value>260</value>

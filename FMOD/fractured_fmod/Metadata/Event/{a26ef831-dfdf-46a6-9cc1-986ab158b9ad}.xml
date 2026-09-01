@@ -5,7 +5,7 @@
 			<value>AvatarObjectEquip</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -56,10 +56,14 @@
 			<destination>{af609bfa-ca72-4b11-8565-071cc29ea454}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{d33b8e0f-9362-49be-8ee6-012dbe131efb}</destination>
+			<destination>{4af7cf42-0906-45d7-852e-030de370aa72}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{541a1b5a-bf9c-4ed0-861c-6878652c8a55}" />
+	<object class="EventAutomatableProperties" id="{541a1b5a-bf9c-4ed0-861c-6878652c8a55}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{54a54f1f-6cdc-4a61-afc0-785e44710da1}" />
 	<object class="Timeline" id="{0748ae16-2d9a-4c79-a204-0fd4aa782fa4}">
 		<property name="isProxyEnabled">
@@ -87,7 +91,7 @@
 	</object>
 	<object class="MultiSound" id="{da9eff0a-ce7d-4551-92ff-d01cd82d7d4f}">
 		<relationship name="sounds">
-			<destination>{14e363ed-f7c9-4e7f-be0d-c807e15208dc}</destination>
+			<destination>{22123b93-08a6-44ed-826c-1b830e0f954b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{093f62fe-6c9c-4e0b-91fd-8a91783cdb1a}">
@@ -99,26 +103,16 @@
 	<object class="MixerBusEffectChain" id="{388d2f6d-e269-40d8-8529-29369fe18b7c}">
 		<relationship name="effects">
 			<destination>{6dc73db7-7947-4c3f-8f6d-b3a2348031ac}</destination>
-			<destination>{e568d143-a51e-4c80-bf8b-56717de771cf}</destination>
+			<destination>{e6c23bb2-4f20-498c-aaa9-15f9ed047b89}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e1c12c24-c7b1-4b52-87e5-42a0a6621ebc}" />
-	<object class="SingleSound" id="{14e363ed-f7c9-4e7f-be0d-c807e15208dc}">
-		<property name="volume">
-			<value>-5.5</value>
-		</property>
-		<property name="pitch">
-			<value>-1.80000007</value>
-		</property>
+	<object class="SingleSound" id="{22123b93-08a6-44ed-826c-1b830e0f954b}">
 		<relationship name="audioFile">
-			<destination>{6e0a2d73-849f-4fc4-9eca-4c0450d00a61}</destination>
+			<destination>{3b0eb9a5-98a7-4e65-8257-1cd561011c1c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{8f3a7598-5660-4067-b0d8-f66714568bb4}" />
 	<object class="MixerBusFader" id="{6dc73db7-7947-4c3f-8f6d-b3a2348031ac}" />
-	<object class="SpatialiserEffect" id="{e568d143-a51e-4c80-bf8b-56717de771cf}">
-		<property name="bypass">
-			<value>true</value>
-		</property>
-	</object>
+	<object class="ObjectSpatialiserEffect" id="{e6c23bb2-4f20-498c-aaa9-15f9ed047b89}" />
 </objects>

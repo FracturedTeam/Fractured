@@ -5,7 +5,7 @@
 			<value>AmbianceCrows</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{d9245b2d-bb40-4304-b02c-d42a256c2ebe}</destination>
@@ -58,7 +58,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{efd4659a-8ff1-400e-b8fa-576425668b99}">
 		<property name="maximumDistance">
-			<value>7.5999999</value>
+			<value>8.60000038</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{5fd21a34-981a-43dc-b363-1ccf9ca59c07}" />
@@ -72,7 +72,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{628f7bcd-1500-4a0d-8936-50a5826ee295}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-6</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{1573762e-e597-4d4d-9022-da835c98ad2a}</destination>
@@ -115,13 +115,32 @@
 	<object class="MixerBusEffectChain" id="{1573762e-e597-4d4d-9022-da835c98ad2a}">
 		<relationship name="effects">
 			<destination>{bebe7106-ed9f-4f21-b98b-923a90f4fe4c}</destination>
+			<destination>{d8bc7360-c9e6-49f8-95c5-5e3e85c45aa1}</destination>
+			<destination>{f436b7d9-b540-4dc9-9bc5-d47b0b93b286}</destination>
 			<destination>{dd01781f-966a-4cc0-bb8b-28b63d30bc1d}</destination>
-			<destination>{0bd3ea26-c377-4fee-8815-eb165e96e451}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a308b732-6a04-45fd-9c30-68d9ade0639a}" />
 	<object class="MixerBusFader" id="{c83cea5e-460b-4f78-b9bf-a46886b6b6cd}" />
 	<object class="MixerBusFader" id="{bebe7106-ed9f-4f21-b98b-923a90f4fe4c}" />
+	<object class="ThreeEQEffect" id="{d8bc7360-c9e6-49f8-95c5-5e3e85c45aa1}">
+		<property name="lowGain">
+			<value>10</value>
+		</property>
+		<property name="midGain">
+			<value>5.5</value>
+		</property>
+		<property name="highGain">
+			<value>-80</value>
+		</property>
+		<property name="lowCrossover">
+			<value>1100</value>
+		</property>
+		<property name="highCrossover">
+			<value>950</value>
+		</property>
+	</object>
+	<object class="ObjectSpatialiserEffect" id="{f436b7d9-b540-4dc9-9bc5-d47b0b93b286}" />
 	<object class="SFXReverbEffect" id="{dd01781f-966a-4cc0-bb8b-28b63d30bc1d}">
 		<property name="decayTime">
 			<value>3400</value>
@@ -136,5 +155,4 @@
 			<value>-0.5</value>
 		</property>
 	</object>
-	<object class="SpatialiserEffect" id="{0bd3ea26-c377-4fee-8815-eb165e96e451}" />
 </objects>

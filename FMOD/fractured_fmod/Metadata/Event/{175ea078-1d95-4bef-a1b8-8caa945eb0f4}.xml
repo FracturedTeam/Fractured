@@ -5,7 +5,7 @@
 			<value>AvatarObjectPutAway</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{257ba961-c557-42c3-bd8b-d29f02e50d80}</destination>
@@ -56,10 +56,14 @@
 			<destination>{825443c3-1208-461d-8062-fe8370232914}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{d33b8e0f-9362-49be-8ee6-012dbe131efb}</destination>
+			<destination>{4af7cf42-0906-45d7-852e-030de370aa72}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{2f2a6a3a-d880-41c2-98be-be318d413cf2}" />
+	<object class="EventAutomatableProperties" id="{2f2a6a3a-d880-41c2-98be-be318d413cf2}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{9454705f-3916-4333-b61c-9c872519aa35}" />
 	<object class="Timeline" id="{0ae5798d-0ffa-499b-83c8-288e9307bb5e}">
 		<property name="isProxyEnabled">
@@ -99,7 +103,7 @@
 	<object class="MixerBusEffectChain" id="{eb6a08cd-36e2-40b9-b6dd-58955cb1ec9e}">
 		<relationship name="effects">
 			<destination>{c6e251b7-b68e-4cc4-9f8f-5da31528ab34}</destination>
-			<destination>{b9f1d6ce-018f-494e-85aa-8578e283d2b6}</destination>
+			<destination>{5aa50a47-713d-4e4c-b980-903bc2483605}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ff2115d6-d171-415e-8667-594948b54ddf}" />
@@ -110,8 +114,8 @@
 	</object>
 	<object class="MixerBusFader" id="{cc761ca3-3242-4616-bd54-f973ba78f860}" />
 	<object class="MixerBusFader" id="{c6e251b7-b68e-4cc4-9f8f-5da31528ab34}" />
-	<object class="SpatialiserEffect" id="{b9f1d6ce-018f-494e-85aa-8578e283d2b6}">
-		<property name="bypass">
+	<object class="ObjectSpatialiserEffect" id="{5aa50a47-713d-4e4c-b980-903bc2483605}">
+		<property name="overrideRange">
 			<value>true</value>
 		</property>
 	</object>
