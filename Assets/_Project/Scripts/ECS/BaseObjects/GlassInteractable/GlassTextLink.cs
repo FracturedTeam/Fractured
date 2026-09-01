@@ -79,29 +79,32 @@ public class GlassTextLink : MonoBehaviour
     {
         if(newText.Contains($"<link='censored'>"))
         {
-            switch (colorEnum) {
-                case ColorEnum.ColorA :
-                    parentGlassText.showMistColorA = true;
-                    break;
-                case ColorEnum.ColorB :
-                    parentGlassText.showMistColorB = true;
-                    break;
-                case ColorEnum.Both :
-                    parentGlassText.showMistColorBoth = true;
-                    break;
-                default :
-                    break;
-            }
-            
             var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal);
             var end = newText.IndexOf("</link>", StringComparison.Ordinal);
-            if (baseText)
-                baseText.text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
-                //baseText.text = newText.Substring(start, end - start);
+            if (baseText) {
+                if(special)
+                    baseText.text = Replace(newText, "█", start, end - start, colorEnum, false);
+                else {
+                    baseText.text = newText.Remove(start, "<link='censored'>".Length);
+                    baseText.text = newText.Remove(end, "</link>".Length);
+                    
+                    switch (colorEnum) {
+                        case ColorEnum.ColorA :
+                            parentGlassText.showMistColorA = true;
+                            break;
+                        case ColorEnum.ColorB :
+                            parentGlassText.showMistColorB = true;
+                            break;
+                    }
+                }
+            }
             else if (GetComponent<TMP_Text>())
-                GetComponent<TMP_Text>().text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+                GetComponent<TMP_Text>().text = Replace(newText, "█", start, end - start, colorEnum, false);
             return;
         }
+        
+        if(colorEnum is ColorEnum.Both)
+            parentGlassText.showMistColorBoth = true;
         
         var replace = AddColor(colorEnum, newText, special);
         if (baseText)
