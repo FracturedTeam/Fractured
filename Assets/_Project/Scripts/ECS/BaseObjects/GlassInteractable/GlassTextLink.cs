@@ -21,15 +21,16 @@ public class GlassTextLink : MonoBehaviour
 
     private bool isInitialized = false;
     
-    public void Initialize() //Initialize
-    {
+    private GlassText parentGlassText;
+    
+    public void Initialize(GlassText glassText) { //Initialize
         if (!isInitialized) {
             if(TryGetComponent(out TMP_Text text)) baseText = text;
             else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
             
-            shardsOnTop = new ObservableHashSet<Glass>();
-            shardsOnTop.onUpdate += UpdateShards;
-            
+            // shardsOnTop = new ObservableHashSet<Glass>();
+            // shardsOnTop.onUpdate += UpdateShards;
+            parentGlassText = glassText;
             isInitialized = true;
         }
     }
@@ -39,34 +40,34 @@ public class GlassTextLink : MonoBehaviour
         baseText.DOFade(alpha, time);
     }
 
-    private void UpdateShards()
-    {
-        underBlue = 0;
-        underRed = 0;
+    // private void UpdateShards()
+    // {
+    //     underBlue = 0;
+    //     underRed = 0;
+    //
+    //     foreach (var shard in shardsOnTop.Items)
+    //         switch (shard.GetColor)
+    //         {
+    //             case ColorEnum.ColorA:
+    //                 underBlue++;
+    //                 break;
+    //             case ColorEnum.ColorB:
+    //                 underRed++;
+    //                 break;
+    //             case ColorEnum.Both:
+    //                 underBlue++;
+    //                 underRed++;
+    //                 break;
+    //             default:
+    //                 Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
+    //                 break;
+    //         }
+    // }
 
-        foreach (var shard in shardsOnTop.Items)
-            switch (shard.GetColor)
-            {
-                case ColorEnum.ColorA:
-                    underBlue++;
-                    break;
-                case ColorEnum.ColorB:
-                    underRed++;
-                    break;
-                case ColorEnum.Both:
-                    underBlue++;
-                    underRed++;
-                    break;
-                default:
-                    Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
-                    break;
-            }
-    }
-
-    internal void OnInteract(bool isUnder, Glass shard)
-    {
-
-    }
+    // internal void OnInteract(bool isUnder, Glass shard)
+    // {
+    //
+    // }
 
     ///Auto Setup the collision
     private void Set2DPoints()
@@ -80,12 +81,30 @@ public class GlassTextLink : MonoBehaviour
         {
             var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal);
             var end = newText.IndexOf("</link>", StringComparison.Ordinal);
-            if (baseText)
-                baseText.text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+            if (baseText) {
+                if(special)
+                    baseText.text = Replace(newText, "█", start, end - start, colorEnum, false);
+                else {
+                    baseText.text = newText.Remove(start, "<link='censored'>".Length);
+                    baseText.text = newText.Remove(end, "</link>".Length);
+                    
+                    switch (colorEnum) {
+                        case ColorEnum.ColorA :
+                            parentGlassText.showMistColorA = true;
+                            break;
+                        case ColorEnum.ColorB :
+                            parentGlassText.showMistColorB = true;
+                            break;
+                    }
+                }
+            }
             else if (GetComponent<TMP_Text>())
-                GetComponent<TMP_Text>().text = Replace(newText, special ? "⠀" : "█", start, end - start, colorEnum, special);
+                GetComponent<TMP_Text>().text = Replace(newText, "█", start, end - start, colorEnum, false);
             return;
         }
+        
+        if(colorEnum is ColorEnum.Both)
+            parentGlassText.showMistColorBoth = true;
         
         var replace = AddColor(colorEnum, newText, special);
         if (baseText)
@@ -155,7 +174,7 @@ public class GlassTextLink : MonoBehaviour
             replace = removeString;
         
         replace = AddColor(colorEnum, replace, special);
-        //replace = "<mspace=0.5em>" + replace + "</mspace>";
+        replace = "<mspace=0.5em>" + replace + "</mspace>";
         
         return output.Replace(removeString, replace);
     }

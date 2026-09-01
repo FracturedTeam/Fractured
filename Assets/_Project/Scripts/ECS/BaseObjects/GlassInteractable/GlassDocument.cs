@@ -49,7 +49,7 @@ public class GlassDocument : MonoBehaviour {
         transform.eulerAngles = new Vector3(30, 180 + transform.eulerAngles.y, 0);
         
         templates[(int)data.type].gameObject.SetActive(isOn);
-        templates[(int)data.type].SetUp(data);
+        templates[(int)data.type].SetUp(data, true);
 
         if (isOn) {
             UpdateDocumentScale();
