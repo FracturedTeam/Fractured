@@ -13,7 +13,6 @@ namespace _Project.Scripts.UI {
         [SerializeField] private DropDownUI resolutionDropDown;
         [SerializeField] private DropDownUI qualityDropDown;
         [SerializeField] private Toggle vSync;
-        [SerializeField] private Toggle depthOfField;
         [SerializeField] private Toggle chromaticAberration;
         
         [Header("Accessibility")]
@@ -34,7 +33,6 @@ namespace _Project.Scripts.UI {
             InitQualityDropdown();
             InitVSyncToggle();
             InitChromaticToggle();
-            InitDOFToggle();
             
             InitEnviroColorIntensityDropdown();
             InitUIColorIntensityDropdown();
@@ -185,12 +183,10 @@ namespace _Project.Scripts.UI {
             fullscreenDropDown.ClearOptions();
             fullscreenDropDown.AddOptions(new List<string> { 
                 "Windowed",
-                "Maximized Window",
-                "Fullscreen Window",
                 "Exclusive Fullscreen"
             });
 
-            var saved = settingData?.fullScreenMode ?? 3;
+            var saved = settingData?.fullScreenMode ?? 1;
             fullscreenDropDown.value = saved;
             fullscreenDropDown.OnValueChanged += OnFullscreenChanged;
             fullscreenDropDown.RefreshShownValue();
@@ -264,15 +260,6 @@ namespace _Project.Scripts.UI {
             vSync.onValueChanged.AddListener(OnVSyncChanged);
         }
         
-        void InitDOFToggle() {
-            var saved = settingData?.dof ?? true;
-            GameInitializer.Instance.GetVolumeProfile().TryGet(out DepthOfField dof);
-            depthOfField.isOn = saved;
-            if(dof)
-                dof.active = saved;
-            depthOfField.onValueChanged.AddListener(OnDofChanged);
-        }
-        
         void InitChromaticToggle() {
             var saved = settingData?.chromaticAberration ?? true;
             GameInitializer.Instance.GetVolumeProfile().TryGet(out ChromaticAberration chroma);
@@ -295,7 +282,7 @@ namespace _Project.Scripts.UI {
         }
     
         private void OnFullscreenChanged(int index) {
-            Screen.fullScreenMode = (FullScreenMode)index;
+            Screen.fullScreenMode = index == 0 ? FullScreenMode.Windowed : FullScreenMode.ExclusiveFullScreen;
             
             settingData.fullScreenMode = index;
             GameInitializer.Instance.SaveSettings();
@@ -312,14 +299,6 @@ namespace _Project.Scripts.UI {
             QualitySettings.vSyncCount = enable ? 1 : 0;
             
             settingData.vSyncEnabled = enable;
-            GameInitializer.Instance.SaveSettings();
-        }
-
-        private void OnDofChanged(bool enable) {
-            GameInitializer.Instance.GetVolumeProfile().TryGet(out DepthOfField dof);
-            if(dof) dof.active = enable;
-            settingData.dof = enable;
-            
             GameInitializer.Instance.SaveSettings();
         }
         

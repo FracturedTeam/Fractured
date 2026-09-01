@@ -52,7 +52,8 @@ namespace _Project.Scripts.UI {
             onClickPostTimer?.Invoke();
             
             if (settingsButtons) {
-                buttonText.color = alternateColor;
+                buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+                buttonText.alpha = 1f;
             }
             else {
                 buttonText.color = whiteColor;
@@ -96,7 +97,8 @@ namespace _Project.Scripts.UI {
         public void OnPointerEnter(PointerEventData eventData) {
             tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = alternateColor;
+            buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+            buttonText.alpha = 1f;
             backgroundImage.sprite = backgroundHover;
             pressedGroup.gameObject.SetActive(false);
             
@@ -115,7 +117,8 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
 
             if (!settingsButtons) {
-                buttonText.color = alternateColor;
+                buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+                buttonText.alpha = 1f;
                 backgroundImage.gameObject.SetActive(false);
                 pressedGroup.gameObject.SetActive(true);
                 pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);

@@ -33,17 +33,18 @@ namespace _Project.Scripts.GameServices {
                 saveInstance = GetComponent<SaveInstance>();
             
             roomCamera.Priority = 1;
-
-            var vol = FindAnyObjectByType<Volume>();
-            if(vol != null) {
-                volume = vol;
-                volume.weight = 1 - GameInitializer.Instance.GetSettings.enviroColorIntensity;
-            }
         }
 
         public void UpdateVolumeWeight(float intensity) {
             if(volume != null)
                 volume.weight = 1 - intensity;
+            else {
+                var vol = FindAnyObjectByType<Volume>();
+                if(vol != null) {
+                    volume = vol;
+                    volume.weight = 1 - GameInitializer.Instance.GetSettings.enviroColorIntensity;
+                }
+            }
         }
 
         public void BindData(bool firstTimeBind) => saveInstance.Bind(firstTimeBind);
