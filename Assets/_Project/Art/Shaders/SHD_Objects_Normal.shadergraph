@@ -164,6 +164,9 @@
         },
         {
             "m_Id": "e11af63dd4044eadbf0c83c4bc3d96c8"
+        },
+        {
+            "m_Id": "e91e34098c0f47b097c2c9826e9537db"
         }
     ],
     "m_Keywords": [],
@@ -401,6 +404,9 @@
         },
         {
             "m_Id": "a6903af3662046379f461416f8beb98d"
+        },
+        {
+            "m_Id": "95d66306ebd54971aabf6c1d7134935d"
         }
     ],
     "m_GroupDatas": [
@@ -902,6 +908,20 @@
                     "m_Id": "df701865810f412d84cda8ed5ea25da7"
                 },
                 "m_SlotId": 1068679698
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "95d66306ebd54971aabf6c1d7134935d"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "1b55e3d6a4db472d9941404e7cae0798"
+                },
+                "m_SlotId": 0
             }
         },
         {
@@ -2169,6 +2189,9 @@
         },
         {
             "m_Id": "08e1104e340d49e1ac1f4fbb4465226e"
+        },
+        {
+            "m_Id": "e91e34098c0f47b097c2c9826e9537db"
         },
         {
             "m_Id": "1fe807f9c4a645f6887254995d3639c0"
@@ -4249,6 +4272,22 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "52f21e1742c746eda349999f758d0734",
+    "m_Id": 0,
+    "m_DisplayName": "Metallic",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": [],
+    "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
     "m_ObjectId": "5475da1950f94da0820e6fec25fff1ad",
     "m_Guid": {
@@ -6300,6 +6339,42 @@
     },
     "m_Property": {
         "m_Id": "1f1fb5e6647048d6a96a0992638d29f0"
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "95d66306ebd54971aabf6c1d7134935d",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 3734.000244140625,
+            "y": 360.0,
+            "width": 116.0,
+            "height": 34.000030517578128
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "52f21e1742c746eda349999f758d0734"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "e91e34098c0f47b097c2c9826e9537db"
     }
 }
 
@@ -9198,6 +9273,50 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": false
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "e91e34098c0f47b097c2c9826e9537db",
+    "m_Guid": {
+        "m_GuidSerialized": "df2bcc99-f9ea-4d04-bf0e-1e5b4cf11db8"
+    },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
+    "m_Name": "Metallic",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Metallic",
+    "m_DefaultReferenceName": "_Metallic",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
+    "m_Value": 0.0,
+    "m_FloatType": 1,
+    "m_LiteralFloatMode": false,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
