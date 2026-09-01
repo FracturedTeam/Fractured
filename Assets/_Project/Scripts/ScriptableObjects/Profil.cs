@@ -22,4 +22,26 @@ public class Profil : ScriptableObject
     public  Color act3_Color_B;
     public  Vector2 act3_Color_B_Location = new Vector2(0.5f, 1f);
     public  Color act3_Color_C;
+
+    public Color FRAG_ACT1_A_BaseColor;
+    public Color FRAG_ACT1_A_HighlightColor;
+    public Color FRAG_ACT1_B_BaseColor;
+    public Color FRAG_ACT1_B_HighlightColor;
+    public Color FRAG_ACT1_AB_BaseColor;
+    public Color FRAG_ACT1_AB_HighlightColor;
+
+    public Color FRAG_ACT2_A_BaseColor;
+    public Color FRAG_ACT2_A_HighlightColor;
+    public Color FRAG_ACT2_B_BaseColor;
+    public Color FRAG_ACT2_B_HighlightColor;
+    public Color FRAG_ACT2_AB_BaseColor;
+    public Color FRAG_ACT2_AB_HighlightColor;
+
+    public Color FRAG_ACT3_A_BaseColor;
+    public Color FRAG_ACT3_A_HighlightColor;
+    public Color FRAG_ACT3_B_BaseColor;
+    public Color FRAG_ACT3_B_HighlightColor;
+    public Color FRAG_ACT3_AB_BaseColor;
+    public Color FRAG_ACT3_AB_HighlightColor;
+
 }

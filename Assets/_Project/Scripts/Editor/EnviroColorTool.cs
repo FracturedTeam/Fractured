@@ -1,5 +1,6 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnviroColorTool : EditorWindow
 {
@@ -25,10 +26,35 @@ public class EnviroColorTool : EditorWindow
     static Color act3_Color_B;
     static Vector2 act3_Color_B_Location = new Vector2(0.5f, 1f);
     static Color act3_Color_C;
-    
-    bool show1 = true;
-    bool show2 = true;
-    bool show3 = true;
+
+    // fragments colors
+    static Color FRAG_ACT1_A_BaseColor;
+    static Color FRAG_ACT1_A_HighlightColor;
+    static Color FRAG_ACT1_B_BaseColor;
+    static Color FRAG_ACT1_B_HighlightColor;
+    static Color FRAG_ACT1_AB_BaseColor;
+    static Color FRAG_ACT1_AB_HighlightColor;
+
+    static Color FRAG_ACT2_A_BaseColor;
+    static Color FRAG_ACT2_A_HighlightColor;
+    static Color FRAG_ACT2_B_BaseColor;
+    static Color FRAG_ACT2_B_HighlightColor;
+    static Color FRAG_ACT2_AB_BaseColor;
+    static Color FRAG_ACT2_AB_HighlightColor;
+
+    static Color FRAG_ACT3_A_BaseColor;
+    static Color FRAG_ACT3_A_HighlightColor;
+    static Color FRAG_ACT3_B_BaseColor;
+    static Color FRAG_ACT3_B_HighlightColor;
+    static Color FRAG_ACT3_AB_BaseColor;
+    static Color FRAG_ACT3_AB_HighlightColor;
+
+    bool show1A = true;
+    bool show1B = true;
+    bool show2A = true;
+    bool show2B = true;
+    bool show3A = true;
+    bool show3B = true;
 
     [MenuItem("Window/EnviroColor")]
     private static void ShowWindow()
@@ -45,7 +71,7 @@ public class EnviroColorTool : EditorWindow
             AssetDatabase.CreateAsset(profil, "Assets/_Project/Art/Shaders/ColorProfil.asset");
             Debug.Log("create new profil");
         }
-        
+
         EditorGUILayout.LabelField("Act");
         profil.act = EditorGUILayout.IntSlider(profil.act,1,3); 
         
@@ -53,9 +79,8 @@ public class EnviroColorTool : EditorWindow
         profil.transition = EditorGUILayout.Slider(profil.transition, 0, 1);
         
         EditorGUILayout.Space(20);
-        show1 = EditorGUILayout.BeginFoldoutHeaderGroup(show1, "Act 1 Parameters");
-        
-        if(show1)
+        show1A = EditorGUILayout.BeginFoldoutHeaderGroup(show1A, "Act 1 : Environment");
+        if(show1A)
         {
             EditorGUILayout.LabelField("ACT 1 Color A");
             profil.act1_Color_A = EditorGUILayout.ColorField(profil.act1_Color_A);
@@ -68,10 +93,27 @@ public class EnviroColorTool : EditorWindow
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
+        show1B = EditorGUILayout.BeginFoldoutHeaderGroup(show1B, "Act 1 : Glass Fragments");
+        if (show1B)
+        {
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT A Color");
+            profil.FRAG_ACT1_A_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_A_BaseColor);
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT A Highlight Color");
+            profil.FRAG_ACT1_A_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_A_HighlightColor);
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT B Color");
+            profil.FRAG_ACT1_B_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_B_BaseColor);
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT B Highlight Color");
+            profil.FRAG_ACT1_B_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_B_HighlightColor);
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT AB Color");
+            profil.FRAG_ACT1_AB_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_AB_BaseColor);
+            EditorGUILayout.LabelField("ACT 1 FRAGMENT AB Highlight Color");
+            profil.FRAG_ACT1_AB_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT1_AB_HighlightColor);
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
         EditorGUILayout.Space(20);
-        show2 = EditorGUILayout.BeginFoldoutHeaderGroup(show2, "Act 2 Parameters");
-        
-        if(show2)
+        show2A = EditorGUILayout.BeginFoldoutHeaderGroup(show2A, "Act 2 : Environment");
+        if(show2A)
         {
             EditorGUILayout.LabelField("ACT 2 Color A");
             profil.act2_Color_A = EditorGUILayout.ColorField(profil.act2_Color_A);
@@ -84,10 +126,27 @@ public class EnviroColorTool : EditorWindow
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
+        show2B = EditorGUILayout.BeginFoldoutHeaderGroup(show2B, "Act 2 : Glass Fragments");
+        if (show2B)
+        {
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT A Color");
+            profil.FRAG_ACT2_A_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_A_BaseColor);
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT A Highlight Color");
+            profil.FRAG_ACT2_A_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_A_HighlightColor);
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT B Color");
+            profil.FRAG_ACT2_B_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_B_BaseColor);
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT B Highlight Color");
+            profil.FRAG_ACT2_B_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_B_HighlightColor);
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT AB Color");
+            profil.FRAG_ACT2_AB_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_AB_BaseColor);
+            EditorGUILayout.LabelField("ACT 2 FRAGMENT AB Highlight Color");
+            profil.FRAG_ACT2_AB_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT2_AB_HighlightColor);
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
         EditorGUILayout.Space(20);
-        show3 = EditorGUILayout.BeginFoldoutHeaderGroup(show3, "Act 3 Parameters");
-        
-        if(show3)
+        show3A = EditorGUILayout.BeginFoldoutHeaderGroup(show3A, "Act 3 : Environment");
+        if(show3A)
         {
             EditorGUILayout.LabelField("ACT 3 Color A");
             profil.act3_Color_A = EditorGUILayout.ColorField(profil.act3_Color_A);
@@ -97,6 +156,24 @@ public class EnviroColorTool : EditorWindow
             profil.act3_Color_B_Location = EditorGUILayout.Vector2Field("ACT 3 Color B Location", profil.act3_Color_B_Location);
             EditorGUILayout.LabelField("ACT 3 Color C");
             profil.act3_Color_C = EditorGUILayout.ColorField(profil.act3_Color_C);
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        show3B = EditorGUILayout.BeginFoldoutHeaderGroup(show3B, "Act 3 : Glass Fragments");
+        if (show3B)
+        {
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT A Color");
+            profil.FRAG_ACT3_A_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_A_BaseColor);
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT A Highlight Color");
+            profil.FRAG_ACT3_A_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_A_HighlightColor);
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT B Color");
+            profil.FRAG_ACT3_B_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_B_BaseColor);
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT B Highlight Color");
+            profil.FRAG_ACT3_B_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_B_HighlightColor);
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT AB Color");
+            profil.FRAG_ACT3_AB_BaseColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_AB_BaseColor);
+            EditorGUILayout.LabelField("ACT 3 FRAGMENT AB Highlight Color");
+            profil.FRAG_ACT3_AB_HighlightColor = EditorGUILayout.ColorField(profil.FRAG_ACT3_AB_HighlightColor);
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -151,6 +228,27 @@ public class EnviroColorTool : EditorWindow
         Shader.SetGlobalColor("_ACT3_Color_B", profil.act3_Color_B);
         Shader.SetGlobalVector("_ACT3_Color_B_Location", profil.act3_Color_B_Location);
         Shader.SetGlobalColor("_ACT3_Color_C", profil.act3_Color_C);
+
+        Shader.SetGlobalColor("_FRAG_ACT1_A_BaseColor", profil.FRAG_ACT1_A_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT1_A_HighlightColor", profil.FRAG_ACT1_A_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT1_B_BaseColor", profil.FRAG_ACT1_B_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT1_B_HighlightColor", profil.FRAG_ACT1_B_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT1_AB_BaseColor", profil.FRAG_ACT1_AB_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT1_AB_HighlightColor", profil.FRAG_ACT1_AB_HighlightColor);
+
+        Shader.SetGlobalColor("_FRAG_ACT2_A_BaseColor", profil.FRAG_ACT2_A_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT2_A_HighlightColor", profil.FRAG_ACT2_A_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT2_B_BaseColor", profil.FRAG_ACT2_B_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT2_B_HighlightColor", profil.FRAG_ACT2_B_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT2_AB_BaseColor", profil.FRAG_ACT2_AB_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT2_AB_HighlightColor", profil.FRAG_ACT2_AB_HighlightColor);
+
+        Shader.SetGlobalColor("_FRAG_ACT3_A_BaseColor", profil.FRAG_ACT3_A_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT3_A_HighlightColor", profil.FRAG_ACT3_A_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT3_B_BaseColor", profil.FRAG_ACT3_B_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT3_B_HighlightColor", profil.FRAG_ACT3_B_HighlightColor);
+        Shader.SetGlobalColor("_FRAG_ACT3_AB_BaseColor", profil.FRAG_ACT3_AB_BaseColor);
+        Shader.SetGlobalColor("_FRAG_ACT3_AB_HighlightColor", profil.FRAG_ACT3_AB_HighlightColor);
 
         EditorUtility.SetDirty(profil);
         AssetDatabase.SaveAssets();
