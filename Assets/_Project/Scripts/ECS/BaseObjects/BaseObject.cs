@@ -211,6 +211,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void UpdateUIPosition() {
             if(interactionUI) interactionUI.ManualPositionUpdate(interactionUIOffset);
         }
+
+        public void HideUIInteraction(bool doHide) {
+            if(interactionUI) interactionUI.gameObject.SetActive(!doHide);
+        }
         
         private void Update() {
             if(Time.frameCount % 2 != 0) return;

@@ -216,6 +216,9 @@ namespace _Project.Scripts.GameServices {
 
                 if (newGameStarted) {
                     newGameStarted = false;
+                    foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                        interact.HideUIInteraction(true);
+                    }
                     return;
                 }
                 
@@ -269,17 +272,23 @@ namespace _Project.Scripts.GameServices {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             GameInitializer.Instance.InitializeDebugSystems();
 #endif
+            await FadeToGame();
 
-            await WaitForSecondsAsync(0.25f);
+            await WaitForSecondsAsync(4f);
+            PlayerController.Instance.triggerEnterRoom = true;
             
-            EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
-                show = true,
-                title = GameSceneSettings.Instance.transitionTextSO.title,
-                description = GameSceneSettings.Instance.transitionTextSO.description,
-            });
+            await WaitForSecondsAsync(4f);
+            InputsBrain.Instance.DisablePlayerInput(false);
+            InputsBrain.Instance.DisableUIInput(true);
+            InputsBrain.Instance.DisablePauseInput(false);
             
             GameInitializer.Instance.SaveData();
-            InputsBrain.Instance.OnContinue += LeaveTransitionFade;
+
+            foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                interact.HideUIInteraction(false);
+                interact.UpdateUIPosition();
+            }
+            
         }
         
         private async Task LoadSave(string lastOpenScene) {
