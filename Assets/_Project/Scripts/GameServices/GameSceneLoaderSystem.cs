@@ -78,9 +78,11 @@ namespace _Project.Scripts.GameServices {
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
             
             var settings = GameSceneSettings.Instance;
+            settings.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
             GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
             
             await Task.Delay(100);
+            
             GameInitializer.Instance.LoadData();
             
             //Input la position joueur a spawn lorsqu'il entre dans la salle
@@ -159,8 +161,9 @@ namespace _Project.Scripts.GameServices {
                 
                 var settings = GameSceneSettings.Instance;
                 await LoadSceneAsync(settings.levelArt);
-
                 await WaitForSecondsAsync(0.25f);
+                
+                settings.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
                 
                 DiscordRichPresence.Instance.UpdateRichPresence(settings.transitionTextSO.title, "");
                 
@@ -249,7 +252,7 @@ namespace _Project.Scripts.GameServices {
             
             await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
-
+            GameSceneSettings.Instance.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
             DiscordRichPresence.Instance.UpdateRichPresence( "...", "");
             
             newGameStarted = true;
@@ -301,6 +304,7 @@ namespace _Project.Scripts.GameServices {
                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
                 
                 await WaitForSecondsAsync(0.25f);
+                GameSceneSettings.Instance.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
                 DiscordRichPresence.Instance.UpdateRichPresence(GameSceneSettings.Instance.transitionTextSO.title, "");
                 
                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {

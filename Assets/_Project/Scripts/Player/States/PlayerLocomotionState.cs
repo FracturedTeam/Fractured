@@ -32,9 +32,9 @@ namespace _Project.Scripts.Player.States {
             if(idleBreak.IsRunning && player.GetAnimatorSpeed() != 0) 
                 idleBreak.CompleteStop();
 
-            // if (player.GetAnimatorSpeed() != 0 && animator.GetCurrentAnimatorStateInfo(0).tagHash != IdleHash) {
-            //     animator.CrossFade(IdleHash, DefaultCrossFadeDuration);
-            // }
+            if (player.GetAnimatorSpeed() != 0 && animator.GetCurrentAnimatorStateInfo(0).fullPathHash != IdleHash && !animator.IsInTransition(0)) {
+                animator.CrossFade(IdleHash, DefaultCrossFadeDuration);
+            }
             
             animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
         }

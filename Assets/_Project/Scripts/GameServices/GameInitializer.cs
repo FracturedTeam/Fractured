@@ -6,7 +6,6 @@ using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices.Services;
-using _Project.Scripts.Player;
 using _Project.Scripts.Player.Camera;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
@@ -73,6 +72,9 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Material tileFloor3;
         [SerializeField] private Material carpetFloor;
         
+        [Header("Color Profile")]
+        [SerializeField] private Profil colorProfile;
+        
         public int CurrentChapter {get; private set;}
         public ColorTextProfile currentTextColors;
         
@@ -88,6 +90,7 @@ namespace _Project.Scripts.GameServices {
         protected override void Awake() {
             base.Awake();
             
+            SetColorProfile();
             InitializeGameSystems();
         }
 
@@ -482,6 +485,29 @@ namespace _Project.Scripts.GameServices {
         private void OnDrawGizmos() {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(lastStepPosition + new Vector3(0,0.2f,0), lastStepPosition + new Vector3(0,0.2f,0) + -Vector3.up * 3f);
+        }
+        
+        private void SetColorProfile() { 
+            Shader.SetGlobalFloat("_ActGlobalTransition", colorProfile.transition);
+            Shader.SetGlobalFloat("_CurrentAct", colorProfile.act);
+
+            Shader.SetGlobalColor("_ACT1_Color_A", colorProfile.act1_Color_A);
+            Shader.SetGlobalVector("_ACT1_Color_A_Location", colorProfile.act1_Color_A_Location);
+            Shader.SetGlobalColor("_ACT1_Color_B", colorProfile.act1_Color_B);
+            Shader.SetGlobalVector("_ACT1_Color_B_Location", colorProfile.act1_Color_B_Location);
+            Shader.SetGlobalColor("_ACT1_Color_C", colorProfile.act1_Color_C);
+
+            Shader.SetGlobalColor("_ACT2_Color_A", colorProfile.act2_Color_A);
+            Shader.SetGlobalVector("_ACT2_Color_A_Location", colorProfile.act2_Color_A_Location);
+            Shader.SetGlobalColor("_ACT2_Color_B", colorProfile.act2_Color_B);
+            Shader.SetGlobalVector("_ACT2_Color_B_Location", colorProfile.act2_Color_B_Location);
+            Shader.SetGlobalColor("_ACT2_Color_C", colorProfile.act2_Color_C);
+
+            Shader.SetGlobalColor("_ACT3_Color_A", colorProfile.act3_Color_A);
+            Shader.SetGlobalVector("_ACT3_Color_A_Location", colorProfile.act3_Color_A_Location);
+            Shader.SetGlobalColor("_ACT3_Color_B", colorProfile.act3_Color_B);
+            Shader.SetGlobalVector("_ACT3_Color_B_Location", colorProfile.act3_Color_B_Location);
+            Shader.SetGlobalColor("_ACT3_Color_C", colorProfile.act3_Color_C);
         }
         
         [Serializable]
