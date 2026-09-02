@@ -91,9 +91,9 @@ namespace _Project.Scripts.GameServices {
         
 #endif
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            // if (scene.buildIndex == 12) {
-            //     loadCredits = true;
-            // }
+            if (scene.buildIndex == 8) {
+                loadCredits = true;
+            }
             
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
@@ -158,6 +158,19 @@ namespace _Project.Scripts.GameServices {
                 await FadeToBlack();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
+
+                if (loadCredits) {
+                    await UnloadGameplaySceneAsync();
+                    
+                    _ = FadeToGame();
+                    
+                    Destroy(PlayerService.Instance.gameObject);
+                    Destroy(HudManager.Instance.gameObject);
+                    GameInitializer.Instance.EmptyAll();
+                    loadCredits = false;
+                    
+                    return;
+                }
                 
                 var settings = GameSceneSettings.Instance;
                 await LoadSceneAsync(settings.levelArt);
@@ -176,15 +189,6 @@ namespace _Project.Scripts.GameServices {
                 PlayerController.Instance.Movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
                 await UnloadGameplaySceneAsync();
                 
-                if (loadCredits) {
-                    await UnloadSceneAsync();
-                    
-                    Destroy(PlayerService.Instance.gameObject);
-                    Destroy(HudManager.Instance.gameObject);
-                    GameInitializer.Instance.EmptyAll();
-                    loadCredits = false;
-                }
-
                 InputsBrain.Instance.OnContinue += LeaveTransitionFade;
             }
             catch (Exception e) {

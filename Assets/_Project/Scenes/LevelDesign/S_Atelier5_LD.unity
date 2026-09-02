@@ -304,7 +304,7 @@ PrefabInstance:
       addedObject: {fileID: 152587986}
     - targetCorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1346248983}
+      addedObject: {fileID: 1346248979}
   m_SourcePrefab: {fileID: 100100000, guid: 09f8543011869544bbada907fde67436, type: 3}
 --- !u!114 &152587986
 MonoBehaviour:
@@ -319,6 +319,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerComponent
   OnInteract:
+  - actions:
+      m_PersistentCalls:
+        m_Calls: []
+    times: 0
+  OnCollisionTriggerEnter: []
+  OnCollisionTriggerExit: []
+  OnHideReveal: []
+  OnTextHideReveal: []
+  OnInteractSuccess: []
+  OnInteractFailed:
   - actions:
       m_PersistentCalls:
         m_Calls:
@@ -337,12 +347,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     times: 0
-  OnCollisionTriggerEnter: []
-  OnCollisionTriggerExit: []
-  OnHideReveal: []
-  OnTextHideReveal: []
-  OnInteractSuccess: []
-  OnInteractFailed: []
   OnSetStateOn: []
   OnSetStateOff: []
   OnSceneComplete: []
@@ -3060,7 +3064,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3313864846767816610, guid: 09f8543011869544bbada907fde67436, type: 3}
   m_PrefabInstance: {fileID: 152587984}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1346248983
+--- !u!114 &1346248979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3069,10 +3073,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1346248978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
+  m_Script: {fileID: 11500000, guid: 61695398c62f4d8eb548eb17dbbfa3ab, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
-  oneTimeUse: 0
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.DoorInteractable
+  sceneToLoad:
+    levelDesign:
+      m_SceneAsset: {fileID: 102900000, guid: db188944a5ccc7c42855b5351603688f, type: 3}
+      m_SceneName: S_NewCredits
+    playerPosition: {x: 0, y: 0, z: 0}
+    direction: 0
 --- !u!4 &1652611988 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5929228106835848343, guid: ce9dbf1fe93e96742836468669308977, type: 3}
@@ -3294,7 +3303,7 @@ MonoBehaviour:
   frames:
   - {fileID: 956625924}
   - {fileID: 151342477}
-  doorExit: {fileID: 0}
+  doorExit: {fileID: 1346248979}
 --- !u!114 &1828486352
 MonoBehaviour:
   m_ObjectHideFlags: 0
