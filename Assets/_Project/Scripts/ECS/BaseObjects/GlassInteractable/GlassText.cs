@@ -67,7 +67,7 @@ public class GlassText : MonoBehaviour
     internal void ForceSet()
     {
         if (currentTextScriptableObject)
-            Setup(currentTextScriptableObject, false);
+            Setup(currentTextScriptableObject, false, false);
     }
 
     private void SetAlpha(float alpha, float time = 0)
@@ -131,7 +131,7 @@ public class GlassText : MonoBehaviour
     //     bothText.OnInteract(isColliding, shard);
     // }
 
-    public void Setup(GlassTextScriptableObject newData, bool dontUseShader)
+    public void Setup(GlassTextScriptableObject newData, bool dontUseShader, bool blackText)
     {
         if (!isInitialized) {
             baseText.Initialize(this);
@@ -161,10 +161,10 @@ public class GlassText : MonoBehaviour
                     
                     //Case 0001 - Both
                     {
-                        baseText.SetText("");
-                        fragAText.SetText("");
-                        fragBText.SetText("");
-                        bothText.SetText(currentTextScriptableObject.bothText);
+                        baseText.SetText("", ColorEnum.None, false, blackText);
+                        fragAText.SetText("", ColorEnum.None, false, blackText);
+                        fragBText.SetText("", ColorEnum.None, false, blackText);
+                        bothText.SetText(currentTextScriptableObject.bothText, ColorEnum.None, false, blackText);
                         return;
                     }
                 }
@@ -173,10 +173,10 @@ public class GlassText : MonoBehaviour
                     //Case 0010 - B
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader);
-                        fragBText.SetText(currentTextScriptableObject.fragBText);
-                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader, blackText);
+                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.None, false, blackText);
+                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.ColorB, dontUseShader, blackText);
                         return;
                     }
 
@@ -195,10 +195,10 @@ public class GlassText : MonoBehaviour
                     //Case 0100 - A
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.fragAText);
-                        fragBText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader);
-                        bothText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.None, false, blackText);
+                        fragBText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader, blackText);
+                        bothText.SetText(currentTextScriptableObject.fragAText, ColorEnum.ColorA, dontUseShader, blackText);
                         return;
                     }
                     
@@ -213,10 +213,10 @@ public class GlassText : MonoBehaviour
                     //Case 0110 - AB
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.fragAText);
-                        fragBText.SetText(currentTextScriptableObject.fragBText);
-                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.None, false, blackText);
+                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.None, false, blackText);
+                        bothText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader, blackText);
                         return;
                     }
                     //Case 0111 -ABBOTH
@@ -239,10 +239,10 @@ public class GlassText : MonoBehaviour
                     //Case 1000 - 
                     if (currentTextScriptableObject.bothText.Length == 0)
                     {
-                        baseText.SetText(currentTextScriptableObject.baseText);
-                        fragAText.SetText(currentTextScriptableObject.baseText);
-                        fragBText.SetText(currentTextScriptableObject.baseText);
-                        bothText.SetText(currentTextScriptableObject.baseText);
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.None, false, blackText);
+                        fragAText.SetText(currentTextScriptableObject.baseText, ColorEnum.None, false, blackText);
+                        fragBText.SetText(currentTextScriptableObject.baseText, ColorEnum.None, false, blackText);
+                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.None, false, blackText);
                         return;
                     }
                     //Case 1001 - Both
@@ -256,10 +256,10 @@ public class GlassText : MonoBehaviour
                     //Case 1010 - B
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader);
-                        fragBText.SetText(currentTextScriptableObject.fragBText);
-                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader, blackText);
+                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.None, false, blackText);
+                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorB, dontUseShader, blackText);
                         return;
                     }
                     //Case 1011 - BBoth
@@ -277,10 +277,10 @@ public class GlassText : MonoBehaviour
                     //Case 1100 - A
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.fragAText);
-                        fragBText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader);
-                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.None, false, blackText);
+                        fragBText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader, blackText);
+                        bothText.SetText(currentTextScriptableObject.baseText, ColorEnum.ColorA, dontUseShader, blackText);
                         return;
                     }
                     //Case 1101 - ABoth
@@ -299,10 +299,10 @@ public class GlassText : MonoBehaviour
                     }
                     //Case 1111 -ABBOTH
                     {
-                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.Both, dontUseShader);
-                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.Both, dontUseShader);
-                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader);
-                        bothText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, dontUseShader);
+                        baseText.SetText(currentTextScriptableObject.baseText, ColorEnum.Both, dontUseShader, blackText);
+                        fragAText.SetText(currentTextScriptableObject.fragAText, ColorEnum.Both, dontUseShader, blackText);
+                        fragBText.SetText(currentTextScriptableObject.fragBText, ColorEnum.Both, dontUseShader, blackText);
+                        bothText.SetText(currentTextScriptableObject.bothText, ColorEnum.Both, dontUseShader, blackText);
                         return;
                     }
                    

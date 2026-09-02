@@ -280,7 +280,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
-            tween = transform.DOMove(pos, 0.5f).OnComplete(IsColliding);
+            tween = transform.DOMove(pos, 0.5f).OnComplete(() => {
+                IsColliding();
+                baseObject.UpdateUIPosition();
+            });
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
             tween.onComplete += TriggerSceneElement;
         }
