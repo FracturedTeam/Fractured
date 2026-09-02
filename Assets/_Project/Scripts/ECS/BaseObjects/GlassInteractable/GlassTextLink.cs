@@ -75,18 +75,23 @@ public class GlassTextLink : MonoBehaviour
 
     }
 
-    public void SetText(string newText, ColorEnum colorEnum = ColorEnum.None, bool special = false)
-    {
-        if(newText.Contains($"<link='censored'>"))
+    public void SetText(string newText, ColorEnum colorEnum, bool special, bool blackText) {
+        var replace = AddColor(colorEnum, newText, blackText);
+        if (baseText)
+            baseText.text = replace;
+        else if (GetComponent<TMP_Text>())
+            GetComponent<TMP_Text>().text = replace;
+        
+        if(replace.Contains($"<link='censored'>"))
         {
-            var start = newText.IndexOf($"<link='censored'>", StringComparison.Ordinal);
-            var end = newText.IndexOf("</link>", StringComparison.Ordinal);
+            var start = replace.IndexOf($"<link='censored'>", StringComparison.Ordinal);
+            var end = replace.IndexOf("</link>", StringComparison.Ordinal);
             if (baseText) {
                 if(special)
-                    baseText.text = Replace(newText, "█", start, end - start, colorEnum, false);
+                    baseText.text = Replace(replace, "█", start, end - start, colorEnum, false);
                 else {
-                    baseText.text = newText.Remove(start, "<link='censored'>".Length);
-                    baseText.text = newText.Remove(end, "</link>".Length);
+                    baseText.text = replace.Remove(start, "<link='censored'>".Length);
+                    baseText.text = replace.Remove(end, "</link>".Length);
                     
                     switch (colorEnum) {
                         case ColorEnum.ColorA :
@@ -99,18 +104,12 @@ public class GlassTextLink : MonoBehaviour
                 }
             }
             else if (GetComponent<TMP_Text>())
-                GetComponent<TMP_Text>().text = Replace(newText, "█", start, end - start, colorEnum, false);
+                GetComponent<TMP_Text>().text = Replace(replace, "█", start, end - start, colorEnum, false);
             return;
         }
         
         if(colorEnum is ColorEnum.Both)
             parentGlassText.showMistColorBoth = true;
-        
-        var replace = AddColor(colorEnum, newText, special);
-        if (baseText)
-            baseText.text = replace;
-        else if (GetComponent<TMP_Text>())
-            GetComponent<TMP_Text>().text = replace;
     }
 
     private static string AddColor(ColorEnum color, string input, bool special = false)
@@ -123,36 +122,36 @@ public class GlassTextLink : MonoBehaviour
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorA);
                     newString = special
-                        ? "<color=#00000000>" + newString + "</color>"
+                        ? "<color=#000000>" + newString + "</color>"
                         : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
-                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
+                newString = special? "<color=#000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
                 break;
             case ColorEnum.ColorB:
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorB);
                     newString = special
-                        ? "<color=#00000000>" + newString + "</color>"
+                        ? "<color=#000000>" + newString + "</color>"
                         : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
-                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
+                newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
                 break;
             case ColorEnum.Both:
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorAB);
                     newString = special
-                        ? "<color=#00000000>" + newString + "</color>"
+                        ? "<color=#000000>" + newString + "</color>"
                         : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
-                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";
+                newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";
                 break;
             case ColorEnum.None:
-                newString = special? "<color=#00000000>" + newString + "</color>" : "<color=#ffffffff>" + newString + "</color>";
+                newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ffffffff>" + newString + "</color>";
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(color), color, null);

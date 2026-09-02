@@ -38,6 +38,7 @@ namespace _Project.Scripts.ScriptableObjects {
         
         [Header("Frame Complete")]
         public EventReference ld_Solved;
+        public EventReference frame_Failed;
         
         [Header("Memory")]
         public EventReference memory_Interact;

@@ -9,6 +9,6 @@ public class GlassDocumentTemplate : MonoBehaviour
     public void SetUp(GlassDocumentScriptableObject data, bool dontUseShader)
     {
         render.material = data.material;
-        text.Setup(data, dontUseShader);
+        text.Setup(data, dontUseShader, true);
     }
 }

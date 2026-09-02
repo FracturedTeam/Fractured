@@ -86,6 +86,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.Interact.SetIsFocus(isUsingMemoryFrame, baseObject);
             PlayerController.Instance.Interact.SetGlassInteraction(!isUsingMemoryFrame);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
+            PlayerController.Instance.Movement.mesh.gameObject.SetActive(!isUsingMemoryFrame);
 
             foreach (var frame in frames) {
                 frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
@@ -140,9 +141,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 if(!frame.ValidPosition()) allValid = false;
             }
 
-            if (allValid) {
+            if (allValid)
                 CompleteFrames();
-            }
+            else
+                GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().frame_Failed);
         }
         
         private void CompleteFrames() {

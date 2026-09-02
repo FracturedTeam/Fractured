@@ -91,9 +91,9 @@ namespace _Project.Scripts.GameServices {
         
 #endif
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            // if (scene.buildIndex == 12) {
-            //     loadCredits = true;
-            // }
+            if (scene.buildIndex == 8) {
+                loadCredits = true;
+            }
             
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
@@ -158,6 +158,19 @@ namespace _Project.Scripts.GameServices {
                 await FadeToBlack();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
+
+                if (loadCredits) {
+                    await UnloadGameplaySceneAsync();
+                    
+                    _ = FadeToGame();
+                    
+                    Destroy(PlayerService.Instance.gameObject);
+                    Destroy(HudManager.Instance.gameObject);
+                    GameInitializer.Instance.EmptyAll();
+                    loadCredits = false;
+                    
+                    return;
+                }
                 
                 var settings = GameSceneSettings.Instance;
                 await LoadSceneAsync(settings.levelArt);
@@ -176,15 +189,6 @@ namespace _Project.Scripts.GameServices {
                 PlayerController.Instance.Movement.SetPosition(sceneSettings.playerPosition, sceneSettings.direction);
                 await UnloadGameplaySceneAsync();
                 
-                if (loadCredits) {
-                    await UnloadSceneAsync();
-                    
-                    Destroy(PlayerService.Instance.gameObject);
-                    Destroy(HudManager.Instance.gameObject);
-                    GameInitializer.Instance.EmptyAll();
-                    loadCredits = false;
-                }
-
                 InputsBrain.Instance.OnContinue += LeaveTransitionFade;
             }
             catch (Exception e) {
@@ -212,6 +216,9 @@ namespace _Project.Scripts.GameServices {
 
                 if (newGameStarted) {
                     newGameStarted = false;
+                    foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                        interact.HideUIInteraction(true);
+                    }
                     return;
                 }
                 
@@ -265,17 +272,23 @@ namespace _Project.Scripts.GameServices {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             GameInitializer.Instance.InitializeDebugSystems();
 #endif
+            await FadeToGame();
 
-            await WaitForSecondsAsync(0.25f);
+            await WaitForSecondsAsync(4f);
+            PlayerController.Instance.triggerEnterRoom = true;
             
-            EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
-                show = true,
-                title = GameSceneSettings.Instance.transitionTextSO.title,
-                description = GameSceneSettings.Instance.transitionTextSO.description,
-            });
+            await WaitForSecondsAsync(4f);
+            InputsBrain.Instance.DisablePlayerInput(false);
+            InputsBrain.Instance.DisableUIInput(true);
+            InputsBrain.Instance.DisablePauseInput(false);
             
             GameInitializer.Instance.SaveData();
-            InputsBrain.Instance.OnContinue += LeaveTransitionFade;
+
+            foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                interact.HideUIInteraction(false);
+                interact.UpdateUIPosition();
+            }
+            
         }
         
         private async Task LoadSave(string lastOpenScene) {

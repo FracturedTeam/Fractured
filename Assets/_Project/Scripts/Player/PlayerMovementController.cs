@@ -8,9 +8,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerMovementController : MonoBehaviour
-    {
-        // private InputsBrain inputsBrain;
+    public class PlayerMovementController : MonoBehaviour {
         private Rigidbody rb;
 
         [SerializeField] public PlayerConfiguration playerConfig;
