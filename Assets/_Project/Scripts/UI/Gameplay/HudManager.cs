@@ -93,9 +93,11 @@ namespace _Project.Scripts.UI {
             
             subtitleText.Setup(currentDialogue);
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Sight_Sounds, PlayerController.Instance.transform.position);
-            
-            if (currentDialogue.time <= 0)
+
+            if (currentDialogue.time <= 0) {
+                textTimer.CompleteStop();
                 return;
+            }
             
             textTimer.Reset(currentDialogue.time);
             textTimer.Start();

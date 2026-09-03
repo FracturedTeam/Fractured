@@ -34,6 +34,7 @@ namespace _Project.Scripts.UI.Gameplay {
         private float distanceToPlayer;
         private float distanceToCamera;
         private Tweener tween;
+        private bool isVisible = false;
 
         private void Start() {
             closeSprite = GameInitializer.Instance.CurrentChapter switch {
@@ -94,24 +95,26 @@ namespace _Project.Scripts.UI.Gameplay {
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
             distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
 
-            // A modifier pour être call qu'une fois lorsque la distance change
-            if (distanceToPlayer > distanceToBeVisible) {
-                tween = spriteRenderer.DOFade(0f, 0.25f).SetEase(easeType);
+            if (distanceToPlayer > distanceToBeVisible && isVisible) {
+                isVisible = false;
+                tween = spriteRenderer.DOFade(0f, 1f).SetEase(easeType);
             }
-            else {
-                tween = spriteRenderer.DOFade(1f, 0.25f).SetEase(easeType);
+            else if(distanceToPlayer < distanceToBeVisible && !isVisible) {
+                isVisible = true;
+                tween = spriteRenderer.DOFade(1f, 1f).SetEase(easeType);
             }
             
             transform.LookAt(CinemachineBrain.GetActiveBrain(0).OutputCamera.transform);
             distanceScale = Vector3.Lerp(Vector3.one * minScale, Vector3.one * maxScale, maxScaleMinimumDistance / distanceToPlayer);
             cameraScale = distanceScale * distanceToCamera / constantCameraScale;
             
-            if(distanceToPlayer < maxScaleMinimumDistance)
-                spriteRenderer.sprite = closeSprite;
-            else
-                spriteRenderer.sprite = normalSprite;
+            spriteRenderer.sprite = distanceToPlayer < maxScaleMinimumDistance ? closeSprite : normalSprite;
             
             transform.localScale = cameraScale;
+        }
+
+        public void DoShowUI(bool doShow) {
+            tween = spriteRenderer.DOFade(doShow ? 1f : 0f, 1f).SetEase(easeType);
         }
     }
 }

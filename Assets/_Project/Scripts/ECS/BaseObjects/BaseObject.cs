@@ -204,7 +204,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
             
-            interactionUI?.gameObject.SetActive(CanBeInteractedWith());
+            interactionUI?.DoShowUI(CanBeInteractedWith());
         }
 
         [ContextMenu("Update UI Position")]
@@ -213,7 +213,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public void HideUIInteraction(bool doHide) {
-            if(interactionUI) interactionUI.gameObject.SetActive(!doHide);
+            if(interactionUI) interactionUI.DoShowUI(!doHide);
         }
         
         private void Update() {
@@ -224,11 +224,11 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void OnEnable() {
-            if(interactionUI && canBeInteractedWith) interactionUI.gameObject.SetActive(true);
+            if(interactionUI && canBeInteractedWith) interactionUI.DoShowUI(true);
         }
 
         private void OnDisable() {
-            if(interactionUI) interactionUI.gameObject.SetActive(false);
+            if(interactionUI) interactionUI.DoShowUI(false);
         }
 
         private void OnDestroy() {
@@ -268,7 +268,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
             canBeInteractedWith = GetInteract != null && canInteract;
             
-            if(interactionUI != null) interactionUI.gameObject.SetActive(canInteract);
+            if(interactionUI != null) interactionUI.DoShowUI(canInteract);
         }
 
         public void SetGlassInteract(bool canInteract) {
