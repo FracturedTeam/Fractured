@@ -176,10 +176,10 @@ namespace _Project.Scripts.GameServices.Services {
                 FadeLoop(ref Act5Ambient);
                 currentAmbient = 5;
             }
-            else if (index is 12) {
-                creditsInstance.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) creditsInstance.start();
-                FadeLoop(ref creditsInstance);
+            else if (index is 8) {
+                beachInstance.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) beachInstance.start();
+                FadeLoop(ref beachInstance);
             }
             else if (index is 0 or 1) {
                 menuInstance.getPlaybackState(out playbackState);

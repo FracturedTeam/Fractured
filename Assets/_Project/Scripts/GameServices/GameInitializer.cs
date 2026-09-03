@@ -17,6 +17,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.GameServices {
     public class GameInitializer : PersistentSingleton<GameInitializer> {
@@ -38,13 +39,10 @@ namespace _Project.Scripts.GameServices {
         [Header("PostProcess")]
         [SerializeField] private VolumeProfile postProcess;
 
+        [FormerlySerializedAs("chapter1A")]
         [Header("Shard Materials")] 
-        [SerializeField] private Material chapter1A;
-        [SerializeField] private Material chapter1B;        
-        [SerializeField] private Material chapter2A;
-        [SerializeField] private Material chapter2B;
-        [SerializeField] private Material chapter3A;
-        [SerializeField] private Material chapter3B;
+        [SerializeField] private Material shardMaterialA;
+        [SerializeField] private Material shardMaterialB;
         
         [Header("Text Colors")] 
         [SerializeField] private ColorTextProfile chapter1TextProfile;
@@ -301,20 +299,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         public Material GetCurrentFragmentMaterial(bool isA) {
-            if (isA) {
-                return CurrentChapter switch {
-                    1 => chapter1A,
-                    2 => chapter2A,
-                    3 => chapter3A,
-                    _ => null
-                };
-            }
-            return CurrentChapter switch {
-                1 => chapter1B,
-                2 => chapter2B,
-                3 => chapter3B,
-                _ => null
-            };
+            return isA ? shardMaterialA : shardMaterialB;
         }
         
         #endregion
@@ -476,6 +461,27 @@ namespace _Project.Scripts.GameServices {
             Shader.SetGlobalColor("_ACT3_Color_B", colorProfile.act3_Color_B);
             Shader.SetGlobalVector("_ACT3_Color_B_Location", colorProfile.act3_Color_B_Location);
             Shader.SetGlobalColor("_ACT3_Color_C", colorProfile.act3_Color_C);
+            
+            Shader.SetGlobalColor("_FRAG_ACT1_A_BaseColor", colorProfile.FRAG_ACT1_A_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT1_A_HighlightColor", colorProfile.FRAG_ACT1_A_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT1_B_BaseColor", colorProfile.FRAG_ACT1_B_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT1_B_HighlightColor", colorProfile.FRAG_ACT1_B_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT1_AB_BaseColor", colorProfile.FRAG_ACT1_AB_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT1_AB_HighlightColor", colorProfile.FRAG_ACT1_AB_HighlightColor);
+
+            Shader.SetGlobalColor("_FRAG_ACT2_A_BaseColor", colorProfile.FRAG_ACT2_A_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT2_A_HighlightColor", colorProfile.FRAG_ACT2_A_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT2_B_BaseColor", colorProfile.FRAG_ACT2_B_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT2_B_HighlightColor", colorProfile.FRAG_ACT2_B_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT2_AB_BaseColor", colorProfile.FRAG_ACT2_AB_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT2_AB_HighlightColor", colorProfile.FRAG_ACT2_AB_HighlightColor);
+
+            Shader.SetGlobalColor("_FRAG_ACT3_A_BaseColor", colorProfile.FRAG_ACT3_A_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT3_A_HighlightColor", colorProfile.FRAG_ACT3_A_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT3_B_BaseColor", colorProfile.FRAG_ACT3_B_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT3_B_HighlightColor", colorProfile.FRAG_ACT3_B_HighlightColor);
+            Shader.SetGlobalColor("_FRAG_ACT3_AB_BaseColor", colorProfile.FRAG_ACT3_AB_BaseColor);
+            Shader.SetGlobalColor("_FRAG_ACT3_AB_HighlightColor", colorProfile.FRAG_ACT3_AB_HighlightColor);
         }
         
         [Serializable]
