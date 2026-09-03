@@ -1,7 +1,9 @@
 using System;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Inputs {
     public class InputsBrain : PersistentSingleton<InputsBrain> {
@@ -33,6 +35,8 @@ namespace _Project.Scripts.Inputs {
             base.Awake();
             inputs = new InputSystem_Actions();
             IsKeyboardControl = true;
+            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnEnable() {
@@ -100,6 +104,10 @@ namespace _Project.Scripts.Inputs {
             inputs.Disable();
         }
 
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            OnGamepadControlled.Invoke(!IsKeyboardControl);
+        }
+
         public void DisablePlayerInput(bool doDisable) {
             if(doDisable) inputs.Player.Disable();
             else inputs.Player.Enable();
@@ -124,18 +132,19 @@ namespace _Project.Scripts.Inputs {
                 if ((lastDevice.name.Equals("Keyboard") || lastDevice.name.Equals("Mouse")) && !IsKeyboardControl) {
                     IsKeyboardControl = true;
                     Cursor.visible = true;
+                    
                     OnGamepadControlled.Invoke(false);
-                    Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
                 else if (!lastDevice.name.Equals("Keyboard") && !lastDevice.name.Equals("Mouse") && IsKeyboardControl) {
                     IsKeyboardControl = false;
                     Cursor.visible = false;
+                    
                     OnGamepadControlled.Invoke(true);
-                    Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
+                    GameInitializer.Instance.rumbleService.UpdateGamepad(Gamepad.current);
                 }
             }
         }
-        
+
         private void PlayerMove(InputAction.CallbackContext context) => OnPlayerMove.Invoke(context.ReadValue<Vector2>());
         private void Interact(InputAction.CallbackContext context) => OnInteract.Invoke(context);
         private void SecondaryInteract(InputAction.CallbackContext context) => OnSecondaryInteract.Invoke(context);

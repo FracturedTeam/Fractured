@@ -1,4 +1,5 @@
 using _Project.Scripts.Enums;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using UnityEngine;
@@ -19,19 +20,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     baseObject.GetLockState = LockedState.Unlocked;
                     
                     PlayerController.Instance.Inventory.OnKeyUsed(key.ID);
+                    GameInitializer.Instance.rumbleService.RumblePulse(0.3f, 0.5f, 0.4f);
                     
                     if (!doInteractImmediately)  return;
-                        switch (interactable.GetBaseObject().GetObjectType) {
-                            case ObjectType.Collectable or ObjectType.Moveable:
-                                interactable.OnInteract(ObjectInteraction.Grab);
-                                break;
-                            case ObjectType.Usable:
-                                interactable.OnInteract(ObjectInteraction.Contextual);
-                                break;
-                            default:
-                                Debug.LogWarning($"[BlockedAttribute] Interactable type {interactable.GetBaseObject().GetObjectType} not supported");
-                                break;
-                        }
+                    
+                    switch (interactable.GetBaseObject().GetObjectType) {
+                        case ObjectType.Collectable or ObjectType.Moveable:
+                            interactable.OnInteract(ObjectInteraction.Grab);
+                            break;
+                        case ObjectType.Usable:
+                            interactable.OnInteract(ObjectInteraction.Contextual);
+                            break;
+                        default:
+                            Debug.LogWarning($"[BlockedAttribute] Interactable type {interactable.GetBaseObject().GetObjectType} not supported");
+                            break;
+                    }
                     
                     break;
                 }

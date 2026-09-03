@@ -141,11 +141,19 @@ namespace _Project.Scripts.Player {
         }
 
         private void SecondaryInteract(InputAction.CallbackContext ctx) {
-            if (ctx.performed) validationInputHold = true;
+            if (ctx.performed) {
+                validationInputHold = true;
+                if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame) {
+                    GameInitializer.Instance.rumbleService.RumblePulse(0.3f, 0.5f, 0.8f);
+                }
+            }
 
             if (ctx.canceled && validationInputHold) {
                 validationInputHold = false;
                 validationInputTime = 0;
+                
+                if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame)
+                    GameInitializer.Instance.rumbleService.StopRumble();
             }
         }
 
