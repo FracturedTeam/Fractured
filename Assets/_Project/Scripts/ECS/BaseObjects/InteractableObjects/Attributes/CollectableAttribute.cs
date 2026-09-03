@@ -176,14 +176,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.localPosition = targetLocalPos;
             transform.localScale = Vector3.zero;
 
-            StartCoroutine(WaitBeforePopping(1f));
+            baseObject.gameObject.SetActive(true);
+            StartCoroutine(WaitBeforePopping(1.25f));
             
             PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
         }
 
         private IEnumerator WaitBeforePopping(float waitTime) {
             yield return new WaitForSeconds(waitTime);
-            baseObject.gameObject.SetActive(true);
             transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
         }
         

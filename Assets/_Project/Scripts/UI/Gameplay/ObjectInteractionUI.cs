@@ -80,6 +80,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         public void RegisterComponents(MeshRenderer meshRenderer, Collider col, Vector3 offset) {
+            if(meshRenderer == null && col == null) Destroy(gameObject);
+            
             parentMesh = meshRenderer;
             parentCollider = col;
             this.offset = offset;
