@@ -26,53 +26,15 @@ public class GlassTextLink : MonoBehaviour
     public void Initialize(GlassText glassText) { //Initialize
         if (!isInitialized) {
             if(TryGetComponent(out TMP_Text text)) baseText = text;
-            else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
+            // else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
             
-            // shardsOnTop = new ObservableHashSet<Glass>();
-            // shardsOnTop.onUpdate += UpdateShards;
             parentGlassText = glassText;
             isInitialized = true;
         }
     }
 
-    public void SetAlpha(float alpha, float time)
-    {
+    public void SetAlpha(float alpha, float time) {
         baseText.DOFade(alpha, time);
-    }
-
-    // private void UpdateShards()
-    // {
-    //     underBlue = 0;
-    //     underRed = 0;
-    //
-    //     foreach (var shard in shardsOnTop.Items)
-    //         switch (shard.GetColor)
-    //         {
-    //             case ColorEnum.ColorA:
-    //                 underBlue++;
-    //                 break;
-    //             case ColorEnum.ColorB:
-    //                 underRed++;
-    //                 break;
-    //             case ColorEnum.Both:
-    //                 underBlue++;
-    //                 underRed++;
-    //                 break;
-    //             default:
-    //                 Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
-    //                 break;
-    //         }
-    // }
-
-    // internal void OnInteract(bool isUnder, Glass shard)
-    // {
-    //
-    // }
-
-    ///Auto Setup the collision
-    private void Set2DPoints()
-    {
-
     }
 
     public void SetText(string newText, ColorEnum colorEnum, bool special, bool blackText) {
@@ -121,7 +83,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorA);
-                    newString = $"<color=#{textColor}>" + newString + "</color>";
+                    newString = special? "<color=#000000>" + newString + "</color>" : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
@@ -130,7 +92,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorB);
-                    newString = $"<color=#{textColor}>" + newString + "</color>";
+                    newString = special? "<color=#000000>" + newString + "</color>" : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
@@ -139,7 +101,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorAB);
-                    newString = $"<color=#{textColor}>" + newString + "</color>";
+                    newString = special? "<color=#000000>" + newString + "</color>" : $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";

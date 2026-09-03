@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
@@ -39,7 +38,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!initialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
+                // else throw new ArgumentNullException($"[MoveableObject] Cannot find {nameof(BaseObject)} in {nameof(MovableAttribute)}");
                 
                 originalPosition = transform.position;
                 
@@ -73,8 +72,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.Grab:
                     if (baseObject.CanBeInteractedWith())
                         OnGrab();
-                    else
-                        Debug.LogWarning("[MoveableObject] Can't grab object !");
+                    // else
+                    //     Debug.LogWarning("[MoveableObject] Can't grab object !");
                     break;
                 //Drop case
                 case ObjectInteraction.Drop:
@@ -86,17 +85,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.DropNoTimer:
                     if (isGrabbed)
                         OnDropNoTimer(other);
-                    else
-                        Debug.Log("[MoveableObject] Cannot drop object !");
+                    // else
+                    //     Debug.Log("[MoveableObject] Cannot drop object !");
                     break;
                 //Reset Object
                 case ObjectInteraction.Reset:
                     ResetObject();
                     break;
                 //Other case
-                default:
-                    Debug.LogWarning($"[MoveableObject] {interaction} Interaction is not supported");
-                    break;
+                // default:
+                //     Debug.LogWarning($"[MoveableObject] {interaction} Interaction is not supported");
+                //     break;
             }
         }
 
@@ -142,7 +141,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(baseObject.HasSceneElement())
                 baseObject.TriggerSceneElement();
             
-            Debug.Log("[MoveableObject] Reset object");
+            // Debug.Log("[MoveableObject] Reset object");
         }
 
         public void OnGrab(IInteractable other = null) {

@@ -3,7 +3,6 @@ using System.Collections;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using DG.Tweening;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;

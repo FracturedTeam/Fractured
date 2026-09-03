@@ -209,7 +209,7 @@ namespace _Project.Scripts.ECS {
          public void Bind(SceneMasterSave data) {
              this.data = data;
              if (String.IsNullOrEmpty(Guid)) {
-                 Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
+                 // Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
                  return;
              }
              data.Guid = Guid;

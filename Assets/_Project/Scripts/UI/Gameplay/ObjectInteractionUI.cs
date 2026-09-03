@@ -6,7 +6,6 @@ using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class ObjectInteractionUI : MonoBehaviour {
@@ -23,7 +22,7 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private float distanceToBeVisible = 8;
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
-
+        
         private Sprite closeSprite;
         private Vector3 offset;
         private MeshRenderer parentMesh;
@@ -35,6 +34,7 @@ namespace _Project.Scripts.UI.Gameplay {
         private float distanceToCamera;
         private Tweener tween;
         private bool isVisible = false;
+        private bool canBeVisible = false;
 
         private void Start() {
             closeSprite = GameInitializer.Instance.CurrentChapter switch {
@@ -80,6 +80,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         public void RegisterComponents(MeshRenderer meshRenderer, Collider col, Vector3 offset) {
+            if(meshRenderer == null && col == null) Destroy(gameObject);
+            
             parentMesh = meshRenderer;
             parentCollider = col;
             this.offset = offset;
@@ -92,6 +94,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void LateUpdate() {
+            if(!canBeVisible) return;
+            
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
             distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
 
@@ -114,6 +118,7 @@ namespace _Project.Scripts.UI.Gameplay {
         }
 
         public void DoShowUI(bool doShow) {
+            canBeVisible = doShow;
             tween = spriteRenderer.DOFade(doShow ? 1f : 0f, 1f).SetEase(easeType);
         }
     }

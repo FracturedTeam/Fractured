@@ -5,7 +5,6 @@ using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -97,9 +96,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                     case ObjectType.Usable:
                         baseObject.OnInteract(ObjectInteraction.Contextual);
                         break;
-                    default:
-                        Debug.LogWarning($"[BlockedAttribute] Interactable type {baseObject.GetObjectType} not supported");
-                        break;
+                    // default:
+                    //     Debug.LogWarning($"[BlockedAttribute] Interactable type {baseObject.GetObjectType} not supported");
+                    //     break;
                 }
                 
                 EventBus<PadlockEvent>.Raise(new PadlockEvent {

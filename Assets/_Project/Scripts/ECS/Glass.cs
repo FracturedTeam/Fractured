@@ -50,7 +50,7 @@ namespace _Project.Scripts.ECS
         public void Bind(FragmentData data) {
             this.data = data;
             if (String.IsNullOrEmpty(Guid)) {
-                Debug.LogError($"[Glass] {gameObject.name} does not have Guid, please generate it");
+                // Debug.LogError($"[Glass] {gameObject.name} does not have Guid, please generate it");
                 return;
             }
             data.Guid = Guid;
@@ -111,8 +111,8 @@ namespace _Project.Scripts.ECS
             if (!initialized) {
                 mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
-                if (mainCamera == null)
-                    Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+                // if (mainCamera == null)
+                //     Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
 
                 if (TryGetComponent(typeof(Image), out var img))
                     shardSprite = img as Image;

@@ -1,13 +1,11 @@
 using System;
 using _Project.Scripts.Enums;
-using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
 using _Project.Scripts.Systems.Singletons;
 using _Project.Scripts.Systems.StateMachine;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Player {
     
@@ -62,16 +60,16 @@ namespace _Project.Scripts.Player {
             cinemachineBrain.gameObject.SetActive(false);
             
             if(TryGetComponent(out PlayerMovementController movement)) Movement = movement;
-            else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
+            // else Debug.LogWarning("[PlayerController] No PlayerMovementController found");
             
             if(TryGetComponent(out PlayerInteract interact)) Interact = interact;
-            else Debug.LogWarning("[PlayerController] No PlayerInteract found");
+            // else Debug.LogWarning("[PlayerController] No PlayerInteract found");
             
             if(TryGetComponent(out PlayerInventory inventory)) Inventory = inventory;
-            else Debug.LogWarning("[PlayerController] No PlayerInventory found");
+            // else Debug.LogWarning("[PlayerController] No PlayerInventory found");
             
             if(TryGetComponent(out PlayerIK ik)) PlayerIK = ik;
-            else Debug.LogWarning("[PlayerController] No Player IK found");
+            // else Debug.LogWarning("[PlayerController] No Player IK found");
             
             //Define state machine
             DefineState();

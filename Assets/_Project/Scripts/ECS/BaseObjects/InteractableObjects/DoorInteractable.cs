@@ -20,7 +20,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
-                else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
+                // else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
 
                 baseObject.GetObjectType = ObjectType.Door;
                 baseObject.SetInteract(true);
