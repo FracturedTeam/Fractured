@@ -40,18 +40,6 @@ namespace _Project.Scripts.GameServices.Services {
                     shardsInteractable.Add(interactable);
             }
         }
-
-        // public void PopulateService(BaseObject[] _interactable,  Glass[] _shards) {//Clear and populate interactable and shards
-        //     interactables.Clear();
-        //     shards.Clear();
-        //     shardsInteractable.Clear();
-        //     
-        //     interactables.AddRange(_interactable);
-        //     shards.AddRange(_shards);
-        //     
-        //     //Debug.Log($"[GlassShardService] Populating {interactables.Count} interactable | Populating {shards.Count} shards");
-        //     UpdateInteractableObjects();
-        // }
         
         public void Tick() { //Add a check method to not call the function when loading a scene
             if(stopUpdate) return;
@@ -122,11 +110,15 @@ namespace _Project.Scripts.GameServices.Services {
                     BShard.ChangeHoldingState(false);
                 AShard.ChangeHoldingState(true);
                 currentGlass = AShard;
+                
+                GameInitializer.Instance.rumbleService.RumblePulse(0.8f, 0.8f, .2f);
             }
 
             if (ctx.canceled && AShard) {
                 AShard.ChangeHoldingState(false);
                 currentGlass = null;
+                
+                GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.6f, .2f);
             }
         }
 
@@ -136,11 +128,15 @@ namespace _Project.Scripts.GameServices.Services {
                 if(AShard)
                     AShard.ChangeHoldingState(false);
                 currentGlass = BShard;
+                
+                GameInitializer.Instance.rumbleService.RumblePulse(0.8f, 0.8f, .2f);
             }
 
             if (ctx.canceled && BShard) {
                 BShard.ChangeHoldingState(false);
                 currentGlass = null;
+                
+                GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.6f, .2f);
             }
         }
         

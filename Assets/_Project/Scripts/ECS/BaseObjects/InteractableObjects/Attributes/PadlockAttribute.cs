@@ -78,7 +78,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
                 GameInitializer.Instance.SetShardsOnOff(!isUsingLock);
                 GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().lock_Unlocked);
-
+                GameInitializer.Instance.rumbleService.RumblePulse(0.3f, 0.5f, 0.4f);
+                
                 PlayerController.Instance.Interact.SetIsFocus(isUsingLock, baseObject);
                 PlayerController.Instance.Interact.SetGlassInteraction(!isUsingLock);
                 PlayerController.Instance.FreezeController(isUsingLock);

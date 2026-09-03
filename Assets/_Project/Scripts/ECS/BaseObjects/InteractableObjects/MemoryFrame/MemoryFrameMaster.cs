@@ -157,6 +157,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ld_Solved);
             GameInitializer.Instance.EmptyShards();
             GameInitializer.Instance.ResetGlassInteractable();
+            GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.8f, 0.25f);
             
             doorExit.CanBeUsed(true);
             

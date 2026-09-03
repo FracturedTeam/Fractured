@@ -11,10 +11,18 @@ namespace _Project.Scripts.GameServices.Services {
         private readonly CountdownTimer rumbleDuration;
         private readonly CountdownTimer coloredRumbleDuration;
         
-        public RumbleService(Gamepad pad) {
-            this.pad = pad;
+        public RumbleService(Gamepad gamepad) {
+            pad = gamepad;
             rumbleDuration = new CountdownTimer(1f);
             coloredRumbleDuration = new CountdownTimer(1f);
+        }
+
+        public void UpdateGamepad(Gamepad gamepad) {
+            pad = gamepad;
+
+            if (pad is DualShock4GamepadHID) {
+                SetGamepadColor(GameInitializer.Instance.Pad_GetCurrentChapterColor());
+            }
         }
         
         public void Initialize() {
@@ -22,7 +30,7 @@ namespace _Project.Scripts.GameServices.Services {
 
             rumbleDuration.OnTimerStop += StopRumble;
             coloredRumbleDuration.OnTimerStop += StopColoredRumble;
-            SetGamepadColor(GameInitializer.Instance.GetCurrentChapterColor());
+            SetGamepadColor(GameInitializer.Instance.Pad_GetCurrentChapterColor());
         }
 
         public void RumblePulse(float lowFrequency, float highFrequency, float duration) {
@@ -48,7 +56,7 @@ namespace _Project.Scripts.GameServices.Services {
             coloredRumbleDuration.Start();
         }
         
-        private void StopRumble() {
+        public void StopRumble() {
             if (!hasGamepad) return; 
             
             pad.SetMotorSpeeds(0, 0);
@@ -58,7 +66,7 @@ namespace _Project.Scripts.GameServices.Services {
             if (!hasGamepad) return; 
             
             if (pad is DualShock4GamepadHID dual) {
-                dual.SetMotorSpeedsAndLightBarColor(0, 0, GameInitializer.Instance.GetCurrentChapterColor());
+                dual.SetMotorSpeedsAndLightBarColor(0, 0, GameInitializer.Instance.Pad_GetCurrentChapterColor());
             }
             else {
                 pad.SetMotorSpeeds(0, 0);
@@ -85,9 +93,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
         }
         
-        public void Tick() {
-            
-        }
+        public void Tick() { }
         
         public void Dispose() {
             rumbleDuration.OnTimerStop -= StopRumble;
