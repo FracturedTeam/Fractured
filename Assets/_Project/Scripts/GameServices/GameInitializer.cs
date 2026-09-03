@@ -24,10 +24,10 @@ namespace _Project.Scripts.GameServices {
         private GameSystems gameSystems;
         
         //INTERNAL SERVICES
-        private ShardService shardService;
-        private SaveService saveService;
-        private AudioService audioService;
-        private RumbleService rumbleService;
+        public ShardService shardService {get; private set;}
+        public SaveService saveService {get; private set;}
+        public AudioService audioService {get; private set;}
+        public RumbleService rumbleService {get; private set;}
         
         [Header("Save service")] 
         [SerializeField] private bool deleteSaveOnPay;
@@ -55,15 +55,6 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] private Color chapter1Color;
         [SerializeField] private Color chapter2Color;
         [SerializeField] private Color chapter3Color;
-        [Space]
-        [SerializeField] private Color chapter1ShardAColor;
-        [SerializeField] private Color chapter1ShardBColor;
-        [Space]
-        [SerializeField] private Color chapter2ShardAColor;
-        [SerializeField] private Color chapter2ShardBColor;
-        [Space]
-        [SerializeField] private Color chapter3ShardAColor;
-        [SerializeField] private Color chapter3ShardBColor;
         
         [Header("Floor Material for sound")]
         [SerializeField] private Material woodFloor;
@@ -111,7 +102,6 @@ namespace _Project.Scripts.GameServices {
             
             //Then initialize the services (act as the awake method)
             gameSystems.Initialize();
-            
         }
         
         #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -409,13 +399,9 @@ namespace _Project.Scripts.GameServices {
         }
         #endregion
 
-        #region RumbleService
-
-        public void RumblePulse(float lowFrequency, float highFrequency, float duration) => rumbleService.RumblePulse(lowFrequency, highFrequency, duration);
-        public void RumblePulseColor(float lowFrequency, float highFrequency, float duration, Color color) => rumbleService.RumblePulseAndColor(lowFrequency, highFrequency, duration, color);
-        public void SetGamepadColor(Color color) => rumbleService.SetGamepadColor(color);
+        #region GamePad GetColor
         
-        public Color GetCurrentChapterColor() {
+        public Color Pad_GetCurrentChapterColor() {
             return CurrentChapter switch {
                 1 => chapter1Color,
                 2 => chapter2Color,
@@ -423,27 +409,9 @@ namespace _Project.Scripts.GameServices {
                 _ => Color.white
             };
         }
-        
-        public Color GetCurrentShardAColor() {
-            return CurrentChapter switch {
-                1 => chapter1ShardAColor,
-                2 => chapter2ShardAColor,
-                3 => chapter3ShardAColor,
-                _ => Color.white
-            };
-        }
-        
-        public Color GetCurrentShardBColor() {
-            return CurrentChapter switch {
-                1 => chapter1ShardBColor,
-                2 => chapter2ShardBColor,
-                3 => chapter3ShardBColor,
-                _ => Color.white
-            };
-        }
-        
-        #endregion
 
+        #endregion
+        
         public void UpdateDebugCameras() {
             cameraDebugService.UpdateCameras(GetCameras());
         }

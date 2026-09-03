@@ -33,6 +33,7 @@ namespace _Project.Scripts.GameServices {
         private void Start() {
             scenesToLoad = new List<SceneField>();
             SceneManager.sceneLoaded += OnSceneLoaded;
+            
             if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
@@ -51,6 +52,10 @@ namespace _Project.Scripts.GameServices {
                 StartCoroutine(SetSceneWithDelay());
             }
             #endif
+        }
+
+        private void OnDisable() {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

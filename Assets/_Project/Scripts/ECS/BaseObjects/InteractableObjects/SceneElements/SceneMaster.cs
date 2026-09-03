@@ -97,6 +97,7 @@ namespace _Project.Scripts.ECS {
                 validationDelay.Start();
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Interact);
+            GameInitializer.Instance.rumbleService.RumblePulse(0.7f, 0.9f, 1.3f);
             
             PlayerController.Instance.FreezeController(true);
             PlayerController.Instance.SetInteraction(false);
