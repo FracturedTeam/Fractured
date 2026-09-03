@@ -137,6 +137,13 @@ namespace _Project.Scripts.Player {
             
             EventBus<ClearInventoryEvent>.Raise(new ClearInventoryEvent());
         }
+
+        public void HideInventoryInFrame(bool doHide) {
+            if(doHide)
+                EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = false});
+            else
+                EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
+        }
         
     }
     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
@@ -174,11 +175,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             transform.localPosition = targetLocalPos;
             transform.localScale = Vector3.zero;
-            
-            baseObject.gameObject.SetActive(true);
-            transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
+
+            StartCoroutine(WaitBeforePopping(1f));
             
             PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
+        }
+
+        private IEnumerator WaitBeforePopping(float waitTime) {
+            yield return new WaitForSeconds(waitTime);
+            baseObject.gameObject.SetActive(true);
+            transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
         }
         
         private Bounds GetCombineBounds() {

@@ -87,6 +87,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             PlayerController.Instance.Interact.SetGlassInteraction(!isUsingMemoryFrame);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
             PlayerController.Instance.Movement.mesh.gameObject.SetActive(!isUsingMemoryFrame);
+            PlayerController.Instance.Inventory.HideInventoryInFrame(isUsingMemoryFrame);
 
             foreach (var frame in frames) {
                 frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
