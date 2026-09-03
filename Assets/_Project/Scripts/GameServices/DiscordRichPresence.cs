@@ -71,7 +71,7 @@ namespace _Project.Scripts.GameServices {
                 };
                 
                 activityManager.UpdateActivity(activity, (res) => {
-                    if(res != Discord.Result.Ok) Debug.LogWarning("Failed connecting to Discord");
+                    // if(res != Discord.Result.Ok) Debug.LogWarning("Failed connecting to Discord");
                 });
             }
             catch {

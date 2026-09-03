@@ -26,7 +26,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
         
         public void Initialize() {
-            if(!hasGamepad) Debug.Log("RumbleService does not have a gamepad");
+            // if(!hasGamepad) Debug.Log("RumbleService does not have a gamepad");
 
             rumbleDuration.OnTimerStop += StopRumble;
             coloredRumbleDuration.OnTimerStop += StopColoredRumble;

@@ -4,8 +4,6 @@ using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
-using _Project.Scripts.UI;
-using UnityEditor;
 using UnityEngine;
 
 namespace _Project.Scripts.GameServices.Services {
@@ -112,7 +110,7 @@ namespace _Project.Scripts.GameServices.Services {
         public void SaveData() {
             if (GameSceneSettings.HasInstance) { 
                 
-                Debug.Log($"[SaveSystem]::Saving - Saving on scene {GameSceneSettings.Instance.gameObject.scene.name}");
+                // Debug.Log($"[SaveSystem]::Saving - Saving on scene {GameSceneSettings.Instance.gameObject.scene.name}");
                 
                 // Check immédiatement pour voir si un scene data existe déjà
                 bool foundExistingSceneData = false;
@@ -121,7 +119,7 @@ namespace _Project.Scripts.GameServices.Services {
                     if (GameData.SceneDatas[i].SceneName == GameSceneSettings.Instance.gameObject.scene.name) {
                         foundExistingSceneData = true;
                         index = i;
-                        Debug.Log($"[SaveSystem]::Saving - Has found saved Scene Data");
+                        // Debug.Log($"[SaveSystem]::Saving - Has found saved Scene Data");
                         break;
                     }
                 }
@@ -157,38 +155,38 @@ namespace _Project.Scripts.GameServices.Services {
                 
                 if (!foundExistingSceneData) {
                     GameData.SceneDatas.Add(sceneData);
-                    Debug.Log($"[SaveSystem]::Saving - Has not found existing Scene Save, Registering new one !");
+                    // Debug.Log($"[SaveSystem]::Saving - Has not found existing Scene Save, Registering new one !");
                 }
                 else {
                     GameData.SceneDatas[index] = sceneData;
-                    Debug.Log($"[SaveSystem]::Saving - Has updated scene data in save file");
+                    // Debug.Log($"[SaveSystem]::Saving - Has updated scene data in save file");
                 }
             
                 dataService.Save(GameData, GameData.SaveName);
             
-                Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {GameData.SaveName}");
+                // Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {GameData.SaveName}");
             }
         }
         
          public void SaveSettings()
          {
              dataService.Save(SettingData, settingsFileName);
-             Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {settingsFileName}");
+             // Debug.Log($"[SaveSystem]::Saving - Saved Data to savefile {settingsFileName}");
          }
         
         public void LoadData() {
             if(GameSceneSettings.HasInstance)
                 LoadData(GameSceneSettings.Instance.gameObject.scene.name);
-            else {
-                Debug.LogError("[SaveService]::Load - Game scene setting not found");
-            }
+            // else {
+            //     Debug.LogError("[SaveService]::Load - Game scene setting not found");
+            // }
         }
         
         private void LoadData(string sceneName) {
             
             if (!dataService.FileDoesExist(saveFileName)) {
                 dataService.Save(GameData, GameData.SaveName);
-                Debug.Log($"[SaveService]::Load - SaveFile does not exist, creating a new one");
+                // Debug.Log($"[SaveService]::Load - SaveFile does not exist, creating a new one");
                 return;
             }
             
@@ -206,7 +204,7 @@ namespace _Project.Scripts.GameServices.Services {
             }
 
             if(!foundExisting) {  
-                Debug.Log($"[SaveSystem]::Load - Has not found existing Scene Save, Creating new one !");
+                // Debug.Log($"[SaveSystem]::Load - Has not found existing Scene Save, Creating new one !");
                 sceneData.SceneName = sceneName;
                 SaveData();
                 return;
@@ -227,7 +225,7 @@ namespace _Project.Scripts.GameServices.Services {
                 shard.LoadData();
             }
             
-            Debug.Log($"[SaveSystem]::Load - Save Loaded for scene {GameData.SceneDatas[index].SceneName}");
+            // Debug.Log($"[SaveSystem]::Load - Save Loaded for scene {GameData.SceneDatas[index].SceneName}");
         }
 
         public void LoadPlayerData() {

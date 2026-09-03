@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
-using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.UI.Gameplay;
 using UnityEditor;
 using UnityEngine;
@@ -98,7 +97,7 @@ namespace _Project.Scripts.GameServices {
             var guids = AssetDatabase.FindAssets("P_Objet_InScene_UI t:Prefab");
             
             if (guids.Length == 0) {
-                Debug.LogWarning("P_ObjectInScene_UI prefab not found in project.");
+                // Debug.LogWarning("P_ObjectInScene_UI prefab not found in project.");
                 return;
             }
             

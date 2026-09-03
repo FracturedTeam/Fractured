@@ -3,7 +3,6 @@ using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -24,7 +23,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
+                // else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
                 
                 baseObject.GetObjectType = ObjectType.Usable;
                 

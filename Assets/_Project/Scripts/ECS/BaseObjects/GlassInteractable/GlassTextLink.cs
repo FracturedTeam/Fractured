@@ -26,7 +26,7 @@ public class GlassTextLink : MonoBehaviour
     public void Initialize(GlassText glassText) { //Initialize
         if (!isInitialized) {
             if(TryGetComponent(out TMP_Text text)) baseText = text;
-            else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
+            // else Debug.LogError($"[GlassTextLink] {gameObject.name} Did not found a TMP_Text");
             
             // shardsOnTop = new ObservableHashSet<Glass>();
             // shardsOnTop.onUpdate += UpdateShards;

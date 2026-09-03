@@ -6,7 +6,6 @@ using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class ObjectInteractionUI : MonoBehaviour {
@@ -23,8 +22,6 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private float distanceToBeVisible = 8;
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
-
-        private BaseObject baseObjectRef;
         
         private Sprite closeSprite;
         private Vector3 offset;
@@ -57,10 +54,6 @@ namespace _Project.Scripts.UI.Gameplay {
         private void OnDisable() {
             CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
             tween?.Kill();
-        }
-
-        public void SetBaseObject(BaseObject baseObject) {
-            baseObjectRef = baseObject;
         }
         
         private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {

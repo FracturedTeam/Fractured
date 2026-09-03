@@ -317,8 +317,8 @@ public class GlassText : MonoBehaviour
 
     private void Error()
     {
-        Debug.LogError("Error on Text Scriptable Object, Case not supported, see the documentation for more information " +
-                       "<a href=\"https://docs.google.com/document/d/1IGWeNeqUure2vZgyoxgXxlqOPQhoYTO_nbDbxLvGX8A/edit?tab=t.0#heading=h.16tvc46zf4qe\">Case Table</a> and " +
-                       "SetUp Document", transform);
+        // Debug.LogError("Error on Text Scriptable Object, Case not supported, see the documentation for more information " +
+        //                "<a href=\"https://docs.google.com/document/d/1IGWeNeqUure2vZgyoxgXxlqOPQhoYTO_nbDbxLvGX8A/edit?tab=t.0#heading=h.16tvc46zf4qe\">Case Table</a> and " +
+        //                "SetUp Document", transform);
     }
 }
