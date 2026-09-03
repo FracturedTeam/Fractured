@@ -155,7 +155,11 @@ public class GlassText : MonoBehaviour
                     //Case 0000 - 
                     if (currentTextScriptableObject.bothText == "")
                     {
-                        Error();
+                        baseText.SetText("", ColorEnum.None, false, blackText);
+                        fragAText.SetText("", ColorEnum.None, false, blackText);
+                        fragBText.SetText("", ColorEnum.None, false, blackText);
+                        bothText.SetText("", ColorEnum.None, false, blackText);
+                        // Error();
                         return; 
                     }
                     

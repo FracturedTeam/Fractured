@@ -121,9 +121,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorA);
-                    newString = special
-                        ? "<color=#000000>" + newString + "</color>"
-                        : $"<color=#{textColor}>" + newString + "</color>";
+                    newString = $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=yellow>" + newString + "</color>";
@@ -132,9 +130,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorB);
-                    newString = special
-                        ? "<color=#000000>" + newString + "</color>"
-                        : $"<color=#{textColor}>" + newString + "</color>";
+                    newString = $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ff00ffff>" + newString + "</color>";
@@ -143,9 +139,7 @@ public class GlassTextLink : MonoBehaviour
                 if(GameInitializer.HasInstance)
                 {
                     var textColor = ColorUtility.ToHtmlStringRGBA(GameInitializer.Instance.currentTextColors.colorAB);
-                    newString = special
-                        ? "<color=#000000>" + newString + "</color>"
-                        : $"<color=#{textColor}>" + newString + "</color>";
+                    newString = $"<color=#{textColor}>" + newString + "</color>";
                     break;
                 }
                 newString = special? "<color=#000000>" + newString + "</color>" : "<color=#ffa500ff>" + newString + "</color>";
