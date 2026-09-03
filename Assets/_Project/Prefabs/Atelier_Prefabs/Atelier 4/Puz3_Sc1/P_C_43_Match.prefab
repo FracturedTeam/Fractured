@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5094197941061830901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7074052009086809499}
+  m_Layer: 0
+  m_Name: HandPlacement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7074052009086809499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5094197941061830901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.067, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8676147381987242488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6631213616727491237
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,9 +62,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.071926, y: 0.071926, z: 0.46580714}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7074052009086809499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &633155876105487356
@@ -43,7 +75,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6631213616727491237}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 8966418585102120639, guid: c315bacab2090cd4e8bb930664bbb588, type: 3}
 --- !u!23 &7848041314964421802
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -69,7 +101,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 494f659caa6b77e458e3ff67f7d828e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,8 +144,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.1366585, y: 0.052520487, z: 0.23548077}
+  m_Center: {x: 0, y: 0.026260247, z: -0.000000007450581}
 --- !u!114 &6250262206632816491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
-  itemSprite: {fileID: 21300000, guid: 1e06e6430a4ae524ca68a0513a113e82, type: 3}
+  leftEdge: {fileID: 0}
+  itemSprite: {fileID: -716275963, guid: a8a2985af3c1d9a41bcbb4b172e94ea8, type: 3}
   particles: {fileID: 0}
   isAKey: 1
   isOneTimeUse: 1
@@ -145,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Match
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 

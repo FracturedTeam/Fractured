@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8300248822384177376, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_Intensity
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8300248822384177376, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_Lightmapping
@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8502199720588517533, guid: 4d3c74c68dbbae94fbc6c49c111c6d33, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Lamp
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3089c9a7977b4670a76c4e160ff37040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.UsableAttribute
-  oneTimeUse: 1
+  oneTimeUse: 0
   hasObjectInside: 0
   objectsInside: []
   eventOnActivation:
