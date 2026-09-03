@@ -195,6 +195,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (prefabInteractionUI && GetInteract != null) {
                     interactionUI = Instantiate(prefabInteractionUI);
                     interactionUI.RegisterComponents(meshRenderer, objectCollider, interactionUIOffset);
+                    interactionUI.SetBaseObject(this);
                 }
             }
             IsInitialized = true;
@@ -232,7 +233,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         private void OnDestroy() {
-            if(interactionUI) Destroy(interactionUI);
+            if(interactionUI) Destroy(interactionUI.gameObject);
             
             GetInteract?.Dispose();
         }

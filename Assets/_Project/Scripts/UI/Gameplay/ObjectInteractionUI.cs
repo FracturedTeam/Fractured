@@ -24,6 +24,8 @@ namespace _Project.Scripts.UI.Gameplay {
         [SerializeField] private float maxScaleMinimumDistance = 1;
         [SerializeField] private Ease easeType;
 
+        private BaseObject baseObjectRef;
+        
         private Sprite closeSprite;
         private Vector3 offset;
         private MeshRenderer parentMesh;
@@ -35,6 +37,7 @@ namespace _Project.Scripts.UI.Gameplay {
         private float distanceToCamera;
         private Tweener tween;
         private bool isVisible = false;
+        private bool canBeVisible = false;
 
         private void Start() {
             closeSprite = GameInitializer.Instance.CurrentChapter switch {
@@ -54,6 +57,10 @@ namespace _Project.Scripts.UI.Gameplay {
         private void OnDisable() {
             CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
             tween?.Kill();
+        }
+
+        public void SetBaseObject(BaseObject baseObject) {
+            baseObjectRef = baseObject;
         }
         
         private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {
@@ -92,6 +99,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void LateUpdate() {
+            if(!canBeVisible) return;
+            
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
             distanceToCamera = Vector3.Distance(transform.position, CinemachineBrain.GetActiveBrain(0).OutputCamera.transform.position);
 
@@ -114,6 +123,7 @@ namespace _Project.Scripts.UI.Gameplay {
         }
 
         public void DoShowUI(bool doShow) {
+            canBeVisible = doShow;
             tween = spriteRenderer.DOFade(doShow ? 1f : 0f, 1f).SetEase(easeType);
         }
     }
