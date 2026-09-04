@@ -119,7 +119,15 @@ namespace _Project.Scripts.UI.Gameplay {
 
         public void DoShowUI(bool doShow) {
             canBeVisible = doShow;
-            tween = spriteRenderer.DOFade(doShow ? 1f : 0f, 1f).SetEase(easeType);
+            tween.Kill();
+            
+            if (doShow) {
+                gameObject.SetActive(true);
+                tween = spriteRenderer.DOFade(1f, 1f).SetEase(easeType);
+            }
+            else {
+                tween = spriteRenderer.DOFade(0f, 1f).SetEase(easeType).OnComplete(() => gameObject.SetActive(false));
+            }
         }
     }
 }

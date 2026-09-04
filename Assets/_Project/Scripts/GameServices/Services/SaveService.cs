@@ -109,14 +109,14 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void SaveData() {
             if (GameSceneSettings.HasInstance) { 
-                
+                var settings = GameSceneSettings.Instance;
                 // Debug.Log($"[SaveSystem]::Saving - Saving on scene {GameSceneSettings.Instance.gameObject.scene.name}");
                 
                 // Check immédiatement pour voir si un scene data existe déjà
                 bool foundExistingSceneData = false;
                 int index = 0;
                 for (int i = 0; i < GameData.SceneDatas.Count; i++) {
-                    if (GameData.SceneDatas[i].SceneName == GameSceneSettings.Instance.gameObject.scene.name) {
+                    if (GameData.SceneDatas[i].SceneName == settings.gameObject.scene.name) {
                         foundExistingSceneData = true;
                         index = i;
                         // Debug.Log($"[SaveSystem]::Saving - Has found saved Scene Data");
@@ -126,7 +126,7 @@ namespace _Project.Scripts.GameServices.Services {
 
                 // Bind des data
                 if(!foundExistingSceneData) // Use bool to create and bind GUID for the first time in the save file
-                    GameSceneSettings.Instance.BindData(true);
+                    settings.BindData(true);
                 PlayerController.Instance.SaveData(GameData.PlayerData); // Lui donner accès au shard Service (Pourquoi ? j'ai oublié)
 
                 foreach (var scene in shardService.sceneMasters) {
@@ -141,17 +141,18 @@ namespace _Project.Scripts.GameServices.Services {
                 foreach (var shard in shardService.shards) {
                     shard.SaveData();
 
-                    for (var i = 0; i < GameSceneSettings.Instance.GetAllShards().Count; i++) {
-                        if (shard.Guid == GameSceneSettings.Instance.GetSceneData().FragmentDatas[i].Guid) {
-                            GameSceneSettings.Instance.GetSceneData().FragmentDatas[i] = shard.data;
+                    for (var i = 0; i < settings.GetAllShards().Count; i++) {
+                        if (shard.Guid == settings.GetSceneData().FragmentDatas[i].Guid) {
+                            settings.GetSceneData().FragmentDatas[i] = shard.data;
                             break;
                         }
                     }
                 }
                 
-                sceneData = GameSceneSettings.Instance.GetSceneData();
+                sceneData = settings.GetSceneData();
                 GameData.CurrentScene = sceneData.SceneName;
-                GameData.CurrentChapter = GameInitializer.Instance.CurrentChapter;
+                if(GameInitializer.Instance.CurrentChapter > GameData.CurrentChapter)
+                    GameData.CurrentChapter = GameInitializer.Instance.CurrentChapter;
                 
                 if (!foundExistingSceneData) {
                     GameData.SceneDatas.Add(sceneData);
