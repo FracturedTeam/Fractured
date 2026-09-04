@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
@@ -65,7 +66,38 @@ namespace _Project.Scripts.UI {
         }
 
         private void Start() {
-            if (GameInitializer.HasInstance) {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            if (GameSceneSettings.HasInstance) {
+                var ChapterIndex = GameSceneSettings.Instance.ActColor;
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            else if (GameInitializer.HasInstance) {
+                var ChapterIndex = GameInitializer.Instance.GetLastChapter();
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (GameSceneSettings.HasInstance) {
+                var ChapterIndex = GameSceneSettings.Instance.ActColor;
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            else if (GameInitializer.HasInstance) {
                 var ChapterIndex = GameInitializer.Instance.GetLastChapter();
                 alternateColor = ChapterIndex switch {
                     1 => act1Color,
@@ -91,6 +123,7 @@ namespace _Project.Scripts.UI {
         }
         
         private void OnDisable() {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             tweener?.Kill();
         }
 
@@ -101,8 +134,6 @@ namespace _Project.Scripts.UI {
             buttonText.alpha = 1f;
             backgroundImage.sprite = backgroundHover;
             pressedGroup.gameObject.SetActive(false);
-            
-            Debug.Log("On Pointer Enter");
         }
 
         public void OnPointerExit(PointerEventData eventData) {

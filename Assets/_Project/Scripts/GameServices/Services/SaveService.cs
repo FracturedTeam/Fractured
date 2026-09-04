@@ -4,7 +4,7 @@ using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.Save;
-using UnityEngine;
+using Unity.Cinemachine;
 
 namespace _Project.Scripts.GameServices.Services {
 
@@ -14,7 +14,9 @@ namespace _Project.Scripts.GameServices.Services {
         public string CurrentScene;
         public PlayerData PlayerData;
         public List<SceneData> SceneDatas;
-        public int CurrentChapter;
+        public int CurrentActColor;
+        public int LastPlayedLevel;
+        public string lastActiveCameraName;
     }
     
     [Serializable]
@@ -28,9 +30,7 @@ namespace _Project.Scripts.GameServices.Services {
         public bool vSyncEnabled;
         public int brightness;
         public int contrast;
-        public bool dof;
         public bool chromaticAberration;
-        public int subtitleSize;
 
         public float enviroColorIntensity;
         public float uiColorIntensity;
@@ -84,6 +84,14 @@ namespace _Project.Scripts.GameServices.Services {
         
         public void NewGame(string gameName = "") {
             if (gameName == "") gameName = saveFileName;
+
+            var currentChap = 1;
+            var lastLevel = 1;
+            if (ExistingSave()) {
+                GameData = dataService.Load<GameData>(GameData.SaveName);
+                currentChap = GameData.CurrentActColor;
+                lastLevel = GameData.LastPlayedLevel;
+            }
             
             DeleteGame(saveFileName);
             
@@ -91,7 +99,9 @@ namespace _Project.Scripts.GameServices.Services {
                 SaveName = gameName,
                 PlayerData = new PlayerData(),
                 SceneDatas = new List<SceneData>(),
-                CurrentChapter = 1,
+                CurrentActColor = currentChap,
+                lastActiveCameraName = "",
+                LastPlayedLevel = lastLevel
             };
         }
         
@@ -103,7 +113,10 @@ namespace _Project.Scripts.GameServices.Services {
                 screenResolutionIndex = -1,
                 vSyncEnabled = true,
                 brightness = (int)GameInitializer.Instance.GetColorAdjustments().postExposure.value,
-                contrast = (int)GameInitializer.Instance.GetColorAdjustments().contrast.value
+                contrast = (int)GameInitializer.Instance.GetColorAdjustments().contrast.value,
+                quality = 3,
+                enviroColorIntensity = 0,
+                uiColorIntensity = 1,
             };
         }
         
@@ -151,8 +164,13 @@ namespace _Project.Scripts.GameServices.Services {
                 
                 sceneData = settings.GetSceneData();
                 GameData.CurrentScene = sceneData.SceneName;
-                if(GameInitializer.Instance.CurrentChapter > GameData.CurrentChapter)
-                    GameData.CurrentChapter = GameInitializer.Instance.CurrentChapter;
+                if(GameInitializer.Instance.CurrentChapter > GameData.CurrentActColor)
+                    GameData.CurrentActColor = GameInitializer.Instance.CurrentChapter;
+                
+                if(GameSceneSettings.Instance.gameObject.scene.buildIndex - 2 > GameData.LastPlayedLevel)
+                    GameData.LastPlayedLevel = GameSceneSettings.Instance.gameObject.scene.buildIndex - 2;
+                
+                GameData.lastActiveCameraName = CinemachineBrain.GetActiveBrain(0).ActiveVirtualCamera.Name;
                 
                 if (!foundExistingSceneData) {
                     GameData.SceneDatas.Add(sceneData);
@@ -225,6 +243,20 @@ namespace _Project.Scripts.GameServices.Services {
             foreach (var shard in shardService.shards) {
                 shard.LoadData();
             }
+
+            var foundCam = false;
+            foreach (var camera in GameInitializer.Instance.GetCameras()) {
+                if (camera.name == GameData.lastActiveCameraName) {
+                    camera.Priority = 1;
+                    foundCam = true;
+                }
+                else
+                    camera.Priority = 0;
+            }
+
+            if (!foundCam) {
+                GameSceneSettings.Instance.roomCamera.Priority = 1;
+            }
             
             // Debug.Log($"[SaveSystem]::Load - Save Loaded for scene {GameData.SceneDatas[index].SceneName}");
         }
@@ -233,11 +265,11 @@ namespace _Project.Scripts.GameServices.Services {
             PlayerController.Instance.Load(GameData.PlayerData);
         }
         
-        public void LoadGame() {
+        public void LoadSaveFile() {
             GameData = dataService.Load<GameData>(GameData.SaveName);
         }
         
-        public void DeleteGame(string gameName) {
+        private void DeleteGame(string gameName) {
             dataService.Delete(gameName);
         }
         
@@ -266,7 +298,7 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         public bool ExistingSave() {
-            return dataService.FileDoesExist(GameData.SaveName);
+            return dataService.FileDoesExist(saveFileName);
         }
         
         public void Tick() {
