@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Reorder Memories
+  ObjectName: Reorder memories
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -293,7 +293,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -9041323466496603470, guid: 4323c250eae75b6478bae5f89e271bdd, type: 3}
       propertyPath: ObjectName
-      value: Take the globe
+      value: Take globe
       objectReference: {fileID: 0}
     - target: {fileID: -9041323466496603470, guid: 4323c250eae75b6478bae5f89e271bdd, type: 3}
       propertyPath: prefabInteractionUI
@@ -1235,119 +1235,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 630624171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &454970440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 454970441}
-  - component: {fileID: 454970444}
-  - component: {fileID: 454970443}
-  - component: {fileID: 454970442}
-  m_Layer: 0
-  m_Name: Plane
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &454970441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454970440}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.6990534, y: -0, z: 0.000000014901161, w: 0.71506953}
-  m_LocalPosition: {x: -0.16, y: 0.14, z: 0.293}
-  m_LocalScale: {x: 0.51, y: 0.39666668, z: 0.39666668}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 608389138}
-  m_LocalEulerAnglesHint: {x: -88.702, y: 0, z: 0}
---- !u!64 &454970442
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454970440}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &454970443
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454970440}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 64be18c899ff4454db769a4106ecd6ee, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &454970444
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454970440}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &486490548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1543,7 +1430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2370619289223809896, guid: 90573d31aef85a74589a25a3aed45362, type: 3}
       propertyPath: ObjectName
-      value: Take Library Key
+      value: Take Library key
       objectReference: {fileID: 0}
     - target: {fileID: 2370619289223809896, guid: 90573d31aef85a74589a25a3aed45362, type: 3}
       propertyPath: prefabInteractionUI
@@ -1924,7 +1811,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -114012445396953531, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: ObjectName
-      value: Examine Lamp
+      value: Lamp
       objectReference: {fileID: 0}
     - target: {fileID: -114012445396953531, guid: 18355575336b01d43b6ef6e3d736ed06, type: 3}
       propertyPath: prefabInteractionUI
@@ -2272,6 +2159,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: db791253cd9d47f4a932413720f8d667, type: 2}
+    - target: {fileID: 6696633659029459266, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6838489520823229091, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_SizeDelta.x
       value: 4
@@ -2323,17 +2214,26 @@ PrefabInstance:
     - target: {fileID: 8492057756971255774, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: meshRenderer
       value: 
-      objectReference: {fileID: 454970443}
+      objectReference: {fileID: 0}
     - target: {fileID: 8492057756971255774, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: currentTextScriptableObject
       value: 
       objectReference: {fileID: 11400000, guid: 99e01fa013947244185c02cbc06823f1, type: 2}
+    - target: {fileID: 8597589246691968978, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 8597589246691968978, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 8597589246691968978, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.23
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 454970441}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 417300570812013176, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       insertIndex: -1
@@ -2623,7 +2523,7 @@ MonoBehaviour:
   frame: {fileID: 1748297075}
   glassShards: []
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: 813e69ce628225a449ad28616f3a4c3c, type: 3}
+  memorySprite: {fileID: 21300000, guid: 0c7a405c727a1f2449c242aded37fad1, type: 3}
   dialogue: {fileID: 11400000, guid: 5603709d8060701448dc0eb19eb87ed2, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -2823,7 +2723,7 @@ MonoBehaviour:
   frame: {fileID: 122974437}
   glassShards: []
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: 5c3659e284ed558458730ccf558ea6ae, type: 3}
+  memorySprite: {fileID: 21300000, guid: 8122f3971be9a7a49b134b0344a11212, type: 3}
   dialogue: {fileID: 11400000, guid: 1c2d7a0cecb64014cb533dbdac9e9da9, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -3053,6 +2953,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1288097568}
     m_Modifications:
+    - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
+      propertyPath: ObjectName
+      value: Open door
+      objectReference: {fileID: 0}
     - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: prefabInteractionUI
       value: 
@@ -3431,7 +3335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7564475219683947462, guid: 6c25abcfb125cba4688c81b6702fd715, type: 3}
       propertyPath: ObjectName
-      value: Take the chair
+      value: Carry chair
       objectReference: {fileID: 0}
     - target: {fileID: 7564475219683947462, guid: 6c25abcfb125cba4688c81b6702fd715, type: 3}
       propertyPath: prefabInteractionUI
@@ -3797,7 +3701,7 @@ MonoBehaviour:
   glassShards:
   - {fileID: 2876331274215893355, guid: 9652ab623aee974409342ea8c31aa1df, type: 3}
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: 4ddf3748db3aa1148898f4e656155eec, type: 3}
+  memorySprite: {fileID: 21300000, guid: 44fe850341d2b914aaa4eff23f602c5a, type: 3}
   dialogue: {fileID: 11400000, guid: bfdbd6c12ad6b5a41bd3f7942af6fc5e, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -3957,7 +3861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2370619289223809896, guid: 90573d31aef85a74589a25a3aed45362, type: 3}
       propertyPath: ObjectName
-      value: Take Supply Closet Key
+      value: Take supply closet key
       objectReference: {fileID: 0}
     - target: {fileID: 2370619289223809896, guid: 90573d31aef85a74589a25a3aed45362, type: 3}
       propertyPath: prefabInteractionUI
@@ -4532,7 +4436,7 @@ Transform:
   m_GameObject: {fileID: 977041184}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7036523, z: -0, w: 0.71054447}
-  m_LocalPosition: {x: -7.04, y: -5.54, z: -1.08}
+  m_LocalPosition: {x: -7.04, y: -5.72, z: -1.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5681,7 +5585,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2400424803489432963, guid: 5a6fa7768485fd14f912819b4c221415, type: 3}
       propertyPath: ObjectName
-      value: Take the Story Book
+      value: Take story book
       objectReference: {fileID: 0}
     - target: {fileID: 2400424803489432963, guid: 5a6fa7768485fd14f912819b4c221415, type: 3}
       propertyPath: prefabInteractionUI
@@ -7416,6 +7320,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9051278575513207716, guid: b59f5779920b50045926b60cfdb78a8e, type: 3}
+      propertyPath: ObjectName
+      value: Open door
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051278575513207716, guid: b59f5779920b50045926b60cfdb78a8e, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -7505,7 +7413,7 @@ Transform:
   m_GameObject: {fileID: 1459260638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.5, y: 4, z: -0.00000013411045}
+  m_LocalPosition: {x: 1.823, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7838,6 +7746,10 @@ PrefabInstance:
       value: 2218
       objectReference: {fileID: 0}
     - target: {fileID: 2098619311548026099, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
+      propertyPath: ObjectName
+      value: Open / Close curtains
+      objectReference: {fileID: 0}
+    - target: {fileID: 2098619311548026099, guid: 109edd63bed0a3f4a846aecfe0f52dbc, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -8114,6 +8026,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: cf8caa4f4a09be74389f0e8d51ade009, type: 2}
+    - target: {fileID: 2148533825765258819, guid: 59107444079c6e24c9aa5753814ff03f, type: 3}
+      propertyPath: itemSprite
+      value: 
+      objectReference: {fileID: 41142995, guid: a8a2985af3c1d9a41bcbb4b172e94ea8, type: 3}
     - target: {fileID: 4243524743608207012, guid: 59107444079c6e24c9aa5753814ff03f, type: 3}
       propertyPath: ObjectName
       value: Take Father's coat
@@ -8328,6 +8244,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9051278575513207716, guid: b59f5779920b50045926b60cfdb78a8e, type: 3}
+      propertyPath: ObjectName
+      value: Open door
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051278575513207716, guid: b59f5779920b50045926b60cfdb78a8e, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -8353,7 +8273,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3159751687083570144, guid: ee2fe684e26d23947a87af91a14b988d, type: 3}
       propertyPath: ObjectName
-      value: Take the broom
+      value: Take broom
       objectReference: {fileID: 0}
     - target: {fileID: 3159751687083570144, guid: ee2fe684e26d23947a87af91a14b988d, type: 3}
       propertyPath: prefabInteractionUI
@@ -8706,7 +8626,7 @@ MonoBehaviour:
   glassShards:
   - {fileID: 5111022831278564656, guid: 44428a3c5ca303148aede5eeebbf4fd8, type: 3}
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: 18997c20f0bd81145b3c8c96efcaf4fd, type: 3}
+  memorySprite: {fileID: 21300000, guid: dc268e38fb9bde9409ed6b6950247e2c, type: 3}
   dialogue: {fileID: 11400000, guid: b2c521bbe226bc14799b6f0139fa2635, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -8859,7 +8779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6441026796115617789, guid: e1c9fdf04a7f1794d8d74be6575fd679, type: 3}
       propertyPath: ObjectName
-      value: Take the cushion
+      value: Take cushion
       objectReference: {fileID: 0}
     - target: {fileID: 6441026796115617789, guid: e1c9fdf04a7f1794d8d74be6575fd679, type: 3}
       propertyPath: prefabInteractionUI
@@ -9095,7 +9015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Back to the Hall
+  ObjectName: Door
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -9154,7 +9074,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: ObjectName
-      value: Exit the room
+      value: Exit room
       objectReference: {fileID: 0}
     - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: prefabInteractionUI
@@ -9163,6 +9083,10 @@ PrefabInstance:
     - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: <Guid>k__BackingField
       value: ccdb9cb1-7cc3-45a4-b360-5dd12519b64c
+      objectReference: {fileID: 0}
+    - target: {fileID: 397998648983021827, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
+      propertyPath: interactionUIOffset.x
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3260855474709073732, guid: dc3086b1e10c2ad4b90ebee9738b8ceb, type: 3}
       propertyPath: sceneToLoad.direction
@@ -9327,7 +9251,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: ObjectName
-      value: Open the door
+      value: Open door
       objectReference: {fileID: 0}
     - target: {fileID: 397998648983021827, guid: 965b90332cdcd1e4586c929eb7b519b4, type: 3}
       propertyPath: prefabInteractionUI
@@ -9760,7 +9684,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 371934452659361098, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: ObjectName
-      value: Open Supply Closet
+      value: Open supply closet
       objectReference: {fileID: 0}
     - target: {fileID: 371934452659361098, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: prefabInteractionUI
@@ -10175,7 +10099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.12
+      value: -4.43
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10320,6 +10244,10 @@ PrefabInstance:
     - target: {fileID: 742629267302450201, guid: 9b9f5f1fedb709a4ea96082416bd841c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5439984809984068335, guid: 9b9f5f1fedb709a4ea96082416bd841c, type: 3}
+      propertyPath: ObjectName
+      value: Box
       objectReference: {fileID: 0}
     - target: {fileID: 5439984809984068335, guid: 9b9f5f1fedb709a4ea96082416bd841c, type: 3}
       propertyPath: prefabInteractionUI
@@ -10472,6 +10400,10 @@ PrefabInstance:
     - target: {fileID: -1517085019960747802, guid: bcf6317a377f5b843b5e34fa753603de, type: 3}
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6404798724023151132, guid: bcf6317a377f5b843b5e34fa753603de, type: 3}
+      propertyPath: ObjectName
+      value: Elizabeth's seat
       objectReference: {fileID: 0}
     - target: {fileID: 6404798724023151132, guid: bcf6317a377f5b843b5e34fa753603de, type: 3}
       propertyPath: prefabInteractionUI
@@ -10951,19 +10883,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.18026964
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.1003375
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.8210003
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.873
+      value: 9.727
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10971,23 +10903,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.627
+      value: -17.649
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.38269624
+      value: 0.42261827
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.92387426
+      value: 0.9063079
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10995,11 +10927,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 134.998
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 79068400835706433, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 746018104499953914, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_Size.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 746018104499953914, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_Size.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 746018104499953914, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
+      propertyPath: m_Size.z
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2218411200161124760, guid: 74686ffa5d33d8b4f9757852007ccbda, type: 3}
       propertyPath: m_Name
@@ -11167,7 +11111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7564475219683947462, guid: 6c25abcfb125cba4688c81b6702fd715, type: 3}
       propertyPath: ObjectName
-      value: Take the chair
+      value: Carry chair
       objectReference: {fileID: 0}
     - target: {fileID: 7564475219683947462, guid: 6c25abcfb125cba4688c81b6702fd715, type: 3}
       propertyPath: prefabInteractionUI
@@ -12331,7 +12275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -147103685895079339, guid: 3e945ee5c0df4c74ba8e648b555b3e2c, type: 3}
       propertyPath: ObjectName
-      value: Coat Hanger
+      value: Coat hanger
       objectReference: {fileID: 0}
     - target: {fileID: -147103685895079339, guid: 3e945ee5c0df4c74ba8e648b555b3e2c, type: 3}
       propertyPath: prefabInteractionUI
@@ -13174,6 +13118,10 @@ PrefabInstance:
       value: P_C_41_BoatModel
       objectReference: {fileID: 0}
     - target: {fileID: 4143849532512177418, guid: 3910e68d6423fe244bbf186c90e06a39, type: 3}
+      propertyPath: ObjectName
+      value: Boat model
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143849532512177418, guid: 3910e68d6423fe244bbf186c90e06a39, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -13374,7 +13322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Display Cabinet
+  ObjectName: Display cabinet
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -13450,7 +13398,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3156596732287139336, guid: 32f3e8150cdade34093b5190c227cce8, type: 3}
       propertyPath: ObjectName
-      value: Take a match
+      value: Take matchbox
       objectReference: {fileID: 0}
     - target: {fileID: 3156596732287139336, guid: 32f3e8150cdade34093b5190c227cce8, type: 3}
       propertyPath: prefabInteractionUI
@@ -13695,6 +13643,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5519698513509055889, guid: a464f577fdf600c4fb64f6e6772d6e7c, type: 3}
+      propertyPath: ObjectName
+      value: Scratch mark
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519698513509055889, guid: a464f577fdf600c4fb64f6e6772d6e7c, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -13757,7 +13709,7 @@ PrefabInstance:
       objectReference: {fileID: 496399}
     - target: {fileID: 6019173828958877416, guid: c4b0678d54238e045958ecd0096e9979, type: 3}
       propertyPath: ObjectName
-      value: Take the decorative sword
+      value: Take sword
       objectReference: {fileID: 0}
     - target: {fileID: 6019173828958877416, guid: c4b0678d54238e045958ecd0096e9979, type: 3}
       propertyPath: prefabInteractionUI
@@ -13769,7 +13721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7610847229760988457, guid: c4b0678d54238e045958ecd0096e9979, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -37.442
+      value: -38.291
       objectReference: {fileID: 0}
     - target: {fileID: 7610847229760988457, guid: c4b0678d54238e045958ecd0096e9979, type: 3}
       propertyPath: m_LocalPosition.y
