@@ -10,8 +10,8 @@ using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Player {
     public class PlayerInventory : MonoBehaviour {
-        public List<Item> items;
-        public List<Key> keys;
+        public List<Item> items = new List<Item>();
+        public List<Key> keys = new List<Key>();
 
         private int itemIndex;
         
@@ -154,8 +154,7 @@ namespace _Project.Scripts.Player {
         public BaseObject worldItem;
     }
 
-    [Serializable]
-    public struct Key {
+    public class Key {
         public string keyName;
         public int ID;
         public Sprite keySprite;

@@ -9,7 +9,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         private bool isInitialized;
 
-        [SerializeField] private bool oneTimeUse;
+        [SerializeField] public bool oneTimeUse;
         public bool hasBeenUsed { get; private set; }
         public void Initialize() {
             if (!isInitialized) {

@@ -220,6 +220,7 @@ namespace _Project.Scripts.GameServices {
                 }
 
                 if (newGameStarted) {
+                    Debug.Log("New Game Started");
                     newGameStarted = false;
                     foreach (var interact in GameInitializer.Instance.GetInteractable()) {
                         interact.HideUIInteraction(true);
@@ -277,23 +278,41 @@ namespace _Project.Scripts.GameServices {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             GameInitializer.Instance.InitializeDebugSystems();
 #endif
-            await FadeToGame();
-
-            await WaitForSecondsAsync(4f);
-            PlayerController.Instance.triggerEnterRoom = true;
-            
-            await WaitForSecondsAsync(4f);
-            InputsBrain.Instance.DisablePlayerInput(false);
-            InputsBrain.Instance.DisableUIInput(true);
-            InputsBrain.Instance.DisablePauseInput(false);
-            
             GameInitializer.Instance.SaveData();
-
-            foreach (var interact in GameInitializer.Instance.GetInteractable()) {
-                interact.HideUIInteraction(false);
-                interact.UpdateUIPosition();
-            }
             
+            if (index == 0) {
+                await FadeToGame();
+
+                await WaitForSecondsAsync(4f);
+                PlayerController.Instance.triggerEnterRoom = true;
+                
+                await WaitForSecondsAsync(4f);
+                InputsBrain.Instance.DisablePlayerInput(false);
+                InputsBrain.Instance.DisableUIInput(true);
+                InputsBrain.Instance.DisablePauseInput(false);
+
+                foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                    interact.HideUIInteraction(false);
+                    interact.UpdateUIPosition();
+                }
+            }
+            else {
+                await WaitForSecondsAsync(0.25f);
+                
+                foreach (var interact in GameInitializer.Instance.GetInteractable()) {
+                    interact.HideUIInteraction(false);
+                    interact.UpdateUIPosition();
+                }
+                
+                EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+                    show = true,
+                    title = GameSceneSettings.Instance.transitionTextSO.title,
+                    description = GameSceneSettings.Instance.transitionTextSO.description,
+                });
+                
+                PlayerController.Instance.Movement.SetPosition(GameSceneSettings.Instance.playerPosition, Direction.Up);
+                InputsBrain.Instance.OnContinue += LeaveTransitionFade;
+            }
         }
         
         private async Task LoadSave(string lastOpenScene) {
