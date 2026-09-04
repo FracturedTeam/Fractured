@@ -55,10 +55,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
+                // else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
 
                 if(TryGetComponent(out MeshFilter mf)) meshFilter = mf;
-                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
+                // else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
 
                 if (baseObject.GetObjectType is ObjectType.Moveable) {
                     moveableComponent = baseObject.GetInteract as MovableAttribute;
@@ -93,8 +93,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (objectInside) {
                     if (interactableInBox != null)
                         SetInteractableInBox(false);
-                    else
-                        Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
+                    // else
+                    //     Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
                 }
                 
                 isInitialized = true;
@@ -183,9 +183,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                         underBlue++;
                         underRed++;
                         break;
-                    default:
-                        Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
-                        break;
+                    // default:
+                    //     Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
+                    //     break;
                 }
 
             switch (objectColor) {
@@ -198,9 +198,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 case ColorEnum.ColorA:
                     SetVisibility(underBlue < 1 || underRed > 0);
                     break;
-                default:
-                    Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
-                    break;
+                // default:
+                //     Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
+                //     break;
             }
         }
         

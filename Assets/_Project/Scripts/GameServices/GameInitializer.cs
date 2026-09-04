@@ -84,7 +84,7 @@ namespace _Project.Scripts.GameServices {
         }
 
         private void InitializeGameSystems() {
-            Debug.Log("Initializing Game Systems");
+            // Debug.Log("Initializing Game Systems");
             //Create all the game systems
             gameSystems = new GameSystems(); //First one to be created as it is the one that handle all the game services
             shardService = new ShardService();

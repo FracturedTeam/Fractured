@@ -31,9 +31,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                         case ObjectType.Usable:
                             interactable.OnInteract(ObjectInteraction.Contextual);
                             break;
-                        default:
-                            Debug.LogWarning($"[BlockedAttribute] Interactable type {interactable.GetBaseObject().GetObjectType} not supported");
-                            break;
+                        // default:
+                        //     Debug.LogWarning($"[BlockedAttribute] Interactable type {interactable.GetBaseObject().GetObjectType} not supported");
+                        //     break;
                     }
                     
                     break;

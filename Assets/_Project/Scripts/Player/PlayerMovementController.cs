@@ -1,9 +1,7 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
-using _Project.Scripts.Player.States;
 using _Project.Scripts.Player.States.SubStates;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -85,10 +83,10 @@ namespace _Project.Scripts.Player {
         
         public void Awake() {
             if(TryGetComponent(out Rigidbody _rb)) rb = _rb;
-            else Debug.LogWarning("[PlayerController] No InputsBrain found");
+            // else Debug.LogWarning("[PlayerController] No InputsBrain found");
         
             if(TryGetComponent(out PlayerController _player)) player = _player;
-            else Debug.LogWarning("[PlayerController] No PlayerController found");
+            // else Debug.LogWarning("[PlayerController] No PlayerController found");
         
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.interpolation = RigidbodyInterpolation.Interpolate;

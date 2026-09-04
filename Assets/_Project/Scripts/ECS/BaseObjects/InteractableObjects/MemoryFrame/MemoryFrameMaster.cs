@@ -162,7 +162,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             doorExit.CanBeUsed(true);
             
-            Debug.Log("Memory Completed");
+            // Debug.Log("Memory Completed");
         }
 
         public void DebugCompleteFrame() {

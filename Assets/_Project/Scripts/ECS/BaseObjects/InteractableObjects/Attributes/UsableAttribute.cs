@@ -1,9 +1,9 @@
 using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
+using _Project.Scripts.Systems.Timers;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
     [RequireComponent(typeof(BaseObject))]
@@ -17,6 +17,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         [SerializeField] private UnityEvent eventOnActivation;
         [SerializeField] private UnityEvent eventOnDeactivation;
+
+        private CountdownTimer postInitializationTimer = new(0.2f);
         
         private bool isInitialized = false;
         public bool IsUsed { get; private set; }
@@ -24,21 +26,26 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
+                // else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
                 
                 baseObject.GetObjectType = ObjectType.Usable;
                 
                 baseObject.SetInteract(true);
 
-                if (hasObjectInside) {
-                    oneTimeUse = true;
-                    foreach (var obj in objectsInside) {
-                        obj.SetActive(false);
-                    }
-                }
+                postInitializationTimer.OnTimerStop += PostInitialize;
+                postInitializationTimer.Start();
             }
 
             isInitialized = true;
+        }
+
+        private void PostInitialize() {
+            if (hasObjectInside) {
+                oneTimeUse = true;
+                foreach (var obj in objectsInside) {
+                    obj.SetActive(false);
+                }
+            }
         }
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
@@ -84,21 +91,16 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             baseObject.GetTrigger?.OnFunction(baseObject.GetTrigger.OnInteract);
         }
         
-        public void Tick(float deltaTime) {
-            
-        }
+        public void Tick(float deltaTime) { }
 
         public void Dispose() {
-            
+            postInitializationTimer.OnTimerStop -= PostInitialize;
+            postInitializationTimer.Dispose();
         }
 
-        public void CompleteObject() {
-            
-        }
+        public void CompleteObject() { }
 
-        public void ResetObject() {
-            
-        }
+        public void ResetObject() { }
 
         public BaseObject GetBaseObject() {
             return baseObject;

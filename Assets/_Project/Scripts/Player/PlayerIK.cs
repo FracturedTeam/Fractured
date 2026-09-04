@@ -36,28 +36,6 @@ namespace _Project.Scripts.Player {
             if(rightEdge != null) rightArm.data.target.position = rightEdge.position - rightEdge.forward * handOffset;
             if(leftEdge != null) leftArm.data.target.position = leftEdge.position - leftEdge.forward * handOffset;
         }
-
-        // public void SetHandTarget(Transform target, Bounds bounds, Transform leftTarget, Transform rightTarget) {
-        //     PlaceHandTarget(target, bounds, leftTarget, leftHandLocalPos);
-        //     PlaceHandTarget(target, bounds, rightTarget, rightHandLocalPos);
-        // }
-        //
-        // private void PlaceHandTarget(Transform target, Bounds bounds, Transform handTarget, Vector3 localHandPos) {
-        //     var frontFaceCenter = bounds.center - target.forward * bounds.extents.z;
-        //     var worldHandPos = frontFaceCenter + target.TransformDirection(localHandPos);
-        //     
-        //     handTarget.position = worldHandPos;
-        //
-        //     var rayOrigin = worldHandPos + target.forward * 0.2f;
-        //     var rayDir = -target.forward;
-        //
-        //     if (Physics.Raycast(rayOrigin, rayDir, out var hit, 0.5f)) {
-        //         handTarget.rotation = Quaternion.LookRotation(-hit.normal, target.up);
-        //     }
-        //     else {
-        //         handTarget.rotation = Quaternion.LookRotation(target.forward, target.up);
-        //     }
-        // }
         
         public void SetHoldingState(Transform rEdge, Transform lEdge) {
             rightEdge = rEdge;

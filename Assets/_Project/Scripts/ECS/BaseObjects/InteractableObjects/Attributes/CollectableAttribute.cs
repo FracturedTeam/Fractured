@@ -97,15 +97,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.DropNoTimer:
                     if (isHeld)
                         OnDropNoTimer(other);
-                    else
-                        Debug.Log("[Collectable] Cannot drop object !");
+                    // else
+                    //     Debug.Log("[Collectable] Cannot drop object !");
                     break;
                 case ObjectInteraction.Reset:
                     ResetObject();
                     break;
-                default:
-                    Debug.LogWarning($"[Collectable] {interaction} Interaction is not supported");
-                    break;
+                // default:
+                //     Debug.LogWarning($"[Collectable] {interaction} Interaction is not supported");
+                //     break;
             }
         }
 
@@ -143,7 +143,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if(baseObject.HasSceneElement())
                 baseObject.TriggerSceneElement();
             
-            Debug.Log("[Collectable] Reset object");
+            // Debug.Log("[Collectable] Reset object");
         }
 
         private void OnPickedUp() {
@@ -176,14 +176,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.localPosition = targetLocalPos;
             transform.localScale = Vector3.zero;
 
-            StartCoroutine(WaitBeforePopping(1f));
+            baseObject.gameObject.SetActive(true);
+            StartCoroutine(WaitBeforePopping(1.25f));
             
             PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
         }
 
         private IEnumerator WaitBeforePopping(float waitTime) {
             yield return new WaitForSeconds(waitTime);
-            baseObject.gameObject.SetActive(true);
             transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
         }
         
@@ -206,7 +206,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (other == null) {
                 
                 if(ObstructedSpace()) {
-                    Debug.Log("Space is Obstructed");
+                    // Debug.Log("Space is Obstructed");
                     PlayerController.Instance.Interact.triggerFailedDrop = true;
                     return;
                 }

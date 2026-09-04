@@ -92,7 +92,7 @@ namespace _Project.Scripts.Player {
 
         private void Awake() {
             if(TryGetComponent(out PlayerController _player)) player = _player;
-            else Debug.LogWarning("[PlayerController] No PlayerController found");
+            // else Debug.LogWarning("[PlayerController] No PlayerController found");
             
             Size = 0;
 
@@ -134,8 +134,8 @@ namespace _Project.Scripts.Player {
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
             }
-            else
-                Debug.Log("[PlayerInteract] No object to interact with...");
+            // else
+            //     Debug.Log("[PlayerInteract] No object to interact with...");
             
             interactCooldown.Start();
         }
