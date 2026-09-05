@@ -169,6 +169,7 @@ public class GlassText : MonoBehaviour
                         fragAText.SetText("", ColorEnum.None, false, blackText);
                         fragBText.SetText("", ColorEnum.None, false, blackText);
                         bothText.SetText(currentTextScriptableObject.bothText, ColorEnum.None, false, blackText);
+                        showMistColorBoth = true;
                         return;
                     }
                 }
