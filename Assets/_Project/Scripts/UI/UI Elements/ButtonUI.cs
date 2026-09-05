@@ -67,6 +67,10 @@ namespace _Project.Scripts.UI {
 
         private void Start() {
             SceneManager.sceneLoaded += OnSceneLoaded;
+            SetColor();
+        }
+
+        private void SetColor() {
             if (GameSceneSettings.HasInstance) {
                 var ChapterIndex = GameSceneSettings.Instance.ActColor;
                 alternateColor = ChapterIndex switch {
@@ -86,26 +90,9 @@ namespace _Project.Scripts.UI {
                 };
             }
         }
-        
+
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (GameSceneSettings.HasInstance) {
-                var ChapterIndex = GameSceneSettings.Instance.ActColor;
-                alternateColor = ChapterIndex switch {
-                    1 => act1Color,
-                    2 => act2Color,
-                    3 => act3Color,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-            }
-            else if (GameInitializer.HasInstance) {
-                var ChapterIndex = GameInitializer.Instance.GetLastChapter();
-                alternateColor = ChapterIndex switch {
-                    1 => act1Color,
-                    2 => act2Color,
-                    3 => act3Color,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
-            }
+            SetColor();
         }
 
         private void OnEnable() {
