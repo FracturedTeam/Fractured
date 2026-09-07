@@ -1320,6 +1320,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 187380609}
     m_Modifications:
+    - target: {fileID: 5390653432131797101, guid: 55bb20c97d62c414eab0929d453b9382, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 753afa7f80b82414991dd709a0109d06, type: 2}
     - target: {fileID: 5895087445818171832, guid: 55bb20c97d62c414eab0929d453b9382, type: 3}
       propertyPath: m_Name
       value: P_Piano
@@ -8966,7 +8970,7 @@ GameObject:
   - component: {fileID: 638854462}
   - component: {fileID: 638854464}
   m_Layer: 0
-  m_Name: CinemachineCamera
+  m_Name: C_MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20358,7 +20362,6 @@ Transform:
   - {fileID: 116025204}
   - {fileID: 179247293}
   - {fileID: 187380609}
-  - {fileID: 1416410535}
   - {fileID: 831409133}
   - {fileID: 1518588362}
   - {fileID: 1619545991}
@@ -30499,84 +30502,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1414723697}
   m_CullTransparentMesh: 1
---- !u!1001 &1416410534
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1128808576}
-    m_Modifications:
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.79999995
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.7999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.603
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.317
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.237
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7961354
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.604724
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.017399335
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.013216087
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 74.243
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 9.258
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 8.916
-      objectReference: {fileID: 0}
-    - target: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7510883502905511861, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-      propertyPath: m_Name
-      value: P_Note
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
---- !u!4 &1416410535 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7167430896578336015, guid: 0b830c8dca4216e43b7932697ddf3591, type: 3}
-  m_PrefabInstance: {fileID: 1416410534}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1432669686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35579,7 +35504,7 @@ GameObject:
   - component: {fileID: 1862128639}
   - component: {fileID: 1862128638}
   m_Layer: 0
-  m_Name: CinemachineCamera (1)
+  m_Name: C_Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
