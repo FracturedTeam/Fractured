@@ -80,9 +80,10 @@ namespace _Project.Scripts.UI {
                 loadGameBtt.SetActive(existingSave);
                 ChapterIndex = GameInitializer.Instance.GetLastChapter();
                 GameInitializer.Instance.SetCurrentChapter(ChapterIndex);
-
+                var level = GameInitializer.Instance.saveService.GameData.LastPlayedLevel;
+                
                 if (existingSave) {
-                    for(var i = 5; i > ChapterIndex; i--) {
+                    for(var i = 5; i > level; i--) {
                         chapters[i - 1].Lock();
                     }
                 }
@@ -394,17 +395,14 @@ namespace _Project.Scripts.UI {
         }
         
         public void NewGame() {
-            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.NewGame();
         }
 
         public void LoadGame() {
-            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadGame();
         }
 
         public void LoadLevel(int levelIndex) {
-            // GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             GameSceneLoaderSystem.Instance.LoadLevel(levelIndex);
         }
     }

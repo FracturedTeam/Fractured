@@ -405,6 +405,26 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d293d24d6eba8b340a5f85163fee44f4, type: 2}
+    - target: {fileID: 1542509626142326920, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542509626142326920, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542509626142326920, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2418986
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542509626142326920, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.7520482
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542509626142326920, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5315208
+      objectReference: {fileID: 0}
     - target: {fileID: 2787679972033785935, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_SizeDelta.x
       value: 4.18
@@ -918,6 +938,22 @@ PrefabInstance:
     - target: {fileID: 7427662798454355836, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_SizeDelta.x
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039356542659786907, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039356542659786907, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039356542659786907, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.22377467
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039356542659786907, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.33000597
       objectReference: {fileID: 0}
     - target: {fileID: 8492057756971255774, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: currentTextScriptableObject
@@ -1613,7 +1649,7 @@ MonoBehaviour:
   - {fileID: 2876331274215893355, guid: 702edafd7d138b547acf5162d9b61e60, type: 3}
   - {fileID: 5111022831278564656, guid: 1628a42601ac336488c195fec453e715, type: 3}
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: 4f9030ccef141db4597a84584d21d17c, type: 3}
+  memorySprite: {fileID: 21300000, guid: fbfb5f75456fa58478dc994109214abd, type: 3}
   dialogue: {fileID: 11400000, guid: aa9cc3189754379409178054b51cb40f, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -2014,7 +2050,7 @@ MonoBehaviour:
   frame: {fileID: 151342477}
   glassShards: []
   worldText: {fileID: 0}
-  memorySprite: {fileID: 21300000, guid: e2ec9dcb00088a344a200d0fcabfb746, type: 3}
+  memorySprite: {fileID: 21300000, guid: 74a57aa6b33fa104eb974d80175fa94d, type: 3}
   dialogue: {fileID: 11400000, guid: 83455dc55fd70ed469022ae7592af411, type: 2}
   associatedMemoryLoop:
     Guid:
@@ -2085,9 +2121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Examine Door
-  hudTransformPoint: {x: 0, y: 0}
-  interactionUIOffset: {x: 0, y: 0, z: 0}
+  ObjectName: Door
+  hudTransformPoint: {x: 100, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0.15}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
   data:
     <Guid>k__BackingField: 
@@ -2261,9 +2297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Examine Door
-  hudTransformPoint: {x: 0, y: 0}
-  interactionUIOffset: {x: 0, y: 0, z: 0}
+  ObjectName: Door
+  hudTransformPoint: {x: -100, y: 0}
+  interactionUIOffset: {x: -1, y: 0, z: 0}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
   data:
     <Guid>k__BackingField: 
@@ -3408,7 +3444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Reorder Memories
+  ObjectName: Reorder memories
   hudTransformPoint: {x: 0, y: 0}
   interactionUIOffset: {x: 0, y: 0, z: 0}
   prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -4131,6 +4167,10 @@ PrefabInstance:
       value: _Project.Scripts.ScriptableObjects.DialogueScriptableObject, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6640431829810676980, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
+      propertyPath: ObjectName
+      value: Take car purchase papers
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640431829810676980, guid: 44acfdb0f9edca143aecae417412c882, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -4432,6 +4472,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5192647935980794274, guid: c17f40c864fa85144b620dfe8f21e8f8, type: 3}
+      propertyPath: ObjectName
+      value: Tire marks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5192647935980794274, guid: c17f40c864fa85144b620dfe8f21e8f8, type: 3}
       propertyPath: prefabInteractionUI
       value: 
       objectReference: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
@@ -4621,7 +4665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5280174713911671672, guid: 7bbb3ae7726b38a429c5bba3071eddb9, type: 3}
       propertyPath: ObjectName
-      value: Interact with the window
+      value: Window
       objectReference: {fileID: 0}
     - target: {fileID: 5280174713911671672, guid: 7bbb3ae7726b38a429c5bba3071eddb9, type: 3}
       propertyPath: prefabInteractionUI
@@ -4684,6 +4728,10 @@ PrefabInstance:
       propertyPath: OnInteract.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 275749612}
+    - target: {fileID: 2843141279433854891, guid: ff631eecdace552428ac666909558d8f, type: 3}
+      propertyPath: ObjectName
+      value: Detached bolts
+      objectReference: {fileID: 0}
     - target: {fileID: 2843141279433854891, guid: ff631eecdace552428ac666909558d8f, type: 3}
       propertyPath: hudTransformPoint.y
       value: -20

@@ -145,7 +145,7 @@ namespace _Project.Scripts.GameServices {
             gameSystems.Dispose();
         }
 
-        private CinemachineCamera[] GetCameras() {
+        public CinemachineCamera[] GetCameras() {
             return FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
         }
         
@@ -202,13 +202,13 @@ namespace _Project.Scripts.GameServices {
         public void SaveData() => saveService.SaveData();
         public void LoadData() => saveService.LoadData();
         public void LoadPlayerData() => saveService.LoadPlayerData();
-        public void LoadGame() => saveService.LoadGame();
+        public void LoadGame() => saveService.LoadSaveFile();
         public string GetLastScene() => saveService.GameData.CurrentScene;
 
         public int GetLastChapter() {
             if (ExistingSave()) {
                 LoadGame();
-                return saveService.GameData.CurrentChapter;
+                return saveService.GameData.CurrentActColor;
             }
             
             return 1;

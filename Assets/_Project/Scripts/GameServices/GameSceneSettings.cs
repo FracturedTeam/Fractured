@@ -14,7 +14,7 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] public SceneField levelArt;
         
         [Header("Scene Settings")]
-        [SerializeField] private CinemachineCamera roomCamera;
+        [SerializeField] public CinemachineCamera roomCamera;
         [SerializeField] public int ActColor = 1;
         [SerializeField] public TransitionTextSO transitionTextSO;
         

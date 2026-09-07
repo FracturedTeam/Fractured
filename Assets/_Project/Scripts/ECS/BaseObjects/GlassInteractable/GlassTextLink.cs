@@ -69,9 +69,6 @@ public class GlassTextLink : MonoBehaviour
                 GetComponent<TMP_Text>().text = Replace(replace, "█", start, end - start, colorEnum, false);
             return;
         }
-        
-        if(colorEnum is ColorEnum.Both)
-            parentGlassText.showMistColorBoth = true;
     }
 
     private static string AddColor(ColorEnum color, string input, bool special = false)

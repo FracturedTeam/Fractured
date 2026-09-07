@@ -11,7 +11,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         
         [Header("Usable Attribute")]
-        [SerializeField] private bool oneTimeUse = false;
+        [SerializeField] public bool oneTimeUse = false;
         [SerializeField] private bool hasObjectInside = false;
         [SerializeField] private GameObject[] objectsInside;
 

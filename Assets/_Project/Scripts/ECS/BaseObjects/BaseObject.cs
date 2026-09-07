@@ -263,9 +263,16 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
-            canBeInteractedWith = GetInteract != null && canInteract;
+            if (GetInteract is UsableAttribute { oneTimeUse: true } usable) {
+                canBeInteractedWith = !usable.IsUsed && canInteract;
+            }
+            else if (GetInteract is SimpleInteractionAttribute { oneTimeUse: true } simple) {
+                canBeInteractedWith = !simple.hasBeenUsed && canInteract;
+            }
+            else
+                canBeInteractedWith = GetInteract != null && canInteract;
             
-            if(interactionUI != null) interactionUI.DoShowUI(canInteract);
+            if(interactionUI != null) interactionUI.DoShowUI(canBeInteractedWith);
         }
 
         public void SetGlassInteract(bool canInteract) {

@@ -205,8 +205,8 @@ namespace _Project.Scripts.UI.Gameplay {
             foreach (var key in keyHolder) {
                 if (key.gameObject.activeSelf) continue;
                    
-                key.gameObject.SetActive(true);
                 key.SetKey(evt);
+                key.gameObject.SetActive(true);
                 break;
             }
         }

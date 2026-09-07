@@ -13,6 +13,11 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         public void SetKey(Key key) {
+            if (key == null) {
+                Debug.LogWarning("Key is null");
+                return;
+            }
+            
             if(key.keySprite != null)
                 icon.sprite = key.keySprite;
             ID = key.ID;

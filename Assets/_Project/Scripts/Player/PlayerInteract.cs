@@ -142,8 +142,8 @@ namespace _Project.Scripts.Player {
 
         private void SecondaryInteract(InputAction.CallbackContext ctx) {
             if (ctx.performed) {
-                validationInputHold = true;
-                if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame) {
+                if (potentialInteraction != null && potentialInteraction.GetObjectType == ObjectType.MemoryFrame) {
+                    validationInputHold = true;
                     GameInitializer.Instance.rumbleService.RumblePulse(0.3f, 0.5f, 0.8f);
                 }
             }
@@ -152,7 +152,7 @@ namespace _Project.Scripts.Player {
                 validationInputHold = false;
                 validationInputTime = 0;
                 
-                if (potentialInteraction.GetObjectType is ObjectType.MemoryFrame)
+                if (potentialInteraction.GetObjectType == ObjectType.MemoryFrame)
                     GameInitializer.Instance.rumbleService.StopRumble();
             }
         }
