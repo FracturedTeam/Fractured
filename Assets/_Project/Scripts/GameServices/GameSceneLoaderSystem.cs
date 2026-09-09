@@ -12,6 +12,7 @@ using _Project.Scripts.UI;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
@@ -27,6 +28,8 @@ namespace _Project.Scripts.GameServices {
 
         [SerializeField] public SceneField[] allScenes;
 
+        [SerializeField] private ProbeVolumeBakingSet atelier_0_Set;
+        
         private bool loadCredits = false;
         private bool newGameStarted = false;
         
@@ -100,6 +103,8 @@ namespace _Project.Scripts.GameServices {
                 loadCredits = true;
             }
             
+            // ProbeReferenceVolume.instance.SetActiveBakingSet(atelier_0_Set);
+            
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
         }
         
@@ -163,7 +168,7 @@ namespace _Project.Scripts.GameServices {
                 await FadeToBlack();
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
-
+                    
                 if (loadCredits) {
                     await UnloadGameplaySceneAsync();
                     
