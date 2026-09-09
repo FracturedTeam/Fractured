@@ -94,6 +94,8 @@ namespace _Project.Scripts.UI.Gameplay {
         }
         
         private void LateUpdate() {
+            if(CinemachineBrain.GetActiveBrain(0) == null) return;
+            
             if(!canBeVisible) return;
             
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
