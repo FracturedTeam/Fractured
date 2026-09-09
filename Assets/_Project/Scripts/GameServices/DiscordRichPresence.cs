@@ -31,6 +31,7 @@ namespace _Project.Scripts.GameServices {
                 UpdateStatus();
             }
             catch (Exception e) {
+                Debug.LogException(e);
                 isInitialized = false;
             }
         }

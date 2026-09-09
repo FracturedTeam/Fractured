@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
@@ -105,6 +106,12 @@ namespace _Project.Scripts.Inputs {
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            StartCoroutine(WaitForSceneLoaded(1f));
+        }
+
+        IEnumerator WaitForSceneLoaded(float time) {
+            yield return new WaitForSeconds(time);
+            
             OnGamepadControlled.Invoke(!IsKeyboardControl);
         }
 
