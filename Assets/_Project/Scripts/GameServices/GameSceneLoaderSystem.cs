@@ -52,11 +52,13 @@ namespace _Project.Scripts.GameServices {
                     GameInitializer.Instance.CreateNewSave();
                     if(!SceneManager.GetSceneByName(GameSceneSettings.Instance.levelArt).isLoaded)
                         _ = LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+                    
+                    if (!PlayerService.HasInstance) Instantiate(player);
+                    if (!HudManager.HasInstance) Instantiate(hudManager);
+                    
+                    GameInitializer.Instance.InitializeDebugSystems();
                 }
                 
-                if (!PlayerService.HasInstance) Instantiate(player);
-                if (!HudManager.HasInstance) Instantiate(hudManager);
-                GameInitializer.Instance.InitializeDebugSystems();
                 
                 StartCoroutine(SetSceneWithDelay());
             }
@@ -240,10 +242,9 @@ namespace _Project.Scripts.GameServices {
                 await UnloadSceneAsync();
                 
                 await Task.Yield();
-
-                var settings = GameSceneSettings.Instance;
                 
                 if (GameSceneSettings.HasInstance) {
+                    var settings = GameSceneSettings.Instance;
                     GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
                     GameInitializer.Instance.UpdateDebugCameras();
                     GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
