@@ -29,6 +29,12 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] public SceneField[] allScenes;
 
         [SerializeField] private ProbeVolumeBakingSet atelier_0_Set;
+        [SerializeField] private ProbeVolumeBakingSet atelier_1_Set;
+        [SerializeField] private ProbeVolumeBakingSet atelier_2_Set;
+        [SerializeField] private ProbeVolumeBakingSet atelier_3_Set;
+        [SerializeField] private ProbeVolumeBakingSet atelier_4_Set;
+        [SerializeField] private ProbeVolumeBakingSet atelier_5_Set;
+        [SerializeField] private ProbeVolumeBakingSet menu_Set;
         
         private bool loadCredits = false;
         private bool newGameStarted = false;
@@ -102,10 +108,29 @@ namespace _Project.Scripts.GameServices {
             if (scene.buildIndex == 8) {
                 loadCredits = true;
             }
-            
-            // ProbeReferenceVolume.instance.SetActiveBakingSet(atelier_0_Set);
+
+            StartCoroutine(UpdateLightProbeSet(scene.buildIndex));
             
             GameInitializer.Instance.UpdateAmbientLoop(scene.buildIndex);
+        }
+
+        private IEnumerator UpdateLightProbeSet(int index) {
+            yield return new WaitForNextFrameUnit();
+
+            var currentProbe = index switch {
+                1 => menu_Set,
+                2 => atelier_0_Set,
+                3 => atelier_1_Set,
+                4 => atelier_2_Set,
+                5 => atelier_3_Set,
+                6 => atelier_4_Set,
+                7 => atelier_5_Set,
+                _ => null
+            };
+
+            if (currentProbe == null) yield break;
+            
+            ProbeReferenceVolume.instance.SetActiveBakingSet(currentProbe);
         }
         
         public void NewGame() => _ = StartNewGame();
