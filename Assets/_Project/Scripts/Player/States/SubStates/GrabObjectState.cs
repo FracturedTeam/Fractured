@@ -14,6 +14,8 @@ namespace _Project.Scripts.Player.States.SubStates {
         
         private CountdownTimer animationExitTimer;
 
+        private bool canWalk = false;
+        
         public GrabObjectState(PlayerController player, Animator animator, AnimationClip heavy, AnimationClip inventory) : base(player, animator) {
             grabHeavyLength = heavy.length;
             putInInventoryLength = inventory.length;
@@ -27,6 +29,8 @@ namespace _Project.Scripts.Player.States.SubStates {
             
             if(player.Interact.HasItemObject)
                 GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Equipping_Object, player.transform.position);
+            
+            canWalk = player.Interact.HasItemObject;
             
             animationExitTimer.Start();
             
@@ -42,9 +46,13 @@ namespace _Project.Scripts.Player.States.SubStates {
         public override void OnUpdate() {
             animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
             player.UpdateInteraction();
+            if(canWalk)
+                player.UpdateMovement();
         }
 
         public override void OnFixedUpdate() {
+            if(canWalk)
+                player.FixedUpdateMovement();
         }
 
         public override void OnExit() {

@@ -215,6 +215,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             else
                 tween = transform.DOMove(master.GetCurrentSlotPosition(currentPos), 0.5f);
+            
+            StartCoroutine(SetHUD(isSelected));
         }
         
         private void SetFramePositions(int closest) {
