@@ -373,9 +373,9 @@ namespace _Project.Scripts.Player {
             if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
             if (HasMoveInput && !isAgainstWall) 
-                return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 1f, 0, LerpTime);
+                return lerpTimer = Mathf.Clamp(lerpTimer + Time.deltaTime * 3f, 0, LerpTime);
         
-            return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 1.5f, 0, LerpTime);
+            return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 4f, 0, LerpTime);
         }
     
         public bool IsPlayerFrozen() {
