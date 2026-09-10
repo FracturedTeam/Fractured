@@ -543,7 +543,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.ButtonMainMenu
   buttonText: {fileID: 8362922187591744867}
   whiteColor: {r: 1, g: 1, b: 1, a: 1}
-  blueColor: {r: 0.06666667, g: 0.05490196, b: 0.2, a: 1}
+  act1Color: {r: 0.5058824, g: 0, b: 0.14117648, a: 1}
+  act2Color: {r: 0.06666667, g: 0.054901965, b: 0.20000002, a: 1}
+  act3Color: {r: 0.8980393, g: 0.7372549, b: 0.38431376, a: 1}
   hoverGroup: {fileID: 2456655676360010741}
   pressedGroup: {fileID: 468360288643900701}
   easeType: 27
@@ -554,7 +556,31 @@ MonoBehaviour:
   openedMenu: {fileID: 0}
   onClickPostTimer:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: _Project.Scripts.UI.MenuAnimation, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &3838892907770759128
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
+using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Singletons;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace _Project.Scripts.GameServices {
     public class GameSceneSettings : Singleton<GameSceneSettings> {
@@ -12,8 +14,9 @@ namespace _Project.Scripts.GameServices {
         [SerializeField] public SceneField levelArt;
         
         [Header("Scene Settings")]
-        [SerializeField] private CinemachineCamera roomCamera;
+        [SerializeField] public CinemachineCamera roomCamera;
         [SerializeField] public int ActColor = 1;
+        [SerializeField] public TransitionTextSO transitionTextSO;
         
         [Header("Puzzle Objects")]
         [SerializeField] public List<BaseObject> baseObjects;
@@ -23,6 +26,7 @@ namespace _Project.Scripts.GameServices {
         public Vector3 playerPosition;
         
         private SaveInstance saveInstance;
+        private Volume volume;
         
         private void Start() {
             if(saveInstance == null)
@@ -31,10 +35,27 @@ namespace _Project.Scripts.GameServices {
             roomCamera.Priority = 1;
         }
 
+        public void UpdateVolumeWeight(float intensity) {
+            if(volume != null)
+                volume.weight = 1 - intensity;
+            else {
+                var vol = FindAnyObjectByType<Volume>();
+                if(vol != null) {
+                    volume = vol;
+                    volume.weight = 1 - GameInitializer.Instance.GetSettings.enviroColorIntensity;
+                }
+            }
+        }
+
         public void BindData(bool firstTimeBind) => saveInstance.Bind(firstTimeBind);
         public SceneData GetSceneData() => saveInstance.GetGameData();
         public void SetSceneData(SceneData objectData) => saveInstance.SetGameData(objectData);
         public List<Glass> GetAllShards() => saveInstance.GetShards();
+
+        public void ForceSetInteractableColor() {
+            foreach (var baseObject in baseObjects)
+                baseObject.GetTextInteractable?.ForceSet();
+        }
 
         #if UNITY_EDITOR
         public void SetPlayerPos(Vector3 pos) {

@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GlassDocumentTemplate : MonoBehaviour
 {
-    [SerializeField] private MeshRenderer renderer;
+    [FormerlySerializedAs("renderer")] [SerializeField] private MeshRenderer render;
     [SerializeField] private GlassText text;
 
-    public void SetUp(GlassDocumentScriptableObject data)
+    public void SetUp(GlassDocumentScriptableObject data, bool dontUseShader)
     {
-        renderer.material = data.material;
-        text.Setup(data);
+        render.material = data.material;
+        text.Setup(data, dontUseShader, true);
     }
 }

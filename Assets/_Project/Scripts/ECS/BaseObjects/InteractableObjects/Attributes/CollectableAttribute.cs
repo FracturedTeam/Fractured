@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
@@ -12,9 +13,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private BaseObject baseObject;
         private Transform originalParent;
         private Vector3 originalPosition;
+        private Vector3 originalScale;
         
         private Vector3 boundExtent;
         private Vector3 boundCenter;
+        
+        [Header("Edges")] 
+        [SerializeField] public Transform leftEdge;
         
         [Header("items")]
         public Sprite itemSprite;
@@ -45,6 +50,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 else throw new ArgumentNullException($"[Collectable] Cannot find {nameof(BaseObject)} in {nameof(CollectableAttribute)}");
                 
                 originalPosition = transform.position;
+                originalScale = transform.localScale;
                 
                 baseObject.GetObjectType = ObjectType.Collectable;
                 
@@ -74,10 +80,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             switch (interaction) {
                 case ObjectInteraction.Grab:
-                    if (baseObject.CanBeInteractedWith())
+                    // if (baseObject.CanBeInteractedWith())
                         OnPickedUp();
-                    else
-                        Debug.LogWarning("[Collectable] Can't grab object !");
+                    // else
+                    //     Debug.LogWarning("[Collectable] Can't grab object !");
                     break;
                 case ObjectInteraction.Held:
                     HoldObject();
@@ -91,15 +97,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.DropNoTimer:
                     if (isHeld)
                         OnDropNoTimer(other);
-                    else
-                        Debug.Log("[Collectable] Cannot drop object !");
+                    // else
+                    //     Debug.Log("[Collectable] Cannot drop object !");
                     break;
                 case ObjectInteraction.Reset:
                     ResetObject();
                     break;
-                default:
-                    Debug.LogWarning($"[Collectable] {interaction} Interaction is not supported");
-                    break;
+                // default:
+                //     Debug.LogWarning($"[Collectable] {interaction} Interaction is not supported");
+                //     break;
             }
         }
 
@@ -131,32 +137,67 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             transform.SetParent(originalParent);
             transform.position = originalPosition;
             
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
             baseObject.GetGlassInteract?.ResetObject();
             
             if(baseObject.HasSceneElement())
                 baseObject.TriggerSceneElement();
             
-            Debug.Log("[Collectable] Reset object");
+            // Debug.Log("[Collectable] Reset object");
         }
 
         private void OnPickedUp() {
             SetInInventory();
-            
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().pickUpKeySound, transform.position);
+            PlayerController.Instance.Interact.pickUpObjectYPos = baseObject.GetRendered().bounds.center.y;
+
+            GameInitializer.Instance.PlaySound3D(
+                isAKey
+                    ? GameInitializer.Instance.GetBank().avatar_Taking_Key
+                    : GameInitializer.Instance.GetBank().avatar_Taking_Object, transform.position);
         }
 
         private void HoldObject() {
             isHeld = true;
-            transform.SetParent(PlayerController.Instance.Interact.objectPos);
+            
+            var attachPoint = PlayerController.Instance.Interact.objectPos;
+
+            transform.SetParent(attachPoint);
             transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            Physics.SyncTransforms();
+            
+            var bounds = GetCombineBounds();
+            var heightOffset = new Vector3(0, -bounds.extents.y, 0);
+            if(bounds.extents.y > 0.5f) heightOffset -= new Vector3(0, 0.5f, 0);
+            
+            var depthOffset = new Vector3(0, 0, bounds.extents.z);
+            var targetLocalPos = heightOffset + depthOffset;
+            
+            transform.localPosition = targetLocalPos;
+            transform.localScale = Vector3.zero;
+
             baseObject.gameObject.SetActive(true);
+            StartCoroutine(WaitBeforePopping(1.25f));
             
             PlayerController.Instance.Interact.HoldObject(true, GetBaseObject());
         }
+
+        private IEnumerator WaitBeforePopping(float waitTime) {
+            yield return new WaitForSeconds(waitTime);
+            transform.DOScale(originalScale, 0.5f).OnComplete(() => transform.localScale = originalScale);
+        }
+        
+        private Bounds GetCombineBounds() {
+            var render = GetComponent<MeshFilter>();
+            if(render != null)
+                return render.sharedMesh.bounds;
+            
+            return new Bounds(Vector3.zero, Vector3.one);
+        }
         
         private void StopHolding() {
-            baseObject.gameObject.SetActive(false);
+            transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => baseObject.gameObject.SetActive(false));
+            
             isHeld = false;
             PlayerController.Instance.Interact.HoldObject(false);
         }
@@ -165,22 +206,21 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (other == null) {
                 
                 if(ObstructedSpace()) {
-                    Debug.Log("Space is Obstructed");
+                    // Debug.Log("Space is Obstructed");
                     PlayerController.Instance.Interact.triggerFailedDrop = true;
                     return;
                 }
 
                 var pos = GetGroundPos();
-                
+                PlayerController.Instance.Interact.pickUpObjectYPos = pos.y + baseObject.GetRendered().bounds.extents.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
                 transform.localScale = Vector3.one;
-                IsColliding();
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
             }
             
             if (isInInventory) {
@@ -189,7 +229,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isHeld = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
         }
         
         private void OnDropNoTimer(IInteractable other) {
@@ -202,10 +242,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 
                 transform.SetParent(originalParent);
                 TweenObjectDrop(GetGroundPos(), transform.eulerAngles);
-                IsColliding();
                 baseObject.SetInteract(true);
                 
-                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().dropObjectSound, transform.position);
+                GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Drops_Object, transform.position);
             }
             
             if (isInInventory) {
@@ -214,11 +253,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             isHeld = false;
-            PlayerController.Instance.Interact.SetDropObject();
+            PlayerController.Instance.Interact.SetDropObject(false);
         }
 
         public void SetInInventory() {
-            baseObject.gameObject.SetActive(false);
+            transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => baseObject.gameObject.SetActive(false));
             
             baseObject.SetInteract(false);
             baseObject.SetCollider(false);
@@ -244,20 +283,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
         
         #region OtherMethods
-        private void TweenObjectOnPlayer() {
-            tween.Kill();
-            tween = transform.DOLocalMove(Vector3.zero, 0.5f);
-            tween = transform.DOLocalRotate(Vector3.zero, 0.5f);
-        }
-        
-        private void TweenObjectDrop(Transform t) {
-            tween.Kill();
-            TweenObjectDrop(t.position, t.eulerAngles);
-        }
         
         private void TweenObjectDrop(Vector3 pos, Vector3 rot) {
             tween.Kill();
-            tween = transform.DOMove(pos, 0.5f);
+            tween = transform.DOMove(pos, 0.5f).OnComplete(() => {
+                IsColliding();
+                baseObject.UpdateUIPosition();
+            });
             tween = transform.DORotate(new Vector3(0,rot.y,0), 0.5f);
             tween.onComplete += TriggerSceneElement;
         }
@@ -303,39 +335,68 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         
         private void IsColliding() {
             var myCol = baseObject.GetCollider();
-            if (!myCol || !myCol.enabled)
-                return;
+            if (!myCol || !myCol.enabled) return;
 
             var mask = LayerMask.GetMask(
                 "Interactable",
                 "InteractableNoLUT",
                 "Wall",
-                "Walkable"
+                "Walkable",
+                "Default"
             );
+            
+            
+            var yPos = transform.position.y;
+            var toPlayer = (PlayerController.Instance.transform.position - transform.position).normalized;
+            toPlayer.y = 0;
 
-            var count = Physics.OverlapBoxNonAlloc(
-                myCol.bounds.center,
-                myCol.bounds.extents,
-                Hits,
-                myCol.transform.rotation,
-                mask,
-                QueryTriggerInteraction.Ignore
-            );
+            var resolvedPosition = transform.position;
 
-            for (var i = 0; i < count; i++)
-            {
-                var other = Hits[i];
-                if (!other || other == myCol)
-                    continue;
+            const int maxIteration = 10;
 
-                if (Physics.ComputePenetration(
-                        myCol, myCol.transform.position, myCol.transform.rotation,
-                        other, other.transform.position, other.transform.rotation,
-                        out Vector3 dir,
-                        out var distance)) {
-                    transform.position += dir * (distance + 0.001f);
+            for (var iteration = 0; iteration < maxIteration; iteration++) {
+                var boundsCenter = resolvedPosition + (myCol.bounds.center - myCol.transform.position);
+                
+                var count = Physics.OverlapBoxNonAlloc(
+                   boundsCenter,
+                    myCol.bounds.extents,
+                    Hits,
+                    myCol.transform.rotation,
+                    mask,
+                    QueryTriggerInteraction.Ignore
+                );
+                
+                var hadOverlap = false;
+            
+                for (var i = 0; i < count; i++)
+                {
+                    var other = Hits[i];
+                    if (!other || other == myCol) continue;
+
+                    if (Physics.ComputePenetration(
+                            myCol, myCol.transform.position, myCol.transform.rotation,
+                            other, other.transform.position, other.transform.rotation,
+                            out Vector3 dir, out var distance)) {
+                        hadOverlap = true;
+                    
+                        var correction = dir * (distance + 0.001f);
+                        correction.y = 0f;
+                    
+                        var dot = Vector3.Dot(correction.normalized, toPlayer);
+                        if (dot > 0f) {
+                            resolvedPosition += Vector3.Project(correction, toPlayer);
+                        }
+                        else {
+                            resolvedPosition -= correction * 0.05f;
+                        }
+                    }
                 }
+                
+                if(!hadOverlap) break;
             }
+
+            resolvedPosition.y = yPos;
+            transform.DOMove(resolvedPosition, 0.1f);
         }
 
         public bool CanBeGrab() {

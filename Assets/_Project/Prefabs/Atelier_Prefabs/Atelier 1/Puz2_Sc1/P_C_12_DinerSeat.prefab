@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -6941116027899902589, guid: de45834718fe22043a10e49034e398ea, type: 3}
+    - target: {fileID: 1453641899312076299, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1453641899312076299, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1453641899312076299, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1453641899312076299, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2626464760297214265, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.4874096
@@ -66,6 +82,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8266579603109900439}
+    - targetCorrespondingSourceObject: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 5802763764747953532}
     - targetCorrespondingSourceObject: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
       insertIndex: -1
@@ -79,6 +98,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3402684353651182467, guid: 3931ea82881c2fa4ea9cd770c1d20c78, type: 3}
   m_PrefabInstance: {fileID: 2920232278035742763}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &8266579603109900439
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558020485772463016}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.2, z: 0.2}
+  m_Center: {x: 0, y: 1.6, z: -0.4}
 --- !u!114 &5802763764747953532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,9 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
-  ObjectName: Seat
+  ObjectName: Father's Seat
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0.3, z: -0.5}
+  prefabInteractionUI: {fileID: 9184184152440637018, guid: a5cc5836d3cb6f743a72e9b18ad4bd23, type: 3}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -103,7 +144,7 @@ MonoBehaviour:
     lockedState: 0
     isUsed: 0
     objectOutOfGlass: 0
-  <Guid>k__BackingField: 
+  <Guid>k__BackingField: e568a905-949a-4d92-b89f-a0dd47f234bd
 --- !u!114 &5128720004981233803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431787bfab3ff2c49b3d25b3e600060a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.SimpleInteractionAttribute
-  oneTimeUse: 1
+  oneTimeUse: 0
 --- !u!114 &2275427395595088847
 MonoBehaviour:
   m_ObjectHideFlags: 0

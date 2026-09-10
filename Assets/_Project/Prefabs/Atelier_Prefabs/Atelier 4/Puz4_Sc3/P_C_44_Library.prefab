@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4788427807845673287, guid: bc36f2ff4bd3ebd44bcbb276987b0655, type: 3}
+      propertyPath: m_Size.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -4788427807845673287, guid: bc36f2ff4bd3ebd44bcbb276987b0655, type: 3}
+      propertyPath: m_Center.z
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2375603782890949570, guid: bc36f2ff4bd3ebd44bcbb276987b0655, type: 3}
       propertyPath: m_Icon
       value: 
@@ -89,7 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Bookshelf
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0

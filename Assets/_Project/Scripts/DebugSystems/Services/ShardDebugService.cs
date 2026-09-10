@@ -101,7 +101,7 @@ namespace _Project.Scripts.DebugSystems.Services {
                     GUILayout.Label($"Scene : {scene.gameObject.name}", debugStyle);
                     GUILayout.Label($"Is Scene Completed : {scene.IsSceneValidated}", debugStyle);
                     if (GUILayout.Button("Complete Scene", buttonStyle)) {
-                        scene.LoadCompleteScene();
+                        scene.LoadValidateScene();
                     }
                 }
             }

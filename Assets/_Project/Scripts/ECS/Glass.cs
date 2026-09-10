@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
+using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,7 +50,7 @@ namespace _Project.Scripts.ECS
         public void Bind(FragmentData data) {
             this.data = data;
             if (String.IsNullOrEmpty(Guid)) {
-                Debug.LogError($"[Glass] {gameObject.name} does not have Guid, please generate it");
+                // Debug.LogError($"[Glass] {gameObject.name} does not have Guid, please generate it");
                 return;
             }
             data.Guid = Guid;
@@ -74,7 +76,6 @@ namespace _Project.Scripts.ECS
         public ColorEnum GetColor => color2D;
 
         [Header("Settings")] [SerializeField] private ColorEnum color2D;
-        [SerializeField] private bool canEditAnywhere = false;
         [SerializeField] private bool spawned = false;
         [SerializeField] private Fragment shard;
         [HideInInspector] public Fragment visualShard;
@@ -90,21 +91,28 @@ namespace _Project.Scripts.ECS
         private bool isHeld;
         
         private bool isOnTop;
-
-
+        
         private bool initialized = false;
-        private bool canInteract = true;
 
+        private float halfWidth;
+        private float halfHeight;
+        
         private void Start() {
             Initialize();
+            
+            var scale = shardSprite.canvas.scaleFactor;
+            halfWidth = shardSprite.rectTransform.sizeDelta.x * scale * 0.5f;
+            halfHeight = shardSprite.rectTransform.sizeDelta.y * scale * 0.5f;
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().shard_Obtained);
         }
-
+        
         private void Initialize() {
             if (!initialized) {
                 mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
 
-                if (mainCamera == null)
-                    Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
+                // if (mainCamera == null)
+                //     Debug.LogError($"[Glass] Camera not tagged as MainCamera, Camera could not been acquired !");
 
                 if (TryGetComponent(typeof(Image), out var img))
                     shardSprite = img as Image;
@@ -147,7 +155,7 @@ namespace _Project.Scripts.ECS
         }
         
         private void MoveGlass(Vector2 delta) {
-            if(!canInteract && !isHeld) return;
+            if(!isHeld) return;
             if(PlayerController.Instance.Interact.IsInMemory || !PlayerController.Instance.Interact.CanGlassInteract) return;
             
             if (!InputsBrain.Instance.IsKeyboardControl) {
@@ -155,11 +163,11 @@ namespace _Project.Scripts.ECS
                 if(!PlayerController.Instance.IsFrozen()) PlayerController.Instance.FreezeController(true);
             }
             
-            transform.position += (Vector3)delta; 
+            transform.position += (Vector3)delta;
             
             transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, 0 + shardSprite.rectTransform.sizeDelta.x/2, Screen.width - shardSprite.rectTransform.sizeDelta.x/2),
-                Mathf.Clamp(transform.position.y, 0 + shardSprite.rectTransform.sizeDelta.y/2, Screen.height  - shardSprite.rectTransform.sizeDelta.y/2)
+                Mathf.Clamp(transform.position.x, halfWidth, Screen.width - halfWidth),
+                Mathf.Clamp(transform.position.y, halfHeight, Screen.height  - halfHeight)
                 );
 
             Set3DShard();
@@ -188,6 +196,20 @@ namespace _Project.Scripts.ECS
 
         private void OnEnable() {
             shard?.gameObject.SetActive(true);
+            CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+        }
+
+        private void OnDisable() {
+            CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
+        }
+        
+        private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate) {
+            StartCoroutine(UpdatePosition());
+        }
+
+        private IEnumerator UpdatePosition() {
+            yield return null;
+            Set3DShard();
         }
 
         void OnDestroy() {
@@ -195,8 +217,6 @@ namespace _Project.Scripts.ECS
         }
         
         internal void ChangeHoldingState(bool isOn) {
-            if (!canInteract) return;
-
             isHeld = isOn;
 
             if (!InputsBrain.Instance.IsKeyboardControl) {
@@ -209,8 +229,12 @@ namespace _Project.Scripts.ECS
                     PlayerController.Instance.FreezeController(false);
                 }
             }
+
+            GameInitializer.Instance.PlaySound2D(isOn
+                ? GameInitializer.Instance.GetBank().shard_Picked
+                : GameInitializer.Instance.GetBank().shard_LetGo);
             
-            if (isOn) GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().grabGlassSound);
+            GameInitializer.Instance.PlayShardMoving(isOn);
         }
         
         

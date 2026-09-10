@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
 using DG.Tweening;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -136,12 +136,20 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             ChangeState(false);
         }
 
-        public void ChangeState(bool isHovering)
-        {
+        public void ChangeState(bool isHovering) {
             mouseOnFrame = isHovering;
-            HudManager.Instance.memory.SetMemoryDialogue(isHovering && isUnlocked ? data.infoText : "", master.GetCurrentSlotPosition(currentPos) - (0.5f) * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized);
+            StartCoroutine(SetHUD(isHovering));
         }
 
+        IEnumerator SetHUD(bool hovering) {
+            yield return null;
+            HudManager.Instance.memory.SetMemoryDialogue(
+                hovering && isUnlocked ? data.infoText : "", 
+                master.GetCurrentSlotPosition(currentPos) - (0.5f) 
+                * Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized
+                );
+        }
+        
         public void OnDrag(PointerEventData eventData) {
             if(!isSelected || gamepadControlled) return;
             
@@ -425,7 +433,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void Unlock() {
             isUnlocked = true;
-            paintingMesh.material = data.material;
+            if(data)
+                paintingMesh.material = data.material;
         }
         
 

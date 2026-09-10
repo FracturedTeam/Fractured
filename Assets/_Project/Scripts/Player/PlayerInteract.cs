@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -7,7 +6,6 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.EventBus;
 using _Project.Scripts.Systems.Timers;
-using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,12 +13,21 @@ namespace _Project.Scripts.Player {
 
     public struct InteractEvent : IEvent {
         public bool ShowInteraction;
-        public Interaction Interaction;
         public string ObjectName;
         public Vector3 Position;
     }
     
     public class PlayerInteract : MonoBehaviour {
+        public enum DropType {
+            Heavy,
+            Light,
+            Inventory
+        }
+        
+        [Header("UI")] 
+        [SerializeField] private Vector2 uiOffset;
+        
+        [Header("Settings")]
         [SerializeField] public Transform objectPos;
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
@@ -33,8 +40,13 @@ namespace _Project.Scripts.Player {
         private BaseObject memoryInteraction;
         
         public bool HasObject { get; private set; }
+        public bool HasItemObject { get; private set; }
+        public bool HasDroppedObject { get; private set; }
+        public DropType dropType { get; private set; }
         
         private bool canPlayerInteract = false;
+
+        public float pickUpObjectYPos;
         
         [HideInInspector] public bool triggerShard = false;
         [HideInInspector] public bool triggerDoor = false;
@@ -46,13 +58,13 @@ namespace _Project.Scripts.Player {
         private CountdownTimer interactCooldown;
         private const float TimerToUseDoor = 0.15f;
         
-        private Interaction interactionType;
         private RaycastHit wallInBetween;
         private LayerMask wallLayerMask;
         
         public bool IsFocus { get; private set; }
         public bool IsInMemory { get; private set; }
         public bool CanGlassInteract { get; private set; }
+        public bool TriggerPickUpItem;
         
         private bool validationInputHold;
         private float validationInputTime;
@@ -61,13 +73,15 @@ namespace _Project.Scripts.Player {
         public bool CanInteract {
             get => canInteract;
             private set {
-                if(canInteract == value) return;
                 canInteract = value;
 
-                if (value == false) {
+                if (canInteract == false) {
                     EventBus<InteractEvent>.Raise(new InteractEvent {
                         ShowInteraction = false
                     });
+                }
+                else {
+                    RaiseInteraction();
                 }
             }
         }
@@ -78,7 +92,7 @@ namespace _Project.Scripts.Player {
 
         private void Awake() {
             if(TryGetComponent(out PlayerController _player)) player = _player;
-            else Debug.LogWarning("[PlayerController] No PlayerController found");
+            // else Debug.LogWarning("[PlayerController] No PlayerController found");
             
             Size = 0;
 
@@ -106,8 +120,9 @@ namespace _Project.Scripts.Player {
         #endregion
         
         private void Interact(InputAction.CallbackContext ctx) {
-            if(triggerFailedDrop) return;
+            if(ctx.canceled) return;
             
+            if(triggerFailedDrop || IsInMemory) return;
             if(interactCooldown.IsRunning) return;
             
             if(CanGrab())
@@ -119,19 +134,31 @@ namespace _Project.Scripts.Player {
             else if (CanContextualInteract()) {
                 potentialInteraction?.OnInteract(ObjectInteraction.Contextual);
             }
-            else
-                Debug.Log("[PlayerInteract] No object to interact with...");
+            // else
+            //     Debug.Log("[PlayerInteract] No object to interact with...");
             
             interactCooldown.Start();
         }
 
         private void SecondaryInteract(InputAction.CallbackContext ctx) {
-            if (ctx.performed) validationInputHold = true;
+            if (ctx.performed) {
+                if (potentialInteraction != null && potentialInteraction.GetObjectType == ObjectType.MemoryFrame) {
+                    validationInputHold = true;
+                    GameInitializer.Instance.rumbleService.RumblePulse(0.3f, 0.5f, 0.8f);
+                }
+            }
 
             if (ctx.canceled && validationInputHold) {
                 validationInputHold = false;
                 validationInputTime = 0;
+                
+                if (potentialInteraction.GetObjectType == ObjectType.MemoryFrame)
+                    GameInitializer.Instance.rumbleService.StopRumble();
             }
+        }
+
+        public float GetMemoryValidation() {
+            return validationInputTime;
         }
         
         #region InteractionMethods
@@ -142,31 +169,43 @@ namespace _Project.Scripts.Player {
         
         private void PickUpItem() {
             potentialInteraction.OnInteract(ObjectInteraction.Grab);
+            TriggerPickUpItem = true;
         }
 
         public void HoldObject(bool doHold, BaseObject heldObject = null) {
             if (doHold) {
+                pickUpObjectYPos = transform.position.y;
+                HasItemObject = true;
                 HasObject = true;
                 currentInteraction = heldObject;
+                if(currentInteraction.GetInteract is CollectableAttribute move)
+                    player.PlayerIK.SetLightObject( move.leftEdge);
+                HasDroppedObject = false;
             }
             else {
+                pickUpObjectYPos = transform.position.y;
+                HasItemObject = false;
                 HasObject = false;
                 currentInteraction = null;
+                
+                dropType = DropType.Inventory;
+                HasDroppedObject = true;
             }
         }
 
         private void DropObject() {
             currentInteraction?.OnInteract(ObjectInteraction.Drop);
+            if(HasItemObject) HasItemObject = false;
         }
         #endregion
 
-        private void HandleInteractRotation(Vector3 playerDir) {
-            var newPos = transform.position + playerDir * interactZoneSize.z;
+        private void HandleInteractRotation() {
+            var newPos = transform.position + player.Movement.mesh.forward * interactZoneSize.z;
             interactCenterZone.position = Vector3.Lerp(interactCenterZone.position, newPos, player.GetRotationSpeed() * Time.deltaTime);
         }
         
         public void HandleUpdate(Vector3 playerDir) {
-            HandleInteractRotation(playerDir);
+            HandleInteractRotation();
 
             if (validationInputHold) {
                 validationInputTime += Time.deltaTime;
@@ -179,7 +218,8 @@ namespace _Project.Scripts.Player {
                     }
                 }
             }
-            if (IsFocus) return;
+            
+            if (IsFocus || IsInMemory) return;
             
             HandleInteraction();
             SetPlayerInteraction();
@@ -194,31 +234,27 @@ namespace _Project.Scripts.Player {
             Size = Physics.OverlapBoxNonAlloc(interactCenterZone.position, interactZoneSize, results,
                 Quaternion.identity, interactLayerMask);
 
-            switch (Size) {
-                case 0:
-                    potentialInteraction = null;
-                    return;
-                case 1:
-                    potentialInteraction = results[0].GetComponent<BaseObject>();
-                    break;
-                case > 1:
-                    var closestDist = 10f;
+            if (Size == 1) {
+                potentialInteraction = results[0].GetComponent<BaseObject>();
+            }
+            else if (Size > 1) {
+                var closestDist = 10f;
 
-                    for (var i = 0; i < Size; i++) {
-                        if (results[i].TryGetComponent(out BaseObject b)) {
-                            if (!b.CanBeInteractedWith()) continue;
-                            var dist = Vector3.Distance(b.transform.position, transform.position);
+                for (var i = 0; i < Size; i++) {
+                    if (results[i].TryGetComponent(out BaseObject b)) {
+                        if (!b.CanBeInteractedWith()) continue;
+                        var dist = Vector3.Distance(b.transform.position, transform.position);
 
-                            if (dist < closestDist) {
-                                closestDist = dist;
-                                potentialInteraction = b;
-                            }
+                        if (dist < closestDist) {
+                            closestDist = dist;
+                            potentialInteraction = b;
                         }
                     }
-                    break;
-                default:
-                    potentialInteraction = null;
-                    break;
+                }
+            }
+            else {
+                potentialInteraction = null;
+                return;
             }
 
             if (!HasObject) {// Check si le joueur possède un objet + Check si un mur est entre le joueur et l'objet
@@ -241,77 +277,19 @@ namespace _Project.Scripts.Player {
         
             // Si le joueur possède un objet et que son interaction potentielle est la même que la current, alors il reset la potential
             if (potentialInteraction == currentInteraction) potentialInteraction = null;
-
         }
 
         void SetPlayerInteraction() {
-            if (potentialInteraction is null) {
-                CanInteract = false;
-                return;
-            }
-            
-            UpdatePossibleInteraction();
-            
-            if (potentialInteraction.CanBeInteractedWith())
-                CanInteract = canPlayerInteract && Size > 0;
-            else {
-                CanInteract = false;
-            }
-        }
-
-        private void UpdatePossibleInteraction() { //Get le type interaction dans le base object -> Get Component est pas opti surtout dans une update
-            
-            if (potentialInteraction == null || interactCooldown.IsRunning) {
-                CanInteract = false;
-                interactionType = Interaction.None;
-                RaiseInteraction();
-                return;
-            }
-            
-            switch (potentialInteraction.GetObjectType) {
-                case ObjectType.Moveable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Door:
-                    interactionType = Interaction.UseDoor;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Collectable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.Usable:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    break;
-                case ObjectType.Inspectable:
-                    interactionType = Interaction.Dialogue;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.MemoryFrame:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.SimpleInteraction:
-                    interactionType = Interaction.Grab;
-                    RaiseInteraction();
-                    return;
-                case ObjectType.None:
-                default:
-                    interactionType = Interaction.None;
-                    return;
-            }
+            CanInteract = canPlayerInteract && potentialInteraction != null && potentialInteraction.CanBeInteractedWith();
         }
 
         #endregion
         
         private void RaiseInteraction() {
             EventBus<InteractEvent>.Raise(new InteractEvent {
-                ShowInteraction = canInteract,
-                Interaction = interactionType,
-                ObjectName = potentialInteraction?.ObjectName,
-                Position = potentialInteraction ? potentialInteraction.GetUIPosition() : Vector3.zero
+                ShowInteraction = CanInteract,
+                ObjectName = potentialInteraction.ObjectName,
+                Position = potentialInteraction.GetUIPosition(),
             });
         }
         
@@ -327,13 +305,18 @@ namespace _Project.Scripts.Player {
             HasObject = true;
             currentInteraction = interaction;
             if(currentInteraction.GetInteract is MovableAttribute move)
-                player.PlayerIK.SetHoldingState(true, move.rightEdge, move.leftEdge);
+                player.PlayerIK.SetHoldingState(move.rightEdge, move.leftEdge);
         }
         
-        public void SetDropObject() {
+        public void SetDropObject(bool heavy) {
             HasObject = false;
             currentInteraction = null;
-            player.PlayerIK.SetHoldingState(false);
+            dropType = heavy ? DropType.Heavy : DropType.Light;
+            HasDroppedObject = true;
+        }
+        
+        public void ResetDrop() {
+            HasDroppedObject = false;
         }
         
         public void SetDropObjectDebug() {
@@ -355,15 +338,13 @@ namespace _Project.Scripts.Player {
             if(potentialInteraction == null) return false;
             
             if(potentialInteraction.TryGetComponent(out CollectableAttribute collectable))
-                return CanInteract && collectable.CanBeGrab();
+                return CanInteract && !HasObject && currentInteraction == null && collectable.CanBeGrab();
             
             return false;
         }
 
         private bool CanDrop() {
-            if (potentialInteraction == null || potentialInteraction.GetObjectType is ObjectType.None or ObjectType.SimpleInteraction) return IsCarrying();
-
-            return false;
+            return IsCarrying();
         }
 
         private bool CanContextualInteract() {
@@ -409,6 +390,7 @@ namespace _Project.Scripts.Player {
 
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Exit);
             _ = GameSceneLoaderSystem.Instance.LoadGameplaySceneAsync(toLoad);
         }
     }

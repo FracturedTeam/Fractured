@@ -1,4 +1,5 @@
 using System.Collections;
+using _Project.Scripts.GameServices;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,22 +25,23 @@ namespace _Project.Scripts.UI {
         [Header("Tween settings")]
         [SerializeField] private Ease easeType;
         [SerializeField] private float tweenTime = 0.25f;
-        [SerializeField] private float multiplicator = 1.15f;
         
         private Tweener tweener;
         
         private bool locked;
         private bool hasClicked = false;
         
-        private void Start() {
-            //Get if chapter is Unlocked
+        public void Lock() {
+            lockedObject.SetActive(true);
+            locked = true;
+            chapterImage.material = locked ? lockedMat : unlockedMat;
         }
         
         public void OnPointerDown(PointerEventData eventData) {
-            if(hasClicked) return;
+            if(hasClicked || locked) return;
             
-            if(locked) return;
-
+            hasClicked = true;
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Play);
             StartCoroutine(CallClickPostTimer());
         }
         
@@ -60,8 +62,8 @@ namespace _Project.Scripts.UI {
         private void OnEnable() {
             hoverGroup.alpha = 0;
             hoverGroup.gameObject.SetActive(true);
-            chapterImage.material = locked ? lockedMat : unlockedMat;
-            lockedObject.SetActive(locked);
+            // chapterImage.material = locked ? lockedMat : unlockedMat;
+            // lockedObject.SetActive(locked);
         }
 
         private void OnDisable() {

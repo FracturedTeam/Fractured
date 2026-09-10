@@ -1,18 +1,18 @@
 using System;
-using System.Collections.Generic;
-using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
-using _Project.Scripts.Enums;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.Systems.Timers;
 using _Project.Scripts.UI;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace _Project.Scripts.ECS {
     public class SceneMaster : MonoBehaviour {
@@ -33,6 +33,10 @@ namespace _Project.Scripts.ECS {
         [Header("Animation Elements")]
         [SerializeField] private Sprite memorySprite;
         [SerializeField] private DialogueScriptableObject dialogue;
+
+        [Header("Audio")] 
+        [SerializeField] private EventReference associatedMemoryLoop;
+        private EventInstance soundInstance;
         
         private readonly CountdownTimer validationDelay = new(1.25f);
         
@@ -44,7 +48,7 @@ namespace _Project.Scripts.ECS {
             private set {
                 isSceneValid = value;
                 if (isSceneValid) {
-                    ValidSceneElement();
+                    ValidateScene();
                 }
             }
         }
@@ -52,21 +56,27 @@ namespace _Project.Scripts.ECS {
         private void Start() {
             SetMasterToSceneElement();
             validationDelay.OnTimerStop += DisplayMemoryOnDelay;
+
+            if (!associatedMemoryLoop.IsNull) {
+                soundInstance = GameInitializer.Instance.CreateInstance(associatedMemoryLoop);
+            }
         }
 
         private void OnDisable() {
             validationDelay.OnTimerStop -= DisplayMemoryOnDelay;
         }
 
+        private void OnDestroy() {
+            soundInstance.stop(STOP_MODE.IMMEDIATE);
+            soundInstance.release();
+        }
+
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
-
-            if (!requiredPlayerPosition) return;
+            if (!requiredPlayerPosition || !PlayerController.HasInstance) return;
             
             var dist =  Vector3.Distance(PlayerController.Instance.transform.position, requiredPosition);
             
-            if (isValidPlayerPosition == dist <= 2) return;
-                
             isValidPlayerPosition = dist <= 2;
             CheckForValidation();
         }
@@ -77,9 +87,24 @@ namespace _Project.Scripts.ECS {
             }
         }
 
-        private void ValidSceneElement() {
+        private void ValidateScene() {
             if(hasSceneBeenValidated) return;
             
+            BaseValidation();
+
+            // Timer start
+            if(!validationDelay.IsRunning)
+                validationDelay.Start();
+            
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Interact);
+            GameInitializer.Instance.rumbleService.RumblePulse(0.7f, 0.9f, 1.3f);
+            
+            PlayerController.Instance.FreezeController(true);
+            PlayerController.Instance.SetInteraction(false);
+            PlayerController.Instance.SetInMemory(true);
+        }
+
+        private void BaseValidation() {
             hasSceneBeenValidated = true;
 
             foreach (var element in elements) { // Lock interaction with sceneElement once the scene is valid
@@ -91,23 +116,15 @@ namespace _Project.Scripts.ECS {
             
             frame.Unlock();
             worldText?.Appear();
-            
-            // Timer start
-            if(!validationDelay.IsRunning)
-                validationDelay.Start();
-            
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().enterMemorySound);
-            
-            PlayerController.Instance.FreezeController(true);
-            PlayerController.Instance.SetInteraction(false);
-            PlayerController.Instance.SetInMemory(true);
         }
 
         private void DisplayMemoryOnDelay() {
             GameInitializer.Instance.SetMemoryLoop(true);
             MemoryManager.Instance.SetMemory(true, memorySprite, memorySprite);
+            soundInstance.start();
             
             HudManager.Instance.SetText(dialogue);
+            HudManager.Instance.interact.ShowInteractionMemory(true);
             InputsBrain.Instance.OnInteract += LeaveMemory;
         }
 
@@ -116,6 +133,7 @@ namespace _Project.Scripts.ECS {
             
             InputsBrain.Instance.OnInteract -= LeaveMemory;
             
+            HudManager.Instance.interact.ShowInteractionMemory(false);
             PlayerController.Instance.FreezeController(false);
             PlayerController.Instance.SetInteraction(true);
             PlayerController.Instance.SetInMemory(false);
@@ -123,30 +141,31 @@ namespace _Project.Scripts.ECS {
             MemoryManager.Instance.SetMemory(false);
             HudManager.Instance.ResetText();
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().leaveMemorySound);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Leave);
             GameInitializer.Instance.SetMemoryLoop(false);
             GameInitializer.Instance.AddShards(glassShards);
-            
+            soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
         
-        public void LoadCompleteScene() {
-            ValidSceneElement();
+        public void LoadValidateScene() {
+            BaseValidation();
+            
+            GameInitializer.Instance.AddShards(glassShards);
             
             foreach (var element in elements) {
-                if (element.validationMethod is SceneElement.ValidationMethod.Position) {
-                    element.transform.position = element.requestedCollisionArea.transform.position;
-                }
-
-                if (element.validationMethod is SceneElement.ValidationMethod.UseState) {
-                    element.SetDebugUseState(element.requestedUseState);
-                }
-                
                 element.SetValidate();
             }
         }
         
         public void CheckForValidation() {
             var everyElementIsValid = true;
+
+            if (elements.Length == 1) {
+                everyElementIsValid = elements[0].IsValidated;
+                if(requiredPlayerPosition && !isValidPlayerPosition) everyElementIsValid = false;
+                IsSceneValidated = everyElementIsValid;
+                return;
+            }
             
             foreach (var element in elements)
             {
@@ -190,7 +209,7 @@ namespace _Project.Scripts.ECS {
          public void Bind(SceneMasterSave data) {
              this.data = data;
              if (String.IsNullOrEmpty(Guid)) {
-                 Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
+                 // Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
                  return;
              }
              data.Guid = Guid;
@@ -201,7 +220,7 @@ namespace _Project.Scripts.ECS {
              if(data.Guid != Guid) return;
              
              if(data.isCompleted)
-                 LoadCompleteScene();
+                 LoadValidateScene();
          }
          
          [ContextMenu("Save")]

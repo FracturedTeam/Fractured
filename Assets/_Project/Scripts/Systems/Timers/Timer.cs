@@ -41,6 +41,12 @@ namespace _Project.Scripts.Systems.Timers {
 
         public virtual void Reset() => CurrentTime = initialTime;
 
+        public virtual void CompleteStop() {
+            IsRunning = false;
+            CurrentTime = initialTime;
+            TimerManager.DeregisterTimer(this);
+        }
+        
         public virtual void Reset(float newTime) {
             initialTime = newTime;
             Reset();

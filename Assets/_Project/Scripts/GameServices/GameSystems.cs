@@ -19,10 +19,10 @@ namespace _Project.Scripts.GameServices {
             try {
                 foreach (var system in systems.Values)
                 {
-                    Debug.Log($"[GameSystems] Initializing {system.GetType().Name}");
+                    // Debug.Log($"[GameSystems] Initializing {system.GetType().Name}");
                     system.Initialize();
                 }
-                Debug.Log($"[GameSystems] {systems.Count} GameSystems initialized");
+                // Debug.Log($"[GameSystems] {systems.Count} GameSystems initialized");
             }
             catch (Exception ex) {
                 Debug.LogError($"[GameSystems] Systems initialization failed: {ex.Message}");

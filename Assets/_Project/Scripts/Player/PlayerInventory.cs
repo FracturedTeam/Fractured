@@ -10,8 +10,8 @@ using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Player {
     public class PlayerInventory : MonoBehaviour {
-        public List<Item> items;
-        public List<Key> keys;
+        public List<Item> items = new List<Item>();
+        public List<Key> keys = new List<Key>();
 
         private int itemIndex;
         
@@ -80,9 +80,9 @@ namespace _Project.Scripts.Player {
         private void UpdateSelectedItem(float input) {
             if(items.Count == 0) return;
             
-            if (items.Count <= 1) {
+            if (input == 0) {
                 itemIndex = 0;
-                EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
+                EventBus<SelectItemEvent>.Raise(new SelectItemEvent{wantedItem = items[itemIndex]});
                 return;
             }
             
@@ -95,7 +95,7 @@ namespace _Project.Scripts.Player {
                 if(itemIndex < 0) itemIndex = items.Count - 1;
             }
             
-            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
+            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{wantedItem = items[itemIndex]});
         }
         
         public void OnItemPickedUp(CollectableAttribute item) {
@@ -110,7 +110,7 @@ namespace _Project.Scripts.Player {
             
             EventBus<ProcessItemEvent>.Raise(new ProcessItemEvent{item = newItem, isAddingItem = true});
             EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
-            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{selectedItem = items[itemIndex]});
+            EventBus<SelectItemEvent>.Raise(new SelectItemEvent{wantedItem = items[itemIndex]});
         }
 
         public void OnItemDropped(BaseObject collectable) {
@@ -120,13 +120,30 @@ namespace _Project.Scripts.Player {
                     items.RemoveAt(i);
                     
                     EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
-                    if (items.Count > 1) UpdateSelectedItem(-1);
+                    if (items.Count == 1) 
+                        UpdateSelectedItem(0);
+                    else if (items.Count >= 2)
+                        UpdateSelectedItem(itemIndex <= 1 ? 0 : -1);
                     break;
                 }
             }
         }
 
         #endregion
+
+        public void EmptyInventory() {
+            items.Clear();
+            keys.Clear();
+            
+            EventBus<ClearInventoryEvent>.Raise(new ClearInventoryEvent());
+        }
+
+        public void HideInventoryInFrame(bool doHide) {
+            if(doHide)
+                EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = false});
+            else
+                EventBus<ShowInventoryEvent>.Raise(new ShowInventoryEvent{doShow = items.Count > 0});
+        }
         
     }
     
@@ -137,8 +154,7 @@ namespace _Project.Scripts.Player {
         public BaseObject worldItem;
     }
 
-    [Serializable]
-    public struct Key {
+    public class Key {
         public string keyName;
         public int ID;
         public Sprite keySprite;

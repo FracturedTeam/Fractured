@@ -18,6 +18,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         [SerializeField] public CinemachineCamera frameCamera;
         [SerializeField] private Transform[] frameSlots;
         [SerializeField] private MemoryFrame[] frames;
+        [SerializeField] private DoorInteractable doorExit;
         
         private bool isInitialized;
         private bool isUsingMemoryFrame;
@@ -76,14 +77,17 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
 
             GameInitializer.Instance.SetShardsOnOff(!isUsingMemoryFrame);
-            hud.SetActiveMemoryButton(CheckMemoryUnlocked() && !IsMemoryCompleted);
+            hud.SetActiveMemoryButton(CheckMemoryUnlocked() && !IsMemoryCompleted && isUsingMemoryFrame);
             hud.SetMemoryDialogue("", new Vector3());
+            hud.IsInFrame(isUsingMemoryFrame);
             HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.Interact.SetIsFocus(isUsingMemoryFrame, baseObject);
             PlayerController.Instance.Interact.SetGlassInteraction(!isUsingMemoryFrame);
             PlayerController.Instance.FreezeController(isUsingMemoryFrame);
+            PlayerController.Instance.Movement.mesh.gameObject.SetActive(!isUsingMemoryFrame);
+            PlayerController.Instance.Inventory.HideInventoryInFrame(isUsingMemoryFrame);
 
             foreach (var frame in frames) {
                 frame.CanBeInteracted(isUsingMemoryFrame, gamepadControlled);
@@ -133,16 +137,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         }
 
         private void DoValidation() {
-            Debug.Log("DoValidation");
-            
             bool allValid = true;
             foreach (var frame in frames) {
                 if(!frame.ValidPosition()) allValid = false;
             }
 
-            if (allValid) {
+            if (allValid)
                 CompleteFrames();
-            }
+            else
+                GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().frame_Failed);
         }
         
         private void CompleteFrames() {
@@ -152,10 +155,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             UseMemoryFrame();
             HudManager.Instance.memory.SetActiveMemoryButton(false);
             
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ld_Solved);
             GameInitializer.Instance.EmptyShards();
             GameInitializer.Instance.ResetGlassInteractable();
+            GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.8f, 0.25f);
             
-            Debug.Log("Memory Completed");
+            doorExit.CanBeUsed(true);
+            
+            // Debug.Log("Memory Completed");
         }
 
         public void DebugCompleteFrame() {

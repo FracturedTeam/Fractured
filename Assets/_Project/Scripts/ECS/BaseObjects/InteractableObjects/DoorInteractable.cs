@@ -15,11 +15,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private bool isInitialized = false;
         
         private bool hasBeenInteracted = false;
+        private bool canBeUsed = false;
         
         public void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject b)) baseObject = b;
-                else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
+                // else Debug.LogError($"[DoorInteractable] Cannot find {nameof(BaseObject)} in {nameof(DoorInteractable)}");
 
                 baseObject.GetObjectType = ObjectType.Door;
                 baseObject.SetInteract(true);
@@ -30,6 +31,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             if(hasBeenInteracted) return;
+
+            if (!canBeUsed) {
+                if (baseObject.GetTrigger) baseObject.GetTrigger.OnFunction( baseObject.GetTrigger.OnInteractFailed);
+                return;
+            }
             
             if (PlayerController.Instance.Interact.HasObject) {
                 PlayerController.Instance.Interact.triggerFailedDrop = true;
@@ -39,10 +45,15 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (sceneToLoad == null) return;
             hasBeenInteracted = true;
             
-            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().openBigDoorSound, transform.position);
+            GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().door_Opened, transform.position);
             PlayerController.Instance.Interact.TriggerBigDoor(sceneToLoad, transform.position);
+            PlayerController.Instance.Inventory.EmptyInventory();
         }
 
+        public void CanBeUsed(bool canBeUse) {
+            this.canBeUsed = canBeUse;
+        }
+        
         public void Tick(float deltaTime) {
         }
 

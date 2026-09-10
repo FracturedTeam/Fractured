@@ -1,15 +1,13 @@
 using System;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
-using _Project.Scripts.GameServices;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
-using _Project.Scripts.Structs;
 using _Project.Scripts.UI;
+using _Project.Scripts.UI.Gameplay;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Project.Scripts.ECS.BaseObjects
 {
@@ -30,11 +28,12 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         [Header("HUD")] 
         [SerializeField] private Vector2 hudTransformPoint;
-        [SerializeField] private Vector2 hudSpecialTransformPoint;
+        [SerializeField] private Vector3 interactionUIOffset;
+        [SerializeField] public ObjectInteractionUI prefabInteractionUI;
         
+        public ObjectInteractionUI interactionUI {get; private set;}
         
         private MeshRenderer meshRenderer;
-        
         private Collider objectCollider;
 
         public bool IsInitialized { get; private set; }
@@ -70,7 +69,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void Bind(ObjectData data) {
             this.data = data;
             if (String.IsNullOrEmpty(Guid)) {
-                Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
+                // Debug.LogError($"[BaseObject] {gameObject.name} does not have Guid, please generate it");
                 return;
             }
             data.Guid = Guid;
@@ -183,12 +182,17 @@ namespace _Project.Scripts.ECS.BaseObjects
                 }
                 
                 if(TryGetComponent(typeof(MeshRenderer), out var m)) meshRenderer = m as MeshRenderer;
-                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
+                // else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshRenderer component");
         
                 if(TryGetComponent(typeof(Collider), out var c)) objectCollider = c as Collider;
-                else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
+                // else Debug.LogWarning($"[BaseObject] {nameof(BaseObject)} does not contain Collider component");
         
                 gameObject.layer = LayerMask.NameToLayer("Interactable");
+                
+                if (prefabInteractionUI && GetInteract != null) {
+                    interactionUI = Instantiate(prefabInteractionUI);
+                    interactionUI.RegisterComponents(meshRenderer, objectCollider, interactionUIOffset);
+                }
             }
             IsInitialized = true;
         
@@ -196,14 +200,19 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Initialize();
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
+            
+            interactionUI?.DoShowUI(CanBeInteractedWith());
         }
 
-        // private void Start()
-        // {
-        //     if(!IsInitialized)
-        //         Initialize();
-        // }
+        [ContextMenu("Update UI Position")]
+        public void UpdateUIPosition() {
+            if(interactionUI) interactionUI.ManualPositionUpdate(interactionUIOffset);
+        }
 
+        public void HideUIInteraction(bool doHide) {
+            if(interactionUI) interactionUI.DoShowUI(!doHide);
+        }
+        
         private void Update() {
             if(Time.frameCount % 2 != 0) return;
             
@@ -211,7 +220,17 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Tick(Time.deltaTime);
         }
 
-        void OnDestroy() {
+        private void OnEnable() {
+            if(interactionUI && canBeInteractedWith) interactionUI.DoShowUI(true);
+        }
+
+        private void OnDisable() {
+            if(interactionUI) interactionUI.DoShowUI(false);
+        }
+
+        private void OnDestroy() {
+            if(interactionUI) Destroy(interactionUI.gameObject);
+            
             GetInteract?.Dispose();
         }
 
@@ -244,7 +263,16 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
         
         public void SetInteract(bool canInteract) { // TODO appelé très souvent sous certaines conditions
-            canBeInteractedWith = GetInteract != null && canInteract;
+            if (GetInteract is UsableAttribute { oneTimeUse: true } usable) {
+                canBeInteractedWith = !usable.IsUsed && canInteract;
+            }
+            else if (GetInteract is SimpleInteractionAttribute { oneTimeUse: true } simple) {
+                canBeInteractedWith = !simple.hasBeenUsed && canInteract;
+            }
+            else
+                canBeInteractedWith = GetInteract != null && canInteract;
+            
+            if(interactionUI != null) interactionUI.DoShowUI(canBeInteractedWith);
         }
 
         public void SetGlassInteract(bool canInteract) {
@@ -278,7 +306,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         }
 
         public Vector2 GetUIPosition() {
-            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + new Vector3(hudTransformPoint.x, hudTransformPoint.y + 5);
+            if(meshRenderer)
+                return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(meshRenderer.bounds.center) + new Vector3(hudTransformPoint.x, hudTransformPoint.y - 45, 0);
+            
+            return PlayerController.Instance.cinemachineBrain.OutputCamera.WorldToScreenPoint(transform.position) + new Vector3(hudTransformPoint.x, hudTransformPoint.y - 45, 0);
         }
 
         public bool HasSceneElement() {

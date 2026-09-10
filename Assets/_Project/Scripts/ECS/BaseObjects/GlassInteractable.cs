@@ -55,10 +55,10 @@ namespace _Project.Scripts.ECS.BaseObjects
             
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
+                // else throw new ArgumentNullException($"[GlassInteractable] BaseObject on {gameObject.name} could not be found !");
 
                 if(TryGetComponent(out MeshFilter mf)) meshFilter = mf;
-                else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
+                // else Debug.LogWarning($"[BaseObject] {gameObject.name} does not contain MeshFilter component");
 
                 if (baseObject.GetObjectType is ObjectType.Moveable) {
                     moveableComponent = baseObject.GetInteract as MovableAttribute;
@@ -69,8 +69,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 shardsOnTop = new ObservableHashSet<Glass>();
                 shardsOnTop.onUpdate += UpdateShards;
                 
-                updateShardVisual.OnTick += Set2DPoints;
-                updateShardVisual.Start();
+                //updateShardVisual.OnTick += Set2DPoints;
+                //updateShardVisual.Start();
                 
                 gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
                 
@@ -92,9 +92,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 
                 if (objectInside) {
                     if (interactableInBox != null)
-                        SetObjectInside();
-                    else
-                        Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
+                        SetInteractableInBox(false);
+                    // else
+                    //     Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
                 }
                 
                 isInitialized = true;
@@ -108,14 +108,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             
         }
 
-        void SetObjectInside() {
-            SetInteractableInBox(false);
-            interactableInBox.transform.position = transform.position;
-        }
-
         internal void OnShardUpdated(bool isUnder, Glass shard) {
             Set2DPoints();
-            print(gameObject.name + " has been updated");
+            
             if (isUnder) 
                 shardsOnTop.Add(shard);
             else if(shardsOnTop.Contains(shard))
@@ -188,9 +183,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                         underBlue++;
                         underRed++;
                         break;
-                    default:
-                        Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
-                        break;
+                    // default:
+                    //     Debug.LogWarning($"[GlassInteractable] Unknown shard color {shard.GetColor}");
+                    //     break;
                 }
 
             switch (objectColor) {
@@ -203,9 +198,9 @@ namespace _Project.Scripts.ECS.BaseObjects
                 case ColorEnum.ColorA:
                     SetVisibility(underBlue < 1 || underRed > 0);
                     break;
-                default:
-                    Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
-                    break;
+                // default:
+                //     Debug.LogWarning($"[GlassInteractable] Unsupported color set : {gameObject.name}");
+                //     break;
             }
         }
         
@@ -235,12 +230,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (objectInside && !objectOut)
                 ActivateObjectInside(!isUnder);
             
-            if(isUnder) GameInitializer.Instance.PlayHideSound(transform.position);
-            else GameInitializer.Instance.PlayRevealSound(transform.position);
+            if(!IsVisible) GameInitializer.Instance.PlayHideSound(transform.position);
         }
         
         private void ActivateObjectInside(bool isUnder) {
-            interactableInBox.transform.position = transform.position;
+            // interactableInBox.transform.position = transform.position;
             
             SetInteractableInBox(isUnder);
 
@@ -279,13 +273,9 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!interactableInBox.IsInitialized) {
                 interactableInBox.Initialize();
             }
-
-            if (interactableInBox.GetLockState is LockedState.Locked) {
-                interactableInBox.SetInteract(revealed);
-            }
             
+            interactableInBox.SetInteract(interactableInBox.GetLockState is not LockedState.Locked && revealed);
             interactableInBox.SetCollider(revealed);
-            interactableInBox.SetRenderer(revealed);
         }
 
         bool IsInteractableInBoxActive() {

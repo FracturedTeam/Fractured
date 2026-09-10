@@ -30,7 +30,7 @@ namespace _Project.Scripts.Player.States {
 
             animator.SetFloat(BlendingHash,
                 exitStateTimer.Progress > 0.2f
-                    ? .8f
+                    ? .6f
                     : Mathf.Clamp(animator.GetFloat(BlendingHash) - Time.deltaTime * 2f, 0, 1f));
         }
 

@@ -9,20 +9,35 @@ namespace _Project.Scripts.Systems.StateMachine {
         
         //Animation Hash
         protected static readonly int IdleHash = Animator.StringToHash("Idle");
+        
+        protected static readonly int IdleBreak1Hash = Animator.StringToHash("IdleBreak1");
+        protected static readonly int IdleBreak2Hash = Animator.StringToHash("IdleBreak2");
+        protected static readonly int IdleBreak3Hash = Animator.StringToHash("IdleBreak3");
+        
         protected static readonly int FallHash = Animator.StringToHash("Fall");
         protected static readonly int EmptyHash = Animator.StringToHash("Empty");
-        protected static readonly int CarryHash = Animator.StringToHash("Carry");
+        protected static readonly int CrouchHash = Animator.StringToHash("Crouch");
+        
+        protected static readonly int CarryHeavyHash = Animator.StringToHash("CarryHeavyObject");
+        protected static readonly int CarryLightHash = Animator.StringToHash("CarryLightObject");
+        
         protected static readonly int FailedDropHash = Animator.StringToHash("FailedDrop");
-        protected static readonly int GrabObjectHash = Animator.StringToHash("GrabObject");
-        protected static readonly int DropObjectHash = Animator.StringToHash("DropObject");
+        
+        protected static readonly int GrabHeavyObjectHash = Animator.StringToHash("GrabHeavyObject");
+        protected static readonly int DropHeavyObjectHash = Animator.StringToHash("DropHeavyObject");
+        
+        protected static readonly int GrabLightObjectHash = Animator.StringToHash("GrabLightObject");
+        protected static readonly int DropLightObjectHash = Animator.StringToHash("DropLightObject");
+        
+        protected static readonly int PutObjectInInventoryHash = Animator.StringToHash("PutItemInInventory");
+        protected static readonly int TakeObjectOutInventoryHash = Animator.StringToHash("TakeOutInventory");
+        
         protected static readonly int EnterMemoryHash = Animator.StringToHash("EnterMemory");
         protected static readonly int LeaveMemoryHash = Animator.StringToHash("LeaveMemory");
         protected static readonly int OpenDoorHash = Animator.StringToHash("OpenDoor");
         protected static readonly int FailedOpenDoorHash = Animator.StringToHash("FailedOpenDoor");
-        protected static readonly int BreakGlassHash = Animator.StringToHash("BreakGlass");
-        protected static readonly int UsePedestalHash = Animator.StringToHash("UsePedestal");
-        protected static readonly int IdlePedestalHash = Animator.StringToHash("IdlePedestal");
-        protected static readonly int LeavePedestalHash = Animator.StringToHash("LeavePedestal");
+        
+        //protected static readonly int BreakGlassHash = Animator.StringToHash("BreakGlass");
         
         //Layer Hash
         protected const int MovementLayer = 0;

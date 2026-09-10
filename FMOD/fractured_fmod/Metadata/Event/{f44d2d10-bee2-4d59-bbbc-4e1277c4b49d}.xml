@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{f44d2d10-bee2-4d59-bbbc-4e1277c4b49d}">
 		<property name="name">
-			<value>PickUpObjectAvatar</value>
+			<value>AvatarObjectPickUp</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -56,10 +56,14 @@
 			<destination>{cc4e3a57-4ac9-448b-8297-accc35e089aa}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{2a8b950e-6f8c-416c-aa44-b4e31fca1775}</destination>
+			<destination>{4af7cf42-0906-45d7-852e-030de370aa72}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{69f8c589-b2ac-4d9b-95ee-3653036004d5}" />
+	<object class="EventAutomatableProperties" id="{69f8c589-b2ac-4d9b-95ee-3653036004d5}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{28988c32-3035-40d5-8e31-0d7233d5e680}" />
 	<object class="Timeline" id="{7e906b6c-4d6b-41e2-8020-f2057f4635b7}">
 		<property name="isProxyEnabled">
@@ -72,6 +76,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{84669153-9d32-433b-996c-37f8301ec648}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{c18fa372-04b9-4ee9-ac79-30922fb5df2f}</destination>
 		</relationship>
@@ -84,7 +91,7 @@
 	</object>
 	<object class="MultiSound" id="{8cd4b890-4428-4fcb-9e5c-ec221e70888f}">
 		<relationship name="sounds">
-			<destination>{4b5e8850-1a19-4c25-87ed-a0db2db1aad1}</destination>
+			<destination>{1baa2325-c15b-485b-a3ab-dce9030adabb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{e30deb79-868f-424b-9f8e-abbd7f221b36}">
@@ -96,14 +103,28 @@
 	<object class="MixerBusEffectChain" id="{c18fa372-04b9-4ee9-ac79-30922fb5df2f}">
 		<relationship name="effects">
 			<destination>{79063f1a-d774-4623-a599-065018ed1cb9}</destination>
+			<destination>{dd66b955-0e80-4733-976e-623431bf4b87}</destination>
+			<destination>{127790fb-04d6-49d3-8f03-6658c728a89f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{389ee717-bb01-46c3-83ed-d6df03bfc42e}" />
-	<object class="SingleSound" id="{4b5e8850-1a19-4c25-87ed-a0db2db1aad1}">
+	<object class="SingleSound" id="{1baa2325-c15b-485b-a3ab-dce9030adabb}">
+		<property name="pitch">
+			<value>-4</value>
+		</property>
 		<relationship name="audioFile">
-			<destination>{c3ef3492-d0dd-4433-85fd-0a3975f2ca9c}</destination>
+			<destination>{04b8de55-ad73-4790-951f-b05d500dcc59}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{4fdf641a-704e-40e8-8837-b51e28237aa0}" />
 	<object class="MixerBusFader" id="{79063f1a-d774-4623-a599-065018ed1cb9}" />
+	<object class="ThreeEQEffect" id="{dd66b955-0e80-4733-976e-623431bf4b87}">
+		<property name="lowGain">
+			<value>-6</value>
+		</property>
+		<property name="highGain">
+			<value>-1.5</value>
+		</property>
+	</object>
+	<object class="ObjectSpatialiserEffect" id="{127790fb-04d6-49d3-8f03-6658c728a89f}" />
 </objects>

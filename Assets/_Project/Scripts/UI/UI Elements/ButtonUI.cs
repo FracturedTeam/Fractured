@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using _Project.Scripts.GameServices;
 using DG.Tweening;
@@ -5,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.UI {
@@ -15,7 +17,11 @@ namespace _Project.Scripts.UI {
         [Header("Text Settings")]
         [SerializeField] private TextMeshProUGUI buttonText;
         [SerializeField] private Color whiteColor;
-        [SerializeField] private Color blueColor;
+        [SerializeField] private Color act1Color;
+        [SerializeField] private Color act2Color;
+        [SerializeField] private Color act3Color;
+
+        private Color alternateColor;
         
         [Header("background Settings")]
         [SerializeField] private Image backgroundImage;
@@ -47,10 +53,46 @@ namespace _Project.Scripts.UI {
             onClickPostTimer?.Invoke();
             
             if (settingsButtons) {
-                pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
-                buttonText.color = blueColor;
-                backgroundImage.gameObject.SetActive(true);
+                buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+                buttonText.alpha = 1f;
             }
+            else {
+                buttonText.color = whiteColor;
+                backgroundImage.sprite = backgroundNormal;
+            }
+            
+            pressedGroup.DOFade(0, 0.3f).SetUpdate(true).SetEase(easeType);
+            backgroundImage.gameObject.SetActive(true);
+        }
+
+        private void Start() {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SetColor();
+        }
+
+        private void SetColor() {
+            if (GameSceneSettings.HasInstance) {
+                var ChapterIndex = GameSceneSettings.Instance.ActColor;
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            else if (GameInitializer.HasInstance) {
+                var ChapterIndex = GameInitializer.Instance.GetLastChapter();
+                alternateColor = ChapterIndex switch {
+                    1 => act1Color,
+                    2 => act2Color,
+                    3 => act3Color,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            SetColor();
         }
 
         private void OnEnable() {
@@ -68,13 +110,15 @@ namespace _Project.Scripts.UI {
         }
         
         private void OnDisable() {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             tweener?.Kill();
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
             tweener = transform.DOScale(scale * multiplicator, tweenTime).SetUpdate(true);
             
-            buttonText.color = blueColor;
+            buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+            buttonText.alpha = 1f;
             backgroundImage.sprite = backgroundHover;
             pressedGroup.gameObject.SetActive(false);
         }
@@ -91,13 +135,14 @@ namespace _Project.Scripts.UI {
             tweener = transform.DOScale(scale, tweenTime).SetUpdate(true);
 
             if (!settingsButtons) {
-                buttonText.color = blueColor;
+                buttonText.color = alternateColor * GameInitializer.Instance.GetSettings.uiColorIntensity;
+                buttonText.alpha = 1f;
                 backgroundImage.gameObject.SetActive(false);
                 pressedGroup.gameObject.SetActive(true);
                 pressedGroup.DOFade(1, 0.3f).SetUpdate(true).SetEase(easeType);
             }
             
-            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().uiBttClickedSound);
+            GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().ui_Clicked);
             
             StartCoroutine(CallClickPostTimer());
         }

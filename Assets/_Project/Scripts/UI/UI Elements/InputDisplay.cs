@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Inputs;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private string northBtt;
         [SerializeField] private string eastBtt;
         [SerializeField] private string southBtt;
+        [SerializeField] private CanvasGroup group;
         
         [Header("Visuals")]
         [SerializeField] private TextMeshProUGUI backBtt; 
@@ -36,6 +38,10 @@ namespace _Project.Scripts.UI {
             selectBtt.gameObject.SetActive(isGamepad);
         }
 
+        public void ShowDisplay(bool doShow) {
+            group.DOFade(doShow ? 1 : 0, .25f).SetUpdate(true);
+        }
+        
         public void UpdateDisplay(bool isInMainMenu) {
             backBtt.gameObject.SetActive(!isInMainMenu);   
         }

@@ -1,11 +1,13 @@
 using System;
+using _Project.Scripts.GameServices;
 using _Project.Scripts.Systems.Singletons;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Inputs {
     public class InputsBrain : PersistentSingleton<InputsBrain> {
-        private InputSystem_Actions inputs;
+        public InputSystem_Actions inputs { get; private set; }
 
         public event Action<Vector2> OnPlayerMove = delegate { };
         public event Action<InputAction.CallbackContext> OnInteract = delegate { };
@@ -25,12 +27,16 @@ namespace _Project.Scripts.Inputs {
         public event Action<InputAction.CallbackContext> OnNavigation = delegate { };
         public event Action<InputAction.CallbackContext> OnSettingsView = delegate { };
         public event Action OnPause = delegate { };
+        public event Action OnContinue = delegate { };
     
         public bool IsKeyboardControl { get; private set; }
         
         protected override void Awake() {
             base.Awake();
             inputs = new InputSystem_Actions();
+            IsKeyboardControl = true;
+            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnEnable() {
@@ -56,7 +62,8 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Back.performed += OnBack;
             inputs.UI.Navigation.performed += Navigation;
             inputs.UI.SettingsView.performed += SettingsView;
-                
+            inputs.UI.Continue.performed += Continue;
+            
             inputs.Pause.Pause.performed += Pause;
             
             InputSystem.onActionChange += InputActionChangeCallback;
@@ -88,6 +95,7 @@ namespace _Project.Scripts.Inputs {
             inputs.UI.Back.performed -= OnBack;
             inputs.UI.Navigation.performed -= Navigation;
             inputs.UI.SettingsView.performed -= SettingsView;
+            inputs.UI.Continue.performed -= Continue;
             
             inputs.Pause.Pause.performed -= Pause;
             
@@ -96,6 +104,25 @@ namespace _Project.Scripts.Inputs {
             inputs.Disable();
         }
 
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            OnGamepadControlled.Invoke(!IsKeyboardControl);
+        }
+
+        public void DisablePlayerInput(bool doDisable) {
+            if(doDisable) inputs.Player.Disable();
+            else inputs.Player.Enable();
+        }
+
+        public void DisableUIInput(bool doDisable) {
+            if(doDisable) inputs.UI.Disable();
+            else inputs.UI.Enable();
+        }
+
+        public void DisablePauseInput(bool doDisable) {
+            if(doDisable) inputs.Pause.Disable();
+            else inputs.Pause.Enable();
+        }
+        
         private void InputActionChangeCallback(object obj, InputActionChange change) {
             if (obj != null && obj is InputAction action) {
                 if (action.activeControl == null) return;
@@ -105,18 +132,19 @@ namespace _Project.Scripts.Inputs {
                 if ((lastDevice.name.Equals("Keyboard") || lastDevice.name.Equals("Mouse")) && !IsKeyboardControl) {
                     IsKeyboardControl = true;
                     Cursor.visible = true;
+                    
                     OnGamepadControlled.Invoke(false);
-                    Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
                 }
                 else if (!lastDevice.name.Equals("Keyboard") && !lastDevice.name.Equals("Mouse") && IsKeyboardControl) {
                     IsKeyboardControl = false;
                     Cursor.visible = false;
+                    
                     OnGamepadControlled.Invoke(true);
-                    Debug.Log(IsKeyboardControl ? "Switch to keyboard and mouse control" :  "Switch to gamepad control");
+                    GameInitializer.Instance.rumbleService.UpdateGamepad(Gamepad.current);
                 }
             }
         }
-        
+
         private void PlayerMove(InputAction.CallbackContext context) => OnPlayerMove.Invoke(context.ReadValue<Vector2>());
         private void Interact(InputAction.CallbackContext context) => OnInteract.Invoke(context);
         private void SecondaryInteract(InputAction.CallbackContext context) => OnSecondaryInteract.Invoke(context);
@@ -140,6 +168,10 @@ namespace _Project.Scripts.Inputs {
 
         private void Pause(InputAction.CallbackContext context) {
             OnPause.Invoke();
+        }
+
+        private void Continue(InputAction.CallbackContext context) {
+            OnContinue.Invoke();
         }
     }
 }

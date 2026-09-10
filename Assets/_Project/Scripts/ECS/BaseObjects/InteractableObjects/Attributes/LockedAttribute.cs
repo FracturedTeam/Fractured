@@ -1,7 +1,5 @@
-using System;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Player;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -13,7 +11,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public virtual void Initialize() {
             if (!isInitialized) {
                 if(TryGetComponent(out BaseObject component)) baseObject = component;
-                else throw new ArgumentNullException($"[BlockedAttribute] BaseObject not found");
+                // else throw new ArgumentNullException($"[BlockedAttribute] BaseObject not found");
 
                 baseObject.GetLockState = LockedState.Locked;
                 

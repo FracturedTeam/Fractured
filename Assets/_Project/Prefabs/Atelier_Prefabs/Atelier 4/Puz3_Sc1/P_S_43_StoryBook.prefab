@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2178090669212086818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3967257936376854951}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3967257936376854951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2178090669212086818}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.252, y: 0.079, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3244573427537427216}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2608746905338837241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11,6 +42,10 @@ PrefabInstance:
     - target: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
       propertyPath: m_Name
       value: P_S_43_StoryBook
+      objectReference: {fileID: 0}
+    - target: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 662921032185988073, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -52,9 +87,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1835225602128033926, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: da699b0d4527d2243b537efc1517846a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 662921032185988073, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3967257936376854951}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
       insertIndex: -1
@@ -68,6 +110,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6926107346221087967}
+    - targetCorrespondingSourceObject: {fileID: 178168738345163091, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4766675749884169548}
   m_SourcePrefab: {fileID: 100100000, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
 --- !u!1 &2759821443758449066 stripped
 GameObject:
@@ -88,7 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
   ObjectName: Story Book
   hudTransformPoint: {x: 0, y: 0}
-  hudSpecialTransformPoint: {x: 0, y: 0}
+  interactionUIOffset: {x: 0, y: 0, z: 0}
+  prefabInteractionUI: {fileID: 0}
   data:
     <Guid>k__BackingField: 
     canBeInteractedWith: 0
@@ -127,7 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa39406cf3047c5800e2e7b571385ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.InteractableObjects.CollectableAttribute
-  itemSprite: {fileID: 21300000, guid: a0afb5952de1c494cb815924c9f179c3, type: 3}
+  leftEdge: {fileID: 3967257936376854951}
+  itemSprite: {fileID: 2030520097, guid: a8a2985af3c1d9a41bcbb4b172e94ea8, type: 3}
   particles: {fileID: 0}
   isAKey: 0
   isOneTimeUse: 0
@@ -153,3 +200,30 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 0.1, z: 0.8}
   m_Center: {x: 0, y: 0.05, z: 0}
+--- !u!114 &4766675749884169548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759821443758449066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b2ce4115f4a234eb2417c95dd8d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.GlassInteractable
+  objectColor: 2
+  isOn: 1
+  objectInside: 0
+  interactableInBox: {fileID: 0}
+  wallRenderer: []
+  visibleWallMat: {fileID: 0}
+  invisibleWallMat: {fileID: 0}
+  radius2D: 0
+  showColliders: 0
+  scaleModificator: 1
+--- !u!4 &3244573427537427216 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 662921032185988073, guid: 74294c3b7e48d094aaf1800f2ac261fd, type: 3}
+  m_PrefabInstance: {fileID: 2608746905338837241}
+  m_PrefabAsset: {fileID: 0}

@@ -7,52 +7,87 @@ namespace _Project.Scripts.GameServices {
     public class DiscordRichPresence : PersistentSingleton<DiscordRichPresence> {
         private long applicationID = 1521130383679426591;
         [Space] 
-        public string details = "Playing Fractured";
-        public string state = "Remembering why i killed my brother";
+        public string details = "Chapter";
+        public string state = "Playing Solo";
 
         [Space] 
         public string largeImage = "";
         public string largeText = "Fractured";
         
-        public Discord.Discord discord;
-
+        private Discord.Discord discord;
+        private bool isInitialized = false;
+        
+        private long startTimestamp;
+        
         void Start() {
-            discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.Default);
-
-            UpdateStatus();
+            Initialize();   
         }
 
+        private void Initialize() {
+            try {
+                discord = new Discord.Discord(applicationID, (ulong)CreateFlags.NoRequireDiscord);
+                isInitialized = true;
+                startTimestamp = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                UpdateStatus();
+            }
+            catch (Exception e) {
+                isInitialized = false;
+            }
+        }
+        
         private void OnDisable() {
+            if(!isInitialized) return;
             discord.Dispose();
+            isInitialized = false;
         }
 
         private void Update() {
+            if(!isInitialized) return;
+            
             try {
                 discord.RunCallbacks();
             }
             catch {
-                Destroy(this);
+                isInitialized = false;
             }
         }
 
-        void UpdateStatus() {
+        private void UpdateStatus() {
+            if(!isInitialized) return;
+            
             try {
                 var activityManager = discord.GetActivityManager();
                 var activity = new Discord.Activity {
+                    Type = ActivityType.Playing,
                     Details = details,
                     State = state,
                     Assets = {
                         LargeImage = largeImage,
                         LargeText = largeText
+                    },
+                    Timestamps = new ActivityTimestamps {
+                        Start = startTimestamp,
                     }
                 };
+                
                 activityManager.UpdateActivity(activity, (res) => {
-                    if(res != Discord.Result.Ok) Debug.LogWarning("Failed connecting to Discord");
+                    // if(res != Discord.Result.Ok) Debug.LogWarning("Failed connecting to Discord");
                 });
             }
             catch {
-                Destroy(this);
+                isInitialized = false;
             }
+        }
+
+        public void UpdateRichPresence(string details, string state) {
+            if(!isInitialized) return;
+            
+            if(details != "")
+                this.details = details;
+            if(state != "")
+                this.state = state;
+            
+            UpdateStatus();
         }
     }
 }
