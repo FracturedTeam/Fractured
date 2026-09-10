@@ -51,6 +51,8 @@ namespace _Project.Scripts.Player.States.SubStates {
         }
 
         public override void OnFixedUpdate() {
+            if(canWalk)
+                player.FixedUpdateMovement();
         }
 
         public override void OnExit() {
