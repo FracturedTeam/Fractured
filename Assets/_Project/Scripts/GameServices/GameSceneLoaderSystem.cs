@@ -205,7 +205,7 @@ namespace _Project.Scripts.GameServices {
                     Destroy(HudManager.Instance.gameObject);
                     GameInitializer.Instance.EmptyAll();
                     loadCredits = false;
-                    
+                    InputsBrain.Instance.DisablePlayerInput(true);
                     return;
                 }
                 
