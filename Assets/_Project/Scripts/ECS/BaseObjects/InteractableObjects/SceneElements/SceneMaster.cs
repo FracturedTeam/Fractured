@@ -111,7 +111,11 @@ namespace _Project.Scripts.ECS {
                 element.baseObject.SetInteract(false);
                 element.baseObject.SetGlassInteract(false);
             }
-            
+            Invoke(nameof(SetFrame), 2f);
+        }
+
+        private void SetFrame()
+        {
             frame.Unlock();
             worldText?.Appear();
         }

@@ -141,7 +141,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             StartCoroutine(SetHUD(isHovering));
         }
 
-        IEnumerator SetHUD(bool hovering) {
+        private IEnumerator SetHUD(bool hovering) {
             yield return null;
             HudManager.Instance.memory.SetMemoryDialogue(
                 hovering && isUnlocked ? data.infoText : "", 
@@ -165,10 +165,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
         }
 
-        public bool ValidPosition() {
-            if (currentPos == requiredPosition && isUnlocked) return true;
-            
-            return false;
+        public bool ValidPosition()
+        {
+            return currentPos == requiredPosition && isUnlocked;
         }
 
         private int GetClosetPosition() {
@@ -177,10 +176,12 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             
             for(var i = 0; i < master.GetSlots().Length ; i++){
                 var dist =  Vector3.Distance(master.GetSlots()[i].transform.position, transform.position);
-                if (dist < closest) {
-                    closest = dist;
-                    index = i;
-                }
+                
+                if (!(dist < closest)) 
+                    continue;
+                
+                closest = dist;
+                index = i;
             }
             return index;
         }
