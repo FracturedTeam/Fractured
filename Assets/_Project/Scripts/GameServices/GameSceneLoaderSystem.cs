@@ -107,7 +107,7 @@ namespace _Project.Scripts.GameServices {
         
 #endif
         void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            if (scene.buildIndex == 8) {
+            if (scene.buildIndex == 5) {
                 loadCredits = true;
             }
 
@@ -124,9 +124,9 @@ namespace _Project.Scripts.GameServices {
                 2 => atelier_0_Set,
                 3 => atelier_1_Set,
                 4 => atelier_2_Set,
-                5 => atelier_3_Set,
-                6 => atelier_4_Set,
-                7 => atelier_5_Set,
+                // 5 => atelier_3_Set,
+                // 6 => atelier_4_Set,
+                // 7 => atelier_5_Set,
                 _ => null
             };
 
@@ -206,6 +206,7 @@ namespace _Project.Scripts.GameServices {
                     GameInitializer.Instance.EmptyAll();
                     loadCredits = false;
                     
+                    InputsBrain.Instance.DisablePlayerInput(false);
                     return;
                 }
                 

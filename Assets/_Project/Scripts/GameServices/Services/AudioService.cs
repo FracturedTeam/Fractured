@@ -159,28 +159,27 @@ namespace _Project.Scripts.GameServices.Services {
                 currentAmbient = 2;
             }
             else if (index is 5) {
-                Act3Ambient.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act3Ambient.start();
-                FadeLoop(ref Act3Ambient);
-                currentAmbient = 3;
+                creditsInstance.getPlaybackState(out playbackState);
+                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) creditsInstance.start();
+                FadeLoop(ref creditsInstance);
             }
-            else if (index is 6) {
-                Act4Ambient.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act4Ambient.start();
-                FadeLoop(ref Act4Ambient);
-                currentAmbient = 4;
-            }
-            else if (index is 7) {
-                Act5Ambient.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act5Ambient.start();
-                FadeLoop(ref Act5Ambient);
-                currentAmbient = 5;
-            }
-            else if (index is 8) {
-                beachInstance.getPlaybackState(out playbackState);
-                if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) beachInstance.start();
-                FadeLoop(ref beachInstance);
-            }
+            // else if (index is 6) {
+            //     Act4Ambient.getPlaybackState(out playbackState);
+            //     if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act4Ambient.start();
+            //     FadeLoop(ref Act4Ambient);
+            //     currentAmbient = 4;
+            // }
+            // else if (index is 7) {
+            //     Act5Ambient.getPlaybackState(out playbackState);
+            //     if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) Act5Ambient.start();
+            //     FadeLoop(ref Act5Ambient);
+            //     currentAmbient = 5;
+            // }
+            // else if (index is 8) {
+            //     beachInstance.getPlaybackState(out playbackState);
+            //     if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) beachInstance.start();
+            //     FadeLoop(ref beachInstance);
+            // }
             else if (index is 0 or 1) {
                 menuInstance.getPlaybackState(out playbackState);
                 if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) menuInstance.start();
