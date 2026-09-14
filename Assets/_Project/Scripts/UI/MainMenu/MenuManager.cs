@@ -160,11 +160,10 @@ namespace _Project.Scripts.UI {
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
             
-            // TODO Update menu animation
             if(currentMenuType is UI.CurrentMenu.Settings)
-                animator.Play("Cam_settings");
+                animator.CrossFade("Cam_settings", 0.25f);
             if(currentMenuType is UI.CurrentMenu.Credits)
-                animator.Play("Cam_Credit");
+                animator.CrossFade("Cam_Credit", 0.25f);
             
             if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 HoverButton(GetCurrentList()[currentIndex]);
@@ -188,9 +187,9 @@ namespace _Project.Scripts.UI {
             var previous = CurrentMenu.PreviousMenu;
             
             if(currentMenuType is UI.CurrentMenu.Credits && previous.menuType is UI.CurrentMenu.MainMenu)
-                animator.Play("CreditToIdle");
+                animator.CrossFade("CreditToIdle", 0.25f);
             if(currentMenuType is UI.CurrentMenu.Settings && previous.menuType is UI.CurrentMenu.MainMenu)
-                animator.Play("SettingsToIdle");
+                animator.CrossFade("SettingsToIdle", 0.25f);
             
             CurrentMenu = previous;
             currentMenuType = previous.menuType;
