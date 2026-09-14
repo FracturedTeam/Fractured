@@ -39,6 +39,13 @@ namespace _Project.Scripts.UI
             canvasGroup.interactable = true;
         }
 
+        public void SetVisibility(bool visible)
+        {
+            canvasGroup.alpha = visible ? 1 : 0;
+            canvasGroup.blocksRaycasts = visible;
+            canvasGroup.interactable = visible;
+        }
+        
         private void Closed() => gameObject.SetActive(false);
         
         private void OnDisable() {
