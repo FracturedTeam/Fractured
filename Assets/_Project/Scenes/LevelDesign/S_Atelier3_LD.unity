@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000002, guid: 3dbb628f9bc2b794dbc453261b89247c, type: 2}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 2e2c24b538482564cbb69583b747b74a, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3743,7 +3743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.68
+      value: 14.408
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3751,7 +3751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.846
+      value: 3.398
       objectReference: {fileID: 0}
     - target: {fileID: 7361113650604808971, guid: d73fa5b99c3798b4d99ec6d6d075a3b7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4363,7 +4363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 0
+    m_Value: 1
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -5210,6 +5210,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: 0afc3dd8-834b-486f-82e1-847e9f9609f8
       objectReference: {fileID: 0}
+    - target: {fileID: 5489193219214652520, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6281804969719502269, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: m_Name
       value: P_I_Cupboard01
@@ -5379,6 +5383,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: b81cf16d-0e8b-4f07-b499-38670b07d92f
       objectReference: {fileID: 0}
+    - target: {fileID: 5271014156771011014, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1677087524051507778, guid: 4e3789259011aec4c9d392305a2a61cf, type: 3}
     - target: {fileID: 6875174947671010932, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
       propertyPath: requestedCollisionArea
       value: 
@@ -5386,14 +5394,14 @@ PrefabInstance:
     - target: {fileID: 7981100073779256588, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 5fa4aabfaaf586f409f8abd6c0648503, type: 2}
+      objectReference: {fileID: 2100000, guid: cf8caa4f4a09be74389f0e8d51ade009, type: 2}
     - target: {fileID: 8485463717446384857, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
       propertyPath: m_Name
       value: P_S_31_Damaged Book
       objectReference: {fileID: 0}
     - target: {fileID: 9118026623368242787, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.113
+      value: 22.305
       objectReference: {fileID: 0}
     - target: {fileID: 9118026623368242787, guid: 65b8a8511229d3d40aba3a61187ff3b8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5529,6 +5537,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2947159997586167133, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338601437380617515, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338601437380617515, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338601437380617515, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338601437380617515, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338601437380617515, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6110575208947048326, guid: f5edf575d265eae4b82ac9e0a2015743, type: 3}
@@ -6747,7 +6775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
   Priority:
     Enabled: 1
-    m_Value: 0
+    m_Value: 2
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
