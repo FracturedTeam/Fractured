@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Systems.Timers;
@@ -36,9 +37,6 @@ namespace _Project.Scripts.UI {
         [SerializeField] private GameObject[] videoButtons;
         [SerializeField] private GameObject[] inputButtons;
         [SerializeField] private GameObject[] accessButtons;
-        
-        [Header("Camera Ref")]
-        [SerializeField] private Animation animatedCamera;
 
         [Header("Button Ref")]
         [SerializeField] private GameObject loadGameBtt;
@@ -54,6 +52,10 @@ namespace _Project.Scripts.UI {
         [Header("Inputs Panel")]
         [SerializeField] private GameObject inputsKeyboard;
         [SerializeField] private GameObject inputsGamepad;
+        
+        [Header("Animator")]
+        [SerializeField] private Animator animator;
+        [SerializeField] private AnimationClip entryAnimationClip;
         
         private int currentIndex = 0;
         private int settingsIndex = 0;
@@ -72,6 +74,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private SetUIColor uiColor;
         
         public int ChapterIndex { get; private set;}
+        private bool canInteract = false;
         
         private void Awake() {
             ChapterIndex = 1;
@@ -108,6 +111,17 @@ namespace _Project.Scripts.UI {
             CurrentMenu = MainMenuPanel;
             currentMenuType = UI.CurrentMenu.MainMenu;
             HoverButton(GetCurrentList()[currentIndex]);
+
+            StartCoroutine(WaitToShowMainMenu(entryAnimationClip.length));
+        }
+
+        IEnumerator WaitToShowMainMenu(float time) {
+            CurrentMenu.SetVisibility(false);
+            
+            yield return new WaitForSeconds(time);
+            
+            CurrentMenu.Open();
+            canInteract = true;
         }
 
         public void UpdateUIColor(float intensity) {
@@ -146,6 +160,11 @@ namespace _Project.Scripts.UI {
             currentMenuType = newMenu.menuType;
             currentIndex = 0;
             
+            if(currentMenuType is UI.CurrentMenu.Settings)
+                animator.CrossFade("Cam_settings", 0.25f);
+            if(currentMenuType is UI.CurrentMenu.Credits)
+                animator.CrossFade("Cam_Credit", 0.25f);
+            
             if(currentMenuType is not UI.CurrentMenu.Credits && currentSettings is not CurrentSettings.Input)
                 HoverButton(GetCurrentList()[currentIndex]);
             
@@ -166,10 +185,16 @@ namespace _Project.Scripts.UI {
             CurrentMenu.PreviousMenu.Open();
             
             var previous = CurrentMenu.PreviousMenu;
+            
+            if(currentMenuType is UI.CurrentMenu.Credits && previous.menuType is UI.CurrentMenu.MainMenu)
+                animator.CrossFade("CreditToIdle", 0.25f);
+            if(currentMenuType is UI.CurrentMenu.Settings && previous.menuType is UI.CurrentMenu.MainMenu)
+                animator.CrossFade("SettingsToIdle", 0.25f);
+            
             CurrentMenu = previous;
             currentMenuType = previous.menuType;
-            
             currentIndex = 0;
+            
             HoverButton(GetCurrentList()[currentIndex]);
             
             inputsDisplay.UpdateDisplay(CurrentMenu == MainMenuPanel);
@@ -177,6 +202,7 @@ namespace _Project.Scripts.UI {
         }
 
         private void Select() {
+            if (!canInteract) return;
             if(currentMenuType is UI.CurrentMenu.Credits) return;
             ExecuteButtonScrip(GetCurrentList()[currentIndex]);
         }
@@ -384,10 +410,6 @@ namespace _Project.Scripts.UI {
                 },
                 UI.CurrentMenu.Credits => 0,
             };
-        }
-        
-        public void ChangeTarget(string anim) {
-            animatedCamera.Play(anim);
         }
 
         public void QuitGame() {
