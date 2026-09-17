@@ -111,7 +111,10 @@ namespace _Project.Scripts.UI {
             CurrentMenu = MainMenuPanel;
             currentMenuType = UI.CurrentMenu.MainMenu;
             HoverButton(GetCurrentList()[currentIndex]);
+        }
 
+        private void Start()
+        {
             StartCoroutine(WaitToShowMainMenu(entryAnimationClip.length));
         }
 
