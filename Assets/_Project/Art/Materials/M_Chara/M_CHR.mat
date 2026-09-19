@@ -24,8 +24,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_CHR
-  m_Shader: {fileID: -6465566751694194690, guid: 9a5b409b03a22a34ca22beffc019ead7, type: 3}
-  m_Parent: {fileID: 2100000, guid: 8d35e89cfaf69ae4cb8859c81fe8800d, type: 2}
+  m_Shader: {fileID: -6465566751694194690, guid: ba21fd15aae8e81418924828d1b13aaa, type: 3}
+  m_Parent: {fileID: 2100000, guid: 480f9d79f45cfd849a546f634a75c805, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -60,13 +60,26 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DisableGradientMap: 1
+    - _AOIntensity: 1
+    - _DisableAllGradients: 0
+    - _DisableGradientMap: 0
     - _RoughnessMultiplier: 1
+    - _X_Gradient: 0
+    - _X_GradientIntensity: 0
+    - _Y_Gradient: 1
+    - _Y_GradientEndPosition: 0
+    - _Y_GradientIntensity: 0.826
+    - _Y_GradientStartPosition: 2.62
+    - _Z_Gradient: 0
+    - _Z_GradientIntensity: 0
     m_Colors:
-    - _AOColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Color1: {r: 0, g: 0, b: 0, a: 1}
+    - _AOColor: {r: 0.02925821, g: 0, b: 0.3490566, a: 1}
+    - _Color1: {r: 0.1792453, g: 0, b: 0.07646715, a: 1}
     - _Color2: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
-    - _Color3: {r: 1, g: 1, b: 1, a: 1}
+    - _Color3: {r: 1, g: 0.9283553, b: 0.8915094, a: 1}
+    - _Color_1_Location: {r: 0, g: 0.49999997, b: 0, a: 0}
+    - _Color_2_Location: {r: 0.41428572, g: 0.71428573, b: 0, a: 0}
+    - _Y_GradientColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6024201449024024153
