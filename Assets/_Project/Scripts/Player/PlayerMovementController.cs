@@ -369,7 +369,7 @@ namespace _Project.Scripts.Player {
         }
 
         public float GetAnimatorSpeed() {
-            if(player.IsCurrentState<GrabObjectState>() || player.IsCurrentState<DropObjectState>() || player.IsCurrentState<TakeItemState>())  return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
+            if(player.IsCurrentState<DropObjectState>() || player.IsCurrentState<TakeItemState>())  return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
             if(rb.isKinematic || player.GetFailedDrop()) return lerpTimer = Mathf.Clamp(lerpTimer - Time.deltaTime * 6f, 0, LerpTime);
         
             if (HasMoveInput && !isAgainstWall) 
@@ -427,7 +427,7 @@ namespace _Project.Scripts.Player {
             if(hit.collider.isTrigger) return false;
             
             var wallNormal = hit.normal;
-            return Vector3.Dot(wallNormal, moveDir.normalized) < -0.1f;
+            return Vector3.Dot(wallNormal, moveDir.normalized) < 0f;
         }
     
         #endregion
