@@ -43,7 +43,7 @@ namespace _Project.Scripts.UI.Gameplay {
             HudManager.Instance.interact.ShowInteractionPadlock(true);
         
             var camPos = PlayerController.Instance.cinemachineBrain.OutputCamera.transform;
-            transform.position = camPos.position + new Vector3(0,1,-0.75f) + camPos.forward * distance;
+            transform.position = camPos.position + new Vector3(0,1,0)+ camPos.forward * 0.75f + camPos.forward * distance;
         
             transform.LookAt(camPos); 
             transform.eulerAngles = new Vector3(transform.eulerAngles.x - 30f, transform.eulerAngles.y, 0);
