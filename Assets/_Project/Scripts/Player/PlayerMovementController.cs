@@ -167,7 +167,7 @@ namespace _Project.Scripts.Player {
             }
 
             if (hasInput) {
-                forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
+                //forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
                 rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
             else {
