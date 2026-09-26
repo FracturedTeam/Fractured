@@ -87,7 +87,7 @@ namespace _Project.Scripts.ECS {
             }
         }
 
-        private void ValidateScene() {
+        public void ValidateScene() {
             if(hasSceneBeenValidated) return;
             
             BaseValidation();
@@ -153,6 +153,8 @@ namespace _Project.Scripts.ECS {
         }
         
         public void LoadValidateScene() {
+            if(IsSceneValidated) return;
+            
             BaseValidation();
             
             GameInitializer.Instance.AddShards(glassShards);
