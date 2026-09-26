@@ -72,7 +72,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 //updateShardVisual.OnTick += Set2DPoints;
                 //updateShardVisual.Start();
                 
-                gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
+                // gameObject.layer = LayerMask.NameToLayer("InteractableNoLUT");
                 
                 IsVisible = true;
                 
