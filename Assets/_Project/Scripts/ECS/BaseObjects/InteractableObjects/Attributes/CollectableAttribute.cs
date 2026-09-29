@@ -215,7 +215,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 PlayerController.Instance.Interact.pickUpObjectYPos = pos.y + baseObject.GetRendered().bounds.extents.y;
                 transform.SetParent(originalParent);
                 TweenObjectDrop(pos, transform.eulerAngles);
-                transform.localScale = Vector3.one;
+                // transform.localScale = Vector3.one;
                 
                 baseObject.SetInteract(true);
                 colTimer.Start();

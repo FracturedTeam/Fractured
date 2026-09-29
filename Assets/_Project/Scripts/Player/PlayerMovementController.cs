@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player.States.SubStates;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace _Project.Scripts.Player {
@@ -52,6 +54,7 @@ namespace _Project.Scripts.Player {
         
         private Vector3 forwardDir, rightDir; // Direction par rapport à l'angle de la caméra
         private Vector3 newForwardDir, newRightDir;
+        private Vector3 previousForwardDir;
         private Vector3 rawMoveInput;
         private bool newCamDirBuffer;
     
@@ -93,7 +96,7 @@ namespace _Project.Scripts.Player {
 
             nonWalkableLayer = ~LayerMask.GetMask("Walkable");
         }
-
+        
         private void OnEnable() {
             InputsBrain.Instance.OnPlayerMove += SetDir;
         }
@@ -128,6 +131,8 @@ namespace _Project.Scripts.Player {
             HandleCamera();
         }
 
+
+        
         private void HandleCamera() {
             cameraUpdateTimer -= Time.deltaTime;
             if(cameraUpdateTimer > 0) return;
@@ -136,15 +141,15 @@ namespace _Project.Scripts.Player {
             var flatCamForward = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.forward, Vector3.up).normalized;
             var flatCamRight = Vector3.ProjectOnPlane(player.cinemachineBrain.OutputCamera.transform.right, Vector3.up).normalized;
             
-            UpdateMoveDir(flatCamForward);
-
-            moveDir = rawMoveInput.x * rightDir + rawMoveInput.y * forwardDir;
-            
             var forwardAngle = Vector3.Dot(newForwardDir, flatCamForward);
             var rightAngle = Vector3.Dot(newRightDir, flatCamRight);
             
             if ((!Mathf.Approximately(forwardAngle, 1) || !Mathf.Approximately(rightAngle, 1)) && lerpCameraDirTime <= 0) 
                 UpdateCameraDir();
+            
+            UpdateMoveDir(flatCamForward);
+            
+            moveDir = rawMoveInput.x * rightDir + rawMoveInput.y * forwardDir;
         }
 
         private void UpdateMoveDir(Vector3 flatCamForward) {
@@ -167,7 +172,7 @@ namespace _Project.Scripts.Player {
             }
 
             if (hasInput) {
-                //forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, forwardDir, lerpTime);
+                forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, previousForwardDir, lerpTime);
                 rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
             else {
@@ -190,6 +195,7 @@ namespace _Project.Scripts.Player {
             var nearestAngle = Mathf.Round(yRotation / 90f) * 90f;
             var difference = Mathf.Abs(yRotation - nearestAngle);
             
+            previousForwardDir = forwardDir;
             camOn90Degrees = difference < threshold;
         }
 
