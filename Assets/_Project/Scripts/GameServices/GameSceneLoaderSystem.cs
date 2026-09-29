@@ -25,7 +25,8 @@ namespace _Project.Scripts.GameServices {
         
         [SerializeField] private SceneField menuScene;
         [SerializeField] private SceneField newGameScene;
-
+        [SerializeField] private SceneField persistentScene;
+        
         [SerializeField] public SceneField[] allScenes;
 
         [SerializeField] private ProbeVolumeBakingSet atelier_0_Set;
@@ -162,6 +163,7 @@ namespace _Project.Scripts.GameServices {
         }
         
         private async Task UnloadSceneAsync() {
+            scenesToLoad.Add(persistentScene);
             var keepScenes = new HashSet<string>(scenesToLoad.Select(s => s.SceneName));
             var scenesToUnload = new List<string>();
             var sceneCount = SceneManager.sceneCount;
@@ -196,6 +198,8 @@ namespace _Project.Scripts.GameServices {
                 
                 await LoadSceneAsync(sceneSettings.levelDesign);
                     
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneSettings.levelDesign));
+                
                 if (loadCredits) {
                     await UnloadGameplaySceneAsync();
                     
@@ -249,7 +253,7 @@ namespace _Project.Scripts.GameServices {
                     GameInitializer.Instance.UpdateDebugCameras();
                     GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
                 }
-
+                
                 if (newGameStarted) {
                     Debug.Log("New Game Started");
                     newGameStarted = false;
@@ -280,8 +284,8 @@ namespace _Project.Scripts.GameServices {
             if(PlayerService.HasInstance) Destroy(PlayerService.Instance.gameObject);
             if(HudManager.HasInstance) Destroy(HudManager.Instance.gameObject);
             
-            _ = LoadSceneAsync(menuScene);
-
+            await LoadSceneAsync(menuScene);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(menuScene));
             await FadeToGame();
         }
 
@@ -296,6 +300,8 @@ namespace _Project.Scripts.GameServices {
             
             await LoadSceneAsync(index == 0 ? newGameScene : allScenes[index]);
             await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(index == 0 ? newGameScene : allScenes[index]));
+            
             GameSceneSettings.Instance.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
             DiscordRichPresence.Instance.UpdateRichPresence( "...", "");
             
@@ -361,6 +367,7 @@ namespace _Project.Scripts.GameServices {
                     if (scene.SceneName != lastOpenScene) continue;
                     foundScene = true;
                     await LoadSceneAsync(scene);
+                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
                     break;
                 }
 

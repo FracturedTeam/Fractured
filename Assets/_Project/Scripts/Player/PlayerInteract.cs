@@ -32,6 +32,7 @@ namespace _Project.Scripts.Player {
         [SerializeField] public Transform interactCenterZone;
         [SerializeField] public Vector3 interactZoneSize;
         [SerializeField] private LayerMask interactLayerMask;
+        [SerializeField] private GameObject posMeshPreview;
 
         //Pre allocate space for collider (10 will be completely sufficient)
         private readonly Collider[] results = new Collider[10];
@@ -207,6 +208,16 @@ namespace _Project.Scripts.Player {
         public void HandleUpdate(Vector3 playerDir) {
             HandleInteractRotation();
 
+            if (currentInteraction)
+            {
+                posMeshPreview.SetActive(true);
+                posMeshPreview.transform.position = GetGroundPos();
+            }
+            else
+            {
+                posMeshPreview.SetActive(false);
+            }
+            
             if (validationInputHold) {
                 validationInputTime += Time.deltaTime;
 
@@ -388,6 +399,24 @@ namespace _Project.Scripts.Player {
         
         public void SetInMemory(bool inMemory) => IsInMemory = inMemory;
 
+        private Vector3 GetGroundPos() {
+            var playerPos = PlayerController.Instance.transform.position + new Vector3(0,1,0);
+            var dir = PlayerController.Instance.Movement.mesh.forward;
+
+            var ignoreLayer = LayerMask.NameToLayer("Ignore Raycast");
+            var mask = ~(1 << ignoreLayer);
+            
+            Physics.Raycast(playerPos + dir, Vector3.down, out var groundLevel, 3, mask);
+            
+            var dist = currentInteraction.GetCollider().bounds.extents.z * 2 + 0.4f;
+            
+            if(dist < 1.4f) dist = 1.4f;
+            
+            var pos = playerPos + dir.normalized * dist;
+            pos.y = groundLevel.point.y;
+            return pos;
+        }
+        
         private IEnumerator LoadScene(SceneSettings toLoad, Vector3 position) {
             yield return new WaitForSeconds(player.useDoorClip.length);
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().room_Exit);

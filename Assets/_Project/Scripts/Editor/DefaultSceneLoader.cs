@@ -36,6 +36,7 @@ namespace _Project.Scripts.Editor {
                 
                 SceneManager.LoadScene(0);
                 SceneManager.LoadScene(currentScene, LoadSceneMode.Additive);
+                SceneManager.SetActiveScene(SceneManager.GetSceneByPath(currentScene));
             }
         }
     }

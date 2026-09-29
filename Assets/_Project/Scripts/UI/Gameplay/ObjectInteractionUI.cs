@@ -5,6 +5,7 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using DG.Tweening;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _Project.Scripts.UI.Gameplay {
@@ -61,7 +62,7 @@ namespace _Project.Scripts.UI.Gameplay {
         }
 
         private IEnumerator UpdatePosition() {
-            yield return null;
+            yield return new WaitForNextFrameUnit();
             
             if (parentMesh == null && parentCollider == null) {
                 yield break;
