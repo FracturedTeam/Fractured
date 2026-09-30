@@ -5,7 +5,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         [IntRange] _StencilID("Stencil ID", Range(0,255)) = 0
         _BaseColor("BaseColor", Color) = (0, 0, 0, 1)
         [HDR]_AccentColor("AccentColor", Color) = (0, 0, 0, 1)
-        _Opacity("Opacity", Range(0, 1)) = 0.6
+        _GlassOpacity("Glass Opacity", Range(0, 1)) = 0.6
         _Roughness("Roughness", Range(0, 1)) = 0.2
         _ShineSpeed("ShineSpeed", Float) = 0.1
         [NonModifiableTextureData][NoScaleOffset]_SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D("Texture2D", 2D) = "white" {}
@@ -324,7 +324,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -458,7 +458,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.BaseColor = (_Lerp_1928c7ff288040d89136815759194922_Out_3_Vector4.xyz);
@@ -841,7 +841,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -975,7 +975,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.BaseColor = (_Lerp_1928c7ff288040d89136815759194922_Out_3_Vector4.xyz);
@@ -1237,7 +1237,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -1310,7 +1310,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.Alpha = _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
@@ -1576,7 +1576,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -1654,7 +1654,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.NormalTS = IN.TangentSpaceNormal;
@@ -1933,7 +1933,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -2055,7 +2055,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.BaseColor = (_Lerp_1928c7ff288040d89136815759194922_Out_3_Vector4.xyz);
@@ -2315,7 +2315,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -2392,7 +2392,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.Alpha = _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
@@ -2648,7 +2648,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -2769,7 +2769,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.BaseColor = (_Lerp_1928c7ff288040d89136815759194922_Out_3_Vector4.xyz);
@@ -3031,7 +3031,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
         // Graph Properties
         CBUFFER_START(UnityPerMaterial)
         float4 _SampleTexture2D_26c8fe2d9e554bee8a65b2826b9036ac_Texture_1_Texture2D_TexelSize;
-        float _Opacity;
+        float _GlassOpacity;
         float4 _BaseColor;
         float _Roughness;
         float4 _AccentColor;
@@ -3152,7 +3152,7 @@ Shader "Shader Graphs/SHD_GlassParticles"
             float _Split_902259c26f774c87902768af8f3d3d41_G_2_Float = IN.VertexColor[1];
             float _Split_902259c26f774c87902768af8f3d3d41_B_3_Float = IN.VertexColor[2];
             float _Split_902259c26f774c87902768af8f3d3d41_A_4_Float = IN.VertexColor[3];
-            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _Opacity;
+            float _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float = _GlassOpacity;
             float _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float;
             Unity_Multiply_float_float(_Split_902259c26f774c87902768af8f3d3d41_A_4_Float, _Property_49323e81dfc64420a79e9e419c148114_Out_0_Float, _Multiply_cd60f5a8bafc4de8a08ea785f7dc7a5f_Out_2_Float);
             surface.BaseColor = (_Lerp_1928c7ff288040d89136815759194922_Out_3_Vector4.xyz);
