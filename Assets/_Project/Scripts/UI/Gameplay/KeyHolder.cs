@@ -12,7 +12,7 @@ namespace _Project.Scripts.UI.Gameplay {
             icon = null;
         }
         
-        public void SetKey(Key key) {
+        public void SetKey(KeyItem key) {
             icon.sprite = key.keySprite;
             ID = key.ID;
         }
