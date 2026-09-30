@@ -5,7 +5,6 @@ using _Project.Scripts.Systems.EventBus;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Key = _Project.Scripts.Player.Key;
 
 namespace _Project.Scripts.UI.Gameplay {
     public class InventoryManager : MonoBehaviour { 
@@ -201,7 +200,7 @@ namespace _Project.Scripts.UI.Gameplay {
             else RemoveKey(evt.key);
         }
         
-        private void AddKey(Key evt) {
+        private void AddKey(KeyItem evt) {
             foreach (var key in keyHolder) {
                 if (key.gameObject.activeSelf) continue;
                    
@@ -211,7 +210,7 @@ namespace _Project.Scripts.UI.Gameplay {
             }
         }
     
-        private void RemoveKey(Key evt) {
+        private void RemoveKey(KeyItem evt) {
             foreach (var key in keyHolder) {
                 if (key.ID == evt.ID) {
                     key.gameObject.SetActive(false);
@@ -266,7 +265,7 @@ namespace _Project.Scripts.UI.Gameplay {
     }
     
     public struct ProcessKeyEvent : IEvent {
-        public Key key;
+        public KeyItem key;
         public bool isAddingKey;
     }
 

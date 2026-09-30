@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.Player {
     public class PlayerInventory : MonoBehaviour {
         public List<Item> items = new List<Item>();
-        public List<Key> keys = new List<Key>();
+        public List<KeyItem> keys = new List<KeyItem>();
 
         private int itemIndex;
         
@@ -31,7 +31,7 @@ namespace _Project.Scripts.Player {
         #region Key
 
         public void OnKeyPickUp(CollectableAttribute key) {
-            var newKey = new Key{
+            var newKey = new KeyItem{
                 keySprite = key.itemSprite,
                 ID = key.keyID,
                 oneTimeUse = key.isOneTimeUse,
@@ -154,7 +154,8 @@ namespace _Project.Scripts.Player {
         public BaseObject worldItem;
     }
 
-    public struct Key {
+    [Serializable]
+    public struct KeyItem {
         public string keyName;
         public int ID;
         public Sprite keySprite;
