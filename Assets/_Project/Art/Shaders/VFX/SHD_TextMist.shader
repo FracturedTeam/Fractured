@@ -3,6 +3,7 @@ Shader "Shader Graphs/SHD_TextMist"
     Properties
     {
         [IntRange] _StencilID("Stencil ID", Range(0,255)) = 0
+        _Opacity("Opacity", Range(0, 1)) = 1
         _Color("Color", Color) = (1, 1, 1, 1)
         _Color2("Color2", Color) = (0.5943396, 0.5943396, 0.5943396, 1)
         _CellsTiling("CellsTiling", Vector, 2) = (0.2, 0.2, 0, 0)
@@ -277,6 +278,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -703,8 +705,13 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
             surface.BaseColor = _Lerp_180be64a42cb4958819f855681034de2_Out_3_Vector3;
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         
@@ -989,6 +996,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -1229,7 +1237,12 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         
@@ -1525,6 +1538,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -1769,7 +1783,12 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         
@@ -2100,6 +2119,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -2526,8 +2546,13 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
             surface.BaseColor = _Lerp_180be64a42cb4958819f855681034de2_Out_3_Vector3;
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         
@@ -2818,6 +2843,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -3062,7 +3088,12 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         
@@ -3353,6 +3384,7 @@ Shader "Shader Graphs/SHD_TextMist"
         float3 _ChromaticAberrationColorMax;
         float2 _NoiseTiling;
         float2 _NoiseSpeed;
+        float _Opacity;
         UNITY_TEXTURE_STREAMING_DEBUG_VARS;
         CBUFFER_END
         
@@ -3779,8 +3811,13 @@ Shader "Shader Graphs/SHD_TextMist"
             SG_SoftParticles_d0f40856fc355224fab6453746e0507a_float(float2 (0, 0.5), _SoftParticles_2d24478f7f3246149eb145045221b789, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float);
             float _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
             Unity_Multiply_float_float(_Saturate_016bf538941e4f7087d316c8415b14a3_Out_1_Float, _SoftParticles_2d24478f7f3246149eb145045221b789_Output1_1_Float, _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float);
+            float _Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float = _Opacity;
+            float _Saturate_bb252697636542eeb514de567042565b_Out_1_Float;
+            Unity_Saturate_float(_Property_3c06e697aa4d45a5bce2ac68e8c40d90_Out_0_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float);
+            float _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
+            Unity_Multiply_float_float(_Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float, _Saturate_bb252697636542eeb514de567042565b_Out_1_Float, _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float);
             surface.BaseColor = _Lerp_180be64a42cb4958819f855681034de2_Out_3_Vector3;
-            surface.Alpha = _Multiply_de2953022bc948e69f7268a693c8f3e3_Out_2_Float;
+            surface.Alpha = _Multiply_c188d0b0c77e4895906f7df13391ff46_Out_2_Float;
             return surface;
         }
         

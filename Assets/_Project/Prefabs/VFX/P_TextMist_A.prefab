@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6915572760630321659}
   - component: {fileID: 5940463474275608939}
   - component: {fileID: 5109818433016052437}
-  m_Layer: 0
+  - component: {fileID: 6914487525327617}
+  m_Layer: 16
   m_Name: P_TextMist_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4838,6 +4839,18 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &6914487525327617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538266107719079182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8effeee9cf3a4f3ea748feeda22c0903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlassTextInstanceMat
 --- !u!1 &1279814185904466208
 GameObject:
   m_ObjectHideFlags: 0
@@ -4850,7 +4863,7 @@ GameObject:
   - component: {fileID: 7626131709378497553}
   - component: {fileID: 7252571570958560783}
   - component: {fileID: 4733545345030212554}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: TextMist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4962,7 +4975,7 @@ GameObject:
   - component: {fileID: 6460204203684184909}
   - component: {fileID: 2353566527970748233}
   - component: {fileID: 8483981632313000713}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: GlassParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5000,7 +5013,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1

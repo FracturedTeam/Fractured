@@ -87,7 +87,7 @@ namespace _Project.Scripts.ECS {
             }
         }
 
-        private void ValidateScene() {
+        public void ValidateScene() {
             if(hasSceneBeenValidated) return;
             
             BaseValidation();
@@ -111,9 +111,11 @@ namespace _Project.Scripts.ECS {
                 element.baseObject.SetInteract(false);
                 element.baseObject.SetGlassInteract(false);
             }
-            
-            OnSceneComplete.Invoke();
-            
+            Invoke(nameof(SetFrame), 2f);
+        }
+
+        private void SetFrame()
+        {
             frame.Unlock();
             worldText?.Appear();
         }
@@ -143,11 +145,16 @@ namespace _Project.Scripts.ECS {
             
             GameInitializer.Instance.PlaySound2D(GameInitializer.Instance.GetBank().memory_Leave);
             GameInitializer.Instance.SetMemoryLoop(false);
+            
             GameInitializer.Instance.AddShards(glassShards);
+            OnSceneComplete.Invoke();
+            
             soundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
         
         public void LoadValidateScene() {
+            if(IsSceneValidated) return;
+            
             BaseValidation();
             
             GameInitializer.Instance.AddShards(glassShards);

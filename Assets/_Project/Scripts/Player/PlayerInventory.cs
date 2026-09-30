@@ -154,7 +154,7 @@ namespace _Project.Scripts.Player {
         public BaseObject worldItem;
     }
 
-    public class Key {
+    public struct Key {
         public string keyName;
         public int ID;
         public Sprite keySprite;

@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -24,9 +23,6 @@ namespace _Project.Scripts.UI
             }
         }
 
-        // private void OnEnable() {
-        //     menuTween = canvasGroup.DOFade(1, openingTime).SetUpdate(true);
-        // }
 
         public void Close() {
             menuTween =  canvasGroup.DOFade(0, closingTime).SetUpdate(true);
@@ -43,6 +39,13 @@ namespace _Project.Scripts.UI
             canvasGroup.interactable = true;
         }
 
+        public void SetVisibility(bool visible)
+        {
+            canvasGroup.alpha = visible ? 1 : 0;
+            canvasGroup.blocksRaycasts = visible;
+            canvasGroup.interactable = visible;
+        }
+        
         private void Closed() => gameObject.SetActive(false);
         
         private void OnDisable() {

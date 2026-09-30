@@ -50,9 +50,6 @@ public class GlassText : MonoBehaviour
         if(meshRenderer) meshRenderer?.material.DOFade(0, 0);
         
         if (!isInitialized) {
-            // shardsOnTop = new ObservableHashSet<Glass>();
-            // shardsOnTop.onUpdate += UpdateShards;
-
             isInitialized = true;
             
             soundInstance = GameInitializer.Instance.CreateInstance(GameInitializer.Instance.GetBank().environmentalText_Loop);
@@ -79,16 +76,7 @@ public class GlassText : MonoBehaviour
         if(meshRenderer) meshRenderer?.material.DOFade(alpha, time);
     }
 
-    private void UpdateShards()
-    { }
-
     private void OnDestroy() {
-        // if (shardsOnTop == null) 
-        //     return;
-        
-        // shardsOnTop.onUpdate -= UpdateShards;
-        // shardsOnTop.Clear();
-
         soundInstance.stop(STOP_MODE.IMMEDIATE);
         soundInstance.release();
     }
@@ -124,12 +112,6 @@ public class GlassText : MonoBehaviour
         mistColorB.SetActive(false);
         mistColorBoth.SetActive(false);
     }
-
-    // internal void OnInteract(bool isColliding, Glass shard) {
-    //     fragAText.OnInteract(isColliding, shard);
-    //     fragBText.OnInteract(isColliding, shard);
-    //     bothText.OnInteract(isColliding, shard);
-    // }
 
     public void Setup(GlassTextScriptableObject newData, bool dontUseShader, bool blackText)
     {
