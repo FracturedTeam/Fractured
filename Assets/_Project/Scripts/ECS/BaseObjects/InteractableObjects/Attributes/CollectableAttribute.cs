@@ -339,7 +339,6 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
 
             var mask = LayerMask.GetMask(
                 "Interactable",
-                "InteractableNoLUT",
                 "Wall",
                 "Walkable",
                 "Default"
