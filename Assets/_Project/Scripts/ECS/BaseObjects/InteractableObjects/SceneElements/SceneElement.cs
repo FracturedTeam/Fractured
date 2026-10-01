@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.GameServices;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -11,6 +12,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             get => isValidated;
             private set {
                 isValidated = value;
+                GameInitializer.Instance.audioService.PlayOneShot3D(GameInitializer.Instance.GetBank().memory_Connected, transform.position);
                 if(masterValidation)
                     masterValidation.CheckForValidation();
                 // else 
@@ -92,11 +94,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             IsValidated = requestedCollisionArea.bounds.Contains(transform.position);
+            if(IsValidated) baseObject.SetInteract(false);
         }
 
         private void UsableValidation() {
             var usable = baseObject.GetInteract as UsableAttribute;
             IsValidated = usable?.IsUsed == requestedUseState;
+            if(IsValidated) baseObject.SetInteract(false);
         }
         
         private void GlassValidation() {
