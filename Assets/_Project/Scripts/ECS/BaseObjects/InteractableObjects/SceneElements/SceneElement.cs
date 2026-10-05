@@ -12,11 +12,11 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             get => isValidated;
             private set {
                 isValidated = value;
-                GameInitializer.Instance.audioService.PlayOneShot3D(GameInitializer.Instance.GetBank().memory_Connected, transform.position);
-                if(masterValidation)
-                    masterValidation.CheckForValidation();
-                // else 
-                //     Debug.LogError($"{gameObject.name} does not have a scene master register");
+                
+                if(isValidated)
+                    GameInitializer.Instance.audioService.PlayOneShot3D(GameInitializer.Instance.GetBank().memory_Connected, transform.position);
+                
+                if(masterValidation) masterValidation.CheckForValidation();
             }
         }
 
@@ -100,7 +100,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         private void UsableValidation() {
             var usable = baseObject.GetInteract as UsableAttribute;
             IsValidated = usable?.IsUsed == requestedUseState;
-            if(IsValidated) baseObject.SetInteract(false);
+            // if(IsValidated) baseObject.SetInteract(false);
         }
         
         private void GlassValidation() {

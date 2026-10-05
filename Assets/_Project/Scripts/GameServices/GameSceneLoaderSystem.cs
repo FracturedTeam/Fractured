@@ -208,8 +208,8 @@ namespace _Project.Scripts.GameServices {
                     Destroy(PlayerService.Instance.gameObject);
                     Destroy(HudManager.Instance.gameObject);
                     GameInitializer.Instance.EmptyAll();
+                    InputsBrain.Instance.DisablePlayerInput(false);
                     loadCredits = false;
-                    InputsBrain.Instance.DisablePlayerInput(true);
                     return;
                 }
                 
