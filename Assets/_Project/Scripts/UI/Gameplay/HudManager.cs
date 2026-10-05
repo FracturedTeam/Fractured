@@ -43,6 +43,9 @@ namespace _Project.Scripts.UI {
         [Header("Gamepad Visual")]
         [SerializeField] private GameObject gamepadVisual;
         
+        [Header("Success Validation Dialogue")]
+        [SerializeField] private DialogueScriptableObject[] successfulDialogue;
+        
         private ParticleSystem currentParticle;
         private Fragment currentFrag;
         
@@ -101,6 +104,15 @@ namespace _Project.Scripts.UI {
             
             textTimer.Reset(currentDialogue.time);
             textTimer.Start();
+        }
+
+        public void SetSuccessValidationText()
+        {
+            if(successfulDialogue.Length <= 0) return;
+            
+            int index = Random.Range(0, successfulDialogue.Length);
+            
+            SetText(successfulDialogue[index]);
         }
         
         public void ResetText() {
