@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000002, guid: 3dbb628f9bc2b794dbc453261b89247c, type: 2}
+  m_LightingDataAsset: {fileID: 112000002, guid: 4d67c8daa756867448cb3ead6d01ecf9, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 2e2c24b538482564cbb69583b747b74a, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -2757,6 +2757,10 @@ PrefabInstance:
       propertyPath: <Guid>k__BackingField
       value: e26768d0-277b-446c-9703-bb82b7c02a6a
       objectReference: {fileID: 0}
+    - target: {fileID: 2098971938543304142, guid: 1ac07637ffbf3fc4c8fc6755e6d7848d, type: 3}
+      propertyPath: interactionUIOffset.y
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5001035526100530715, guid: 1ac07637ffbf3fc4c8fc6755e6d7848d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.509603
@@ -3032,7 +3036,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8218200119250134579, guid: f35cc463d77b08a4196bb38cfb5a70a1, type: 3}
   m_PrefabInstance: {fileID: 619295807}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 646598308}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7b89beb565d445b81371a4ab7b50414, type: 3}
@@ -3043,12 +3047,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5542026432214934265, guid: f35cc463d77b08a4196bb38cfb5a70a1, type: 3}
   m_PrefabInstance: {fileID: 619295807}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 646598308}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a6eeb13f705b5489955299340445a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.ECS.BaseObjects.BaseObject
+--- !u!1 &646598308 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8734633132979531701, guid: f35cc463d77b08a4196bb38cfb5a70a1, type: 3}
+  m_PrefabInstance: {fileID: 619295807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &668042483
 GameObject:
   m_ObjectHideFlags: 0
@@ -5574,6 +5583,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1401061227875199390, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: hasObjectInside
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1401061227875199390, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: objectsInside.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1401061227875199390, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: 'objectsInside.Array.data[0]'
+      value: 
+      objectReference: {fileID: 646598308}
+    - target: {fileID: 1401061227875199390, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
+      propertyPath: 'objectsInside.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2078995777}
     - target: {fileID: 1401061227875199390, guid: 3d6dbbcd78317354681c1d3b45f3ee7b, type: 3}
       propertyPath: eventOnActivation.m_PersistentCalls.m_Calls.Array.size
       value: 2
