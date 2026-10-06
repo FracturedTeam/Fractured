@@ -34,6 +34,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private TextMeshProUGUI continueText;
 
         private Tweener tween;
+        private Tweener tweenText;
         
         private void OnEnable() {
             fadeEventBinding = new EventBinding<FadeObject>(Fade);
@@ -64,8 +65,12 @@ namespace _Project.Scripts.UI {
         private void SetText(TransitionTextEvent e) {
             titleText.text = e.title;
             descriptionText.text = e.description;
-            
-            transitionCanvasGroup.DOFade(e.show ? 1f : 0f, e.show ? 1f : fadeOutDuration);
+
+            if (tweenText != null)
+            {
+                tweenText.Kill();
+            }
+            tweenText = transitionCanvasGroup.DOFade(e.show ? 1f : 0f, e.show ? 1f : fadeOutDuration);
         }
 
         private void GamepadControlled(bool isGamepadControlled) {

@@ -43,6 +43,7 @@ namespace _Project.Scripts.ScriptableObjects {
         [Header("Memory")]
         public EventReference memory_Interact;
         public EventReference memory_Leave;
+        public EventReference memory_Connected;
         
         [Header("Room")]
         public EventReference room_Enter;

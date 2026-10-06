@@ -3,6 +3,7 @@ using System.Linq;
 using _Project.Scripts.ECS;
 using _Project.Scripts.ECS.BaseObjects;
 using _Project.Scripts.Inputs;
+using _Project.Scripts.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,6 +51,8 @@ namespace _Project.Scripts.GameServices.Services {
 
         private void UpdateGlassInteraction() { //Pas opti du tout ça la double boucle de for avec SetShardState
             if(Time.frameCount % 4 != 0) return;
+            if(PlayerController.HasInstance && PlayerController.Instance.Interact.IsFocus) return;
+            
             foreach (var glassInteractable in shardsInteractable) {
                 if(stopUpdate) break;
                 SetShardState(glassInteractable);

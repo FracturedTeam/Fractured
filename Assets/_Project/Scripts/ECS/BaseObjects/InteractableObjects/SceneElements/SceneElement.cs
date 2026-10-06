@@ -1,4 +1,6 @@
 using System;
+using _Project.Scripts.GameServices;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
@@ -11,10 +13,14 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             get => isValidated;
             private set {
                 isValidated = value;
-                if(masterValidation)
-                    masterValidation.CheckForValidation();
-                // else 
-                //     Debug.LogError($"{gameObject.name} does not have a scene master register");
+
+                if (isValidated)
+                {
+                    GameInitializer.Instance.audioService.PlayOneShot3D(GameInitializer.Instance.GetBank().memory_Connected, transform.position);
+                    HudManager.Instance.SetSuccessValidationText();
+                }
+                
+                if(masterValidation) masterValidation.CheckForValidation();
             }
         }
 
@@ -92,11 +98,13 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             }
             
             IsValidated = requestedCollisionArea.bounds.Contains(transform.position);
+            if(IsValidated) baseObject.SetInteract(false);
         }
 
         private void UsableValidation() {
             var usable = baseObject.GetInteract as UsableAttribute;
             IsValidated = usable?.IsUsed == requestedUseState;
+            // if(IsValidated) baseObject.SetInteract(false);
         }
         
         private void GlassValidation() {
