@@ -45,11 +45,19 @@ namespace _Project.Scripts.Player.States.SubStates {
 
         public override void OnUpdate() {
             player.UpdateInteraction();
-            
-            if(canWalk)
+
+            if (canWalk)
+            {
                 player.UpdateMovement();
+                animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
+            }
+            else
+            {
+                float value = animator.GetFloat(BlendingHash) - Time.deltaTime * 6f;
+                animator.SetFloat(BlendingHash, value);
+            }
             
-            animator.SetFloat(BlendingHash, player.GetAnimatorSpeed());
+            
         }
 
         public override void OnFixedUpdate() {
