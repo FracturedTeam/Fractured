@@ -44,6 +44,9 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 oneTimeUse = true;
                 foreach (var obj in objectsInside) {
                     obj.SetActive(false);
+                    obj.TryGetComponent(out BaseObject glass);
+                    glass?.SetGlassInteract(false);
+                    
                 }
             }
         }
@@ -70,6 +73,8 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             if (hasObjectInside && IsUsed) {
                 foreach (var obj in objectsInside) {
                     obj.SetActive(true);
+                    obj.TryGetComponent(out BaseObject glass);
+                    glass?.SetGlassInteract(true);
                 }
             }
 
