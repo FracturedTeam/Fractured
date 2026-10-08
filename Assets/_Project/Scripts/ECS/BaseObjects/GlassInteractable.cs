@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
@@ -6,6 +7,8 @@ using _Project.Scripts.GameServices;
 using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.Systems.Timers;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -49,6 +52,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         public bool objectOut { get; set; }
         
         public bool IsVisible { get; private set; }
+
+        private bool IsInsidePlayerView = false;
         
         public  void Initialize() {
             mainCamera = PlayerController.Instance.cinemachineBrain.OutputCamera;
@@ -106,9 +111,51 @@ namespace _Project.Scripts.ECS.BaseObjects
             }
             Set2DPoints();
             
+            StartCoroutine(UpdateInteraction());
+        }
+        
+        private void OnEnable() {
+            CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+        }
+
+        private void OnDisable() {
+            CinemachineCore.CameraActivatedEvent.RemoveListener(OnCameraUpdated);
+        }
+        
+        private void OnCameraUpdated(ICinemachineCamera.ActivationEventParams camUpdate)
+        {
+            StartCoroutine(UpdateInteraction());
+        }
+
+        IEnumerator UpdateInteraction()
+        {
+            yield return new WaitForSeconds(0.1f);
+            
+            var center = baseObject.GetRendered().bounds.center;
+
+            var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+            var dirToCam = (outPutCamera.transform.position - center).normalized;
+
+            var layer = LayerMask.GetMask("Wall");
+            
+            if (Physics.Raycast(center, dirToCam, out var hit, Vector3.Distance(center, outPutCamera.transform.position), layer))
+            {
+                Debug.Log(gameObject.name + " collided with " + hit.collider.name);
+                
+                IsInsidePlayerView = false;
+                shardsOnTop.Clear();
+            }
+            else
+            {
+                IsInsidePlayerView = true;
+            }
+            
+            // Debug.Log(gameObject.name + "Colored object can be interact ? " + IsInsidePlayerView);
         }
 
         internal void OnShardUpdated(bool isUnder, Glass shard) {
+            if(!IsInsidePlayerView) return;
+            
             Set2DPoints();
             
             if (isUnder) 
@@ -287,6 +334,18 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         #if UNITY_EDITOR
         private void OnDrawGizmos() {
+
+            if (Application.isPlaying)
+            {
+                Gizmos.color = Color.yellow;
+                
+                var center = baseObject.GetRendered().bounds.center;
+                var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+                var dirToCam = (outPutCamera.transform.position - center).normalized;
+                
+                Gizmos.DrawLine(center, center + dirToCam * Vector3.Distance(center, outPutCamera.transform.position));
+            }
+                
             Gizmos.color = objectColor switch {
                 ColorEnum.ColorA => Color.dodgerBlue,
                 ColorEnum.ColorB => Color.crimson,
@@ -305,7 +364,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         ///Auto Setup the collision
         private void Set2DPoints() {
             var points = meshFilter.sharedMesh.vertices;
-            var pointsHashSet = points.ToHashSet();
+            var pointsHashSet = Enumerable.ToHashSet(points);
             
             var pMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var pMax = new Vector3(-float.MaxValue, -float.MaxValue, -float.MaxValue);

@@ -74,11 +74,7 @@ namespace _Project.Scripts.UI.Gameplay {
             var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
             var dirToCam = (center - outPutCamera.transform.position).normalized;
             
-            // var bounds = parentMesh ? parentMesh.bounds : parentCollider.bounds;
-            // var extents = bounds.extents;
-            // var projectedSize = MathF.Abs(Vector3.Dot(extents, dirToCam));
-            
-            transform.position = (center - dirToCam + offset) /** (projectedSize + 0.1f)*/;
+            transform.position = center - dirToCam + offset;
         }
         
         public void RegisterComponents(MeshRenderer meshRenderer, Collider col, Vector3 offset) {
