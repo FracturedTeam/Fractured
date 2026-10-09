@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
@@ -8,7 +7,6 @@ using _Project.Scripts.Player;
 using _Project.Scripts.Systems.HashSetUtil;
 using _Project.Scripts.Systems.Timers;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _Project.Scripts.ECS.BaseObjects
@@ -116,6 +114,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private void OnEnable() {
             CinemachineCore.CameraActivatedEvent.AddListener(OnCameraUpdated);
+            StartCoroutine(UpdateInteraction());
         }
 
         private void OnDisable() {
@@ -127,7 +126,7 @@ namespace _Project.Scripts.ECS.BaseObjects
             StartCoroutine(UpdateInteraction());
         }
 
-        IEnumerator UpdateInteraction()
+        public IEnumerator UpdateInteraction()
         {
             yield return new WaitForSeconds(0.1f);
             
