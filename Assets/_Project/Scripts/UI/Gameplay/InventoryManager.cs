@@ -201,8 +201,28 @@ namespace _Project.Scripts.UI.Gameplay {
         #region Key
     
         private void ProcessKey(ProcessKeyEvent evt) {
-            if(evt.isAddingKey) AddKey(evt.key);
-            else RemoveKey(evt.key);
+            Debug.Log(
+                $"[ProcessKey] " +
+                $"ID={evt.key.ID}, " +
+                $"NameNull={evt.key.keyName == null}, " +
+                $"SpriteNull={evt.key.keySprite == null}, " +
+                $"CollectNull={evt.key.collect == null}, " +
+                $"Adding={evt.isAddingKey}, " +
+                $"ManagerID={GetInstanceID()}");
+
+
+            try
+            {
+                if (evt.isAddingKey) AddKey(evt.key);
+                else RemoveKey(evt.key);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(
+                    $"[ProcessKey] Failed on manager {GetInstanceID()}: {e}"
+                );
+                throw;
+            }
         }
         
         private void AddKey(KeyItem evt) {

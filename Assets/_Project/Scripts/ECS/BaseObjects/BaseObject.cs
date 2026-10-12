@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.ECS.BaseObjects.InteractableObjects;
 using _Project.Scripts.Enums;
 using _Project.Scripts.Interfaces;
@@ -201,7 +202,13 @@ namespace _Project.Scripts.ECS.BaseObjects
             GetGlassInteract?.Initialize();
             GetTextInteractable?.Initialize();
             blockedAttribute?.Initialize();
-            
+
+            StartCoroutine(SetInteractionUI());
+        }
+
+        IEnumerator SetInteractionUI()
+        {
+            yield return new WaitForSeconds(0.1f);
             interactionUI?.DoShowUI(CanBeInteractedWith());
         }
 

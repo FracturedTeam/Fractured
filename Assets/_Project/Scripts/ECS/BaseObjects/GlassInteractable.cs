@@ -126,27 +126,38 @@ namespace _Project.Scripts.ECS.BaseObjects
             StartCoroutine(UpdateInteraction());
         }
 
-        public IEnumerator UpdateInteraction()
+        private IEnumerator UpdateInteraction()
         {
             yield return new WaitForSeconds(0.1f);
-            
-            var center = baseObject.GetRendered().bounds.center;
 
-            var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
-            var dirToCam = (outPutCamera.transform.position - center).normalized;
-
-            var layer = LayerMask.GetMask("Wall");
-            
-            if (Physics.Raycast(center, dirToCam, out var hit, Vector3.Distance(center, outPutCamera.transform.position), layer))
+            if (baseObject && baseObject.GetRendered())
             {
-                Debug.Log(gameObject.name + " collided with " + hit.collider.name);
+                var center = baseObject.GetRendered().bounds.center;
+
+                var outPutCamera = CinemachineBrain.GetActiveBrain(0).OutputCamera;
+                var dirToCam = (outPutCamera.transform.position - center).normalized;
+
+                var layer = LayerMask.GetMask("Wall");
                 
-                IsInsidePlayerView = false;
-                shardsOnTop.Clear();
-            }
-            else
-            {
-                IsInsidePlayerView = true;
+                if (Physics.Raycast(center, dirToCam, out var hit, Vector3.Distance(center, outPutCamera.transform.position), layer))
+                {
+                    Debug.Log(gameObject.name + " collided with " + hit.collider.name);
+                    
+                    IsInsidePlayerView = false;
+                    if (objectColor is ColorEnum.Both) {
+                        SetVisibility(false);
+                    
+                        baseObject.SetRenderer(false);
+                        for (var i = 0; i < transform.childCount; i++) {
+                            transform.GetChild(i).gameObject.SetActive(false);
+                        }
+                    }
+                    shardsOnTop.Clear();
+                }
+                else
+                {
+                    IsInsidePlayerView = true;
+                }
             }
             
             // Debug.Log(gameObject.name + "Colored object can be interact ? " + IsInsidePlayerView);
