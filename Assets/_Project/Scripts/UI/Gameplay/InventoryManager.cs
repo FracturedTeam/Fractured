@@ -110,6 +110,11 @@ namespace _Project.Scripts.UI.Gameplay {
             }
             
             GameInitializer.Instance.PlaySound3D(GameInitializer.Instance.GetBank().avatar_Inventory_Sound, PlayerController.Instance.transform.position);
+
+            if (HudManager.Instance.inventoryTutorial.alpha != 0)
+            {
+                HudManager.Instance.inventoryTutorial.DOFade(0f, 1f);
+            }
         }
 
         // Fonction pour montrer l'inventaire ou non si le joueur possède des items

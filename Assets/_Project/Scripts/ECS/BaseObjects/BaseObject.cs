@@ -6,6 +6,7 @@ using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
 using _Project.Scripts.UI;
 using _Project.Scripts.UI.Gameplay;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -285,6 +286,11 @@ namespace _Project.Scripts.ECS.BaseObjects
             objectCollider.enabled = isOn;
         }
 
+        public void ShowInventoryTutorial()
+        {
+            HudManager.Instance.inventoryTutorial.DOFade(1f, 1f);
+        }
+        
         public void SetDialogue(DialogueScriptableObject dialogue)
         {
             HudManager.Instance.SetText(dialogue);

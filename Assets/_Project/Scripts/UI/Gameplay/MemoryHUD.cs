@@ -15,9 +15,15 @@ namespace _Project.Scripts.UI {
         [SerializeField] private TextMeshProUGUI confirmText;
         [SerializeField] private Image fillImage;
         
+        [Header("Leave References")]
+        [SerializeField] private CanvasGroup frameLeaveButton;
+        [SerializeField] private TextMeshProUGUI frameLeaveText;
+        
         [Header("Text")]
         [SerializeField] private string keyboardInput = "[F]";
         [SerializeField] private string gamepadInput = "<sprite index=2>";
+        [SerializeField] private string leaveKeyboardInput = "[E]";
+        [SerializeField] private string leaveGamepadInput = "<sprite index=1>";
         [SerializeField] private GameObject gamepadVisual;
         
         private bool isGamepadControlled = false;
@@ -42,6 +48,9 @@ namespace _Project.Scripts.UI {
             var icon = isGamepad ? gamepadInput : keyboardInput;
             confirmText.text = $"Hold {icon} to confirm";
             gamepadVisual.SetActive(isGamepadControlled && isShown);
+            
+            var lIcon = isGamepad ? leaveGamepadInput : leaveKeyboardInput;
+            frameLeaveText.text = $"{lIcon} to leave";
         }
         
         public void SetActiveMemoryButton(bool isOn) {
@@ -63,6 +72,7 @@ namespace _Project.Scripts.UI {
         public void IsInFrame(bool isIn) {
             isShown = isIn;
             gamepadVisual.SetActive(isGamepadControlled && isShown);
+            frameLeaveButton.DOFade(isIn ? 1 : 0, 0.5f);
         }
 
         private void LateUpdate() {
