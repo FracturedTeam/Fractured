@@ -80,10 +80,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
         public void OnInteract(ObjectInteraction interaction, IInteractable other = null) {
             switch (interaction) {
                 case ObjectInteraction.Grab:
-                    // if (baseObject.CanBeInteractedWith())
-                        OnPickedUp();
-                    // else
-                    //     Debug.LogWarning("[Collectable] Can't grab object !");
+                    OnPickedUp();
                     break;
                 case ObjectInteraction.Held:
                     HoldObject();
@@ -97,15 +94,10 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
                 case ObjectInteraction.DropNoTimer:
                     if (isHeld)
                         OnDropNoTimer(other);
-                    // else
-                    //     Debug.Log("[Collectable] Cannot drop object !");
                     break;
                 case ObjectInteraction.Reset:
                     ResetObject();
                     break;
-                // default:
-                //     Debug.LogWarning($"[Collectable] {interaction} Interaction is not supported");
-                //     break;
             }
         }
 

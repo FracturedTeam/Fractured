@@ -119,7 +119,10 @@ namespace _Project.Scripts.UI.Gameplay {
 
         public void DoShowUI(bool doShow) {
             canBeVisible = doShow;
-            tween.Kill();
+            if (tween != null)
+            {
+                tween.Kill();
+            }
             
             if (doShow) {
                 gameObject.SetActive(true);

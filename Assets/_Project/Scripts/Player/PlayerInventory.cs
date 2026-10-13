@@ -31,12 +31,15 @@ namespace _Project.Scripts.Player {
         #region Key
 
         public void OnKeyPickUp(CollectableAttribute key) {
+            if(key == null) return;
+            
             var newKey = new KeyItem{
                 keySprite = key.itemSprite,
                 ID = key.keyID,
                 oneTimeUse = key.isOneTimeUse,
                 collect = key
             };
+            
             keys.Add(newKey);
             
             EventBus<ProcessKeyEvent>.Raise(new ProcessKeyEvent{key = newKey, isAddingKey = true});
@@ -102,7 +105,6 @@ namespace _Project.Scripts.Player {
             if(items.Count == 0) itemIndex = 0;
             
             var newItem = new Item {
-                itemName = item.GetBaseObject().name,
                 Icon = item.itemSprite,
                 worldItem = item.GetBaseObject()
             };
@@ -149,14 +151,12 @@ namespace _Project.Scripts.Player {
     
     [Serializable]
     public struct Item {
-        public string itemName;
         public Sprite Icon;
         public BaseObject worldItem;
     }
 
     [Serializable]
     public struct KeyItem {
-        public string keyName;
         public int ID;
         public Sprite keySprite;
         public bool oneTimeUse;

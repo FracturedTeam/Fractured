@@ -160,23 +160,35 @@ namespace _Project.Scripts.Player {
 
             var lerpTime = lerpCameraDirTime / timeToSwitchToNewDir;
             
-            var alternateForward = new Vector3();
             if (useAlternateCameraDirection) {
                 var camToPlayerDir = transform.position - player.cinemachineBrain.OutputCamera.transform.position;
-                alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
+                var alternateForward = Vector3.ProjectOnPlane(camToPlayerDir, Vector3.up).normalized;
 
                 var dot = Vector3.Dot(alternateForward, flatCamForward);
                 if(dot < 0) alternateForward = -alternateForward;
                 
                 alternateForward = Vector3.Lerp(newForwardDir, alternateForward, amountOfAlternateDirection);
+                
+                if (hasInput) {
+                    forwardDir = Vector3.Lerp(alternateForward, previousForwardDir, lerpTime);
+                    rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
+                }
+                else {
+                    forwardDir = alternateForward;
+                    rightDir = newRightDir;
+                    newCamDirBuffer = false;
+                    lerpCameraDirTime = -1;
+                }
+                
+                return;
             }
 
             if (hasInput) {
-                forwardDir = Vector3.Lerp(useAlternateCameraDirection ? alternateForward : newForwardDir, previousForwardDir, lerpTime);
+                forwardDir = Vector3.Lerp(newForwardDir, previousForwardDir, lerpTime);
                 rightDir = Vector3.Lerp(newRightDir, rightDir, lerpTime);
             }
             else {
-                forwardDir = useAlternateCameraDirection ? alternateForward : newForwardDir;
+                forwardDir = newForwardDir;
                 rightDir = newRightDir;
                 newCamDirBuffer = false;
                 lerpCameraDirTime = -1;

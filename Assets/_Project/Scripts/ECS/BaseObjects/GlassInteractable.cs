@@ -82,7 +82,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                 if (objectColor is ColorEnum.Both) {
                     SetVisibility(false);
                     
-                    baseObject.SetRenderer(false);
+                    // baseObject.SetRenderer(false);
                     for (var i = 0; i < transform.childCount; i++) {
                         transform.GetChild(i).gameObject.SetActive(false);
                     }
@@ -92,13 +92,8 @@ namespace _Project.Scripts.ECS.BaseObjects
                 underBlue = 0;
                 
                 baseObject.SetCollider(objectColor != ColorEnum.Both);
-                
-                if (objectInside) {
-                    if (interactableInBox != null)
-                        SetInteractableInBox(false);
-                    // else
-                    //     Debug.LogError($"[GlassInteractable] {gameObject.name} Does not have an object referenced for interactableInBox");
-                }
+
+                StartCoroutine(PostInitialize());
                 
                 isInitialized = true;
             }
@@ -126,10 +121,20 @@ namespace _Project.Scripts.ECS.BaseObjects
             StartCoroutine(UpdateInteraction());
         }
 
+        private IEnumerator PostInitialize()
+        {
+            yield return new WaitForSeconds(0.5f);
+            
+            if (objectInside) {
+                if (interactableInBox != null)
+                    SetInteractableInBox(false);
+            }
+        }
+        
         private IEnumerator UpdateInteraction()
         {
             yield return new WaitForSeconds(0.1f);
-
+            
             if (baseObject && baseObject.GetRendered())
             {
                 var center = baseObject.GetRendered().bounds.center;
@@ -147,7 +152,7 @@ namespace _Project.Scripts.ECS.BaseObjects
                     if (objectColor is ColorEnum.Both) {
                         SetVisibility(false);
                     
-                        baseObject.SetRenderer(false);
+                        // baseObject.SetRenderer(false);
                         for (var i = 0; i < transform.childCount; i++) {
                             transform.GetChild(i).gameObject.SetActive(false);
                         }

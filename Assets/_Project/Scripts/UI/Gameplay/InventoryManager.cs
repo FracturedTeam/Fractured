@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.GameServices;
 using _Project.Scripts.Inputs;
 using _Project.Scripts.Player;
@@ -19,7 +20,7 @@ namespace _Project.Scripts.UI.Gameplay {
         
         [Header("Key Settings")]
         [SerializeField] private RectTransform keyDisplay;
-        [SerializeField] private KeyHolder[] keyHolder;
+        [field: SerializeField] private KeyHolder[] keyHolder;
         
         [Header("Item Btt")]
         [SerializeField] private RectTransform itemBtt;
@@ -201,45 +202,31 @@ namespace _Project.Scripts.UI.Gameplay {
         #region Key
     
         private void ProcessKey(ProcessKeyEvent evt) {
-            Debug.Log(
-                $"[ProcessKey] " +
-                $"ID={evt.key.ID}, " +
-                $"NameNull={evt.key.keyName == null}, " +
-                $"SpriteNull={evt.key.keySprite == null}, " +
-                $"CollectNull={evt.key.collect == null}, " +
-                $"Adding={evt.isAddingKey}, " +
-                $"ManagerID={GetInstanceID()}");
-
-
-            try
-            {
-                if (evt.isAddingKey) AddKey(evt.key);
-                else RemoveKey(evt.key);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(
-                    $"[ProcessKey] Failed on manager {GetInstanceID()}: {e}"
-                );
-                throw;
-            }
+            if (evt.isAddingKey) 
+                AddKey(evt.key);
+            else 
+                RemoveKey(evt.key);
         }
         
         private void AddKey(KeyItem evt) {
-            foreach (var key in keyHolder) {
-                if (key.gameObject.activeSelf) continue;
+            for (var i = 0; i < keyHolder.Length; i++)
+            {
+                if (keyHolder[i].gameObject.activeSelf) 
+                    continue;
                    
-                key.SetKey(evt);
-                key.gameObject.SetActive(true);
+                keyHolder[i].SetKey(evt);
+                keyHolder[i].gameObject.SetActive(true);
                 break;
             }
         }
     
         private void RemoveKey(KeyItem evt) {
-            foreach (var key in keyHolder) {
-                if (key.ID == evt.ID) {
-                    key.gameObject.SetActive(false);
-                    key.ResetKey();
+            for (var i = 0; i < keyHolder.Length; i++)
+            {
+                if (keyHolder[i].ID == evt.ID) 
+                {
+                    keyHolder[i].gameObject.SetActive(false);
+                    keyHolder[i].ResetKey();
                     break;
                 }
             }
