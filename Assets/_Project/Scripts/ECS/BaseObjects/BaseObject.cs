@@ -295,7 +295,7 @@ namespace _Project.Scripts.ECS.BaseObjects
 
         public void ShowInventoryTutorial()
         {
-            HudManager.Instance.inventoryTutorial.DOFade(1f, 1f);
+            HudManager.Instance.inventoryTutorial.ShowInventory();
         }
         
         public void SetDialogue(DialogueScriptableObject dialogue)

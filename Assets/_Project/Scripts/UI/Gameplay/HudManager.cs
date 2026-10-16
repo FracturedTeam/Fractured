@@ -47,7 +47,7 @@ namespace _Project.Scripts.UI {
         [SerializeField] private DialogueScriptableObject[] successfulDialogue;
 
         [Header("Tutorial")] 
-        [SerializeField] public CanvasGroup inventoryTutorial;
+        [SerializeField] public InventoryTuto inventoryTutorial;
         
         private ParticleSystem currentParticle;
         private Fragment currentFrag;

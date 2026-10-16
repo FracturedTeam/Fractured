@@ -108,14 +108,13 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void GrabShardA(InputAction.CallbackContext ctx) {
-            if(PlayerController.Instance.Interact.IsFocus) return;
-            
             if (ctx.performed && currentGlass != AShard && AShard) {
                 if(BShard)
                     BShard.ChangeHoldingState(false);
                 AShard.ChangeHoldingState(true);
                 currentGlass = AShard;
                 
+                if(PlayerController.Instance.Interact.IsFocus) return;
                 GameInitializer.Instance.rumbleService.RumblePulse(0.8f, 0.8f, .2f);
             }
 
@@ -123,19 +122,19 @@ namespace _Project.Scripts.GameServices.Services {
                 AShard.ChangeHoldingState(false);
                 currentGlass = null;
                 
+                if(PlayerController.Instance.Interact.IsFocus) return;
                 GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.6f, .2f);
             }
         }
 
         private void GrabShardB(InputAction.CallbackContext ctx) {
-            if(PlayerController.Instance.Interact.IsFocus) return;
-            
             if (ctx.performed && currentGlass != BShard && BShard) {
                 BShard.ChangeHoldingState(true);
                 if(AShard)
                     AShard.ChangeHoldingState(false);
                 currentGlass = BShard;
                 
+                if(PlayerController.Instance.Interact.IsFocus) return;
                 GameInitializer.Instance.rumbleService.RumblePulse(0.8f, 0.8f, .2f);
             }
 
@@ -143,6 +142,7 @@ namespace _Project.Scripts.GameServices.Services {
                 BShard.ChangeHoldingState(false);
                 currentGlass = null;
                 
+                if(PlayerController.Instance.Interact.IsFocus) return;
                 GameInitializer.Instance.rumbleService.RumblePulse(0.6f, 0.6f, .2f);
             }
         }
