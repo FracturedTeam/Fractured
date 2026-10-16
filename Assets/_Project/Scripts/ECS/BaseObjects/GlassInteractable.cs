@@ -133,6 +133,8 @@ namespace _Project.Scripts.ECS.BaseObjects
         
         private IEnumerator UpdateInteraction()
         {
+            IsInsidePlayerView = false;
+            
             yield return new WaitForSeconds(0.1f);
             
             if (baseObject && baseObject.GetRendered())
