@@ -361,10 +361,18 @@ namespace _Project.Scripts.GameServices {
                 scenesToLoad.Clear();
 
                 await FadeToBlack();
+
+                if (lastOpenScene == allScenes[5])
+                {
+                    await StartNewGame(5);
+                    return;
+                }
                 
                 var foundScene = false;
                 foreach (var scene in allScenes) {
-                    if (scene.SceneName != lastOpenScene) continue;
+                    if (scene.SceneName != lastOpenScene) 
+                        continue;
+                    
                     foundScene = true;
                     await LoadSceneAsync(scene);
                     SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
