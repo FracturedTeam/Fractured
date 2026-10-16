@@ -378,6 +378,8 @@ namespace _Project.Scripts.Player {
         }
 
         public void SetKinematic(bool doFreeze) {
+            if (player.Interact.IsFocus && !doFreeze) return;
+            
             rb.isKinematic = doFreeze;
         }
         

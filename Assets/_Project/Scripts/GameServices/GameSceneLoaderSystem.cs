@@ -353,7 +353,8 @@ namespace _Project.Scripts.GameServices {
         }
         
         private async Task LoadSave(string lastOpenScene) {
-            try {
+            try 
+            {
                 InputsBrain.Instance.DisablePauseInput(true);
                 InputsBrain.Instance.DisablePlayerInput(true);
                 InputsBrain.Instance.DisableUIInput(false);
@@ -362,52 +363,67 @@ namespace _Project.Scripts.GameServices {
 
                 await FadeToBlack();
 
-                if (lastOpenScene == allScenes[5])
+                for(int i =0; i < allScenes.Length; i++)
                 {
-                    await StartNewGame(5);
-                    return;
+                    if (lastOpenScene == allScenes[i])
+                    {
+                        await StartNewGame(i);
+                        return;
+                    }
                 }
                 
-                var foundScene = false;
-                foreach (var scene in allScenes) {
-                    if (scene.SceneName != lastOpenScene) 
-                        continue;
-                    
-                    foundScene = true;
-                    await LoadSceneAsync(scene);
-                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
-                    break;
-                }
+                // Fix save error by resetting level
+                
+                
+//                 if (lastOpenScene == allScenes[5])
+//                 {
+//                     await StartNewGame(5);
+//                     return;
+//                 }
+//                 
+//                 var foundScene = false;
+//                 foreach (var scene in allScenes) {
+//                     if (scene.SceneName != lastOpenScene) 
+//                         continue;
+//                     
+//                     foundScene = true;
+//                     await LoadSceneAsync(scene);
+//                     SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
+//                     break;
+//                 }
+//
+//                 if (!foundScene) {
+//                     Debug.LogError($"Failed to find scene {lastOpenScene}");
+//                     return;
+//                 }
+//                 
+//                 await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
+//                 
+//                 await WaitForSecondsAsync(0.25f);
+//                 GameSceneSettings.Instance.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
+//                 DiscordRichPresence.Instance.UpdateRichPresence(GameSceneSettings.Instance.transitionTextSO.title, "");
+//                 
+//                 EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
+//                     show = true,
+//                     title = GameSceneSettings.Instance.transitionTextSO.title,
+//                     description = GameSceneSettings.Instance.transitionTextSO.description,
+//                 });
+//                 
+//                 _ = UnloadGameplaySceneAsync();
+//                 
+//                 if (!PlayerService.HasInstance) Instantiate(player);
+//                 if (!HudManager.HasInstance) Instantiate(hudManager);
+//                 
+// #if UNITY_EDITOR || DEVELOPMENT_BUILD
+//                 GameInitializer.Instance.InitializeDebugSystems();
+// #endif
+//                 GameInitializer.Instance.LoadPlayerData();
+//                 InputsBrain.Instance.OnContinue += LeaveTransitionFade;
 
-                if (!foundScene) {
-                    Debug.LogError($"Failed to find scene {lastOpenScene}");
-                    return;
-                }
-                
-                await LoadSceneAsync(GameSceneSettings.Instance.levelArt);
-                
-                await WaitForSecondsAsync(0.25f);
-                GameSceneSettings.Instance.UpdateVolumeWeight(GameInitializer.Instance.GetSettings.enviroColorIntensity);
-                DiscordRichPresence.Instance.UpdateRichPresence(GameSceneSettings.Instance.transitionTextSO.title, "");
-                
-                EventBus<TransitionTextEvent>.Raise(new TransitionTextEvent {
-                    show = true,
-                    title = GameSceneSettings.Instance.transitionTextSO.title,
-                    description = GameSceneSettings.Instance.transitionTextSO.description,
-                });
-                
-                _ = UnloadGameplaySceneAsync();
-                
-                if (!PlayerService.HasInstance) Instantiate(player);
-                if (!HudManager.HasInstance) Instantiate(hudManager);
-                
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-                GameInitializer.Instance.InitializeDebugSystems();
-#endif
-                GameInitializer.Instance.LoadPlayerData();
-                InputsBrain.Instance.OnContinue += LeaveTransitionFade;
             }
-            catch (Exception e) {
+            
+            catch (Exception e) 
+            {
                 Debug.LogError("LoadSaveGame failed: \n" + e);
             }
         }
