@@ -91,6 +91,11 @@ namespace _Project.Scripts.UI {
             gamepadVisual.SetActive(isGamepadControlled && hasGlass);
         }
 
+        public void UpdateGamepadVisualInFrame(bool isInFrame)
+        {
+            gamepadVisual.SetActive(isGamepadControlled && hasGlass && !isInFrame);
+        }
+
         public void SetText(DialogueScriptableObject newDialogue) {
             if(!subtitleText || !newDialogue)
                 return;

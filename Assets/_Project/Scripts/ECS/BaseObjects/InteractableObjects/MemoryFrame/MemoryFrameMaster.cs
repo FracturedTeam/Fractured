@@ -81,6 +81,7 @@ namespace _Project.Scripts.ECS.BaseObjects.InteractableObjects {
             hud.SetMemoryDialogue("", new Vector3());
             hud.IsInFrame(isUsingMemoryFrame);
             HudManager.Instance.interact.ForceInteractHUDVisibility(!isUsingMemoryFrame);
+            HudManager.Instance.UpdateGamepadVisualInFrame(isUsingMemoryFrame);
             
             frameCamera.Priority = isUsingMemoryFrame ? 2 : 0;
             PlayerController.Instance.Interact.SetIsFocus(isUsingMemoryFrame, baseObject);

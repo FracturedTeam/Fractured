@@ -108,6 +108,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void GrabShardA(InputAction.CallbackContext ctx) {
+            if(PlayerController.Instance.Interact.IsFocus) return;
+            
             if (ctx.performed && currentGlass != AShard && AShard) {
                 if(BShard)
                     BShard.ChangeHoldingState(false);
@@ -126,6 +128,8 @@ namespace _Project.Scripts.GameServices.Services {
         }
 
         private void GrabShardB(InputAction.CallbackContext ctx) {
+            if(PlayerController.Instance.Interact.IsFocus) return;
+            
             if (ctx.performed && currentGlass != BShard && BShard) {
                 BShard.ChangeHoldingState(true);
                 if(AShard)
