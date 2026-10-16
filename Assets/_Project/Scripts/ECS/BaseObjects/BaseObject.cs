@@ -245,7 +245,7 @@ namespace _Project.Scripts.ECS.BaseObjects
         public void OnInteract(ObjectInteraction interaction, IInteractable interactable = null) {
             if (GetTrigger) GetTrigger.OnFunction(GetTrigger.OnInteract);
             
-            if (GetLockState is LockedState.Locked && interaction is not ObjectInteraction.Grab) {
+            if (GetLockState is LockedState.Locked) {
                 blockedAttribute.OnInteract(GetInteract);
                 return;
             }
