@@ -21,7 +21,7 @@ namespace _Project.Scripts.UI {
         
         [Header("Text")]
         [SerializeField] private string keyboardInput = "[F]";
-        [SerializeField] private string gamepadInput = "<sprite index=2>";
+        [SerializeField] private string gamepadInput = "<sprite index=3>";
         [SerializeField] private string leaveKeyboardInput = "[E]";
         [SerializeField] private string leaveGamepadInput = "<sprite index=1>";
         [SerializeField] private GameObject gamepadVisual;

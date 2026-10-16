@@ -29,10 +29,10 @@ namespace _Project.Scripts.ECS.BaseObjects
         [SerializeField] private bool objectInside = false;
         [SerializeField] private BaseObject interactableInBox;
         
-        [Header("Invisible Walls")]
-        [SerializeField] private MeshRenderer[] wallRenderer;
-        [SerializeField] private Material visibleWallMat;
-        [SerializeField] private Material invisibleWallMat;
+        // [Header("Invisible Walls")]
+        // [SerializeField] private MeshRenderer[] wallRenderer;
+        // [SerializeField] private Material visibleWallMat;
+        // [SerializeField] private Material invisibleWallMat;
         
         [Header("Debug on UI")]
         [SerializeField] private float radius2D;
@@ -217,17 +217,18 @@ namespace _Project.Scripts.ECS.BaseObjects
             if (!isOn)
                 return;
             
-            if (!baseObject.GetRendered().enabled) {
-                baseObject.SetRenderer(true);
-                for (var i = 0; i < transform.childCount; i++) {
-                    transform.GetChild(i).gameObject.SetActive(true);
-                }
-
-                if (wallRenderer.Length > 0) {
-                    foreach (var wall in wallRenderer) {
-                        wall.material = invisibleWallMat;
-                    }
-                }
+            // if (!baseObject.GetRendered().enabled) {
+            //     baseObject.SetRenderer(true);
+            //     
+            //     if (wallRenderer.Length > 0) {
+            //         foreach (var wall in wallRenderer) {
+            //             wall.material = invisibleWallMat;
+            //         }
+            //     }
+            // }
+            
+            for (var i = 0; i < transform.childCount; i++) {
+                transform.GetChild(i).gameObject.SetActive(true);
             }
             
             underBlue = 0;
