@@ -54,7 +54,8 @@ namespace _Project.Scripts.Player {
             }
             
             for (int i = 0; i < keys.Capacity; i++) {
-                if(IsRequestedKey(i, keyID)) break;
+                if(IsRequestedKey(i, keyID)) 
+                    return;
             }
         }
 
