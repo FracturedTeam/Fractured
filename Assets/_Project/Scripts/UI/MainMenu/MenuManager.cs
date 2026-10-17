@@ -86,7 +86,7 @@ namespace _Project.Scripts.UI {
                 var level = GameInitializer.Instance.saveService.GameData.LastPlayedLevel;
                 
                 if (existingSave) {
-                    for(var i = 5; i > level; i--) {
+                    for(var i = 2; i > level; i--) {
                         chapters[i - 1].Lock();
                     }
                 }
