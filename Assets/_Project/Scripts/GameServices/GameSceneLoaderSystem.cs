@@ -250,7 +250,9 @@ namespace _Project.Scripts.GameServices {
                 if (GameSceneSettings.HasInstance) {
                     var settings = GameSceneSettings.Instance;
                     GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     GameInitializer.Instance.UpdateDebugCameras();
+                    #endif
                     GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
                 }
                 
