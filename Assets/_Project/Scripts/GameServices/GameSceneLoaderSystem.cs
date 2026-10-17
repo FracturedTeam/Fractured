@@ -47,7 +47,7 @@ namespace _Project.Scripts.GameServices {
             if (SceneManager.loadedSceneCount == 1 && SceneManager.GetSceneAt(0).name == "PersistentSceneManager") {
                 _ = LoadSceneAsync(menuScene);
             }
-            #if UNITY_EDITOR
+            #if UNITY_EDITOR || DEVELOPMENT_BUILD
             else {
                 if (GameSceneSettings.HasInstance) {
                     GameInitializer.Instance.CreateNewSave();
@@ -250,7 +250,9 @@ namespace _Project.Scripts.GameServices {
                 if (GameSceneSettings.HasInstance) {
                     var settings = GameSceneSettings.Instance;
                     GameInitializer.Instance.PopulateLevel(settings.baseObjects.ToArray(), settings.sceneMasters.ToArray());
+                    #if UNITY_EDITOR || DEVELOPMENT_BUILD
                     GameInitializer.Instance.UpdateDebugCameras();
+                    #endif
                     GameInitializer.Instance.SetCurrentChapter(settings.ActColor);
                 }
                 

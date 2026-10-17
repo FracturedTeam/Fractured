@@ -398,7 +398,9 @@ namespace _Project.Scripts.GameServices {
         #endregion
         
         public void UpdateDebugCameras() {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             cameraDebugService.UpdateCameras(GetCameras());
+            #endif
         }
         
         public int GetPostProcess(int index) {

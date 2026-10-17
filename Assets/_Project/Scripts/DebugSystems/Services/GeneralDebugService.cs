@@ -78,7 +78,9 @@ namespace _Project.Scripts.DebugSystems.Services {
                 if (GUILayout.Button($"Load : {s.SceneName}", buttonStyle)) {
                     if (PlayerController.Instance.Interact.HasObject)
                         PlayerController.Instance.Interact.SetDropObjectDebug();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
                     _ = GameSceneLoaderSystem.Instance.LoadSceneFromDebug(s);
+                    #endif
                 }
             }
             
