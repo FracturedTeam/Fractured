@@ -9,7 +9,7 @@ namespace _Project.Scripts.UI.Gameplay {
         
         public void ResetKey() {
             ID = -1;
-            icon = null;
+            icon.sprite = null;
         }
         
         public void SetKey(KeyItem key) {
